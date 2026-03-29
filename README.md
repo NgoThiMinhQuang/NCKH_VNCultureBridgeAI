@@ -2,7 +2,6 @@
 
 **Web giới thiệu và giải thích phong tục, văn hoá Việt Nam cho người nước ngoài**
 
----
 
 ## 1. Tổng quan đề tài
 
@@ -10,9 +9,9 @@
 
 Khác với các website văn hoá thông thường chỉ hiển thị nội dung tĩnh, hệ thống này hướng đến việc:
 
-- tổ chức tri thức văn hoá Việt Nam theo cấu trúc rõ ràng
-- hỗ trợ người dùng khám phá nội dung theo vùng miền, dân tộc và chủ đề
-- cho phép AI giải thích nội dung văn hoá theo ngữ cảnh câu hỏi
+- Tổ chức tri thức văn hoá Việt Nam theo cấu trúc rõ ràng
+- Hỗ trợ người dùng khám phá nội dung theo vùng miền, dân tộc và chủ đề
+- Cho phép AI giải thích nội dung văn hoá theo ngữ cảnh câu hỏi
 - điều hướng người dùng tới bài viết hoặc chủ đề phù hợp
 - bảo đảm phản hồi AI bám sát dữ liệu đã được kiểm duyệt
 
@@ -32,7 +31,7 @@ Cách tiếp cận này giúp hệ thống:
 - giảm độ phức tạp kỹ thuật
 - phù hợp với phạm vi đề tài ứng dụng web văn hoá
 
----
+
 
 ## 2. Bối cảnh và tính cấp thiết
 
@@ -65,7 +64,7 @@ Bên cạnh đó, khi ứng dụng AI vào hệ thống văn hoá, nếu để m
 
 Vì vậy, cần có một nền tảng vừa hỗ trợ tra cứu và học hỏi, vừa có cơ chế AI đủ linh hoạt để giải thích, nhưng vẫn đủ kiểm soát để bảo đảm tính chính xác và phù hợp văn hoá.
 
----
+
 
 ## 3. Bài toán nghiệp vụ
 
@@ -82,7 +81,7 @@ Nói cách khác, hệ thống cần giải quyết đồng thời các nhu cầ
 - điều hướng người dùng đến bài viết hoặc nội dung liên quan thay vì để AI trả lời tự do
 - hỗ trợ quản trị viên cập nhật, kiểm duyệt và làm giàu nội dung tri thức liên tục
 
----
+
 
 ## 4. Tính mới của đề tài
 
@@ -127,7 +126,7 @@ Bên cạnh mục tiêu ứng dụng, đề tài còn hướng đến các mục
 - đánh giá hiệu quả của mô hình về độ chính xác, tính dễ hiểu, tính hữu ích và trải nghiệm người dùng
 - góp phần mở rộng hướng nghiên cứu ứng dụng AI trong lĩnh vực nhân văn số và bảo tồn văn hoá
 
----
+
 
 ## 6. Phạm vi và ranh giới hệ thống
 
@@ -179,7 +178,7 @@ AI trong hệ thống chỉ đóng vai trò hỗ trợ:
 
 AI không thay thế chuyên gia văn hoá, không được tự ý sáng tạo tri thức mới khi không có căn cứ dữ liệu, và không được trả lời vượt ra ngoài phạm vi nội dung đã được kiểm duyệt.
 
----
+
 
 ## 7. Đối tượng sử dụng và vai trò nghiệp vụ
 
@@ -233,7 +232,7 @@ Hệ thống gồm ba nhóm tác nhân chính.
 - gợi ý các bài viết hoặc chủ đề liên quan
 - ghi log lịch sử hỏi đáp, câu hỏi phổ biến và câu hỏi thiếu dữ liệu
 
----
+
 
 ## 8. Mô hình tri thức và các thực thể nghiệp vụ chính
 
@@ -316,7 +315,7 @@ Ghi nhận nhận xét của người dùng về:
 - nội dung còn khó hiểu
 - gợi ý cần bổ sung
 
----
+
 
 ## 9. Cách tiếp cận AI thay cho RAG
 
@@ -367,7 +366,7 @@ Prompt được dùng để:
 - phù hợp với đề tài sinh viên hoặc hệ thống quy mô vừa
 - dễ bảo trì, dễ cập nhật khi nội dung thay đổi
 
----
+
 
 ## 10. Danh sách nghiệp vụ chính của hệ thống
 
@@ -612,7 +611,7 @@ Hệ thống AI lưu lại:
 - hỗ trợ phát hiện thiếu hụt nội dung
 - tạo cơ sở cho việc cải tiến kho tri thức và prompt của hệ thống
 
----
+
 
 ### 10.3. Nhóm nghiệp vụ dành cho quản trị viên
 
