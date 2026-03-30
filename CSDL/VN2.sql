@@ -958,7 +958,575 @@ WHERE bv.MaBaiViet = 'BV_DAM_TRAU'
   );
 
 /* =========================================================
-   16. KIỂM TRA NHANH KẾT QUẢ
+   16. DỮ LIỆU BỔ SUNG CHO HOMEPAGE PUBLIC
+   ========================================================= */
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'KHMER', N'Khmer', N'Khmer',
+       N'Cộng đồng Khmer tập trung nhiều ở Nam Bộ, nổi bật với chùa Phật giáo Nam tông, lễ hội và nghệ thuật sân khấu dân gian.',
+       N'The Khmer community is concentrated in southern Vietnam and is known for Theravada Buddhist temples, festivals, and folk performance traditions.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'KHMER');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'CHAM', N'Chăm', N'Cham',
+       N'Dân tộc Chăm có bề dày lịch sử ở miền Trung, gắn với di sản kiến trúc, tín ngưỡng và nghề dệt thủ công.',
+       N'The Cham people have a long history in central Vietnam, associated with architecture, spirituality, and textile craftsmanship.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'CHAM');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'DAO', N'Dao', N'Dao',
+       N'Dân tộc Dao nổi bật với trang phục thêu tay, nghi lễ cấp sắc và tri thức dân gian về dược liệu.',
+       N'The Dao people are known for embroidered attire, initiation rituals, and traditional herbal knowledge.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'DAO');
+
+INSERT INTO dbo.TuKhoa (MaTuKhoa, GiaTriVI, GiaTriEN, HoatDong)
+SELECT 'TRUNG_THU', N'Tết Trung Thu', N'Mid-Autumn Festival', 1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.TuKhoa WHERE MaTuKhoa = 'TRUNG_THU');
+
+INSERT INTO dbo.TuKhoa (MaTuKhoa, GiaTriVI, GiaTriEN, HoatDong)
+SELECT 'PHO', N'Phở', N'Pho', 1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.TuKhoa WHERE MaTuKhoa = 'PHO');
+
+INSERT INTO dbo.TuKhoa (MaTuKhoa, GiaTriVI, GiaTriEN, HoatDong)
+SELECT 'BANH_MI', N'Bánh mì', N'Banh Mi', 1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.TuKhoa WHERE MaTuKhoa = 'BANH_MI');
+
+INSERT INTO dbo.TuKhoa (MaTuKhoa, GiaTriVI, GiaTriEN, HoatDong)
+SELECT 'MUA_ROI_NUOC', N'Múa rối nước', N'Water Puppetry', 1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.TuKhoa WHERE MaTuKhoa = 'MUA_ROI_NUOC');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_TET_TRUNG_THU',
+    N'Tết Trung Thu',
+    N'Mid-Autumn Festival',
+    N'Lễ hội dành cho thiếu nhi với lồng đèn, múa lân, bánh trung thu và không khí sum họp gia đình.',
+    N'A children-centered festival filled with lanterns, lion dances, mooncakes, and family togetherness.',
+    N'Tết Trung Thu là một trong những lễ hội được yêu thích nhất ở Việt Nam, đặc biệt gắn với ký ức tuổi thơ.',
+    N'The Mid-Autumn Festival is one of Vietnam''s most beloved celebrations, especially tied to childhood memory.',
+    N'Lễ hội phát triển từ truyền thống nông nghiệp, ngắm trăng và sinh hoạt cộng đồng theo mùa vụ.',
+    N'The festival grew from agrarian traditions, moon appreciation, and seasonal community life.',
+    N'Trung Thu nhấn mạnh niềm vui đoàn viên, sự chăm sóc dành cho trẻ em và vẻ đẹp của biểu tượng mặt trăng tròn.',
+    N'The festival emphasizes family reunion, care for children, and the symbolism of the full moon.',
+    N'Ngày nay, Trung Thu vừa là dịp văn hóa dân gian vừa là không gian sáng tạo của nghệ thuật lồng đèn và trình diễn đường phố.',
+    N'Today, Mid-Autumn Festival is both a folk tradition and a creative space for lantern art and street performance.',
+    N'Các hoạt động phổ biến gồm rước đèn, phá cỗ, múa lân, làm bánh trung thu và tổ chức sự kiện cho trẻ em tại trường học, phố cổ và khu dân cư.',
+    N'Common activities include lantern parades, moon-viewing feasts, lion dances, mooncake making, and children''s events in schools, old quarters, and neighborhoods.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Tết Trung Thu là lễ hội ngắm trăng và dành cho thiếu nhi, gắn với lồng đèn, bánh trung thu và tinh thần sum họp.',
+    N'Mid-Autumn Festival is a moon celebration centered on children, lanterns, mooncakes, and reunion.',
+    1,
+    DATEADD(DAY, -15, SYSUTCDATETIME()),
+    DATEADD(DAY, -14, SYSUTCDATETIME()),
+    DATEADD(DAY, -13, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_TET_TRUNG_THU');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_PHO_VIET_NAM',
+    N'Phở Việt Nam',
+    N'Vietnamese Pho',
+    N'Món ăn biểu tượng của Việt Nam với nước dùng trong, bánh phở mềm và hương vị cân bằng.',
+    N'An iconic Vietnamese dish known for clear broth, soft rice noodles, and balanced flavors.',
+    N'Phở là một biểu tượng ẩm thực Việt Nam được yêu thích trong nước và quốc tế.',
+    N'Pho is an emblematic Vietnamese dish beloved both domestically and internationally.',
+    N'Phở được hình thành trong bối cảnh giao thoa ẩm thực Bắc Bộ đầu thế kỷ XX và nhanh chóng lan rộng khắp cả nước.',
+    N'Pho emerged in early twentieth-century northern Vietnam through culinary exchange and quickly spread nationwide.',
+    N'Phở thể hiện tinh thần tinh tế trong cách nấu nước dùng, kết hợp thảo mộc và khả năng thích nghi theo vùng miền.',
+    N'Pho reflects culinary refinement through broth-making, herbs, and regional adaptation.',
+    N'Ngày nay, phở xuất hiện từ gánh hàng rong đến nhà hàng hiện đại, trở thành cầu nối văn hóa trong trải nghiệm ẩm thực Việt.',
+    N'Today, pho appears everywhere from street stalls to modern restaurants, becoming a cultural bridge in Vietnamese cuisine.',
+    N'Phở thường được nhắc tới như món ăn đại diện của Việt Nam. Tuy nhiên, mỗi địa phương và mỗi quán lại có cách nêm nếm, chọn thịt và bày biện riêng, tạo nên nhiều lớp bản sắc trong cùng một món ăn quen thuộc.',
+    N'Pho is often treated as Vietnam''s signature dish. Yet each locality and eatery brings its own seasoning, meat choices, and presentation, creating multiple identities within one familiar bowl.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Phở là món nước tiêu biểu của Việt Nam, nổi bật bởi nước dùng, thảo mộc tươi và dấu ấn vùng miền.',
+    N'Pho is a signature Vietnamese noodle soup known for its broth, fresh herbs, and regional variations.',
+    1,
+    DATEADD(DAY, -11, SYSUTCDATETIME()),
+    DATEADD(DAY, -10, SYSUTCDATETIME()),
+    DATEADD(DAY, -9, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_PHO_VIET_NAM');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_BANH_MI',
+    N'Bánh mì Việt Nam',
+    N'Vietnamese Banh Mi',
+    N'Món bánh mì kẹp nổi tiếng với sự giao thoa giữa baguette kiểu Pháp và nguyên liệu Việt Nam.',
+    N'A famous sandwich born from the meeting of French baguette traditions and Vietnamese ingredients.',
+    N'Bánh mì là ví dụ tiêu biểu cho khả năng biến đổi sáng tạo của ẩm thực Việt Nam trong bối cảnh đô thị hiện đại.',
+    N'Banh mi is a strong example of Vietnamese creativity in adapting food within modern urban life.',
+    N'Món ăn này phát triển từ thời kỳ thuộc địa nhưng dần mang bản sắc riêng nhờ nhân, rau thơm và nước sốt kiểu Việt.',
+    N'The dish developed from colonial-era bread traditions but gradually became distinctly Vietnamese through fillings, herbs, and sauces.',
+    N'Bánh mì thể hiện sự linh hoạt, nhanh gọn và khả năng kết hợp giữa địa phương với toàn cầu trong đời sống hàng ngày.',
+    N'Banh mi represents flexibility, convenience, and the blending of local and global influences in everyday life.',
+    N'Từ món ăn sáng, bữa trưa đến món mang đi cho du khách, bánh mì đã trở thành biểu tượng của ẩm thực đường phố Việt.',
+    N'From breakfast to takeaway for travelers, banh mi has become a symbol of Vietnamese street food culture.',
+    N'Bánh mì Việt Nam có rất nhiều biến thể: nhân thịt, chả lụa, pate, xíu mại, trứng hoặc chay. Điều làm nên sức hấp dẫn của món ăn là cảm giác hài hòa giữa lớp vỏ giòn, nhân đậm vị và rau dưa tươi mát.',
+    N'Vietnamese banh mi comes in many forms: meat, sausage, pâté, meatballs, eggs, or vegetarian fillings. Its appeal lies in the harmony between crusty bread, savory fillings, and fresh pickled vegetables and herbs.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Bánh mì là món ăn đường phố nổi tiếng, thể hiện sự giao thoa ẩm thực và tinh thần sáng tạo của người Việt.',
+    N'Banh mi is a famous street food that reflects culinary exchange and Vietnamese creativity.',
+    1,
+    DATEADD(DAY, -10, SYSUTCDATETIME()),
+    DATEADD(DAY, -9, SYSUTCDATETIME()),
+    DATEADD(DAY, -8, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_BANH_MI');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_MUA_ROI_NUOC',
+    N'Múa rối nước',
+    N'Water Puppetry',
+    N'Loại hình nghệ thuật sân khấu độc đáo, nơi con rối gỗ được điều khiển trên mặt nước.',
+    N'A distinctive performance art in which wooden puppets are controlled on water.',
+    N'Múa rối nước là một trong những biểu tượng nghệ thuật dân gian Việt Nam được bạn bè quốc tế biết đến nhiều nhất.',
+    N'Water puppetry is one of the Vietnamese folk arts most widely recognized by international audiences.',
+    N'Loại hình này hình thành từ không gian làng quê đồng bằng Bắc Bộ, nơi mặt nước vừa là sân khấu vừa là chất liệu diễn xướng.',
+    N'This form emerged from the villages of the Red River Delta, where water serves as both stage and expressive medium.',
+    N'Múa rối nước phản ánh đời sống nông nghiệp, trí tưởng tượng dân gian và tinh thần kể chuyện cộng đồng.',
+    N'Water puppetry reflects agrarian life, folk imagination, and communal storytelling.',
+    N'Ngày nay, múa rối nước vừa là di sản biểu diễn vừa là cầu nối giới thiệu văn hóa Việt Nam tới du khách quốc tế.',
+    N'Today, water puppetry is both a preserved performance heritage and a bridge introducing Vietnamese culture to international visitors.',
+    N'Tiết mục múa rối nước thường tái hiện sinh hoạt nông thôn, truyền thuyết, lễ hội và các câu chuyện dân gian bằng âm nhạc, lời dẫn và chuyển động uyển chuyển của con rối trên mặt nước.',
+    N'Water puppet shows often recreate rural life, legends, festivals, and folk tales through music, narration, and the graceful movement of puppets across the water surface.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Múa rối nước là nghệ thuật biểu diễn dân gian của đồng bằng Bắc Bộ, kết hợp con rối, âm nhạc và sân khấu mặt nước.',
+    N'Water puppetry is a folk performance tradition from northern Vietnam that combines puppets, music, and a water stage.',
+    1,
+    DATEADD(DAY, -9, SYSUTCDATETIME()),
+    DATEADD(DAY, -8, SYSUTCDATETIME()),
+    DATEADD(DAY, -7, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_MUA_ROI_NUOC');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_HUE_FESTIVAL',
+    N'Festival Huế',
+    N'Hue Festival',
+    N'Sự kiện văn hoá - nghệ thuật quy mô lớn tôn vinh di sản cố đô và nghệ thuật trình diễn đương đại.',
+    N'A large-scale cultural event honoring Hue heritage and contemporary performance arts.',
+    N'Festival Huế là không gian nơi di sản cung đình gặp gỡ nghệ thuật đương đại và giao lưu quốc tế.',
+    N'Hue Festival is a space where imperial heritage meets contemporary performance and international exchange.',
+    N'Sự kiện phát triển từ nhu cầu bảo tồn, làm sống lại và quảng bá di sản Huế trong đời sống hiện đại.',
+    N'The event developed from the need to preserve, revitalize, and promote Hue heritage in modern life.',
+    N'Festival Huế cho thấy di sản không chỉ thuộc về quá khứ mà còn có thể được tái diễn giải trong không gian đương đại.',
+    N'Hue Festival shows that heritage belongs not only to the past but can be reinterpreted in contemporary settings.',
+    N'Sự kiện quy tụ trình diễn áo dài, nhã nhạc, lễ hội đường phố, triển lãm và các chương trình giao lưu nghệ thuật quốc tế.',
+    N'The event brings together Ao Dai showcases, royal court music, street performances, exhibitions, and international artistic exchange.',
+    N'Festival Huế giúp du khách tiếp cận di sản cố đô theo cách sống động hơn thông qua chuỗi hoạt động trải dài trong thành phố và các không gian di tích.',
+    N'Hue Festival helps visitors experience imperial heritage more vividly through activities spread across the city and historic sites.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Festival Huế là sự kiện văn hóa lớn tôn vinh di sản cố đô, nghệ thuật trình diễn và giao lưu quốc tế.',
+    N'Hue Festival is a major cultural event celebrating imperial heritage, performance arts, and international exchange.',
+    1,
+    DATEADD(DAY, -8, SYSUTCDATETIME()),
+    DATEADD(DAY, -7, SYSUTCDATETIME()),
+    DATEADD(DAY, -6, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_HUE_FESTIVAL');
+
+INSERT INTO dbo.BaiViet_DanhMuc (BaiVietID, DanhMucID, LaDanhMucChinh)
+SELECT bv.BaiVietID, dm.DanhMucID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.DanhMuc dm ON dm.MaDanhMuc = 'LE_HOI'
+WHERE bv.MaBaiViet IN ('BV_TET_TRUNG_THU', 'BV_HUE_FESTIVAL')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_DanhMuc x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.DanhMucID = dm.DanhMucID
+  );
+
+INSERT INTO dbo.BaiViet_DanhMuc (BaiVietID, DanhMucID, LaDanhMucChinh)
+SELECT bv.BaiVietID, dm.DanhMucID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.DanhMuc dm ON dm.MaDanhMuc = 'AM_THUC'
+WHERE bv.MaBaiViet IN ('BV_PHO_VIET_NAM', 'BV_BANH_MI')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_DanhMuc x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.DanhMucID = dm.DanhMucID
+  );
+
+INSERT INTO dbo.BaiViet_DanhMuc (BaiVietID, DanhMucID, LaDanhMucChinh)
+SELECT bv.BaiVietID, dm.DanhMucID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.DanhMuc dm ON dm.MaDanhMuc = 'NGHE_THUAT_DAN_GIAN'
+WHERE bv.MaBaiViet = 'BV_MUA_ROI_NUOC'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_DanhMuc x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.DanhMucID = dm.DanhMucID
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'BAC_BO'
+WHERE bv.MaBaiViet IN ('BV_TET_TRUNG_THU', 'BV_PHO_VIET_NAM', 'BV_MUA_ROI_NUOC')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'TRUNG_BO'
+WHERE bv.MaBaiViet = 'BV_HUE_FESTIVAL'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'NAM_BO'
+WHERE bv.MaBaiViet = 'BV_BANH_MI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
+  );
+
+INSERT INTO dbo.BaiViet_DanToc (BaiVietID, DanTocID, LaDanTocChinh)
+SELECT bv.BaiVietID, dt.DanTocID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.DanToc dt ON dt.MaDanToc = 'KINH'
+WHERE bv.MaBaiViet IN ('BV_TET_TRUNG_THU', 'BV_PHO_VIET_NAM', 'BV_BANH_MI', 'BV_MUA_ROI_NUOC', 'BV_HUE_FESTIVAL')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_DanToc x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.DanTocID = dt.DanTocID
+  );
+
+INSERT INTO dbo.BaiViet_TuKhoa (BaiVietID, TuKhoaID)
+SELECT bv.BaiVietID, tk.TuKhoaID
+FROM dbo.BaiViet bv
+JOIN dbo.TuKhoa tk ON tk.MaTuKhoa = 'TRUNG_THU'
+WHERE bv.MaBaiViet = 'BV_TET_TRUNG_THU'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_TuKhoa x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.TuKhoaID = tk.TuKhoaID
+  );
+
+INSERT INTO dbo.BaiViet_TuKhoa (BaiVietID, TuKhoaID)
+SELECT bv.BaiVietID, tk.TuKhoaID
+FROM dbo.BaiViet bv
+JOIN dbo.TuKhoa tk ON tk.MaTuKhoa = 'PHO'
+WHERE bv.MaBaiViet = 'BV_PHO_VIET_NAM'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_TuKhoa x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.TuKhoaID = tk.TuKhoaID
+  );
+
+INSERT INTO dbo.BaiViet_TuKhoa (BaiVietID, TuKhoaID)
+SELECT bv.BaiVietID, tk.TuKhoaID
+FROM dbo.BaiViet bv
+JOIN dbo.TuKhoa tk ON tk.MaTuKhoa = 'BANH_MI'
+WHERE bv.MaBaiViet = 'BV_BANH_MI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_TuKhoa x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.TuKhoaID = tk.TuKhoaID
+  );
+
+INSERT INTO dbo.BaiViet_TuKhoa (BaiVietID, TuKhoaID)
+SELECT bv.BaiVietID, tk.TuKhoaID
+FROM dbo.BaiViet bv
+JOIN dbo.TuKhoa tk ON tk.MaTuKhoa = 'MUA_ROI_NUOC'
+WHERE bv.MaBaiViet = 'BV_MUA_ROI_NUOC'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_TuKhoa x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.TuKhoaID = tk.TuKhoaID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_TET_TRUNG_THU'
+WHERE b1.MaBaiViet = 'BV_TET_NGUYEN_DAN'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_BANH_MI'
+WHERE b1.MaBaiViet = 'BV_PHO_VIET_NAM'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80',
+    N'Lồng đèn trong đêm Trung Thu',
+    N'Lanterns during Mid-Autumn Festival',
+    N'Hình ảnh đèn lồng và không khí lễ hội Trung Thu.',
+    N'Lanterns and the festive atmosphere of Mid-Autumn Festival.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_TET_TRUNG_THU'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
+    N'Tô phở với rau thơm tươi',
+    N'Bowl of pho with fresh herbs',
+    N'Hình ảnh món phở Việt Nam với nước dùng và rau thơm.',
+    N'An image of Vietnamese pho with broth and fresh herbs.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_PHO_VIET_NAM'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1604908812752-60b7c7d1d7ab?auto=format&fit=crop&w=1200&q=80',
+    N'Bánh mì Việt Nam',
+    N'Vietnamese banh mi',
+    N'Hình ảnh bánh mì với nhân và rau dưa kiểu Việt.',
+    N'Image of banh mi with Vietnamese fillings and pickles.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_BANH_MI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1604908812752-60b7c7d1d7ab?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1200&q=80',
+    N'Múa rối nước trên sân khấu mặt nước',
+    N'Water puppetry on a water stage',
+    N'Hình ảnh trình diễn múa rối nước truyền thống.',
+    N'An image of a traditional water puppetry performance.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_MUA_ROI_NUOC'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80',
+    N'Không gian Festival Huế',
+    N'Hue Festival scene',
+    N'Hình ảnh không gian biểu diễn trong Festival Huế.',
+    N'Image of a performance space during Hue Festival.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_HUE_FESTIVAL'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.NguonThamKhao (
+    BaiVietID, TieuDeNguon, TacGia, LoaiNguon, UrlNguon, GhiChu, LaNguonChinh
+)
+SELECT
+    bv.BaiVietID,
+    N'Lễ hội Trung Thu trong đời sống đô thị Việt Nam',
+    N'Nhiều tác giả',
+    'WEBSITE',
+    N'https://example.org/trung-thu-viet-nam',
+    N'Nguồn tham khảo tổng quan về Tết Trung Thu.',
+    1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_TET_TRUNG_THU'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.NguonThamKhao x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.TieuDeNguon = N'Lễ hội Trung Thu trong đời sống đô thị Việt Nam'
+  );
+
+INSERT INTO dbo.NguonThamKhao (
+    BaiVietID, TieuDeNguon, TacGia, LoaiNguon, UrlNguon, GhiChu, LaNguonChinh
+)
+SELECT
+    bv.BaiVietID,
+    N'Pho and regional culinary identity',
+    N'Food culture research notes',
+    'RESEARCH',
+    N'https://example.org/pho-regional-identity',
+    N'Tài liệu tham khảo về phở và khác biệt vùng miền.',
+    1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_PHO_VIET_NAM'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.NguonThamKhao x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.TieuDeNguon = N'Pho and regional culinary identity'
+  );
+
+INSERT INTO dbo.NguonThamKhao (
+    BaiVietID, TieuDeNguon, TacGia, LoaiNguon, UrlNguon, GhiChu, LaNguonChinh
+)
+SELECT
+    bv.BaiVietID,
+    N'Water puppetry and village performance traditions',
+    N'Cultural heritage archive',
+    'MUSEUM',
+    N'https://example.org/water-puppetry-archive',
+    N'Tài liệu giới thiệu lịch sử và giá trị nghệ thuật của múa rối nước.',
+    1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_MUA_ROI_NUOC'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.NguonThamKhao x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.TieuDeNguon = N'Water puppetry and village performance traditions'
+  );
+
+/* =========================================================
+   17. KIỂM TRA NHANH KẾT QUẢ
    ========================================================= */
 SELECT 'NguoiDung' AS Bang, COUNT(*) AS SoLuong FROM dbo.NguoiDung
 UNION ALL

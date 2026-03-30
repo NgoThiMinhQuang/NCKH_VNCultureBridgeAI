@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm:*)",
+      "Bash(node --check \"D:/NCKH_VNCultureBridgeAI/VNCultureBridgeAI/backend/app.js\")",
+      "Bash(node --check \"D:/NCKH_VNCultureBridgeAI/VNCultureBridgeAI/backend/services/homepage.service.js\")",
+      "Bash(node --check \"D:/NCKH_VNCultureBridgeAI/VNCultureBridgeAI/backend/services/content.service.js\")",
+      "Bash(node --check \"D:/NCKH_VNCultureBridgeAI/VNCultureBridgeAI/backend/repositories/homepage.repository.js\")",
+      "Bash(node --check \"D:/NCKH_VNCultureBridgeAI/VNCultureBridgeAI/backend/repositories/content.repository.js\")",
+      "Bash(node --check \"D:/NCKH_VNCultureBridgeAI/VNCultureBridgeAI/backend/db/sql.js\")",
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "Bash(powershell -NoProfile -Command \"Get-OdbcDriver | Where-Object {$_.Name -like '*SQL Server*'} | Select-Object Name,Platform | Format-Table -HideTableHeaders\")",
+      "Bash(powershell -NoProfile -Command 'Get-OdbcDriver | Where-Object {$_.Name -like \"*SQL Server*\"} | Select-Object Name,Platform | Format-Table -HideTableHeaders')",
+      "Bash(powershell -NoProfile -Command 'Get-ItemProperty \"HKLM:\\\\SOFTWARE\\\\ODBC\\\\ODBCINST.INI\\\\ODBC Drivers\" | Format-List')",
+      "Bash(printf \"\\\\n---\\\\n\")",
+      "Bash(where sqlcmd:*)",
+      "Bash(sqlcmd:*)",
+      "Bash(powershell -NoProfile -Command \"Get-Content -Raw 'D:\\\\NCKH_VNCultureBridgeAI\\\\CSDL\\\\VNCultureBridgeAI.sql' | & sqlcmd -S 'DESKTOP-4AI2SO6\\\\SQLEXPRESS' -E\")",
+      "Bash(powershell -NoProfile -Command \"Get-Content -Raw 'D:\\\\NCKH_VNCultureBridgeAI\\\\CSDL\\\\VN2.sql' | & sqlcmd -S 'DESKTOP-4AI2SO6\\\\SQLEXPRESS' -E\")",
+      "Bash(powershell -NoProfile -Command \"Get-Content -Raw 'D:\\\\NCKH_VNCultureBridgeAI\\\\CSDL\\\\VN2.sql' | & sqlcmd -S 'DESKTOP-4AI2SO6\\\\SQLEXPRESS' -E -d 'VNCultureBridgeAI'\")",
+      "Bash(powershell -NoProfile -Command \"Get-Command Invoke-Sqlcmd | Select-Object -ExpandProperty Source\")",
+      "Bash(powershell -NoProfile -Command \"Invoke-Sqlcmd -ServerInstance 'DESKTOP-4AI2SO6\\\\SQLEXPRESS' -Database 'VNCultureBridgeAI' -Query \\\\\"SELECT TOP 1 TieuDeVI, TieuDeEN FROM dbo.BaiViet\\\\\" | ConvertTo-Json -Compress -Depth 5\")",
+      "Bash(powershell -NoProfile -Command \"$rows = Invoke-Sqlcmd -ServerInstance 'DESKTOP-4AI2SO6\\\\SQLEXPRESS' -Database 'VNCultureBridgeAI' -Query \\\\\"SELECT TOP 3 DanhMucID, MaDanhMuc, TenVI, TenEN FROM dbo.DanhMuc WHERE HoatDong = 1 ORDER BY DanhMucID\\\\\"; $rows | ConvertTo-Json -Compress -Depth 5\")",
+      "Bash(powershell -NoProfile -Command '$rows = Invoke-Sqlcmd -ServerInstance \"DESKTOP-4AI2SO6\\\\SQLEXPRESS\" -Database \"VNCultureBridgeAI\" -Query \"SELECT TOP 3 DanhMucID, MaDanhMuc, TenVI, TenEN FROM dbo.DanhMuc WHERE HoatDong = 1 ORDER BY DanhMucID\"; $rows | ConvertTo-Json -Compress -Depth 5')",
+      "Bash(powershell -NoProfile -Command '$rows = Invoke-Sqlcmd -ServerInstance \"DESKTOP-4AI2SO6\\\\SQLEXPRESS\" -Database \"VNCultureBridgeAI\" -Query \"SELECT TOP 3 VungID, MaVung, TenVI, TenEN FROM dbo.VungVanHoa WHERE HoatDong = 1 ORDER BY VungID\"; $rows | ConvertTo-Json -Compress -Depth 5')",
+      "Bash(powershell -NoProfile -Command '$rows = Invoke-Sqlcmd -ServerInstance \"DESKTOP-4AI2SO6\\\\SQLEXPRESS\" -Database \"VNCultureBridgeAI\" -Query \"SELECT TOP 3 vv.VungID, vv.MaVung, vv.TenVI, vv.TenEN, COUNT\\(DISTINCT bv.BaiVietID\\) AS ArticleCount FROM dbo.VungVanHoa vv LEFT JOIN dbo.BaiViet_Vung bvv ON bvv.VungID = vv.VungID LEFT JOIN dbo.BaiViet bv ON bv.BaiVietID = bvv.BaiVietID AND bv.TrangThaiDuyet = ''APPROVED'' AND bv.TrangThaiXuatBan = ''PUBLISHED'' WHERE vv.HoatDong = 1 GROUP BY vv.VungID, vv.MaVung, vv.TenVI, vv.TenEN ORDER BY ArticleCount DESC, vv.VungID ASC\"; $rows | Select-Object * -ExcludeProperty RowError, RowState, Table, ItemArray, HasErrors | ConvertTo-Json -Compress -Depth 6')",
+      "Bash(powershell -NoProfile -Command '$rows = Invoke-Sqlcmd -ServerInstance \"DESKTOP-4AI2SO6\\\\SQLEXPRESS\" -Database \"VNCultureBridgeAI\" -Query \"SELECT TOP 3 bv.BaiVietID, bv.MaBaiViet, bv.TieuDeVI, bv.TieuDeEN, bv.MoTaNganVI, bv.MoTaNganEN, bv.NgayXuatBan FROM dbo.BaiViet bv WHERE bv.TrangThaiDuyet = ''APPROVED'' AND bv.TrangThaiXuatBan = ''PUBLISHED'' ORDER BY bv.NgayXuatBan DESC, bv.BaiVietID DESC\"; $rows | Select-Object * -ExcludeProperty RowError, RowState, Table, ItemArray, HasErrors | ConvertTo-Json -Compress -Depth 6')"
+    ]
+  }
+}
