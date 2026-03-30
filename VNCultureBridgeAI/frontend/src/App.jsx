@@ -1,17 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { BrowserRouter, Link, Route, Routes, useParams } from 'react-router-dom'
 import './App.css'
-import { getArticle, getEthnicity, getHomepage, getRegion } from './services/api'
+import { askAi, getArticle, getEthnicity, getHomepage, getRegion, searchArticles } from './services/api'
 import { ui } from './i18n/messages'
 
 function formatDate(value, lang) {
   if (!value) return ''
-
   const match = String(value).match(/\/(?:Date)\((\d+)\)\//)
   const timestamp = match ? Number(match[1]) : Date.parse(value)
-
   if (Number.isNaN(timestamp)) return ''
-
   return new Intl.DateTimeFormat(lang === 'vi' ? 'vi-VN' : 'en-US', {
     day: '2-digit',
     month: 'short',
@@ -21,7 +18,7 @@ function formatDate(value, lang) {
 
 function SectionHeading({ badge, title, description }) {
   return (
-    <div className="section-heading">
+    <div className="section-heading fade-up">
       <span className="section-badge">{badge}</span>
       <h2>{title}</h2>
       <p>{description}</p>
@@ -33,7 +30,7 @@ function CardGrid({ items, variant = 'default', actionLabel, lang, basePath }) {
   return (
     <div className={`card-grid ${variant}`}>
       {items.map((item) => (
-        <article key={`${variant}-${item.code}`} className="content-card">
+        <article key={`${variant}-${item.code}`} className="content-card float-card fade-up">
           <div className="content-card__media">
             {item.imageUrl ? (
               <img src={item.imageUrl} alt={item.imageAlt || item.title} />
@@ -69,18 +66,13 @@ function useDetailLoader(loader, lang, code) {
       try {
         setState({ status: 'loading', data: null, error: '' })
         const data = await loader(code, lang)
-        if (!ignore) {
-          setState({ status: 'success', data, error: '' })
-        }
+        if (!ignore) setState({ status: 'success', data, error: '' })
       } catch (error) {
-        if (!ignore) {
-          setState({ status: 'error', data: null, error: error.message })
-        }
+        if (!ignore) setState({ status: 'error', data: null, error: error.message })
       }
     }
 
     load()
-
     return () => {
       ignore = true
     }
@@ -98,11 +90,9 @@ function ArticleDetailPage({ lang = 'vi' }) {
 
   return (
     <div className="detail-page">
-      <div className="detail-page__inner">
+      <div className="detail-page__inner fade-up">
         <Link to="/" className="text-link back-link">← Back home</Link>
-        <div className="detail-hero">
-          {data.imageUrl ? <img src={data.imageUrl} alt={data.imageAlt || data.title} /> : null}
-        </div>
+        <div className="detail-hero">{data.imageUrl ? <img src={data.imageUrl} alt={data.imageAlt || data.title} /> : null}</div>
         <div className="detail-meta">{formatDate(data.publishedAt, lang)}</div>
         <h1>{data.title}</h1>
         <p className="detail-lead">{data.description}</p>
@@ -125,7 +115,7 @@ function RegionDetailPage({ lang = 'vi' }) {
 
   return (
     <div className="detail-page">
-      <div className="detail-page__inner">
+      <div className="detail-page__inner fade-up">
         <Link to="/" className="text-link back-link">← Back home</Link>
         <h1>{data.name}</h1>
         <p className="detail-lead">{data.type}</p>
@@ -143,7 +133,7 @@ function EthnicityDetailPage({ lang = 'vi' }) {
 
   return (
     <div className="detail-page">
-      <div className="detail-page__inner">
+      <div className="detail-page__inner fade-up">
         <Link to="/" className="text-link back-link">← Back home</Link>
         <h1>{data.name}</h1>
         <p className="detail-lead">{data.description}</p>
@@ -153,14 +143,75 @@ function EthnicityDetailPage({ lang = 'vi' }) {
 }
 
 function AIGuidePage() {
+  const [lang, setLang] = useState('vi')
+  const [question, setQuestion] = useState('')
+  const [history, setHistory] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function handleAsk(event) {
+    event.preventDefault()
+    try {
+      setLoading(true)
+      setError('')
+      const data = await askAi({ question, lang })
+      setHistory((current) => [
+        ...current,
+        {
+          question,
+          answer: data.answer,
+          relatedArticles: data.relatedArticles || [],
+        },
+      ])
+      setQuestion('')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div className="detail-page">
-      <div className="detail-page__inner">
+    <div className="detail-page ai-detail-page">
+      <div className="detail-page__inner ai-chat-shell fade-up">
         <Link to="/" className="text-link back-link">← Back home</Link>
         <h1>AI Guide</h1>
-        <p className="detail-lead">
-          Trang AI Guide riêng đã sẵn route. Bước sau có thể mở rộng thành giao diện chat thật nối với logs và prompt templates.
-        </p>
+        <p className="detail-lead">Hỏi nhanh về văn hoá Việt Nam từ dữ liệu đã kiểm duyệt.</p>
+        <div className="lang-toggle" style={{ marginBottom: 16 }}>
+          <button type="button" className={lang === 'vi' ? 'active' : ''} onClick={() => setLang('vi')}>VI</button>
+          <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</button>
+        </div>
+        <div className="chat-thread">
+          {history.length === 0 ? (
+            <div className="chat-bubble chat-bubble--assistant">
+              {lang === 'vi'
+                ? 'Xin chào, hãy hỏi mình về lễ hội, ẩm thực, dân tộc hay nghệ thuật Việt Nam.'
+                : 'Hello, ask me about Vietnamese festivals, cuisine, ethnic groups, or arts.'}
+            </div>
+          ) : null}
+          {history.map((item, index) => (
+            <div key={`${item.question}-${index}`} className="chat-group">
+              <div className="chat-bubble chat-bubble--user">{item.question}</div>
+              <div className="chat-bubble chat-bubble--assistant">{item.answer}</div>
+              {item.relatedArticles?.length ? (
+                <div className="chat-related">
+                  <CardGrid items={item.relatedArticles} variant="blog-grid" actionLabel="Open" lang={lang} basePath="/articles" />
+                </div>
+              ) : null}
+            </div>
+          ))}
+        </div>
+        <form className="ai-guide__composer" onSubmit={handleAsk}>
+          <input
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder={lang === 'vi' ? 'Ví dụ: Tết có ý nghĩa gì?' : 'Example: What does Tet mean?'}
+          />
+          <button type="submit" className="gradient-button nav-link-button" disabled={loading || !question.trim()}>
+            {loading ? '...' : 'Ask'}
+          </button>
+        </form>
+        {error ? <p className="detail-lead">{error}</p> : null}
       </div>
     </div>
   )
@@ -171,18 +222,19 @@ function HomePage() {
   const [homepage, setHomepage] = useState(null)
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
+  const [search, setSearch] = useState('')
+  const [results, setResults] = useState([])
+  const [searching, setSearching] = useState(false)
 
   const copy = useMemo(() => ui[lang], [lang])
 
   useEffect(() => {
     let ignore = false
-
     async function loadHomepage() {
       try {
         setStatus('loading')
         setError('')
         const data = await getHomepage(lang)
-
         if (!ignore) {
           setHomepage(data)
           setStatus('success')
@@ -196,29 +248,25 @@ function HomePage() {
         }
       }
     }
-
     loadHomepage()
-
     return () => {
       ignore = true
     }
   }, [lang])
 
-  if (status === 'loading') {
-    return <div className="page-state">{copy.loading}</div>
+  async function handleSearch(event) {
+    event.preventDefault()
+    try {
+      setSearching(true)
+      const data = await searchArticles({ lang, q: search, limit: 6 })
+      setResults(data)
+    } finally {
+      setSearching(false)
+    }
   }
 
-  if (status === 'error') {
-    return (
-      <div className="page-state">
-        <p>{copy.error}</p>
-        <small>{error}</small>
-        <button type="button" onClick={() => setLang((current) => (current === 'vi' ? 'en' : 'vi'))}>
-          {copy.retry}
-        </button>
-      </div>
-    )
-  }
+  if (status === 'loading') return <div className="page-state">{copy.loading}</div>
+  if (status === 'error') return <div className="page-state"><p>{copy.error}</p><small>{error}</small></div>
 
   return (
     <div className="page-shell">
@@ -230,25 +278,15 @@ function HomePage() {
             <span>{lang === 'vi' ? 'Khám phá Việt Nam' : 'Discover Vietnam'}</span>
           </div>
         </div>
-
         <nav className="site-nav">
           {copy.nav.map((item, index) => (
-            <a key={item} href={index === 0 ? '#hero' : '#'}>
-              {item}
-            </a>
+            <a key={item} href={index === 0 ? '#hero' : '#'}>{item}</a>
           ))}
         </nav>
-
         <div className="site-actions">
-          <button type="button" className="ghost-button">
-            {copy.search}
-          </button>
-          <Link to="/ai-guide" className="gradient-button nav-link-button">
-            {copy.aiGuide}
-          </Link>
-          <button type="button" className="outline-button">
-            {copy.login}
-          </button>
+          <button type="button" className="ghost-button">{copy.search}</button>
+          <Link to="/ai-guide" className="gradient-button nav-link-button">{copy.aiGuide}</Link>
+          <button type="button" className="outline-button">{copy.login}</button>
           <div className="lang-toggle" aria-label={copy.language}>
             <button type="button" className={lang === 'vi' ? 'active' : ''} onClick={() => setLang('vi')}>VI</button>
             <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</button>
@@ -258,8 +296,7 @@ function HomePage() {
 
       <main>
         <section className="hero-section" id="hero">
-          <div className="hero-overlay" />
-          <div className="hero-content">
+          <div className="hero-content hero-content--animated">
             <span className="section-badge">{homepage.hero.badge}</span>
             <h1>{homepage.hero.title}</h1>
             <p>{homepage.hero.subtitle}</p>
@@ -267,9 +304,24 @@ function HomePage() {
               <a href="#regions" className="primary-button nav-link-button">{homepage.hero.primaryCta}</a>
               <a href="#festivals" className="secondary-button nav-link-button">{homepage.hero.secondaryCta}</a>
             </div>
+            <form className="ai-guide__composer search-bar glass-panel" onSubmit={handleSearch}>
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={lang === 'vi' ? 'Tìm kiếm bài viết, vùng miền, món ăn...' : 'Search articles, regions, dishes...'}
+              />
+              <button type="submit" className="gradient-button nav-link-button" disabled={searching}>
+                {searching ? '...' : copy.search}
+              </button>
+            </form>
+            {results.length ? (
+              <div className="search-results fade-up">
+                <CardGrid items={results} variant="blog-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
+              </div>
+            ) : null}
             <div className="stats-row">
               {homepage.stats.map((stat) => (
-                <div key={stat.label} className="stat-card">
+                <div key={stat.label} className="stat-card float-card">
                   <strong>{stat.value}</strong>
                   <span>{stat.label}</span>
                 </div>
@@ -278,7 +330,7 @@ function HomePage() {
           </div>
         </section>
 
-        <section className="intro-strip">
+        <section className="intro-strip fade-up">
           <h2>{homepage.intro.title}</h2>
           <p>{homepage.intro.body}</p>
         </section>
@@ -311,37 +363,6 @@ function HomePage() {
         <section className="content-section light-section" id="blog">
           <SectionHeading badge={copy.blogSectionBadge} title={copy.blogSectionTitle} description={copy.blogSectionDescription} />
           <CardGrid items={homepage.blogPosts} variant="blog-grid" actionLabel={copy.viewAll} lang={lang} basePath="/articles" />
-        </section>
-
-        <section className="ai-guide-section">
-          <div className="ai-guide__header">
-            <span className="section-badge">{homepage.aiGuide.badge}</span>
-            <h2>{homepage.aiGuide.title}</h2>
-            <p>{homepage.aiGuide.body}</p>
-          </div>
-
-          <div className="ai-guide__panel">
-            <div className="ai-guide__status">
-              <div>
-                <strong>VietCultura AI</strong>
-                <span>{copy.online}</span>
-              </div>
-              <button type="button" className="ghost-button small">{homepage.aiGuide.reset}</button>
-            </div>
-
-            <div className="ai-guide__message">{homepage.aiGuide.sample}</div>
-
-            <div className="ai-guide__prompts">
-              {homepage.aiGuide.prompts.map((prompt) => (
-                <span key={prompt.code}>{prompt.title}</span>
-              ))}
-            </div>
-
-            <div className="ai-guide__composer">
-              <input type="text" placeholder={homepage.aiGuide.placeholder} readOnly />
-              <Link to="/ai-guide" className="gradient-button nav-link-button">{homepage.aiGuide.button}</Link>
-            </div>
-          </div>
         </section>
       </main>
 

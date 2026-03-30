@@ -26,3 +26,26 @@ export function getRegion(code, lang) {
 export function getEthnicity(code, lang) {
   return request(`/ethnicities/${code}?lang=${lang}`)
 }
+
+export function searchArticles(params) {
+  const query = new URLSearchParams(params).toString()
+  return request(`/articles?${query}`)
+}
+
+export async function askAi(payload) {
+  const response = await fetch(`${API_BASE}/ai/ask`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+
+  const result = await response.json()
+
+  if (!response.ok || !result.ok) {
+    throw new Error(result.message || 'Request failed')
+  }
+
+  return result.data
+}

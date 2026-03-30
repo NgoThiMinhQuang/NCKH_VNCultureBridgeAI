@@ -9,5 +9,6 @@ router.get('/regions', contentController.listRegions)
 router.get('/regions/:code', contentController.getRegion)
 router.get('/ethnicities', contentController.listEthnicities)
 router.get('/ethnicities/:code', contentController.getEthnicity)
+router.post('/ai/ask', contentController.askAi)
 
 module.exports = router

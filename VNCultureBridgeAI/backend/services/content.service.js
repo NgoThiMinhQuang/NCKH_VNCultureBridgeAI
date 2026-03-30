@@ -1,4 +1,5 @@
 const contentRepository = require('../repositories/content.repository')
+const homepageRepository = require('../repositories/homepage.repository')
 const { pickLocalized } = require('../utils/locale')
 
 function mapArticle(row, lang) {
@@ -73,6 +74,30 @@ async function getEthnicity(code, lang) {
   }
 }
 
+async function askAi({ question, lang }) {
+  const articles = await contentRepository.getArticles({ q: question, limit: 3 })
+  const prompts = await homepageRepository.getPromptSamples()
+  const mappedArticles = articles.map((row) => mapArticle(row, lang))
+
+  const answer = mappedArticles.length
+    ? `${lang === 'vi' ? 'Dựa trên dữ liệu hiện có, bạn có thể bắt đầu từ:' : 'Based on the current verified data, you can start with:'} ${mappedArticles
+        .map((item) => item.title)
+        .join(', ')}.`
+    : lang === 'vi'
+      ? 'Hiện mình chưa có đủ dữ liệu xác thực cho câu hỏi này. Bạn có thể thử hỏi về Tết, áo dài, phở hoặc múa rối nước.'
+      : 'I do not have enough verified data for that question yet. You can ask about Tet, Ao Dai, pho, or water puppetry.'
+
+  return {
+    answer,
+    prompts: prompts.map((prompt) => ({
+      code: prompt.MaPrompt,
+      type: prompt.LoaiPrompt,
+      title: prompt.TenPrompt,
+    })),
+    relatedArticles: mappedArticles,
+  }
+}
+
 module.exports = {
   listArticles,
   getArticle,
@@ -80,4 +105,5 @@ module.exports = {
   getRegion,
   listEthnicities,
   getEthnicity,
+  askAi,
 }

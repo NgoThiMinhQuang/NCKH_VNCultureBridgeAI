@@ -76,6 +76,19 @@ async function getEthnicity(req, res, next) {
   }
 }
 
+async function askAi(req, res, next) {
+  try {
+    const lang = normalizeLang(req.body.lang || req.query.lang)
+    const data = await contentService.askAi({
+      question: req.body.question || '',
+      lang,
+    })
+    res.json({ ok: true, data })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   listArticles,
   getArticle,
@@ -83,4 +96,5 @@ module.exports = {
   getRegion,
   listEthnicities,
   getEthnicity,
+  askAi,
 }
