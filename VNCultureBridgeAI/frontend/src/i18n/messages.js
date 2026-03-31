@@ -8,6 +8,7 @@ export const ui = {
     regionSectionTitle: 'Ba miền văn hoá đặc sắc',
     regionSectionDescription:
       'Từ miền núi phía Bắc đến đồng bằng phương Nam, mỗi vùng mang một linh hồn văn hoá và sắc thái riêng.',
+    regionMapCta: 'Xem bản đồ đầy đủ',
     ethnicSectionBadge: 'Di sản cộng đồng',
     ethnicSectionTitle: 'Các dân tộc Việt Nam',
     ethnicSectionDescription:
@@ -46,6 +47,7 @@ export const ui = {
     regionSectionTitle: 'Three cultural regions',
     regionSectionDescription:
       'From northern mountains to southern waterways, each region carries its own cultural rhythm and identity.',
+    regionMapCta: 'View Complete Map',
     ethnicSectionBadge: 'Community heritage',
     ethnicSectionTitle: 'Vietnamese ethnic communities',
     ethnicSectionDescription:

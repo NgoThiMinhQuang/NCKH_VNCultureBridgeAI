@@ -15,6 +15,10 @@ export function getHomepage(lang) {
   return request(`/homepage?lang=${lang}`)
 }
 
+export function getRegions(lang) {
+  return request(`/regions?lang=${lang}`)
+}
+
 export function getArticle(code, lang) {
   return request(`/articles/${code}?lang=${lang}`)
 }

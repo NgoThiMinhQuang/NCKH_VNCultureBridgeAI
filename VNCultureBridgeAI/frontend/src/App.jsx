@@ -3,6 +3,7 @@ import { BrowserRouter, Link, Route, Routes, useParams } from 'react-router-dom'
 import './App.css'
 import { askAi, getArticle, getEthnicity, getHomepage, getRegion, searchArticles } from './services/api'
 import { ui } from './i18n/messages'
+import RegionsPage from './pages/RegionsPage'
 
 function formatDate(value, lang) {
   if (!value) return ''
@@ -279,12 +280,45 @@ function HomePage() {
           </div>
         </div>
         <nav className="site-nav">
-          {copy.nav.map((item, index) => (
-            <a key={item} href={index === 0 ? '#hero' : '#'}>{item}</a>
-          ))}
+          {copy.nav.map((item, index) => {
+            if (index === 0) return <a key={item} href="#hero">{item}</a>
+            if (index === 1) {
+              return (
+                <div key={item} className="site-nav__item site-nav__item--regions">
+                  <Link to="/regions" className="site-nav__trigger">{item}</Link>
+                  <div className="regions-mega-menu">
+                    <div className="regions-mega-menu__header">
+                      <strong>{lang === 'vi' ? 'Ba miền Việt Nam' : 'Three regions of Vietnam'}</strong>
+                      <Link to="/regions" className="regions-mega-menu__all">
+                        {lang === 'vi' ? 'Xem tất cả vùng miền' : 'See all regions'}
+                      </Link>
+                    </div>
+                    <div className="regions-mega-menu__grid">
+                      {homepage.regions.map((region) => (
+                        <Link key={region.code} to={`/regions/${region.code}`} className="regions-mega-menu__card">
+                          <div className="regions-mega-menu__media">
+                            {region.imageUrl ? (
+                              <img src={region.imageUrl} alt={region.imageAlt || region.title} />
+                            ) : (
+                              <div className="regions-mega-menu__placeholder">{region.title}</div>
+                            )}
+                          </div>
+                          <div className="regions-mega-menu__body">
+                            <span>{region.category || (lang === 'vi' ? 'Vùng văn hoá' : 'Cultural region')}</span>
+                            <strong>{region.title}</strong>
+                            {region.description ? <p>{region.description}</p> : null}
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            }
+            return <a key={item} href="#">{item}</a>
+          })}
         </nav>
         <div className="site-actions">
-          <button type="button" className="ghost-button">{copy.search}</button>
           <Link to="/ai-guide" className="gradient-button nav-link-button">{copy.aiGuide}</Link>
           <button type="button" className="outline-button">{copy.login}</button>
           <div className="lang-toggle" aria-label={copy.language}>
@@ -301,7 +335,7 @@ function HomePage() {
             <h1>{homepage.hero.title}</h1>
             <p>{homepage.hero.subtitle}</p>
             <div className="hero-actions">
-              <a href="#regions" className="primary-button nav-link-button">{homepage.hero.primaryCta}</a>
+              <Link to="/regions" className="primary-button nav-link-button">{homepage.hero.primaryCta}</Link>
               <a href="#festivals" className="secondary-button nav-link-button">{homepage.hero.secondaryCta}</a>
             </div>
             <form className="ai-guide__composer search-bar glass-panel" onSubmit={handleSearch}>
@@ -335,9 +369,15 @@ function HomePage() {
           <p>{homepage.intro.body}</p>
         </section>
 
-        <section className="content-section" id="regions">
+        <section className="content-section regions-section" id="regions">
           <SectionHeading badge={copy.regionSectionBadge} title={copy.regionSectionTitle} description={copy.regionSectionDescription} />
           <CardGrid items={homepage.regions} variant="region-grid" actionLabel={copy.learnMore} lang={lang} basePath="/regions" />
+          <div className="region-map-cta-wrap fade-up">
+            <Link to="/regions" className="region-map-cta">
+              <span>{copy.regionMapCta}</span>
+              <span className="region-map-cta__icon" aria-hidden="true">⌖</span>
+            </Link>
+          </div>
         </section>
 
         <section className="content-section dark-section" id="ethnic-groups">
@@ -392,6 +432,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/articles/:code" element={<ArticleDetailPage />} />
+        <Route path="/regions" element={<RegionsPage />} />
         <Route path="/regions/:code" element={<RegionDetailPage />} />
         <Route path="/ethnic-groups/:code" element={<EthnicityDetailPage />} />
         <Route path="/ai-guide" element={<AIGuidePage />} />
