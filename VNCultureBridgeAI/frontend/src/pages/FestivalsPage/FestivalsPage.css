@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.festivals-main {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.festivals-hero {
+    position: relative;
+    margin-top: -84px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    isolation: isolate;
+}
+
+.festivals-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.festivals-hero__content {
+    position: relative;
+    z-index: 2;
+    padding: 0 20px;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.festivals-hero__title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 8vw, 6.8rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: #ffffff;
+    margin: 0 0 24px;
+    letter-spacing: -0.02em;
+}
+
+.festivals-hero__subtitle {
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    color: #f8fafc;
+    max-width: 760px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.festivals-hero__actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+}
+
+.festivals-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 36px;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    border: none;
+}
+
+.festivals-btn--primary {
+    background-color: #ce112d;
+    color: white;
+    box-shadow: 0 8px 20px rgba(206, 17, 45, 0.25);
+}
+
+.festivals-btn--primary:hover {
+    background-color: #a80b22;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(206, 17, 45, 0.35);
+    color: white;
+}
+
+.festivals-btn--secondary {
+    background-color: #ffffff;
+    color: #0b1325;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.festivals-btn--secondary:hover {
+    background-color: #f8fafc;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+
+@keyframes scrollAnimation {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(16px);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .festivals-hero__actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 320px;
+        gap: 16px;
+    }
+
+    .festivals-btn {
+        width: 100%;
+        padding: 14px 24px;
+    }
+
+    .festivals-hero__subtitle {
+        br {
+            display: none;
+        }
+    }
+}
+
+/* --- Major Festivals Section --- */
+.festivals-major {
+    padding: 100px 20px 80px;
+    background-color: #ffffff;
+}
+
+.festivals-major__container {
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.festivals-major__header {
+    text-align: center;
+    margin-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.festivals-major__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background-color: #fffaf0; /* Light cream/yellow bg matching screenshot */
+    color: #ce112d; /* Red text */
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid rgba(206, 17, 45, 0.15); /* Subtle red border */
+    margin-bottom: 24px;
+}
+
+.festivals-major__badge svg {
+    color: #ce112d;
+}
+
+.festivals-major__title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    color: #0b1325;
+    margin: 0 0 16px;
+    line-height: 1.1;
+}
+
+.festivals-major__subtitle {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    color: #64748b;
+    margin: 0;
+}
+
+.festivals-major__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 32px;
+}
+
+.festivals-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 36px rgba(11, 19, 37, 0.05);
+    border: 1px solid rgba(11, 19, 37, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.festivals-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px rgba(11, 19, 37, 0.08);
+}
+
+.festivals-card__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+
+.festivals-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.festivals-card:hover .festivals-card__media img {
+    transform: scale(1.05);
+}
+
+.festivals-card__tag {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background-color: #ce112d;
+    color: #ffffff;
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(206, 17, 45, 0.3);
+    z-index: 2;
+}
+
+.festivals-card__tag.text-purple {
+    background-color: #7e22ce;
+    box-shadow: 0 4px 12px rgba(126, 34, 206, 0.3);
+}
+
+.festivals-card__body {
+    padding: 28px 24px;
+}
+
+.festivals-card__body h3 {
+    font-size: 1.35rem;
+    color: #0b1325;
+    margin: 0 0 12px;
+    line-height: 1.35;
+}
+
+.festivals-card__body p {
+    font-size: 0.95rem;
+    color: #475569;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* --- Scroll To Top Button --- */
+.festivals-scroll-top {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: #ce112d;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(206, 17, 45, 0.3);
+    transition: all 0.3s ease;
+    z-index: 50;
+    opacity: 0.9;
+}
+
+.festivals-scroll-top:hover {
+    transform: translateY(-4px);
+    background-color: #a80b22;
+    box-shadow: 0 12px 32px rgba(206, 17, 45, 0.4);
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .festivals-major {
+        padding: 60px 16px;
+    }
+    
+    .festivals-major__grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .festivals-scroll-top {
+        bottom: 24px;
+        right: 24px;
+        width: 44px;
+        height: 44px;
+    }
+}
