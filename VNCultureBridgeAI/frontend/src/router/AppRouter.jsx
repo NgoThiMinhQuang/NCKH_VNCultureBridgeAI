@@ -6,6 +6,7 @@ import RegionDetailPage from '../pages/RegionDetailPage/RegionDetailPage'
 import EthnicityDetailPage from '../pages/EthnicityDetailPage/EthnicityDetailPage'
 import AIGuidePage from '../pages/AIGuidePage/AIGuidePage'
 import ArticlePage from '../pages/ArticlePage/ArticlePage'
+import FestivalsPage from '../pages/FestivalsPage/FestivalsPage'
 
 /**
  * Cấu hình routing tập trung của ứng dụng.
@@ -22,6 +23,7 @@ export default function AppRouter() {
         <Route path="/ethnic-groups/:code" element={<EthnicityDetailPage />} />
         <Route path="/ai-guide" element={<AIGuidePage />} />
         <Route path="/articles" element={<ArticlePage />} />
+        <Route path="/festivals" element={<FestivalsPage />} />
       </Routes>
     </BrowserRouter>
   )

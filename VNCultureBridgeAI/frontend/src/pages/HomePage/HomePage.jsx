@@ -124,11 +124,11 @@ export default function HomePage() {
             <Link to="/regions" className="ph__nav-link">{copy.nav[1]}</Link>
 
 
-            <a href="#ethnic-groups" className="ph__nav-link">{copy.nav[2]}</a>
-            <a href="#festivals" className="ph__nav-link">{copy.nav[3]}</a>
-            <a href="#cuisine" className="ph__nav-link">{copy.nav[4]}</a>
+            <Link to="/ethnic-groups" className="ph__nav-link">{copy.nav[2]}</Link>
+            <Link to="/festivals" className="ph__nav-link">{copy.nav[3]}</Link>
+            <Link to="/cuisine" className="ph__nav-link">{copy.nav[4]}</Link>
             <Link to="/articles" className="ph__nav-link">{copy.nav[5]}</Link>
-            <a href="#blog" className="ph__nav-link">{copy.nav[6]}</a>
+            <Link to="/blog" className="ph__nav-link">{copy.nav[6]}</Link>
           </nav>
         )}
       />
@@ -177,80 +177,80 @@ export default function HomePage() {
         </section>
 
         <div className="page-content-shell">
-        <section className="content-section regions-section regions-showcase" id="regions">
-          <div className="regions-showcase__heading fade-up">
-            <span className="regions-showcase__eyebrow">Khám phá Việt Nam</span>
-            <h2>Ba miền văn hóa đặc sắc</h2>
-            <p>
-              Từ miền núi phía Bắc đến dải đất miền Trung và vùng sông nước phương Nam, mỗi miền đều có bản sắc,
-              nhịp sống và vẻ đẹp riêng để bạn khám phá.
-            </p>
-          </div>
+          <section className="content-section regions-section regions-showcase" id="regions">
+            <div className="regions-showcase__heading fade-up">
+              <span className="regions-showcase__eyebrow">Khám phá Việt Nam</span>
+              <h2>Ba miền văn hóa đặc sắc</h2>
+              <p>
+                Từ miền núi phía Bắc đến dải đất miền Trung và vùng sông nước phương Nam, mỗi miền đều có bản sắc,
+                nhịp sống và vẻ đẹp riêng để bạn khám phá.
+              </p>
+            </div>
 
-          <div className="regions-showcase__grid">
-            {homepageRegions.map((region) => (
-              <article key={region.key} className={`region-showcase-card fade-up ${region.accentClass}`}>
-                {region.imageUrl ? (
-                  <img src={region.imageUrl} alt={region.imageAlt} className="region-showcase-card__image" />
-                ) : (
-                  <div className="region-showcase-card__image region-showcase-card__image--placeholder">
-                    {region.fallbackTitle}
-                  </div>
-                )}
-
-                <div className="region-showcase-card__overlay" />
-
-                <div className="region-showcase-card__content">
-                  <div className="region-showcase-card__top">
-                    <span className="region-showcase-card__badge">{region.badge}</span>
-                    <span className="region-showcase-card__number">{region.number}</span>
-                  </div>
-
-                  <div className="region-showcase-card__body">
-                    <h3>{region.title}</h3>
-                    <p className="region-showcase-card__description">{region.description}</p>
-
-                    <div className="region-showcase-card__chips">
-                      {region.highlights.map((item) => (
-                        <span key={item}>{item}</span>
-                      ))}
+            <div className="regions-showcase__grid">
+              {homepageRegions.map((region) => (
+                <article key={region.key} className={`region-showcase-card fade-up ${region.accentClass}`}>
+                  {region.imageUrl ? (
+                    <img src={region.imageUrl} alt={region.imageAlt} className="region-showcase-card__image" />
+                  ) : (
+                    <div className="region-showcase-card__image region-showcase-card__image--placeholder">
+                      {region.fallbackTitle}
                     </div>
+                  )}
+
+                  <div className="region-showcase-card__overlay" />
+
+                  <div className="region-showcase-card__content">
+                    <div className="region-showcase-card__top">
+                      <span className="region-showcase-card__badge">{region.badge}</span>
+                      <span className="region-showcase-card__number">{region.number}</span>
+                    </div>
+
+                    <div className="region-showcase-card__body">
+                      <h3>{region.title}</h3>
+                      <p className="region-showcase-card__description">{region.description}</p>
+
+                      <div className="region-showcase-card__chips">
+                        {region.highlights.map((item) => (
+                          <span key={item}>{item}</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Link to={`/regions/${region.code}`} className="region-showcase-card__cta">
+                      {region.cta}
+                      <span aria-hidden="true">→</span>
+                    </Link>
                   </div>
+                </article>
+              ))}
+            </div>
+          </section>
 
-                  <Link to={`/regions/${region.code}`} className="region-showcase-card__cta">
-                    {region.cta}
-                    <span aria-hidden="true">→</span>
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
+          <section className="content-section dark-section" id="ethnic-groups">
+            <SectionHeading badge={copy.ethnicSectionBadge} title={copy.ethnicSectionTitle} description={copy.ethnicSectionDescription} />
+            <CardGrid items={homepage.ethnicGroups} variant="ethnic-grid" actionLabel={copy.learnMore} lang={lang} basePath="/ethnic-groups" />
+          </section>
 
-        <section className="content-section dark-section" id="ethnic-groups">
-          <SectionHeading badge={copy.ethnicSectionBadge} title={copy.ethnicSectionTitle} description={copy.ethnicSectionDescription} />
-          <CardGrid items={homepage.ethnicGroups} variant="ethnic-grid" actionLabel={copy.learnMore} lang={lang} basePath="/ethnic-groups" />
-        </section>
+          <section className="content-section light-section" id="festivals">
+            <SectionHeading badge={copy.festivalSectionBadge} title={copy.festivalSectionTitle} description={copy.festivalSectionDescription} />
+            <CardGrid items={homepage.festivals} variant="festival-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
+          </section>
 
-        <section className="content-section light-section" id="festivals">
-          <SectionHeading badge={copy.festivalSectionBadge} title={copy.festivalSectionTitle} description={copy.festivalSectionDescription} />
-          <CardGrid items={homepage.festivals} variant="festival-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
-        </section>
+          <section className="content-section light-section" id="cuisine">
+            <SectionHeading badge={copy.cuisineSectionBadge} title={copy.cuisineSectionTitle} description={copy.cuisineSectionDescription} />
+            <CardGrid items={homepage.cuisine} variant="cuisine-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
+          </section>
 
-        <section className="content-section light-section" id="cuisine">
-          <SectionHeading badge={copy.cuisineSectionBadge} title={copy.cuisineSectionTitle} description={copy.cuisineSectionDescription} />
-          <CardGrid items={homepage.cuisine} variant="cuisine-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
-        </section>
+          <section className="content-section light-section arts-layout" id="arts">
+            <SectionHeading badge={copy.artsSectionBadge} title={copy.artsSectionTitle} description={copy.artsSectionDescription} />
+            <CardGrid items={homepage.arts} variant="arts-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
+          </section>
 
-        <section className="content-section light-section arts-layout" id="arts">
-          <SectionHeading badge={copy.artsSectionBadge} title={copy.artsSectionTitle} description={copy.artsSectionDescription} />
-          <CardGrid items={homepage.arts} variant="arts-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
-        </section>
-
-        <section className="content-section light-section" id="blog">
-          <SectionHeading badge={copy.blogSectionBadge} title={copy.blogSectionTitle} description={copy.blogSectionDescription} />
-          <CardGrid items={homepage.blogPosts} variant="blog-grid" actionLabel={copy.viewAll} lang={lang} basePath="/articles" />
-        </section>
+          <section className="content-section light-section" id="blog">
+            <SectionHeading badge={copy.blogSectionBadge} title={copy.blogSectionTitle} description={copy.blogSectionDescription} />
+            <CardGrid items={homepage.blogPosts} variant="blog-grid" actionLabel={copy.viewAll} lang={lang} basePath="/articles" />
+          </section>
         </div>
       </main>
 
