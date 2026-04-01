@@ -114,6 +114,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 12px;
   margin: 0 auto;
   padding: 8px 18px;
   border-radius: 999px;
@@ -124,6 +125,13 @@
   letter-spacing: 0.12em;
   font-size: 0.7rem;
   font-weight: 800;
+}
+
+.regions-showcase__eyebrow-star {
+  color: #f0a11b;
+  font-size: 0.95rem;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .regions-showcase__heading h2 {
@@ -330,6 +338,553 @@
   transform: translateY(0);
 }
 
+.festival-showcase {
+  display: grid;
+  gap: 34px;
+  padding-top: 78px;
+}
+
+.festival-showcase__header {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+  display: grid;
+  gap: 16px;
+}
+
+.festival-showcase__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(229, 112, 112, 0.24);
+  background: rgba(255, 243, 243, 0.88);
+  color: #d53a37;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.festival-showcase__eyebrow-star {
+  color: #f0a11b;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.festival-showcase__header h2 {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  line-height: 0.96;
+  color: #1f0b06;
+}
+
+.festival-showcase__title-accent {
+  background: linear-gradient(90deg, #d63839 0%, #f0901d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.festival-showcase__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.festival-showcase__divider span {
+  width: 78px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(219, 70, 69, 0.1), rgba(219, 70, 69, 0.95), rgba(219, 70, 69, 0.1));
+}
+
+.festival-showcase__divider i,
+.festival-showcase__divider b {
+  display: inline-block;
+  border-radius: 999px;
+}
+
+.festival-showcase__divider i {
+  width: 15px;
+  height: 15px;
+  background: #f0a11b;
+}
+
+.festival-showcase__divider b {
+  width: 12px;
+  height: 12px;
+  background: #e68ca1;
+}
+
+.festival-showcase__header p {
+  max-width: 900px;
+  margin: 0 auto;
+  color: #6d584d;
+  font-size: clamp(1rem, 1.55vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.festival-showcase__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.festival-card {
+  overflow: hidden;
+  border-radius: 34px;
+  background: #fffdfb;
+  box-shadow: 0 26px 60px rgba(84, 37, 24, 0.12);
+  border: 1px solid rgba(143, 102, 82, 0.08);
+}
+
+.festival-card__media {
+  position: relative;
+  min-height: 380px;
+}
+
+.festival-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.festival-card__image--placeholder {
+  min-height: 380px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #8b5e34, #2b0b05);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.festival-card__badge {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.festival-card__corner-icon {
+  position: absolute;
+  right: 26px;
+  bottom: 24px;
+  font-size: 2rem;
+}
+
+.festival-card__body {
+  padding: 32px 34px 28px;
+  display: grid;
+  gap: 18px;
+}
+
+.festival-card__body h3 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.02;
+  color: #20100a;
+}
+
+.festival-card__subtitle {
+  margin: -8px 0 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.festival-card__description {
+  margin: 0;
+  color: #6b584d;
+  font-size: 0.98rem;
+  line-height: 1.72;
+}
+
+.festival-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  color: #847166;
+  font-size: 0.92rem;
+}
+
+.festival-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.festival-card__chips span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 1px solid currentColor;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.festival-card__footer {
+  margin-top: 2px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(134, 110, 97, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.festival-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.festival-card__rating {
+  letter-spacing: 0.16em;
+  font-size: 1rem;
+}
+
+.festival-card.is-red .festival-card__badge {
+  background: linear-gradient(90deg, #d71f3e, #ef3c2c);
+}
+
+.festival-card.is-red .festival-card__subtitle,
+.festival-card.is-red .festival-card__cta,
+.festival-card.is-red .festival-card__chips span,
+.festival-card.is-red .festival-card__rating {
+  color: #d71f3e;
+}
+
+.festival-card.is-gold .festival-card__badge {
+  background: linear-gradient(90deg, #eca81d, #f4c32f);
+}
+
+.festival-card.is-gold .festival-card__subtitle,
+.festival-card.is-gold .festival-card__cta,
+.festival-card.is-gold .festival-card__chips span,
+.festival-card.is-gold .festival-card__rating {
+  color: #e4a11a;
+}
+
+.festival-card.is-purple .festival-card__badge {
+  background: linear-gradient(90deg, #842cc8, #b135c6);
+}
+
+.festival-card.is-purple .festival-card__subtitle,
+.festival-card.is-purple .festival-card__cta,
+.festival-card.is-purple .festival-card__chips span,
+.festival-card.is-purple .festival-card__rating {
+  color: #8a34c5;
+}
+
+.ethnic-showcase {
+  position: relative;
+  display: grid;
+  gap: 30px;
+  padding-top: 96px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top center, rgba(255, 187, 87, 0.16), transparent 28%),
+    linear-gradient(180deg, #321109 0%, #230a05 55%, #1a0704 100%);
+}
+
+.ethnic-showcase::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 0;
+  right: 0;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #8a2a14 0%, #f2af3f 50%, #b71f2e 100%);
+}
+
+.ethnic-showcase__header {
+  position: relative;
+  z-index: 1;
+  max-width: 840px;
+  margin: 0 auto;
+  text-align: center;
+  display: grid;
+  gap: 14px;
+}
+
+.ethnic-showcase__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 186, 88, 0.3);
+  background: rgba(117, 53, 18, 0.4);
+  color: #ffb948;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.ethnic-showcase__eyebrow-star {
+  color: #ffd27e;
+  font-size: 0.95rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.ethnic-showcase__header h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 2.8vw, 2.45rem);
+  line-height: 1.06;
+  color: #fff8f0;
+}
+
+.ethnic-showcase__header p {
+  max-width: 640px;
+  margin: 0 auto;
+  color: rgba(255, 239, 226, 0.88);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.ethnic-showcase__actions {
+  display: flex;
+  justify-content: center;
+}
+
+.ethnic-showcase__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ethnic-stat-card {
+  padding: 18px 16px;
+  border-radius: 24px;
+  text-align: center;
+  background: rgba(88, 38, 15, 0.48);
+  border: 1px solid rgba(255, 186, 90, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.ethnic-stat-card__value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.ethnic-stat-card strong {
+  display: block;
+  color: #ffbf45;
+  font-size: clamp(1.55rem, 2.4vw, 2rem);
+  line-height: 1;
+}
+
+.ethnic-stat-card__label {
+  display: block;
+  color: rgba(255, 235, 214, 0.8);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ethnic-stat-card__icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.ethnic-showcase__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ethnic-card {
+  position: relative;
+  min-height: 500px;
+  border-radius: 34px;
+  overflow: hidden;
+  background: #2a0f09;
+  border: 1px solid rgba(255, 186, 90, 0.14);
+  box-shadow: 0 26px 60px rgba(12, 3, 2, 0.28);
+  isolation: isolate;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, opacity 0.24s ease;
+}
+
+.ethnic-card__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ethnic-card__image--placeholder {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #814316, #2d0904);
+  color: rgba(255, 247, 240, 0.9);
+  font-size: 2rem;
+  font-weight: 800;
+  padding: 24px;
+  text-align: center;
+}
+
+.ethnic-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(18, 10, 8, 0.08) 0%, rgba(18, 10, 8, 0.3) 34%, rgba(24, 10, 7, 0.96) 100%);
+  z-index: 1;
+}
+
+.ethnic-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg, #cb3026 0%, #f4b234 100%);
+  z-index: 2;
+}
+
+.ethnic-card__content {
+  position: relative;
+  z-index: 3;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 16px 18px;
+  color: #fffaf5;
+}
+
+.ethnic-card__top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ethnic-card__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(16, 12, 12, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(10px);
+  color: #fff6ee;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.ethnic-card__body {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.ethnic-card__body h3 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+  line-height: 1.06;
+  color: #fff8f1;
+}
+
+.ethnic-card__body p {
+  margin: 0;
+  color: rgba(255, 240, 227, 0.84);
+  font-size: 0.76rem;
+  line-height: 1.52;
+  opacity: 0;
+  transition: opacity 0.24s ease;
+}
+
+.ethnic-card__cta {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffba49;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.ethnic-card__cta span,
+.ethnic-showcase__button span {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.ethnic-showcase__grid:hover .ethnic-card {
+  opacity: 0.5;
+  transform: scale(0.955);
+}
+
+.ethnic-showcase__grid:hover .ethnic-card:hover,
+.ethnic-showcase__grid:hover .ethnic-card:focus-within {
+  opacity: 1;
+  transform: scale(0.975);
+  box-shadow: 0 22px 48px rgba(12, 3, 2, 0.32);
+}
+
+.ethnic-card:hover .ethnic-card__body p,
+.ethnic-card:focus-within .ethnic-card__body p {
+  opacity: 1;
+}
+
+.ethnic-showcase__footer {
+  display: flex;
+  justify-content: center;
+}
+
+.ethnic-showcase__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-width: min(100%, 360px);
+  padding: 16px 32px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #df2b2a 0%, #f06a1d 45%, #f7ad19 100%);
+  color: #fff8f2;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  box-shadow: 0 18px 40px rgba(223, 43, 42, 0.22);
+  transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+}
+
+.ethnic-showcase__button:hover,
+.ethnic-showcase__button:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 46px rgba(223, 43, 42, 0.28);
+  filter: saturate(1.05);
+}
+
+.ethnic-showcase__button span:last-child {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
 @media (max-width: 1180px) {
   .hero-section,
   .content-section {
@@ -337,11 +892,18 @@
   }
 
   .stats-row,
-  .regions-showcase__grid {
+  .regions-showcase__grid,
+  .ethnic-showcase__stats,
+  .ethnic-showcase__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .region-showcase-card {
+  .festival-showcase__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .region-showcase-card,
+  .ethnic-card {
     min-height: 470px;
   }
 }
@@ -357,38 +919,83 @@
     padding-top: 40px;
   }
 
-  .regions-showcase {
+  .regions-showcase,
+  .ethnic-showcase,
+  .festival-showcase {
     padding-top: 72px;
   }
 
-  .regions-showcase::before {
+  .regions-showcase::before,
+  .ethnic-showcase::before {
     top: 16px;
   }
 
   .stats-row,
-  .regions-showcase__grid {
+  .regions-showcase__grid,
+  .ethnic-showcase__stats,
+  .ethnic-showcase__grid,
+  .festival-showcase__grid {
     grid-template-columns: 1fr;
   }
 
-  .regions-showcase__grid:hover .region-showcase-card {
+  .regions-showcase__grid:hover .region-showcase-card,
+  .ethnic-showcase__grid:hover .ethnic-card {
     opacity: 1;
     transform: none;
   }
 
-  .regions-showcase__heading h2 {
+  .regions-showcase__heading h2,
+  .ethnic-showcase__header h2 {
     font-size: clamp(1.35rem, 6.5vw, 1.95rem);
   }
 
-  .regions-showcase__heading p {
+  .festival-showcase__header h2 {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .regions-showcase__heading p,
+  .ethnic-showcase__header p,
+  .festival-showcase__header p {
     font-size: 0.8rem;
   }
 
-  .region-showcase-card {
+  .region-showcase-card,
+  .ethnic-card {
     min-height: 450px;
   }
 
-  .region-showcase-card__content {
+  .region-showcase-card__content,
+  .ethnic-card__content {
     padding: 16px 14px 18px;
+  }
+
+  .festival-card__media,
+  .festival-card__image--placeholder {
+    min-height: 260px;
+  }
+
+  .festival-card__body {
+    padding: 24px 22px 22px;
+    gap: 16px;
+  }
+
+  .festival-card__meta {
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .festival-card__chips {
+    gap: 10px;
+  }
+
+  .festival-card__chips span {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+  }
+
+  .festival-card__footer {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .region-showcase-card__number {
@@ -397,11 +1004,32 @@
     font-size: 1rem;
   }
 
-  .region-showcase-card__body h3 {
+  .region-showcase-card__body h3,
+  .ethnic-card__body h3 {
     font-size: clamp(1.2rem, 5.5vw, 1.7rem);
   }
 
-  .region-showcase-card__cta {
+  .ethnic-card__body p {
+    opacity: 1;
+  }
+
+  .region-showcase-card__cta,
+  .ethnic-card__cta,
+  .festival-card__cta {
     font-size: 0.84rem;
   }
+
+  .ethnic-showcase__button {
+    width: 100%;
+  }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ethnic-card,
+  .region-showcase-card,
+  .festival-card,
+  .ethnic-showcase__button {
+    transition: none;
+  }
+}
+

@@ -86,6 +86,54 @@ INSERT INTO dbo.VungVanHoa (MaVung, TenVI, TenEN, LoaiVung, GeoJson, HoatDong)
 SELECT 'DBSCL', N'Đồng bằng sông Cửu Long', N'Mekong Delta', 'DELTA', NULL, 1
 WHERE NOT EXISTS (SELECT 1 FROM dbo.VungVanHoa WHERE MaVung = 'DBSCL');
 
+UPDATE dbo.VungVanHoa
+SET HomepageEnabled = 1,
+    HomepageDisplayOrder = 1,
+    HomepageBadgeVI = N'Miền Bắc',
+    HomepageTitleVI = N'Miền Bắc',
+    HomepageDescriptionVI = N'Khám phá Hà Nội, Hạ Long và những ruộng bậc thang hùng vĩ của vùng núi phía Bắc.',
+    HomepageHighlightsVI = N'["Hà Nội","Hạ Long","Sa Pa","Hà Giang"]',
+    HomepageCtaVI = N'Khám phá Miền Bắc',
+    HomepageImageUrl = N'https://images.unsplash.com/photo-1605518215584-5ea1ebda40c0?auto=format&fit=crop&w=1200&q=80',
+    HomepageImageAltVI = N'Cảnh sắc ruộng bậc thang miền Bắc Việt Nam'
+WHERE MaVung = 'BAC_BO';
+
+UPDATE dbo.VungVanHoa
+SET HomepageEnabled = 1,
+    HomepageDisplayOrder = 2,
+    HomepageBadgeVI = N'Miền Trung',
+    HomepageTitleVI = N'Miền Trung',
+    HomepageDescriptionVI = N'Từ Huế, Hội An đến Đà Nẵng, miền Trung mang vẻ đẹp giao hòa giữa lịch sử và thiên nhiên.',
+    HomepageHighlightsVI = N'["Huế","Hội An","Đà Nẵng","Mỹ Sơn"]',
+    HomepageCtaVI = N'Khám phá Miền Trung',
+    HomepageImageUrl = N'https://images.unsplash.com/photo-1565967511849-76a60a516170?auto=format&fit=crop&w=1200&q=80',
+    HomepageImageAltVI = N'Đèn lồng phố cổ Hội An về đêm'
+WHERE MaVung = 'TRUNG_BO';
+
+UPDATE dbo.VungVanHoa
+SET HomepageEnabled = 1,
+    HomepageDisplayOrder = 3,
+    HomepageBadgeVI = N'Miền Nam',
+    HomepageTitleVI = N'Miền Nam',
+    HomepageDescriptionVI = N'Miền Nam nổi bật với TP.HCM, miền Tây sông nước và hành trình ẩm thực, chợ nổi, biển đảo.',
+    HomepageHighlightsVI = N'["TP.HCM","Cần Thơ","Mekong","Phú Quốc"]',
+    HomepageCtaVI = N'Khám phá Miền Nam',
+    HomepageImageUrl = N'https://images.unsplash.com/photo-1604577844302-37f54c62bd16?auto=format&fit=crop&w=1200&q=80',
+    HomepageImageAltVI = N'Khung cảnh sông nước miền Nam Việt Nam'
+WHERE MaVung = 'NAM_BO';
+
+UPDATE dbo.VungVanHoa
+SET HomepageEnabled = 0,
+    HomepageDisplayOrder = NULL,
+    HomepageBadgeVI = NULL,
+    HomepageTitleVI = NULL,
+    HomepageDescriptionVI = NULL,
+    HomepageHighlightsVI = NULL,
+    HomepageCtaVI = NULL,
+    HomepageImageUrl = NULL,
+    HomepageImageAltVI = NULL
+WHERE MaVung IN ('TAY_NGUYEN', 'DBSCL');
+
 /* =========================================================
    4. DÂN TỘC
    ========================================================= */

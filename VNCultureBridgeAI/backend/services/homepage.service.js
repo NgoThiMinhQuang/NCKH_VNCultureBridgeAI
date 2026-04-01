@@ -21,6 +21,42 @@ function mapCard(row, lang) {
   }
 }
 
+function parseHighlights(value) {
+  if (!value) return []
+
+  try {
+    const parsed = JSON.parse(value)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+function mapHomepageRegion(row, lang) {
+  return {
+    id: row.VungID,
+    code: row.MaVung,
+    displayOrder: row.HomepageDisplayOrder || 0,
+    badge: row.HomepageBadgeVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
+    title: row.HomepageTitleVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
+    description: row.HomepageDescriptionVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
+    highlights: parseHighlights(row.HomepageHighlightsVI),
+    cta: row.HomepageCtaVI || `Khám phá ${pickLocalized(row, 'TenVI', 'TenEN', lang)}`,
+    imageUrl: row.ImageUrl || null,
+    imageAlt: row.HomepageImageAltVI || row.AltTextVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
+    articleCount: row.ArticleCount || 0,
+    accentClass:
+      row.MaVung === 'BAC_BO'
+        ? 'is-north'
+        : row.MaVung === 'TRUNG_BO'
+          ? 'is-central'
+          : row.MaVung === 'NAM_BO'
+            ? 'is-south'
+            : '',
+    number: String(row.HomepageDisplayOrder || '').padStart(2, '0'),
+  }
+}
+
 async function getHomepage(lang = 'vi') {
   const now = Date.now()
   const cached = homepageCache.get(lang)
@@ -51,7 +87,7 @@ async function getHomepage(lang = 'vi') {
     hero: staticContent.hero,
     intro: staticContent.intro,
     stats: staticContent.stats,
-    regions: regions.map((row) => mapCard(row, lang)),
+    regions: regions.map((row) => mapHomepageRegion(row, lang)),
     ethnicGroups: ethnicGroups.map((row) => mapCard(row, lang)),
     festivals: festivals.map((row) => mapCard(row, lang)),
     cuisine: cuisine.map((row) => mapCard(row, lang)),

@@ -47,15 +47,89 @@ CREATE TABLE dbo.DanhMuc (
 GO
 
 CREATE TABLE dbo.VungVanHoa (
-    VungID              INT IDENTITY(1,1) PRIMARY KEY,
-    MaVung              VARCHAR(50) NOT NULL UNIQUE,
-    TenVI               NVARCHAR(200) NOT NULL,
-    TenEN               NVARCHAR(200) NOT NULL,
-    LoaiVung            VARCHAR(30) NOT NULL DEFAULT 'CULTURAL_ZONE',
-    GeoJson             NVARCHAR(MAX) NULL,
-    HoatDong            BIT NOT NULL DEFAULT 1,
+    VungID                  INT IDENTITY(1,1) PRIMARY KEY,
+    MaVung                  VARCHAR(50) NOT NULL UNIQUE,
+    TenVI                   NVARCHAR(200) NOT NULL,
+    TenEN                   NVARCHAR(200) NOT NULL,
+    LoaiVung                VARCHAR(30) NOT NULL DEFAULT 'CULTURAL_ZONE',
+    GeoJson                 NVARCHAR(MAX) NULL,
+    HomepageEnabled         BIT NOT NULL DEFAULT 0,
+    HomepageDisplayOrder    INT NULL,
+    HomepageBadgeVI         NVARCHAR(100) NULL,
+    HomepageTitleVI         NVARCHAR(200) NULL,
+    HomepageDescriptionVI   NVARCHAR(1000) NULL,
+    HomepageHighlightsVI    NVARCHAR(MAX) NULL,
+    HomepageCtaVI           NVARCHAR(150) NULL,
+    HomepageImageUrl        NVARCHAR(1000) NULL,
+    HomepageImageAltVI      NVARCHAR(500) NULL,
+    HoatDong                BIT NOT NULL DEFAULT 1,
     CONSTRAINT CK_VungVanHoa_Loai CHECK (LoaiVung IN ('NORTH','CENTRAL','SOUTH','HIGHLAND','DELTA','CULTURAL_ZONE','OTHER'))
 );
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'HomepageEnabled') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD HomepageEnabled BIT NOT NULL CONSTRAINT DF_VungVanHoa_HomepageEnabled DEFAULT 0;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'HomepageDisplayOrder') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD HomepageDisplayOrder INT NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'HomepageBadgeVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD HomepageBadgeVI NVARCHAR(100) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'HomepageTitleVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD HomepageTitleVI NVARCHAR(200) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'HomepageDescriptionVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD HomepageDescriptionVI NVARCHAR(1000) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'HomepageHighlightsVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD HomepageHighlightsVI NVARCHAR(MAX) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'HomepageCtaVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD HomepageCtaVI NVARCHAR(150) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'HomepageImageUrl') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD HomepageImageUrl NVARCHAR(1000) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'HomepageImageAltVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD HomepageImageAltVI NVARCHAR(500) NULL;
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = 'IX_VungVanHoa_Homepage'
+      AND object_id = OBJECT_ID('dbo.VungVanHoa')
+)
+BEGIN
+    CREATE INDEX IX_VungVanHoa_Homepage ON dbo.VungVanHoa (HomepageEnabled, HomepageDisplayOrder, HoatDong);
+END
 GO
 
 CREATE TABLE dbo.DanToc (

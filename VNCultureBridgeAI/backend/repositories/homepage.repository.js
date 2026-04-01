@@ -2,17 +2,22 @@ const { query } = require('../db/sql')
 
 async function getFeaturedRegions() {
   return query(`
-    SELECT TOP 3
+    SELECT
       vv.VungID,
       vv.MaVung,
       vv.TenVI,
       vv.TenEN,
-      CAST(NULL AS NVARCHAR(1000)) AS MoTaVI,
-      CAST(NULL AS NVARCHAR(1000)) AS MoTaEN,
+      vv.HomepageDisplayOrder,
+      vv.HomepageBadgeVI,
+      vv.HomepageTitleVI,
+      vv.HomepageDescriptionVI,
+      vv.HomepageHighlightsVI,
+      vv.HomepageCtaVI,
+      vv.HomepageImageUrl,
+      vv.HomepageImageAltVI,
       COUNT(DISTINCT bv.BaiVietID) AS ArticleCount,
-      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END) AS ImageUrl,
-      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END) AS AltTextVI,
-      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextEN END) AS AltTextEN
+      COALESCE(vv.HomepageImageUrl, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END)) AS ImageUrl,
+      COALESCE(vv.HomepageImageAltVI, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END)) AS AltTextVI
     FROM dbo.VungVanHoa vv
     LEFT JOIN dbo.BaiViet_Vung bvv ON bvv.VungID = vv.VungID
     LEFT JOIN dbo.BaiViet bv ON bv.BaiVietID = bvv.BaiVietID
@@ -20,8 +25,21 @@ async function getFeaturedRegions() {
       AND bv.TrangThaiXuatBan = 'PUBLISHED'
     LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
     WHERE vv.HoatDong = 1
-    GROUP BY vv.VungID, vv.MaVung, vv.TenVI, vv.TenEN
-    ORDER BY ArticleCount DESC, vv.VungID ASC
+      AND vv.HomepageEnabled = 1
+    GROUP BY
+      vv.VungID,
+      vv.MaVung,
+      vv.TenVI,
+      vv.TenEN,
+      vv.HomepageDisplayOrder,
+      vv.HomepageBadgeVI,
+      vv.HomepageTitleVI,
+      vv.HomepageDescriptionVI,
+      vv.HomepageHighlightsVI,
+      vv.HomepageCtaVI,
+      vv.HomepageImageUrl,
+      vv.HomepageImageAltVI
+    ORDER BY vv.HomepageDisplayOrder ASC, vv.VungID ASC
   `)
 }
 

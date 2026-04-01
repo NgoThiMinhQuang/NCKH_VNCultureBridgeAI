@@ -11,55 +11,6 @@ import LoadingState from '../../components/common/LoadingState/LoadingState'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
 
-const homepageRegionMeta = [
-  {
-    key: 'north',
-    badge: 'Miền Bắc',
-    number: '01',
-    title: 'Miền Bắc',
-    headline: 'Di sản ngàn năm và sắc màu miền núi',
-    description: 'Khám phá Hà Nội, Hạ Long và những ruộng bậc thang hùng vĩ của vùng núi phía Bắc.',
-    highlights: ['Hà Nội', 'Hạ Long', 'Sa Pa', 'Hà Giang'],
-    accentClass: 'is-north',
-    cta: 'Khám phá Miền Bắc',
-  },
-  {
-    key: 'central',
-    badge: 'Miền Trung',
-    number: '02',
-    title: 'Miền Trung',
-    headline: 'Dải đất di sản, đèn lồng và biển xanh',
-    description: 'Từ Huế, Hội An đến Đà Nẵng, miền Trung mang vẻ đẹp giao hòa giữa lịch sử và thiên nhiên.',
-    highlights: ['Huế', 'Hội An', 'Đà Nẵng', 'Mỹ Sơn'],
-    accentClass: 'is-central',
-    cta: 'Khám phá Miền Trung',
-  },
-  {
-    key: 'south',
-    badge: 'Miền Nam',
-    number: '03',
-    title: 'Miền Nam',
-    headline: 'Sông nước phương Nam và nhịp sống hiện đại',
-    description: 'Miền Nam nổi bật với TP.HCM, miền Tây sông nước và hành trình ẩm thực, chợ nổi, biển đảo.',
-    highlights: ['TP.HCM', 'Cần Thơ', 'Mekong', 'Phú Quốc'],
-    accentClass: 'is-south',
-    cta: 'Khám phá Miền Nam',
-  },
-]
-
-function buildHomepageRegions(regions = []) {
-  return homepageRegionMeta.map((meta, index) => {
-    const region = regions[index] || {}
-    return {
-      ...meta,
-      code: region.code || '',
-      imageUrl: region.imageUrl || null,
-      imageAlt: region.imageAlt || meta.title,
-      fallbackTitle: region.title || meta.title,
-    }
-  })
-}
-
 export default function HomePage() {
   const [lang, setLang] = useState('vi')
   const [homepage, setHomepage] = useState(null)
@@ -109,7 +60,17 @@ export default function HomePage() {
   if (status === 'loading') return <LoadingState message={copy.loading} />
   if (status === 'error') return <LoadingState type="error" message={copy.error} detail={error} />
 
-  const homepageRegions = buildHomepageRegions(homepage.regions)
+  const homepageRegions = homepage.regions || []
+  const ethnicShowcaseStats = copy.ethnicShowcaseStats || []
+  const featuredEthnicGroups = (homepage.ethnicGroups || []).slice(0, 6)
+  const festivalShowcaseCards = (homepage.festivals || []).slice(0, 3).map((item, index) => ({
+    ...item,
+    ...(copy.festivalShowcaseCards?.[index] || {}),
+  }))
+  const cuisineShowcaseCards = (homepage.cuisine || []).slice(0, 3).map((item, index) => ({
+    ...item,
+    ...(copy.cuisineShowcaseCards?.[index] || {}),
+  }))
 
   return (
     <div className="page-shell">
@@ -179,7 +140,11 @@ export default function HomePage() {
         <div className="page-content-shell">
         <section className="content-section regions-section regions-showcase" id="regions">
           <div className="regions-showcase__heading fade-up">
-            <span className="regions-showcase__eyebrow">Khám phá Việt Nam</span>
+            <span className="regions-showcase__eyebrow">
+              <span className="regions-showcase__eyebrow-star" aria-hidden="true">✦</span>
+              <span>Khám phá Việt Nam</span>
+              <span className="regions-showcase__eyebrow-star" aria-hidden="true">✦</span>
+            </span>
             <h2>Ba miền văn hóa đặc sắc</h2>
             <p>
               Từ miền núi phía Bắc đến dải đất miền Trung và vùng sông nước phương Nam, mỗi miền đều có bản sắc,
@@ -189,12 +154,12 @@ export default function HomePage() {
 
           <div className="regions-showcase__grid">
             {homepageRegions.map((region) => (
-              <article key={region.key} className={`region-showcase-card fade-up ${region.accentClass}`}>
+              <article key={region.code || region.id} className={`region-showcase-card fade-up ${region.accentClass || ''}`}>
                 {region.imageUrl ? (
                   <img src={region.imageUrl} alt={region.imageAlt} className="region-showcase-card__image" />
                 ) : (
                   <div className="region-showcase-card__image region-showcase-card__image--placeholder">
-                    {region.fallbackTitle}
+                    {region.title}
                   </div>
                 )}
 
@@ -227,19 +192,206 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="content-section dark-section" id="ethnic-groups">
-          <SectionHeading badge={copy.ethnicSectionBadge} title={copy.ethnicSectionTitle} description={copy.ethnicSectionDescription} />
-          <CardGrid items={homepage.ethnicGroups} variant="ethnic-grid" actionLabel={copy.learnMore} lang={lang} basePath="/ethnic-groups" />
+        <section className="content-section dark-section ethnic-showcase" id="ethnic-groups">
+          <div className="ethnic-showcase__header fade-up">
+            <span className="ethnic-showcase__eyebrow">
+              <span className="ethnic-showcase__eyebrow-star" aria-hidden="true">✦</span>
+              <span>{copy.ethnicShowcaseBadge}</span>
+              <span className="ethnic-showcase__eyebrow-star" aria-hidden="true">✦</span>
+            </span>
+            <h2>{copy.ethnicShowcaseTitle}</h2>
+            <p>{copy.ethnicShowcaseDescription}</p>
+          </div>
+
+          <div className="ethnic-showcase__stats">
+            {ethnicShowcaseStats.map((stat) => (
+              <div key={stat.label} className="ethnic-stat-card float-card">
+                <div className="ethnic-stat-card__value">
+                  <span className="ethnic-stat-card__icon" aria-hidden="true">{stat.icon}</span>
+                  <strong>{stat.value}</strong>
+                </div>
+                <span className="ethnic-stat-card__label">{stat.label}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="ethnic-showcase__grid">
+            {featuredEthnicGroups.map((item, index) => (
+              <article key={item.code || item.id || index} className="ethnic-card fade-up">
+                {item.imageUrl ? (
+                  <img src={item.imageUrl} alt={item.imageAlt || item.title} className="ethnic-card__image" />
+                ) : (
+                  <div className="ethnic-card__image ethnic-card__image--placeholder">{item.title}</div>
+                )}
+
+                <div className="ethnic-card__overlay" />
+
+                <div className="ethnic-card__content">
+                  <div className="ethnic-card__top">
+                    <span className="ethnic-card__count">{item.articleCount ? `${item.articleCount}+ ${copy.ethnicShowcaseCountLabel}` : copy.ethnicShowcaseCountLabel}</span>
+                  </div>
+
+                  <div className="ethnic-card__body">
+                    <h3>{item.title}</h3>
+                    {item.description ? <p>{item.description}</p> : null}
+                  </div>
+
+                  <Link to={`/ethnic-groups/${item.code}`} className="ethnic-card__cta">
+                    {copy.ethnicShowcaseSecondaryCta}
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="ethnic-showcase__footer fade-up">
+            <Link to="/ethnic-groups" className="ethnic-showcase__button">
+              <span>{copy.ethnicShowcasePrimaryCta}</span>
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </section>
 
-        <section className="content-section light-section" id="festivals">
-          <SectionHeading badge={copy.festivalSectionBadge} title={copy.festivalSectionTitle} description={copy.festivalSectionDescription} />
-          <CardGrid items={homepage.festivals} variant="festival-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
+        <section className="content-section light-section festival-showcase" id="festivals">
+          <div className="festival-showcase__header fade-up">
+            <span className="festival-showcase__eyebrow">
+              <span className="festival-showcase__eyebrow-star" aria-hidden="true">✦</span>
+              <span>{copy.festivalShowcaseBadge}</span>
+              <span className="festival-showcase__eyebrow-star" aria-hidden="true">✦</span>
+            </span>
+            <h2>
+              <span>{copy.festivalShowcaseTitle}</span>{' '}
+              <span className="festival-showcase__title-accent">{copy.festivalShowcaseTitleAccent}</span>
+            </h2>
+            <div className="festival-showcase__divider" aria-hidden="true">
+              <span />
+              <i />
+              <b />
+              <span />
+            </div>
+            <p>{copy.festivalShowcaseDescription}</p>
+          </div>
+
+          <div className="festival-showcase__grid">
+            {festivalShowcaseCards.map((item, index) => (
+              <article key={item.code || item.id || index} className={`festival-card fade-up is-${item.accent || 'red'}`}>
+                <div className="festival-card__media">
+                  {item.imageUrl ? (
+                    <img src={item.imageUrl} alt={item.imageAlt || item.title} className="festival-card__image" />
+                  ) : (
+                    <div className="festival-card__image festival-card__image--placeholder">{item.title}</div>
+                  )}
+
+                  <span className="festival-card__badge">
+                    <span aria-hidden="true">{item.badgeIcon}</span>
+                    <span>{item.badge || item.category}</span>
+                  </span>
+
+                  <span className="festival-card__corner-icon" aria-hidden="true">{item.badgeIcon}</span>
+                </div>
+
+                <div className="festival-card__body">
+                  <h3>{item.title}</h3>
+                  <p className="festival-card__subtitle">{item.subtitle}</p>
+                  {item.description ? <p className="festival-card__description">{item.description}</p> : null}
+
+                  <div className="festival-card__meta">
+                    <span>{item.metaPrimary}</span>
+                    <span>{item.metaSecondary}</span>
+                  </div>
+
+                  <div className="festival-card__chips">
+                    {(item.tags || []).map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+
+                  <div className="festival-card__footer">
+                    <Link to={`/articles/${item.code}`} className="festival-card__cta">
+                      {copy.learnMore}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                    <span className="festival-card__rating" aria-hidden="true">{item.footerIcon}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </section>
 
-        <section className="content-section light-section" id="cuisine">
-          <SectionHeading badge={copy.cuisineSectionBadge} title={copy.cuisineSectionTitle} description={copy.cuisineSectionDescription} />
-          <CardGrid items={homepage.cuisine} variant="cuisine-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
+        <section className="content-section light-section cuisine-showcase" id="cuisine">
+          <div className="cuisine-showcase__header fade-up">
+            <span className="cuisine-showcase__eyebrow">
+              <span className="cuisine-showcase__eyebrow-star" aria-hidden="true">✦</span>
+              <span>{copy.cuisineShowcaseBadge}</span>
+              <span className="cuisine-showcase__eyebrow-star" aria-hidden="true">✦</span>
+            </span>
+            <h2>
+              <span>{copy.cuisineShowcaseTitle}</span>{' '}
+              <span className="cuisine-showcase__title-accent">{copy.cuisineShowcaseTitleAccent}</span>
+            </h2>
+            <div className="cuisine-showcase__divider" aria-hidden="true">
+              <span />
+              <i />
+              <b />
+              <span />
+            </div>
+            <p>{copy.cuisineShowcaseDescription}</p>
+            <div className="cuisine-showcase__filters">
+              <span className="cuisine-showcase__filters-label">{copy.cuisineShowcaseFilterLabel}</span>
+              {copy.cuisineShowcaseFilters.map((filter) => (
+                <span key={filter} className="cuisine-showcase__filter-pill">{filter}</span>
+              ))}
+            </div>
+          </div>
+
+          <div className="cuisine-showcase__grid">
+            {cuisineShowcaseCards.map((item, index) => (
+              <article key={item.code || item.id || index} className="cuisine-card fade-up">
+                <div className="cuisine-card__media">
+                  {item.imageUrl ? (
+                    <img src={item.imageUrl} alt={item.imageAlt || item.title} className="cuisine-card__image" />
+                  ) : (
+                    <div className="cuisine-card__image cuisine-card__image--placeholder">{item.title}</div>
+                  )}
+
+                  <span className="cuisine-card__score">❤️ {item.score}</span>
+                  <button type="button" className="cuisine-card__favorite" aria-label="Favorite dish">
+                    ♡
+                  </button>
+                  <span className="cuisine-card__spice">
+                    {'🔥'.repeat(item.spiceLevel || 1)}
+                    {'🖤'.repeat(Math.max(0, 5 - (item.spiceLevel || 1)))}
+                  </span>
+                </div>
+
+                <div className="cuisine-card__body">
+                  <h3>{item.title}</h3>
+                  <p className="cuisine-card__subtitle">{item.subtitle}</p>
+                  {item.description ? <p className="cuisine-card__description">{item.description}</p> : null}
+
+                  <div className="cuisine-card__meta">
+                    <span>{item.metaPrimary}</span>
+                    <span>{item.metaSecondary}</span>
+                  </div>
+
+                  <div className="cuisine-card__chips">
+                    {(item.tags || []).map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="cuisine-showcase__footer fade-up">
+            <Link to="/articles" className="cuisine-showcase__button">
+              <span>{copy.cuisineShowcaseSectionCta}</span>
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </section>
 
         <section className="content-section light-section arts-layout" id="arts">
