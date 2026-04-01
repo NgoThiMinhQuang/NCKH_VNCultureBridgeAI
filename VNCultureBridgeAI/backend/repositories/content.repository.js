@@ -1,6 +1,6 @@
 const { query } = require('../db/sql')
 
-async function getArticles({ category, region, ethnicity, q, limit = 12 }) {
+function buildArticleFilters({ category, region, ethnicity, q }) {
   const filters = [
     `bv.TrangThaiDuyet = 'APPROVED'`,
     `bv.TrangThaiXuatBan = 'PUBLISHED'`,
@@ -27,7 +27,11 @@ async function getArticles({ category, region, ethnicity, q, limit = 12 }) {
     )`)
   }
 
-  const whereClause = filters.join('\n      AND ')
+  return filters.join('\n      AND ')
+}
+
+async function getArticles({ category, region, ethnicity, q, limit = 12 }) {
+  const whereClause = buildArticleFilters({ category, region, ethnicity, q })
 
   return query(`
     SELECT TOP (${Number(limit) || 12})
@@ -37,8 +41,6 @@ async function getArticles({ category, region, ethnicity, q, limit = 12 }) {
       bv.TieuDeEN,
       bv.MoTaNganVI,
       bv.MoTaNganEN,
-      bv.NoiDungChinhVI,
-      bv.NoiDungChinhEN,
       bv.NgayXuatBan,
       MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END) AS ImageUrl,
       MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END) AS AltTextVI,
@@ -52,9 +54,50 @@ async function getArticles({ category, region, ethnicity, q, limit = 12 }) {
     LEFT JOIN dbo.DanToc dt ON dt.DanTocID = bvdt.DanTocID
     LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
     WHERE ${whereClause}
-    GROUP BY bv.BaiVietID, bv.MaBaiViet, bv.TieuDeVI, bv.TieuDeEN, bv.MoTaNganVI, bv.MoTaNganEN, bv.NoiDungChinhVI, bv.NoiDungChinhEN, bv.NgayXuatBan
+    GROUP BY bv.BaiVietID, bv.MaBaiViet, bv.TieuDeVI, bv.TieuDeEN, bv.MoTaNganVI, bv.MoTaNganEN, bv.NgayXuatBan
     ORDER BY bv.NgayXuatBan DESC, bv.BaiVietID DESC
   `, { category, region, ethnicity, q })
+}
+
+async function getArticleSearchMatches({ q, limit = 3 }) {
+  const whereClause = buildArticleFilters({ q })
+
+  return query(`
+    SELECT TOP (${Number(limit) || 3})
+      bv.BaiVietID,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN,
+      bv.MoTaNganVI,
+      bv.MoTaNganEN,
+      bv.GioiThieuVI,
+      bv.GioiThieuEN,
+      bv.NguonGocVI,
+      bv.NguonGocEN,
+      bv.YNghiaVanHoaVI,
+      bv.YNghiaVanHoaEN,
+      bv.BoiCanhVI,
+      bv.BoiCanhEN,
+      bv.NoiDungChinhVI,
+      bv.NoiDungChinhEN,
+      bv.TomTatChoAIVI,
+      bv.TomTatChoAIEN,
+      bv.NgayXuatBan,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END) AS ImageUrl,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END) AS AltTextVI,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextEN END) AS AltTextEN
+    FROM dbo.BaiViet bv
+    LEFT JOIN dbo.BaiViet_DanhMuc bvdm ON bvdm.BaiVietID = bv.BaiVietID
+    LEFT JOIN dbo.DanhMuc dm ON dm.DanhMucID = bvdm.DanhMucID
+    LEFT JOIN dbo.BaiViet_Vung bvv ON bvv.BaiVietID = bv.BaiVietID
+    LEFT JOIN dbo.VungVanHoa vv ON vv.VungID = bvv.VungID
+    LEFT JOIN dbo.BaiViet_DanToc bvdt ON bvdt.BaiVietID = bv.BaiVietID
+    LEFT JOIN dbo.DanToc dt ON dt.DanTocID = bvdt.DanTocID
+    LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
+    WHERE ${whereClause}
+    GROUP BY bv.BaiVietID, bv.MaBaiViet, bv.TieuDeVI, bv.TieuDeEN, bv.MoTaNganVI, bv.MoTaNganEN, bv.GioiThieuVI, bv.GioiThieuEN, bv.NguonGocVI, bv.NguonGocEN, bv.YNghiaVanHoaVI, bv.YNghiaVanHoaEN, bv.BoiCanhVI, bv.BoiCanhEN, bv.NoiDungChinhVI, bv.NoiDungChinhEN, bv.TomTatChoAIVI, bv.TomTatChoAIEN, bv.NgayXuatBan
+    ORDER BY bv.NgayXuatBan DESC, bv.BaiVietID DESC
+  `, { q })
 }
 
 async function getArticleByCode(code) {
@@ -133,6 +176,7 @@ async function getEthnicityByCode(code) {
 
 module.exports = {
   getArticles,
+  getArticleSearchMatches,
   getArticleByCode,
   getRegions,
   getRegionByCode,
