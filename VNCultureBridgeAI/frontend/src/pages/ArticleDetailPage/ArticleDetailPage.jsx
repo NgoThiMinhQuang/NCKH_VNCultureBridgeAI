@@ -1,21 +1,30 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getArticle } from '../../services/content.service'
 import { useDetailLoader } from '../../hooks/useDetailLoader'
 import { formatDate } from '../../utils/formatDate'
 import LoadingState from '../../components/common/LoadingState/LoadingState'
+import PageHeader from '../../components/layout/PageHeader/PageHeader'
 
-export default function ArticleDetailPage({ lang = 'vi' }) {
+export default function ArticleDetailPage() {
   const { code } = useParams()
+  const [lang, setLang] = useState('vi')
   const { status, data, error } = useDetailLoader(getArticle, lang, code)
 
-  if (status === 'loading') return <LoadingState message="Loading article..." />
+  if (status === 'loading') return <LoadingState message={lang === 'vi' ? 'Đang tải bài viết...' : 'Loading article...'} />
   if (status === 'error') return <LoadingState type="error" message={error} />
 
   return (
     <div className="detail-page">
+      <PageHeader
+        lang={lang}
+        onLangChange={setLang}
+        breadcrumb={[
+          { label: lang === 'vi' ? 'Bài viết' : 'Articles', to: '/#blog' },
+          { label: data?.title || code },
+        ]}
+      />
       <div className="detail-page__inner fade-up">
-        <Link to="/" className="text-link back-link">← Back home</Link>
         <div className="detail-hero">
           {data.imageUrl ? <img src={data.imageUrl} alt={data.imageAlt || data.title} /> : null}
         </div>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { askAi } from '../../services/ai.service'
 import CardGrid from '../../components/common/CardGrid/CardGrid'
+import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import './AIGuidePage.css'
 
 export default function AIGuidePage() {
@@ -35,14 +35,16 @@ export default function AIGuidePage() {
 
   return (
     <div className="detail-page ai-detail-page">
+      <PageHeader
+        lang={lang}
+        onLangChange={setLang}
+        breadcrumb={[{ label: 'AI Guide' }]}
+      />
+
       <div className="detail-page__inner ai-chat-shell fade-up">
-        <Link to="/" className="text-link back-link">← Back home</Link>
         <h1>AI Guide</h1>
         <p className="detail-lead">Hỏi nhanh về văn hoá Việt Nam từ dữ liệu đã kiểm duyệt.</p>
-        <div className="lang-toggle" style={{ marginBottom: 16 }}>
-          <button type="button" className={lang === 'vi' ? 'active' : ''} onClick={() => setLang('vi')}>VI</button>
-          <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</button>
-        </div>
+
         <div className="chat-thread">
           {history.length === 0 ? (
             <div className="chat-bubble chat-bubble--assistant">
@@ -63,6 +65,7 @@ export default function AIGuidePage() {
             </div>
           ))}
         </div>
+
         <form className="ai-guide__composer" onSubmit={handleAsk}>
           <input
             value={question}

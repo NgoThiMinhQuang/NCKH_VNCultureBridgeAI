@@ -7,6 +7,7 @@ import { ui } from '../../i18n/messages'
 import { featuredMapPoints } from '../../components/features/regions/VietnamMap'
 import VietnamMap from '../../components/features/regions/VietnamMap'
 import LoadingState from '../../components/common/LoadingState/LoadingState'
+import PageHeader from '../../components/layout/PageHeader/PageHeader'
 
 const regionMeta = {
   vi: [
@@ -138,6 +139,14 @@ export default function RegionsPage() {
 
   return (
     <div className="regions-page">
+      <PageHeader
+        lang={lang}
+        onLangChange={setLang}
+        breadcrumb={[
+          { label: lang === 'vi' ? 'Khám phá vùng miền' : 'Explore Regions' },
+        ]}
+      />
+
       <div className="regions-page__shell">
         <div className="regions-page__hero fade-up">
           <div className="regions-page__hero-copy">
@@ -146,13 +155,6 @@ export default function RegionsPage() {
             <p>{lang === 'vi'
               ? 'Tham khảo cách trình bày map-led explorer từ các trang du lịch lớn, rồi tối giản lại cho dự án này: mở đầu bằng bản đồ Việt Nam, chọn 1 trong 3 miền và xem nhanh điểm nhấn từng vùng.'
               : 'Inspired by map-led destination explorers, this page starts with a Vietnam map so visitors can quickly move across the country\'s three major cultural regions.'}</p>
-          </div>
-          <div className="regions-page__hero-actions">
-            <div className="lang-toggle" aria-label={copy.language}>
-              <button type="button" className={lang === 'vi' ? 'active' : ''} onClick={() => setLang('vi')}>VI</button>
-              <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</button>
-            </div>
-            <Link to="/" className="regions-page__back">{lang === 'vi' ? '← Về trang chủ' : '← Back home'}</Link>
           </div>
         </div>
 

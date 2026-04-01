@@ -1,19 +1,29 @@
-import { Link, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { getRegion } from '../../services/region.service'
 import { useDetailLoader } from '../../hooks/useDetailLoader'
 import LoadingState from '../../components/common/LoadingState/LoadingState'
+import PageHeader from '../../components/layout/PageHeader/PageHeader'
 
-export default function RegionDetailPage({ lang = 'vi' }) {
+export default function RegionDetailPage() {
   const { code } = useParams()
+  const [lang, setLang] = useState('vi')
   const { status, data, error } = useDetailLoader(getRegion, lang, code)
 
-  if (status === 'loading') return <LoadingState message="Loading region..." />
+  if (status === 'loading') return <LoadingState message={lang === 'vi' ? 'Đang tải vùng miền...' : 'Loading region...'} />
   if (status === 'error') return <LoadingState type="error" message={error} />
 
   return (
     <div className="detail-page">
+      <PageHeader
+        lang={lang}
+        onLangChange={setLang}
+        breadcrumb={[
+          { label: lang === 'vi' ? 'Vùng miền' : 'Regions', to: '/regions' },
+          { label: data?.name || code },
+        ]}
+      />
       <div className="detail-page__inner fade-up">
-        <Link to="/" className="text-link back-link">← Back home</Link>
         <h1>{data.name}</h1>
         <p className="detail-lead">{data.type}</p>
       </div>

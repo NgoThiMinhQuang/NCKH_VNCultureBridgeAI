@@ -1,0 +1,367 @@
+/* ============================================================
+   PageHeader — Phong cách Sơn mài / Lacquerware Việt Nam
+   Nền đỏ thẫm, vàng kim, hoạ tiết truyền thống
+   ============================================================ */
+
+/* ---- Tokens riêng cho header ---- */
+.page-header {
+  --ph-red:    #8b0c0c;
+  --ph-red-2:  #a81214;
+  --ph-gold:   #d4a017;
+  --ph-gold-2: #e8c55a;
+  --ph-cream:  #fdf3e3;
+  --ph-text:   #fdf3e3;
+  --ph-muted:  rgba(253, 243, 227, 0.62);
+
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background:
+    linear-gradient(180deg, #6b0a0a 0%, #8b1010 50%, #7a0e0e 100%);
+  box-shadow:
+    0 4px 0 0 var(--ph-gold),
+    0 6px 32px rgba(0, 0, 0, 0.38);
+  /* Hoạ tiết hoa văn dạng chấm lặp theo hàng (pseudo-pattern) */
+  isolation: isolate;
+}
+
+/* ---- Hoạ tiết trang trí trên cùng ---- */
+.page-header__ornament {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 5px 0 0;
+}
+
+.page-header__ornament span {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ph-gold);
+  opacity: 0.7;
+  position: relative;
+}
+
+.page-header__ornament span:nth-child(1),
+.page-header__ornament span:nth-child(5) { opacity: 0.3; }
+.page-header__ornament span:nth-child(2),
+.page-header__ornament span:nth-child(4) { opacity: 0.55; }
+.page-header__ornament span:nth-child(3) { opacity: 0.9; width: 8px; height: 8px; }
+
+/* ---- Inner layout ---- */
+.page-header__inner {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
+  align-items: center;
+  gap: 16px;
+  width: min(1440px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 10px 0 12px;
+}
+
+/* ---- Brand ---- */
+.page-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.page-header__logo {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5a0808, #8b1010);
+  border: 2px solid var(--ph-gold);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow:
+    0 0 0 1px rgba(212, 160, 23, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.page-header__logo-mark {
+  color: var(--ph-gold-2);
+  font-weight: 900;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.page-header__logo-star {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 0.6rem;
+  color: var(--ph-gold);
+  animation: starSpin 8s linear infinite;
+}
+
+@keyframes starSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.page-header__brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header__brand-text strong {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.18rem;
+  color: var(--ph-gold-2);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.page-header__brand-text span {
+  margin-top: 3px;
+  font-size: 0.65rem;
+  color: var(--ph-muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ---- Nav ---- */
+.page-header__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+
+.page-header__nav-link {
+  position: relative;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ph-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease;
+}
+
+/* Dấu phân cách dọc kiểu truyền thống */
+.page-header__nav-link + .page-header__nav-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 14px;
+  width: 1px;
+  background: rgba(212, 160, 23, 0.3);
+}
+
+.page-header__nav-link:hover {
+  color: var(--ph-gold-2);
+}
+
+/* Active indicator — gạch chân vàng kim */
+.page-header__nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  background: var(--ph-gold);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 999px;
+}
+
+.page-header__nav-link:hover::after,
+.page-header__nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+.page-header__nav-link.is-active {
+  color: var(--ph-gold-2);
+  font-weight: 700;
+}
+
+/* ---- Actions ---- */
+.page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* AI Guide button */
+.page-header__ai-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--ph-gold);
+  background: rgba(212, 160, 23, 0.12);
+  color: var(--ph-gold-2);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.page-header__ai-btn:hover,
+.page-header__ai-btn.is-active {
+  background: rgba(212, 160, 23, 0.24);
+  box-shadow: 0 0 16px rgba(212, 160, 23, 0.2);
+  transform: translateY(-1px);
+}
+
+.page-header__ai-icon {
+  font-size: 0.65rem;
+  animation: starSpin 4s linear infinite;
+}
+
+/* Language toggle */
+.page-header__lang {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  background: rgba(0,0,0,0.2);
+}
+
+.page-header__lang button {
+  background: transparent;
+  border: none;
+  color: var(--ph-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 4px 6px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  border-radius: 99px;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.page-header__lang button.is-active {
+  color: var(--ph-gold-2);
+  background: rgba(212, 160, 23, 0.15);
+}
+
+.page-header__lang span {
+  color: rgba(212, 160, 23, 0.35);
+  font-size: 0.7rem;
+  user-select: none;
+}
+
+/* ---- Breadcrumb ---- */
+.page-header__breadcrumb {
+  border-top: 1px solid rgba(212, 160, 23, 0.18);
+  background: rgba(0, 0, 0, 0.18);
+  padding: 6px 0;
+}
+
+.page-header__breadcrumb-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: min(1440px, calc(100% - 64px));
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.page-header__breadcrumb-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ph-muted);
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.page-header__breadcrumb-home:hover {
+  color: var(--ph-gold-2);
+}
+
+.page-header__breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+
+.page-header__breadcrumb-sep {
+  color: rgba(212, 160, 23, 0.45);
+  font-size: 0.9rem;
+}
+
+.page-header__breadcrumb-item a {
+  color: var(--ph-muted);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.page-header__breadcrumb-item a:hover {
+  color: var(--ph-gold-2);
+}
+
+.page-header__breadcrumb-current {
+  color: var(--ph-gold-2);
+  font-weight: 600;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1100px) {
+  .page-header__nav-link {
+    padding: 6px 10px;
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-header__inner {
+    grid-template-columns: 1fr max-content;
+    grid-template-rows: auto auto;
+    width: calc(100% - 32px);
+    gap: 8px;
+    padding: 8px 0 10px;
+  }
+
+  .page-header__brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .page-header__actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .page-header__nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .page-header__nav::-webkit-scrollbar { display: none; }
+
+  .page-header__nav-link {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-header__brand-text span { display: none; }
+  .page-header__ai-btn { padding: 7px 11px; font-size: 0.8rem; }
+}
