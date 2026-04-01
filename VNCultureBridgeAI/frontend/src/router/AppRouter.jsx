@@ -5,6 +5,7 @@ import RegionsPage from '../pages/RegionsPage/RegionsPage'
 import RegionDetailPage from '../pages/RegionDetailPage/RegionDetailPage'
 import EthnicityDetailPage from '../pages/EthnicityDetailPage/EthnicityDetailPage'
 import AIGuidePage from '../pages/AIGuidePage/AIGuidePage'
+import ArticlePage from '../pages/ArticlePage/ArticlePage'
 
 /**
  * Cấu hình routing tập trung của ứng dụng.
@@ -20,6 +21,7 @@ export default function AppRouter() {
         <Route path="/regions/:code" element={<RegionDetailPage />} />
         <Route path="/ethnic-groups/:code" element={<EthnicityDetailPage />} />
         <Route path="/ai-guide" element={<AIGuidePage />} />
+        <Route path="/articles" element={<ArticlePage />} />
       </Routes>
     </BrowserRouter>
   )

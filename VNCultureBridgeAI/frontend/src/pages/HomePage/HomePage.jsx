@@ -7,6 +7,7 @@ import CardGrid from '../../components/common/CardGrid/CardGrid'
 import SectionHeading from '../../components/common/SectionHeading/SectionHeading'
 import LoadingState from '../../components/common/LoadingState/LoadingState'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
+import Footer from '../../components/layout/Footer/Footer'
 
 export default function HomePage() {
   const [lang, setLang] = useState('vi')
@@ -69,11 +70,12 @@ export default function HomePage() {
             {/* Link trang vùng miền thay vì mega-menu */}
             <Link to="/regions" className="ph__nav-link">{copy.nav[1]}</Link>
 
+
             <a href="#ethnic-groups" className="ph__nav-link">{copy.nav[2]}</a>
-            <a href="#festivals"     className="ph__nav-link">{copy.nav[3]}</a>
-            <a href="#cuisine"       className="ph__nav-link">{copy.nav[4]}</a>
-            <a href="#arts"          className="ph__nav-link">{copy.nav[5]}</a>
-            <a href="#blog"          className="ph__nav-link">{copy.nav[6]}</a>
+            <a href="#festivals" className="ph__nav-link">{copy.nav[3]}</a>
+            <a href="#cuisine" className="ph__nav-link">{copy.nav[4]}</a>
+            <Link to="/articles" className="ph__nav-link">{copy.nav[5]}</Link>
+            <a href="#blog" className="ph__nav-link">{copy.nav[6]}</a>
           </nav>
         )}
       />
@@ -157,22 +159,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="footer-brand">
-          <strong>VietCultura</strong>
-          <p>{homepage.footer.description}</p>
-        </div>
-        <div className="footer-columns">
-          {Object.entries(homepage.footer.columns).map(([key, label]) => (
-            <div key={key}>
-              <h4>{label}</h4>
-              <a href="#">{label}</a>
-              <a href="#">{copy.learnMore}</a>
-              <a href="#">{copy.viewAll}</a>
-            </div>
-          ))}
-        </div>
-      </footer>
+      <Footer lang={lang} />
     </div>
   )
 }

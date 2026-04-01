@@ -4,6 +4,7 @@ import { getEthnicity } from '../../services/ethnicity.service'
 import { useDetailLoader } from '../../hooks/useDetailLoader'
 import LoadingState from '../../components/common/LoadingState/LoadingState'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
+import Footer from '../../components/layout/Footer/Footer'
 
 export default function EthnicityDetailPage() {
   const { code } = useParams()
@@ -27,6 +28,7 @@ export default function EthnicityDetailPage() {
         <h1>{data.name}</h1>
         <p className="detail-lead">{data.description}</p>
       </div>
+      <Footer lang={lang} />
     </div>
   )
 }

@@ -37,6 +37,26 @@ export const ui = {
     loading: 'Đang tải dữ liệu trang chủ...',
     error: 'Không thể tải dữ liệu trang chủ.',
     retry: 'Thử lại',
+    footer: {
+      description: 'Bảo tồn và lan tỏa giá trị văn hóa Việt Nam - nơi hội tụ di sản, truyền thống và bản sắc dân tộc qua từng thế hệ.',
+      quote: '"Văn hóa soi đường cho quốc dân đi"',
+      newsletterTitle: 'ĐĂNG KÝ NHẬN TIN',
+      newsletterPlaceholder: 'Email của bạn',
+      newsletterBtn: 'Gửi',
+      contactTitle: 'Liên Hệ',
+      contactAddress: 'Hưng Yên, Việt Nam',
+      socialTitle: 'KẾT NỐI VỚI CHÚNG TÔI',
+      copyright: '© 2026 VNCulture. Bảo lưu mọi quyền.',
+      privacy: 'Chính sách bảo mật',
+      terms: 'Điều khoản sử dụng',
+      contact: 'Liên hệ',
+      columns: {
+        explore: 'Khám Phá',
+        resources: 'Tài nguyên',
+        about: 'Về chúng tôi',
+        social: 'Theo dõi'
+      }
+    },
   },
   en: {
     nav: ['Home', 'Explore Regions', 'Ethnic Cultures', 'Festivals', 'Cuisine', 'Arts', 'Blog'],
@@ -76,5 +96,25 @@ export const ui = {
     loading: 'Loading homepage data...',
     error: 'Unable to load homepage data.',
     retry: 'Retry',
+    footer: {
+      description: 'Preserving and spreading the values of Vietnamese culture - a convergence of heritage, tradition, and national identity through generations.',
+      quote: '"Culture lights the way for the nation"',
+      newsletterTitle: 'SUBSCRIBE',
+      newsletterPlaceholder: 'Your email address',
+      newsletterBtn: 'Send',
+      contactTitle: 'Contact',
+      contactAddress: 'Hung Yen, Vietnam',
+      socialTitle: 'CONNECT WITH US',
+      copyright: '© 2026 VNCulture. All rights reserved.',
+      privacy: 'Privacy Policy',
+      terms: 'Terms of Use',
+      contact: 'Contact Us',
+      columns: {
+        explore: 'Explore',
+        resources: 'Resources',
+        about: 'About Us',
+        social: 'Follow Us'
+      }
+    },
   },
 }

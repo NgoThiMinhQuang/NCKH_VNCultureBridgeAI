@@ -52,7 +52,7 @@
 }
 
 .ph__brand-text strong {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-heading);
   font-size: 1.35rem;
   color: #a32020;
   letter-spacing: 0.02em;
