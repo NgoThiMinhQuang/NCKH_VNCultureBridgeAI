@@ -15,7 +15,7 @@ export default function ArticlePage() {
     useEffect(() => {
         let ignore = false;
         setStatus('loading')
-        searchArticles({ lang, limit: 30 })
+        searchArticles({ lang, limit: 12 })
             .then(data => {
                 if (!ignore) {
                     setArticles(data)

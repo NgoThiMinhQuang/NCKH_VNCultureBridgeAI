@@ -2,27 +2,33 @@ const contentRepository = require('../repositories/content.repository')
 const homepageRepository = require('../repositories/homepage.repository')
 const { pickLocalized } = require('../utils/locale')
 
-function mapArticle(row, lang) {
+function mapArticleCard(row, lang) {
   return {
     id: row.BaiVietID,
     code: row.MaBaiViet,
     title: pickLocalized(row, 'TieuDeVI', 'TieuDeEN', lang),
     description: pickLocalized(row, 'MoTaNganVI', 'MoTaNganEN', lang),
-    intro: pickLocalized(row, 'GioiThieuVI', 'GioiThieuEN', lang),
-    origin: pickLocalized(row, 'NguonGocVI', 'NguonGocEN', lang),
-    meaning: pickLocalized(row, 'YNghiaVanHoaVI', 'YNghiaVanHoaEN', lang),
-    context: pickLocalized(row, 'BoiCanhVI', 'BoiCanhEN', lang),
-    content: pickLocalized(row, 'NoiDungChinhVI', 'NoiDungChinhEN', lang),
-    aiSummary: pickLocalized(row, 'TomTatChoAIVI', 'TomTatChoAIEN', lang),
     imageUrl: row.ImageUrl || null,
     imageAlt: pickLocalized(row, 'AltTextVI', 'AltTextEN', lang),
     publishedAt: row.NgayXuatBan || null,
   }
 }
 
+function mapArticle(row, lang) {
+  return {
+    ...mapArticleCard(row, lang),
+    intro: pickLocalized(row, 'GioiThieuVI', 'GioiThieuEN', lang),
+    origin: pickLocalized(row, 'NguonGocVI', 'NguonGocEN', lang),
+    meaning: pickLocalized(row, 'YNghiaVanHoaVI', 'YNghiaVanHoaEN', lang),
+    context: pickLocalized(row, 'BoiCanhVI', 'BoiCanhEN', lang),
+    content: pickLocalized(row, 'NoiDungChinhVI', 'NoiDungChinhEN', lang),
+    aiSummary: pickLocalized(row, 'TomTatChoAIVI', 'TomTatChoAIEN', lang),
+  }
+}
+
 async function listArticles(filters, lang) {
   const rows = await contentRepository.getArticles(filters)
-  return rows.map((row) => mapArticle(row, lang))
+  return rows.map((row) => mapArticleCard(row, lang))
 }
 
 async function getArticle(code, lang) {
@@ -75,8 +81,10 @@ async function getEthnicity(code, lang) {
 }
 
 async function askAi({ question, lang }) {
-  const articles = await contentRepository.getArticles({ q: question, limit: 3 })
-  const prompts = await homepageRepository.getPromptSamples()
+  const [articles, prompts] = await Promise.all([
+    contentRepository.getArticleSearchMatches({ q: question, limit: 3 }),
+    homepageRepository.getPromptSamples(),
+  ])
   const mappedArticles = articles.map((row) => mapArticle(row, lang))
 
   const answer = mappedArticles.length

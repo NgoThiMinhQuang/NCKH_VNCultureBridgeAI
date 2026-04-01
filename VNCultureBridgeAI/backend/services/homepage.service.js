@@ -2,6 +2,9 @@ const homepageRepository = require('../repositories/homepage.repository')
 const { getStaticContent } = require('./static-content.service')
 const { pickLocalized } = require('../utils/locale')
 
+const HOMEPAGE_CACHE_TTL_MS = 60 * 1000
+const homepageCache = new Map()
+
 function mapCard(row, lang) {
   return {
     id: row.BaiVietID || row.VungID || row.DanTocID || row.DanhMucID,
@@ -19,6 +22,13 @@ function mapCard(row, lang) {
 }
 
 async function getHomepage(lang = 'vi') {
+  const now = Date.now()
+  const cached = homepageCache.get(lang)
+
+  if (cached && cached.expiresAt > now) {
+    return cached.data
+  }
+
   const [regions, ethnicGroups, festivals, cuisine, arts, blogPosts, categories, prompts] =
     await Promise.all([
       homepageRepository.getFeaturedRegions(),
@@ -33,7 +43,7 @@ async function getHomepage(lang = 'vi') {
 
   const staticContent = getStaticContent(lang)
 
-  return {
+  const data = {
     meta: {
       lang,
       generatedAt: new Date().toISOString(),
@@ -59,6 +69,13 @@ async function getHomepage(lang = 'vi') {
     },
     footer: staticContent.footer,
   }
+
+  homepageCache.set(lang, {
+    data,
+    expiresAt: now + HOMEPAGE_CACHE_TTL_MS,
+  })
+
+  return data
 }
 
 module.exports = {

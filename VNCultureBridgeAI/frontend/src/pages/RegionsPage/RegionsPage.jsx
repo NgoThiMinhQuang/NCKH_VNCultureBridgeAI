@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './RegionsPage.css'
-import { getHomepage } from '../../services/homepage.service'
 import { getRegions } from '../../services/region.service'
 import { ui } from '../../i18n/messages'
 import { featuredMapPoints } from '../../components/features/regions/VietnamMap'
@@ -64,15 +63,13 @@ const regionMeta = {
   ],
 }
 
-function mergeRegionContent(featuredRegions, listRegions, lang) {
+function mergeRegionContent(listRegions, lang) {
   const meta = regionMeta[lang] || regionMeta.vi
-  const baseItems = featuredRegions.length
-    ? featuredRegions.slice(0, 3)
-    : listRegions.slice(0, 3).map((item) => ({
-        ...item,
-        title: item.name,
-        description: item.type,
-      }))
+  const baseItems = listRegions.slice(0, 3).map((item) => ({
+    ...item,
+    title: item.name,
+    description: item.type,
+  }))
 
   return meta.map((item, index) => {
     const region = baseItems[index] || listRegions[index] || {}
@@ -112,9 +109,9 @@ export default function RegionsPage() {
     async function loadRegions() {
       try {
         setState({ status: 'loading', data: null, error: '' })
-        const [homepage, regions] = await Promise.all([getHomepage(lang), getRegions(lang)])
+        const regions = await getRegions(lang)
         if (!ignore) {
-          setState({ status: 'success', data: { homepage, regions }, error: '' })
+          setState({ status: 'success', data: { regions }, error: '' })
           document.documentElement.lang = lang
           document.title = lang === 'vi' ? 'VietCultura - Khám phá vùng miền' : 'VietCultura - Explore regions'
         }
@@ -132,9 +129,8 @@ export default function RegionsPage() {
   if (state.status === 'loading') return <LoadingState message={copy.loading} />
   if (state.status === 'error') return <LoadingState type="error" message={copy.error} detail={state.error} />
 
-  const homepageRegions = state.data?.homepage?.regions || []
   const regions = state.data?.regions || []
-  const mappedRegions = mergeRegionContent(homepageRegions, regions, lang)
+  const mappedRegions = mergeRegionContent(regions, lang)
   const activeRegion = mappedRegions.find((item) => item.key === activeKey) || mappedRegions[0]
 
   return (
