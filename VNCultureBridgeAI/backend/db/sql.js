@@ -34,6 +34,9 @@ async function queryWithSqlCmd(statement, bindings = {}) {
   const database = (process.env.DB_NAME || 'VNCultureBridgeAI').replace(/'/g, "''")
 
   const buildScript = (useTrustCert) => `
+    $ErrorActionPreference = 'Stop'
+    Import-Module SqlServer -ErrorAction SilentlyContinue
+    
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
     $OutputEncoding = [System.Text.Encoding]::UTF8
 
