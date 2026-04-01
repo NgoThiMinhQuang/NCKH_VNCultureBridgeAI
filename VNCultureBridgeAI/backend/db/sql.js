@@ -32,10 +32,11 @@ async function queryWithSqlCmd(statement, bindings = {}) {
   const server = (process.env.DB_SERVER || 'localhost').replace(/'/g, "''")
   const database = (process.env.DB_NAME || 'VNCultureBridgeAI').replace(/'/g, "''")
 
+  const trustCert = String(process.env.DB_TRUST_CERT || 'true') === 'true' ? '-TrustServerCertificate' : ''
   const powerShellScript = `
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
     $OutputEncoding = [System.Text.Encoding]::UTF8
-    $rows = Invoke-Sqlcmd -ServerInstance '${server}' -Database '${database}' -Query @'
+    $rows = Invoke-Sqlcmd -ServerInstance '${server}' -Database '${database}' ${trustCert} -Query @'
 ${wrappedQuery}
 '@
     $normalized = @(
@@ -44,7 +45,7 @@ ${wrappedQuery}
     $normalized | ConvertTo-Json -Compress -Depth 10
   `
 
-  const { stdout } = await execFileAsync('powershell', ['-NoProfile', '-Command', powerShellScript], {
+  const { stdout } = await execFileAsync('powershell', ['-ExecutionPolicy', 'Bypass', '-NoProfile', '-Command', powerShellScript], {
     windowsHide: true,
     maxBuffer: 10 * 1024 * 1024,
   })
