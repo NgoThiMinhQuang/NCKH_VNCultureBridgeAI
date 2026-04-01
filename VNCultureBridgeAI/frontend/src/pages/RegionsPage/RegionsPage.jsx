@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './RegionsPage.css'
-import { getHomepage, getRegions } from '../services/api'
-import { ui } from '../i18n/messages'
+import { getHomepage } from '../../services/homepage.service'
+import { getRegions } from '../../services/region.service'
+import { ui } from '../../i18n/messages'
+import { featuredMapPoints } from '../../components/features/regions/VietnamMap'
+import VietnamMap from '../../components/features/regions/VietnamMap'
+import LoadingState from '../../components/common/LoadingState/LoadingState'
 
 const regionMeta = {
   vi: [
@@ -59,43 +63,6 @@ const regionMeta = {
   ],
 }
 
-const featuredMapPoints = {
-  vi: {
-    north: [
-      { id: 'hn', label: 'Hà Nội', x: 58, y: 20, labelX: 78, labelY: 19 },
-      { id: 'hl', label: 'Hạ Long', x: 70, y: 24, labelX: 80, labelY: 27 },
-      { id: 'sp', label: 'Sa Pa', x: 39, y: 18, labelX: 16, labelY: 18 },
-    ],
-    central: [
-      { id: 'hue', label: 'Huế', x: 57, y: 50, labelX: 76, labelY: 49 },
-      { id: 'dn', label: 'Đà Nẵng', x: 58, y: 56, labelX: 78, labelY: 56 },
-      { id: 'ha', label: 'Hội An', x: 57, y: 60, labelX: 76, labelY: 61 },
-    ],
-    south: [
-      { id: 'hcm', label: 'TP.HCM', x: 45, y: 81, labelX: 65, labelY: 80 },
-      { id: 'ct', label: 'Cần Thơ', x: 37, y: 84, labelX: 13, labelY: 84 },
-      { id: 'pq', label: 'Phú Quốc', x: 22, y: 77, labelX: 2, labelY: 76 },
-    ],
-  },
-  en: {
-    north: [
-      { id: 'hn', label: 'Hanoi', x: 58, y: 20, labelX: 78, labelY: 19 },
-      { id: 'hl', label: 'Ha Long', x: 70, y: 24, labelX: 81, labelY: 27 },
-      { id: 'sp', label: 'Sa Pa', x: 39, y: 18, labelX: 16, labelY: 18 },
-    ],
-    central: [
-      { id: 'hue', label: 'Hue', x: 57, y: 50, labelX: 77, labelY: 49 },
-      { id: 'dn', label: 'Da Nang', x: 58, y: 56, labelX: 79, labelY: 56 },
-      { id: 'ha', label: 'Hoi An', x: 57, y: 60, labelX: 77, labelY: 61 },
-    ],
-    south: [
-      { id: 'hcm', label: 'Ho Chi Minh City', x: 45, y: 81, labelX: 64, labelY: 80 },
-      { id: 'ct', label: 'Can Tho', x: 37, y: 84, labelX: 14, labelY: 84 },
-      { id: 'pq', label: 'Phu Quoc', x: 22, y: 77, labelX: 2, labelY: 76 },
-    ],
-  },
-}
-
 function mergeRegionContent(featuredRegions, listRegions, lang) {
   const meta = regionMeta[lang] || regionMeta.vi
   const baseItems = featuredRegions.length
@@ -118,77 +85,6 @@ function mergeRegionContent(featuredRegions, listRegions, lang) {
       highlights: item.highlights,
     }
   })
-}
-
-function VietnamMap({ items, activeKey, activePointId, onSelectRegion, onSelectPoint, lang }) {
-  const activeItem = items.find((item) => item.key === activeKey)
-  const points = featuredMapPoints[lang]?.[activeKey] || []
-
-  return (
-    <div className="regions-map">
-      <div className="regions-map__canvas">
-        <div className="regions-map__country" aria-label="Vietnam regions map">
-          <img src="/maps/vietnam-map-base.png" alt="Vietnam map" className="regions-map__base" />
-          <button
-            type="button"
-            className={`regions-map__overlay regions-map__overlay--north${activeKey === 'north' ? ' is-active' : ''}`}
-            onMouseEnter={() => onSelectRegion('north')}
-            onClick={() => onSelectRegion('north')}
-            aria-label="Northern Vietnam"
-          >
-            <img src="/maps/vietnam-map-north-active.png" alt="Northern Vietnam" />
-          </button>
-          <button
-            type="button"
-            className={`regions-map__overlay regions-map__overlay--central${activeKey === 'central' ? ' is-active' : ''}`}
-            onMouseEnter={() => onSelectRegion('central')}
-            onClick={() => onSelectRegion('central')}
-            aria-label="Central Vietnam"
-          >
-            <img src="/maps/vietnam-map-central-active.png" alt="Central Vietnam" />
-          </button>
-          <button
-            type="button"
-            className={`regions-map__overlay regions-map__overlay--south${activeKey === 'south' ? ' is-active' : ''}`}
-            onMouseEnter={() => onSelectRegion('south')}
-            onClick={() => onSelectRegion('south')}
-            aria-label="Southern Vietnam"
-          >
-            <img src="/maps/vietnam-map-south-active.png" alt="Southern Vietnam" />
-          </button>
-
-          {points.map((point) => (
-            <div key={point.id} className={`regions-map__point-group${activePointId === point.id ? ' is-active' : ''}`} style={{ left: `${point.x}%`, top: `${point.y}%` }}>
-              <button
-                type="button"
-                className="regions-map__point"
-                onMouseEnter={() => onSelectPoint(point.id)}
-                onClick={() => onSelectPoint(point.id)}
-                aria-label={point.label}
-              />
-              <span className="regions-map__pulse" aria-hidden="true" />
-              <span className="regions-map__connector" style={{ width: `${Math.max(Math.abs(point.labelX - point.x) * 1.2, 22)}%` }} aria-hidden="true" />
-              <button
-                type="button"
-                className="regions-map__point-label"
-                style={{ left: `${point.labelX - point.x}%`, top: `${point.labelY - point.y}%` }}
-                onMouseEnter={() => onSelectPoint(point.id)}
-                onClick={() => onSelectPoint(point.id)}
-              >
-                {point.label}
-              </button>
-            </div>
-          ))}
-        </div>
-
-        <div className={`regions-map__title regions-map__title--north${activeKey === 'north' ? ' is-active' : ''}`}>NORTHERN VIETNAM</div>
-        <div className={`regions-map__title regions-map__title--central${activeKey === 'central' ? ' is-active' : ''}`}>CENTRAL VIETNAM</div>
-        <div className={`regions-map__title regions-map__title--south${activeKey === 'south' ? ' is-active' : ''}`}>SOUTHERN VIETNAM</div>
-      </div>
-
-      <div className="regions-map__mobile-caption">{activeItem?.badge}</div>
-    </div>
-  )
 }
 
 export default function RegionsPage() {
@@ -229,13 +125,11 @@ export default function RegionsPage() {
     }
 
     loadRegions()
-    return () => {
-      ignore = true
-    }
+    return () => { ignore = true }
   }, [lang])
 
-  if (state.status === 'loading') return <div className="page-state">{copy.loading}</div>
-  if (state.status === 'error') return <div className="page-state"><p>{copy.error}</p><small>{state.error}</small></div>
+  if (state.status === 'loading') return <LoadingState message={copy.loading} />
+  if (state.status === 'error') return <LoadingState type="error" message={copy.error} detail={state.error} />
 
   const homepageRegions = state.data?.homepage?.regions || []
   const regions = state.data?.regions || []
@@ -251,7 +145,7 @@ export default function RegionsPage() {
             <h1>{lang === 'vi' ? 'Khám phá Việt Nam qua 3 vùng miền' : 'Discover Vietnam through its three regions'}</h1>
             <p>{lang === 'vi'
               ? 'Tham khảo cách trình bày map-led explorer từ các trang du lịch lớn, rồi tối giản lại cho dự án này: mở đầu bằng bản đồ Việt Nam, chọn 1 trong 3 miền và xem nhanh điểm nhấn từng vùng.'
-              : 'Inspired by map-led destination explorers, this page starts with a Vietnam map so visitors can quickly move across the country’s three major cultural regions.'}</p>
+              : 'Inspired by map-led destination explorers, this page starts with a Vietnam map so visitors can quickly move across the country\'s three major cultural regions.'}</p>
           </div>
           <div className="regions-page__hero-actions">
             <div className="lang-toggle" aria-label={copy.language}>
@@ -267,7 +161,14 @@ export default function RegionsPage() {
           <p>{lang === 'vi'
             ? 'Chạm hoặc rê chuột vào từng vùng để khám phá những nét văn hóa đặc trưng từ Bắc chí Nam.'
             : 'Hover or tap each region to explore the cultural identity of Vietnam from north to south.'}</p>
-          <VietnamMap items={mappedRegions} activeKey={activeKey} activePointId={activePointId} onSelectRegion={handleSelectRegion} onSelectPoint={setActivePointId} lang={lang} />
+          <VietnamMap
+            items={mappedRegions}
+            activeKey={activeKey}
+            activePointId={activePointId}
+            onSelectRegion={handleSelectRegion}
+            onSelectPoint={setActivePointId}
+            lang={lang}
+          />
         </div>
 
         <div className="regions-explorer fade-up">
