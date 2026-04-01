@@ -29,35 +29,64 @@ function buildDeclarations(bindings = {}) {
 async function queryWithSqlCmd(statement, bindings = {}) {
   const declarations = buildDeclarations(bindings)
   const wrappedQuery = `SET NOCOUNT ON;\n${declarations}\n${statement}`
+
   const server = (process.env.DB_SERVER || 'localhost').replace(/'/g, "''")
   const database = (process.env.DB_NAME || 'VNCultureBridgeAI').replace(/'/g, "''")
 
-  const trustCert = String(process.env.DB_TRUST_CERT || 'true') === 'true' ? '-TrustServerCertificate' : ''
-  const powerShellScript = `
+  const buildScript = (useTrustCert) => `
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
     $OutputEncoding = [System.Text.Encoding]::UTF8
-    $rows = Invoke-Sqlcmd -ServerInstance '${server}' -Database '${database}' ${trustCert} -Query @'
+
+    $rows = Invoke-Sqlcmd -ServerInstance '${server}' -Database '${database}' ${useTrustCert ? '-TrustServerCertificate' : ''} -Query @'
 ${wrappedQuery}
 '@
+
     $normalized = @(
       $rows | Select-Object * -ExcludeProperty RowError, RowState, Table, ItemArray, HasErrors
     )
+
     $normalized | ConvertTo-Json -Compress -Depth 10
   `
 
-  const { stdout } = await execFileAsync('powershell', ['-ExecutionPolicy', 'Bypass', '-NoProfile', '-Command', powerShellScript], {
-    windowsHide: true,
-    maxBuffer: 10 * 1024 * 1024,
-  })
+  const run = async (script) => {
+    return execFileAsync(
+      'powershell',
+      [
+        '-ExecutionPolicy', 'Bypass', // 🔥 luôn bật để tránh bị block
+        '-NoProfile',
+        '-Command',
+        script
+      ],
+      {
+        windowsHide: true,
+        maxBuffer: 10 * 1024 * 1024,
+      }
+    )
+  }
+
+  let stdout = ''
+
+  try {
+    // 🟢 Thử không dùng TrustCert trước
+    const res = await run(buildScript(false))
+    stdout = res.stdout
+  } catch (err) {
+    // 🔴 Nếu lỗi → thử lại với TrustCert
+    const res = await run(buildScript(true))
+    stdout = res.stdout
+  }
 
   const output = stdout.trim()
 
-  if (!output) {
-    return []
-  }
+  if (!output) return []
 
-  const parsed = JSON.parse(output)
-  return Array.isArray(parsed) ? parsed : [parsed]
+  try {
+    const parsed = JSON.parse(output)
+    return Array.isArray(parsed) ? parsed : [parsed]
+  } catch (e) {
+    console.error('❌ Parse JSON lỗi từ PowerShell:', output)
+    throw e
+  }
 }
 
 function getMssqlConfig() {
