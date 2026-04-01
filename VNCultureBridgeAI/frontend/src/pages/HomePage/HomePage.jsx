@@ -6,6 +6,7 @@ import { ui } from '../../i18n/messages'
 import CardGrid from '../../components/common/CardGrid/CardGrid'
 import SectionHeading from '../../components/common/SectionHeading/SectionHeading'
 import LoadingState from '../../components/common/LoadingState/LoadingState'
+import PageHeader from '../../components/layout/PageHeader/PageHeader'
 
 export default function HomePage() {
   const [lang, setLang] = useState('vi')
@@ -58,62 +59,25 @@ export default function HomePage() {
 
   return (
     <div className="page-shell">
-      <header className="site-header">
-        <div className="brand-mark">
-          <div className="brand-logo">VC</div>
-          <div>
-            <strong>VietCultura</strong>
-            <span>{lang === 'vi' ? 'Khám phá Việt Nam' : 'Discover Vietnam'}</span>
-          </div>
-        </div>
-        <nav className="site-nav">
-          {copy.nav.map((item, index) => {
-            if (index === 0) return <a key={item} href="#hero">{item}</a>
-            if (index === 1) {
-              return (
-                <div key={item} className="site-nav__item site-nav__item--regions">
-                  <Link to="/regions" className="site-nav__trigger">{item}</Link>
-                  <div className="regions-mega-menu">
-                    <div className="regions-mega-menu__header">
-                      <strong>{lang === 'vi' ? 'Ba miền Việt Nam' : 'Three regions of Vietnam'}</strong>
-                      <Link to="/regions" className="regions-mega-menu__all">
-                        {lang === 'vi' ? 'Xem tất cả vùng miền' : 'See all regions'}
-                      </Link>
-                    </div>
-                    <div className="regions-mega-menu__grid">
-                      {homepage.regions.map((region) => (
-                        <Link key={region.code} to={`/regions/${region.code}`} className="regions-mega-menu__card">
-                          <div className="regions-mega-menu__media">
-                            {region.imageUrl ? (
-                              <img src={region.imageUrl} alt={region.imageAlt || region.title} />
-                            ) : (
-                              <div className="regions-mega-menu__placeholder">{region.title}</div>
-                            )}
-                          </div>
-                          <div className="regions-mega-menu__body">
-                            <span>{region.category || (lang === 'vi' ? 'Vùng văn hoá' : 'Cultural region')}</span>
-                            <strong>{region.title}</strong>
-                            {region.description ? <p>{region.description}</p> : null}
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )
-            }
-            return <a key={item} href="#">{item}</a>
-          })}
-        </nav>
-        <div className="site-actions">
-          <Link to="/ai-guide" className="gradient-button nav-link-button">{copy.aiGuide}</Link>
-          <button type="button" className="outline-button">{copy.login}</button>
-          <div className="lang-toggle" aria-label={copy.language}>
-            <button type="button" className={lang === 'vi' ? 'active' : ''} onClick={() => setLang('vi')}>VI</button>
-            <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</button>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        lang={lang}
+        onLangChange={setLang}
+        renderNav={() => (
+          <nav className="ph__nav" aria-label="Main navigation">
+            <a href="#hero" className="ph__nav-link">{copy.nav[0]}</a>
+
+            {/* Link trang vùng miền thay vì mega-menu */}
+            <Link to="/regions" className="ph__nav-link">{copy.nav[1]}</Link>
+
+            <a href="#ethnic-groups" className="ph__nav-link">{copy.nav[2]}</a>
+            <a href="#festivals"     className="ph__nav-link">{copy.nav[3]}</a>
+            <a href="#cuisine"       className="ph__nav-link">{copy.nav[4]}</a>
+            <a href="#arts"          className="ph__nav-link">{copy.nav[5]}</a>
+            <a href="#blog"          className="ph__nav-link">{copy.nav[6]}</a>
+          </nav>
+        )}
+      />
+
 
       <main>
         <section className="hero-section" id="hero">

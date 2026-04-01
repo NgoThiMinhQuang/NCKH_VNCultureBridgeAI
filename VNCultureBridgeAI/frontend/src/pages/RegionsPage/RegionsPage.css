@@ -1,6 +1,6 @@
 .regions-page {
   min-height: 100vh;
-  padding: 44px 24px 72px;
+  padding: 0px 0px 72px;
   background:
     radial-gradient(circle at top left, rgba(245, 158, 11, 0.12), transparent 24%),
     radial-gradient(circle at bottom right, rgba(220, 38, 38, 0.12), transparent 28%),
@@ -8,7 +8,7 @@
 }
 
 .regions-page__shell {
-  width: min(1320px, 100%);
+  width: min(1360px, calc(100% - 64px));
   margin: 0 auto;
   display: grid;
   gap: 28px;
@@ -428,10 +428,12 @@
     opacity: 0.4;
     transform: translate(-50%, -50%) scale(1);
   }
+
   70% {
     opacity: 0;
     transform: translate(-50%, -50%) scale(2.25);
   }
+
   100% {
     opacity: 0;
     transform: translate(-50%, -50%) scale(2.25);
@@ -439,6 +441,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .regions-map__overlay,
   .regions-map__title,
   .regions-map__point,

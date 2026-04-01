@@ -4,111 +4,104 @@ import { ui } from '../../../i18n/messages'
 import './PageHeader.css'
 
 const NAV_LINKS = [
-  { labelKey: 1, path: '/regions' },    // Khám phá vùng miền
-  { labelKey: 2, path: '/ethnic-groups' }, // Văn hoá dân tộc
-  { labelKey: 3, path: '/festivals' },  // Lễ hội
-  { labelKey: 4, path: '/cuisine' },    // Ẩm thực
-  { labelKey: 5, path: '/arts' },       // Nghệ thuật
-  { labelKey: 6, path: '/blog' },       // Blog
+  { labelKey: 0, path: '/' },
+  { labelKey: 1, path: '/regions' },
+  { labelKey: 2, path: '/ethnic-groups' },
+  { labelKey: 3, path: '/festivals' },
+  { labelKey: 4, path: '/cuisine' },
+  { labelKey: 5, path: '/arts' },
+  { labelKey: 6, path: '/blog' },
 ]
 
 /**
- * Header dùng chung cho các trang chi tiết (không phải trang chủ).
- * Mang đậm phong cách sơn mài Việt Nam: nền đỏ thẫm, vàng kim, hoạ tiết hoa văn.
- *
- * @param {{
- *   lang: string,
- *   onLangChange: (lang: string) => void,
- *   breadcrumb?: { label: string, to?: string }[]
- * }} props
+ * Header dùng chung — nền kem, logo ảnh thật, nav gạch chân đỏ.
+ * Props:
+ *   lang           — 'vi' | 'en'
+ *   onLangChange   — (lang) => void
+ *   breadcrumb?    — [{ label, to? }]
  */
-export default function PageHeader({ lang, onLangChange, breadcrumb }) {
+export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }) {
   const copy = useMemo(() => ui[lang], [lang])
   const location = useLocation()
 
-  return (
-    <header className="page-header">
-      {/* Hoạ tiết trang trí trên cùng */}
-      <div className="page-header__ornament" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-      </div>
+  function isActive(path) {
+    if (path === '/') return location.pathname === '/'
+    return location.pathname.startsWith(path)
+  }
 
-      <div className="page-header__inner">
-        {/* Logo + Brand */}
-        <Link to="/" className="page-header__brand">
-          <div className="page-header__logo" aria-hidden="true">
-            <span className="page-header__logo-mark">VC</span>
-            <span className="page-header__logo-star">✦</span>
-          </div>
-          <div className="page-header__brand-text">
-            <strong>VietCultura</strong>
-            <span>{lang === 'vi' ? 'Khám phá Việt Nam' : 'Discover Vietnam'}</span>
+  return (
+    <header className="ph">
+      <div className="ph__bar">
+
+        {/* ── Logo ── */}
+        <Link to="/" className="ph__brand">
+          <img
+            src="/img/Logo.png"
+            alt="VNCulture logo"
+            className="ph__logo-img"
+          />
+          <div className="ph__brand-text">
+            <strong>VNCulture</strong>
+            <span>{lang === 'vi' ? 'Di sản & Văn hoá' : 'Heritage & Culture'}</span>
           </div>
         </Link>
 
-        {/* Navigation */}
-        <nav className="page-header__nav" aria-label="Main navigation">
-          {NAV_LINKS.map(({ labelKey, path }) => {
-            const label = copy.nav[labelKey]
-            const isActive = location.pathname.startsWith(path)
-            return (
+        {/* ── Navigation ── */}
+        {renderNav ? renderNav() : (
+          <nav className="ph__nav" aria-label="Main navigation">
+            {NAV_LINKS.map(({ labelKey, path }) => (
               <Link
                 key={path}
                 to={path}
-                className={`page-header__nav-link${isActive ? ' is-active' : ''}`}
+                className={`ph__nav-link${isActive(path) ? ' is-active' : ''}`}
               >
-                {label}
+                {copy.nav[labelKey]}
               </Link>
-            )
-          })}
-        </nav>
+            ))}
+          </nav>
+        )}
 
-        {/* Actions: AI Guide + Lang toggle */}
-        <div className="page-header__actions">
-          <Link to="/ai-guide" className={`page-header__ai-btn${location.pathname === '/ai-guide' ? ' is-active' : ''}`}>
-            <span className="page-header__ai-icon" aria-hidden="true">✦</span>
-            {copy.aiGuide}
-          </Link>
-          <div className="page-header__lang" aria-label={copy.language}>
-            <button
-              type="button"
-              className={lang === 'vi' ? 'is-active' : ''}
-              onClick={() => onLangChange('vi')}
-            >
-              VI
-            </button>
+        {/* ── Actions ── */}
+        <div className="ph__actions">
+          {/* Search */}
+          <button type="button" className="ph__icon-btn" aria-label={lang === 'vi' ? 'Tìm kiếm' : 'Search'}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+
+          {/* Language toggle */}
+          <div className="ph__lang" aria-label={copy.language}>
+            <button type="button" className={lang === 'en' ? 'is-active' : ''} onClick={() => onLangChange('en')}>EN</button>
             <span aria-hidden="true">|</span>
-            <button
-              type="button"
-              className={lang === 'en' ? 'is-active' : ''}
-              onClick={() => onLangChange('en')}
-            >
-              EN
-            </button>
+            <button type="button" className={lang === 'vi' ? 'is-active' : ''} onClick={() => onLangChange('vi')}>VI</button>
           </div>
+
+          {/* Đăng nhập */}
+          <Link to="/login" className="ph__btn-login">
+            {lang === 'vi' ? 'Đăng nhập' : 'Login'}
+          </Link>
+
+          {/* Đăng ký */}
+          <Link to="/register" className="ph__btn-register">
+            {lang === 'vi' ? 'Đăng ký' : 'Register'}
+          </Link>
         </div>
       </div>
 
-      {/* Breadcrumb */}
+      {/* ── Breadcrumb ── */}
       {breadcrumb && breadcrumb.length > 0 && (
-        <div className="page-header__breadcrumb">
-          <div className="page-header__breadcrumb-inner">
-            <Link to="/" className="page-header__breadcrumb-home">
-              <span aria-hidden="true">⌂</span>
-              {lang === 'vi' ? 'Trang chủ' : 'Home'}
-            </Link>
-            {breadcrumb.map((crumb, i) => (
-              <span key={i} className="page-header__breadcrumb-item">
-                <span className="page-header__breadcrumb-sep" aria-hidden="true">›</span>
-                {crumb.to ? (
-                  <Link to={crumb.to}>{crumb.label}</Link>
-                ) : (
-                  <span className="page-header__breadcrumb-current">{crumb.label}</span>
-                )}
+        <div className="ph__crumb">
+          <div className="ph__crumb-inner">
+            <Link to="/" className="ph__crumb-link">{lang === 'vi' ? 'Trang chủ' : 'Home'}</Link>
+            {breadcrumb.map((item, i) => (
+              <span key={i} className="ph__crumb-item">
+                <span className="ph__crumb-sep" aria-hidden="true">›</span>
+                {item.to
+                  ? <Link to={item.to} className="ph__crumb-link">{item.label}</Link>
+                  : <span className="ph__crumb-current">{item.label}</span>
+                }
               </span>
             ))}
           </div>
