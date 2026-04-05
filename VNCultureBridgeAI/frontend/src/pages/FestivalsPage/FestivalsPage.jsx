@@ -8,6 +8,8 @@ import banner1Img from '../../assets/banner1.jpg'
 import banner2Img from '../../assets/banner2.jpg'
 import banner3Img from '../../assets/banner3.jpg'
 import anhtet1 from '../../assets/anhtet1.PNG'
+import giotohungvuong from "../../assets/giotohungvuong1.PNG"
+import festivel_hue from "../../assets/festival_hue.png"
 import "./FestivalsPage.css"
 import "../../App.css"
 
@@ -320,7 +322,7 @@ export default function FestivalsPage() {
                             <article className="festivals-card fade-up" style={{ animationDelay: "0.1s" }}>
                                 {/* ảnh */}
                                 <div className="festivals-card__img">
-                                    <img src={bannerImg} alt="Mid-Autumn Festival" loading="lazy" />
+                                    <img src={giotohungvuong} alt="Mid-Autumn Festival" loading="lazy" />
                                     <span className="festivals-card__tag text-purple">Cultural</span>
                                 </div>
                                 {/* body */}
@@ -352,7 +354,7 @@ export default function FestivalsPage() {
                             <article className="festivals-card fade-up" style={{ animationDelay: "0.1s" }}>
                                 {/* ảnh */}
                                 <div className="festivals-card__img">
-                                    <img src={bannerImg} alt="Mid-Autumn Festival" loading="lazy" />
+                                    <img src={festivel_hue} alt="Mid-Autumn Festival" loading="lazy" />
                                     <span className="festivals-card__tag text-purple">Cultural</span>
                                 </div>
                                 {/* body */}
