@@ -14,51 +14,6 @@
   gap: 28px;
 }
 
-.regions-page__hero {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  align-items: flex-start;
-  padding: 12px 8px 0;
-}
-
-.regions-page__hero-copy {
-  max-width: 800px;
-}
-
-.regions-page__eyebrow {
-  display: inline-flex;
-  padding: 9px 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  color: #bf4f0d;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.78rem;
-}
-
-.regions-page__hero h1 {
-  margin: 16px 0 14px;
-  font-size: clamp(2.5rem, 5vw, 4.7rem);
-  line-height: 0.96;
-  color: #21120c;
-}
-
-.regions-page__hero p {
-  margin: 0;
-  max-width: 760px;
-  color: #67534a;
-  line-height: 1.8;
-  font-size: 1.05rem;
-}
-
-.regions-page__hero-actions {
-  display: grid;
-  gap: 12px;
-  justify-items: end;
-}
-
 .regions-page__back {
   display: inline-flex;
   align-items: center;
@@ -92,436 +47,362 @@
   line-height: 1.7;
 }
 
-.regions-map {
+.regions-map-container {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.regions-map__canvas {
+.vietnam-map-wrapper {
   position: relative;
-  min-height: 980px;
-}
-
-.regions-map__country {
-  position: relative;
-  width: min(540px, 100%);
+  width: min(380px, 100%);
   margin: 28px auto 0;
   filter: drop-shadow(0 14px 24px rgba(118, 91, 10, 0.12));
 }
 
-.regions-map__base,
-.regions-map__overlay img {
+.vietnam-map-base {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.regions-map__base,
-.regions-map__overlay img,
-.regions-map__point-label {
-  backface-visibility: hidden;
-}
-
-.regions-map__overlay {
+.vietnam-map-overlay {
   position: absolute;
   inset: 0;
   padding: 0;
   border: 0;
   background: transparent;
   opacity: 0;
-  cursor: pointer;
-  transform: translate3d(0, 0, 0) scale(1);
-  transform-origin: center;
-  will-change: transform, opacity, filter;
-  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 420ms cubic-bezier(0.22, 1, 0.36, 1), filter 420ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.regions-map__overlay.is-active,
-.regions-map__overlay:hover {
-  opacity: 1;
-  transform: translate3d(0, -4px, 0) scale(1.01);
-  filter: drop-shadow(0 12px 22px rgba(71, 61, 23, 0.18));
-}
-
-.regions-map__point-group {
-  position: absolute;
-  z-index: 4;
-  transform: translate(-50%, -50%);
-}
-
-.regions-map__point {
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  border: 3px solid #ffffff;
-  background: #b20f12;
-  box-shadow: 0 4px 12px rgba(178, 15, 18, 0.18);
-  cursor: pointer;
-  position: relative;
-  z-index: 3;
-  transition: transform 260ms ease, box-shadow 260ms ease, background 260ms ease;
-}
-
-.regions-map__point-group.is-active .regions-map__point,
-.regions-map__point:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 16px rgba(178, 15, 18, 0.24);
-}
-
-.regions-map__pulse {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: rgba(178, 15, 18, 0.16);
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 0;
   pointer-events: none;
+  z-index: 1;
+  transition: opacity 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.regions-map__point-group.is-active .regions-map__pulse {
+.vietnam-map-overlay img {
+  display: block;
+  width: 100%;
+  height: auto;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  will-change: transform, filter;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), filter 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vietnam-map-overlay--north img {
+  transform-origin: 34% 23%;
+}
+
+.vietnam-map-overlay--central img {
+  transform-origin: 53% 54%;
+}
+
+.vietnam-map-overlay--south img {
+  transform-origin: 39% 82%;
+}
+
+.vietnam-map-overlay.is-visible {
   opacity: 1;
-  animation: mapPulse 2.4s ease-out infinite;
 }
 
-.regions-map__connector {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  height: 1px;
-  background: rgba(58, 39, 31, 0.28);
-  transform: translateY(-50%);
-  transform-origin: left center;
+.vietnam-map-overlay.is-active {
+  z-index: 2;
 }
 
-.regions-map__point-label {
+.vietnam-map-overlay.is-hovered {
+  z-index: 3;
+}
+
+.vietnam-map-overlay.is-hovered img {
+  transform: translate3d(-4px, -6px, 0) scale(1.12);
+  filter: drop-shadow(8px 12px 20px rgba(0, 0, 0, 0.28));
+}
+
+.vietnam-map-overlay.is-active:not(.is-hovered) img {
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
+}
+
+.vietnam-map-marker {
   position: absolute;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #2d211b;
-  font-size: 1rem;
-  font-weight: 600;
+  color: #b30000;
+  z-index: 3;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+}
+
+.vietnam-map-marker--north {
+  left: 48%;
+  top: 22%;
+  font-size: 18px;
+}
+.vietnam-map-marker--central {
+  left: 61%;
+  top: 51%;
+}
+.vietnam-map-marker--south {
+  left: 36%;
+  top: 83%;
+}
+
+.vietnam-map-text {
+  position: absolute;
+  font-weight: 800;
+  font-size: 14px;
+  color: #000;
+  z-index: 3;
+  pointer-events: none;
   white-space: nowrap;
-  cursor: pointer;
-  transition: color 220ms ease, transform 220ms ease;
+  transition: color 250ms ease;
 }
 
-.regions-map__point-group.is-active .regions-map__point-label,
-.regions-map__point-label:hover {
-  color: #8f110f;
-  transform: translateY(-1px);
+.vietnam-map-text.is-active {
+  color: #b30000;
 }
 
-.regions-map__title {
+.vietnam-map-text--north {
+  left: 65%;
+  top: 15%;
+}
+.vietnam-map-text--central {
+  left: 78%;
+  top: 48%;
+}
+.vietnam-map-text--south {
+  left: 65%;
+  top: 86%;
+}
+
+.hover-zone {
   position: absolute;
-  font-size: 28px;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  color: #111111;
-  opacity: 0.92;
-  transition: color 280ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 280ms ease;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  outline: none;
 }
 
-.regions-map__title--north {
-  top: 150px;
-  right: 60px;
+.north-zone {
+  top: 0;
+  height: 38%;
+}
+.central-zone {
+  top: 38%;
+  height: 34%;
+}
+.south-zone {
+  top: 72%;
+  height: 28%;
 }
 
-.regions-map__title--central {
-  top: 475px;
-  right: 20px;
-}
-
-.regions-map__title--south {
-  bottom: 90px;
-  right: 110px;
-}
-
-.regions-map__title.is-active {
-  color: #8f110f;
-  opacity: 1;
-  transform: translate3d(0, -2px, 0);
-}
-
-.regions-map__mobile-caption {
-  display: none;
-}
-
-.regions-explorer {
+.regions-split-layout {
   display: grid;
-  grid-template-columns: minmax(340px, 460px) minmax(260px, 320px);
-  gap: 24px;
+  grid-template-columns: minmax(300px, 1fr) minmax(360px, 480px);
+  gap: 32px;
   align-items: start;
 }
 
-.regions-explorer__panel,
-.regions-explorer__legend-wrap {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 34px;
-  box-shadow: 0 26px 70px rgba(77, 34, 23, 0.12);
+.regions-split-layout__map {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 32px;
+  padding: 32px;
+  text-align: center;
 }
 
-.regions-explorer__panel {
-  padding: 26px;
+.regions-split-layout__map h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  color: #cd211b;
+  text-transform: uppercase;
+  font-weight: 900;
 }
 
-.regions-explorer__legend-wrap {
-  padding: 22px;
+.regions-split-layout__map-desc {
+  margin: 14px auto 0;
+  max-width: 600px;
+  color: #4a3a31;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-.regions-explorer__legend-wrap::before {
-  content: '';
-  display: block;
-  width: 84px;
-  height: 4px;
+.region-card-wrapper {
+  position: sticky;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.region-tabs {
+  display: flex;
+  gap: 12px;
+  background: transparent;
+}
+
+.region-tab {
+  padding: 10px 20px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #c20d2f, #f59e0b);
-  margin-bottom: 18px;
+  border: none;
+  background: #ffffff;
+  color: #887165;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(136, 113, 101, 0.08);
 }
 
-.regions-explorer__badge {
-  display: inline-flex;
-  margin-bottom: 16px;
-  padding: 9px 14px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(220, 38, 38, 0.12), rgba(245, 158, 11, 0.18));
-  color: #a32020;
+.region-tab:hover {
+  color: #c20d2f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(194, 13, 47, 0.12);
+}
+
+.region-tab.is-active {
+  background: #e2a628;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(226, 166, 40, 0.3);
+}
+
+.region-card {
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 40px 32px;
+  box-shadow: 0 24px 60px rgba(77, 34, 23, 0.08);
+}
+
+.region-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.region-card__decorator {
+  width: 6px;
+  height: 32px;
+  background: #e2a628;
+  border-radius: 6px;
+}
+
+.region-card__header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #19100c;
   font-weight: 800;
 }
 
-.regions-explorer__image {
-  overflow: hidden;
-  border-radius: 26px;
-  aspect-ratio: 1.2;
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.14), rgba(245, 158, 11, 0.14));
+.region-card__desc {
+  margin: 0 0 24px;
+  color: #5c473f;
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
-.regions-explorer__image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.region-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
 }
 
-.regions-explorer__placeholder {
-  width: 100%;
-  height: 100%;
+.region-card__detail-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.region-card__detail-icon {
   display: grid;
   place-items: center;
-  color: #9a1e1e;
-  font-size: 2rem;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 50%;
+  background: #fff7eb;
+  color: #e2a628;
+}
+
+.region-card__detail-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.region-card__detail-text strong {
+  color: #2b1f1a;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   font-weight: 800;
 }
 
-.regions-explorer__content {
-  display: grid;
-  gap: 12px;
-  margin-top: 20px;
+.region-card__detail-text span {
+  color: #69564c;
+  line-height: 1.45;
+  font-size: 0.9rem;
 }
 
-.regions-explorer__content h2 {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 3rem);
-  color: #19100c;
-}
-
-.regions-explorer__content h3 {
-  margin: 0;
-  font-size: 1.15rem;
-  color: #be4e0c;
-}
-
-.regions-explorer__content p {
-  margin: 0;
-  color: #665249;
-  line-height: 1.85;
-}
-
-.regions-explorer__chips {
+.region-card__btn {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.regions-explorer__chips span {
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: #fff6ec;
-  border: 1px solid rgba(190, 78, 12, 0.12);
-  color: #6c4a3d;
-  font-weight: 700;
-}
-
-.regions-explorer__actions {
-  margin-top: 6px;
-}
-
-.regions-explorer__cta {
-  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 24px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #c20d2f 0%, #b10722 100%);
-  color: white;
-  font-weight: 800;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  background: #deb332;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
   text-decoration: none;
-  box-shadow: 0 18px 40px rgba(194, 13, 47, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 8px 20px rgba(222, 179, 50, 0.25);
 }
 
-.regions-explorer__legend {
-  display: grid;
-  gap: 14px;
-  margin-top: 0;
-}
-
-.regions-explorer__legend-item {
-  display: grid;
-  gap: 6px;
-  padding: 16px;
-  border: 1px solid rgba(125, 98, 87, 0.14);
-  background: #fffaf4;
-  border-radius: 22px;
-  text-align: left;
-  cursor: pointer;
-  transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
-}
-
-.regions-explorer__legend-item:hover {
+.region-card__btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(77, 34, 23, 0.08);
-}
-
-.regions-explorer__legend-item strong {
-  color: #23140d;
-}
-
-.regions-explorer__legend-item small {
-  color: #7f675d;
-}
-
-.regions-explorer__legend-item.is-active {
-  border-color: rgba(194, 13, 47, 0.28);
-  box-shadow: 0 14px 28px rgba(194, 13, 47, 0.08);
-}
-
-.regions-explorer__legend-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-}
-
-.regions-explorer__legend-dot--north {
-  background: #b99608;
-}
-
-.regions-explorer__legend-dot--central {
-  background: #dbbd2b;
-}
-
-.regions-explorer__legend-dot--south {
-  background: #ead06a;
-}
-
-@keyframes mapPulse {
-  0% {
-    opacity: 0.4;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  70% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(2.25);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(2.25);
-  }
+  box-shadow: 0 14px 30px rgba(222, 179, 50, 0.4);
+  background: #cba22d;
 }
 
 @media (prefers-reduced-motion: reduce) {
-
-  .regions-map__overlay,
-  .regions-map__title,
-  .regions-map__point,
-  .regions-map__point-label,
-  .regions-explorer__legend-item,
-  .regions-map__pulse {
+  .vietnam-map-overlay {
     transition: none;
     animation: none;
   }
 }
 
-@media (max-width: 1180px) {
-  .regions-explorer {
+@media (max-width: 1024px) {
+  .regions-split-layout {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 900px) {
-  .regions-page__hero {
-    grid-template-columns: 1fr;
-    display: grid;
+  .regions-split-layout__map h2 {
+    font-size: 1.8rem;
   }
 
-  .regions-page__hero-actions {
-    justify-items: start;
+  .vietnam-map-overlay.is-active,
+  .vietnam-map-overlay:hover {
+    transform: translate3d(-2px, -3px, 0);
   }
 
-  .regions-map-stage h2 {
-    font-size: 2.4rem;
+  .vietnam-map-text {
+    font-size: 11px;
   }
 
-  .regions-map-stage p {
-    font-size: 1.05rem;
+  .region-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  .regions-map__title {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .regions-page {
-    padding: 24px 14px 48px;
-  }
-
-  .regions-explorer__panel,
-  .regions-explorer__legend-wrap {
-    border-radius: 26px;
-    padding: 18px;
-  }
-
-  .regions-map__canvas {
-    min-height: 720px;
-  }
-
-  .regions-map__title {
-    font-size: 18px;
-  }
-
-  .regions-map__title--north {
-    top: 115px;
-    right: 8px;
-  }
-
-  .regions-map__title--central {
-    top: 390px;
-    right: 0;
-  }
-
-  .regions-map__title--south {
-    bottom: 60px;
-    right: 42px;
-  }
-
-  .regions-map__point-label {
-    font-size: 0.88rem;
-  }
-
-  .regions-map__overlay.is-active,
-  .regions-map__overlay:hover {
-    transform: translate3d(0, -2px, 0) scale(1.005);
+  .region-card {
+    padding: 24px;
   }
 }

@@ -22,6 +22,22 @@ export default function HomePage() {
 
   const copy = useMemo(() => ui[lang], [lang])
 
+  function getHeroTitleLines(title) {
+    if (!title) return []
+
+    if (title.includes(' Việt Nam')) {
+      return [title.replace(' Việt Nam', ''), 'Việt Nam']
+    }
+
+    if (title.includes(' Vietnam')) {
+      return [title.replace(' Vietnam', ''), 'Vietnam']
+    }
+
+    const words = title.trim().split(/\s+/)
+    const middle = Math.ceil(words.length / 2)
+    return [words.slice(0, middle).join(' '), words.slice(middle).join(' ')]
+  }
+
   useEffect(() => {
     let ignore = false
     async function loadHomepage() {
@@ -63,14 +79,208 @@ export default function HomePage() {
   const homepageRegions = homepage.regions || []
   const ethnicShowcaseStats = copy.ethnicShowcaseStats || []
   const featuredEthnicGroups = (homepage.ethnicGroups || []).slice(0, 6)
-  const festivalShowcaseCards = (homepage.festivals || []).slice(0, 3).map((item, index) => ({
-    ...item,
-    ...(copy.festivalShowcaseCards?.[index] || {}),
-  }))
-  const cuisineShowcaseCards = (homepage.cuisine || []).slice(0, 3).map((item, index) => ({
-    ...item,
-    ...(copy.cuisineShowcaseCards?.[index] || {}),
-  }))
+  const heroTitleLines = getHeroTitleLines(homepage.hero.title)
+  const festivalShowcaseCards = (homepage.festivals || []).slice(0, 3)
+  const cuisineShowcaseCards = (homepage.cuisine || []).slice(0, 3)
+  const artsShowcaseCards = homepage.arts || []
+  const featuredArt = artsShowcaseCards[0]
+  const additionalArts = artsShowcaseCards.slice(1, 7)
+
+  function localizeArtCategory(category) {
+    if (!category) return ''
+
+    const normalized = category.trim().toLowerCase()
+    if (normalized === 'performing arts') return 'Nghệ thuật trình diễn'
+    if (normalized === 'visual arts') return 'Mỹ thuật'
+    if (normalized === 'musical heritage') return 'Di sản âm nhạc'
+    if (normalized === 'folk arts') return 'Nghệ thuật dân gian'
+    return category
+  }
+
+  function localizeArtTitle(title) {
+    if (!title) return ''
+
+    const normalized = title.trim().toLowerCase()
+    if (normalized === 'water puppetry') return 'Múa rối nước'
+    if (normalized === 'lacquerware') return 'Sơn mài'
+    if (normalized === 'bamboo crafts') return 'Thủ công tre'
+    if (normalized === 'ao dai design') return 'Thiết kế áo dài'
+    return title
+  }
+
+  function localizeCuisineTitle(title) {
+    if (!title) return ''
+
+    const normalized = title.trim().toLowerCase()
+    if (normalized === 'vietnamese banh mi') return 'Bánh mì Việt Nam'
+    if (normalized === 'vietnamese pho') return 'Phở Việt Nam'
+    return title
+  }
+
+  function localizeEthnicityTitle(title) {
+    if (!title) return ''
+
+    const normalized = title.trim().toLowerCase()
+    if (normalized === 'khmer') return 'Khmer'
+    if (normalized === 'cham') return 'Chăm'
+    return title
+  }
+
+  function localizeEthnicityDescription(description) {
+    if (!description) return ''
+
+    if (description.includes('The Khmer community is concentrated in southern Vietnam')) {
+      return 'Cộng đồng Khmer tập trung chủ yếu ở Nam Bộ, nổi bật với chùa Phật giáo Nam tông, lễ hội truyền thống và nghệ thuật diễn xướng dân gian.'
+    }
+
+    return description
+  }
+
+  function localizeCuisineDescription(description) {
+    if (!description) return ''
+
+    if (description.includes('A famous sandwich born from the meeting of French baguette')) {
+      return 'Món bánh mì trứ danh kết hợp tinh hoa baguette Pháp với nguyên liệu và hương vị rất Việt Nam.'
+    }
+
+    if (description.includes('An iconic Vietnamese dish known for clear broth')) {
+      return 'Món phở biểu tượng của Việt Nam, nổi tiếng với nước dùng thanh, bánh phở mềm và hương vị hài hòa.'
+    }
+
+    return description
+  }
+
+  function localizeArtDescription(description) {
+    if (!description) return ''
+
+    if (description.includes('A distinctive performance art in which wooden puppets are controlled on water')) {
+      return 'Loại hình nghệ thuật độc đáo nơi những con rối gỗ được điều khiển trên mặt nước, gắn với đời sống và trí tưởng tượng dân gian Việt.'
+    }
+
+    return description
+  }
+
+  function localizeFestivalTitle(title) {
+    if (!title) return ''
+
+    const normalized = title.trim().toLowerCase()
+    if (normalized === 'hue festival') return 'Festival Huế'
+    if (normalized === 'mid-autumn festival') return 'Tết Trung Thu'
+    return title
+  }
+
+  function localizeFestivalSubtitle(subtitle) {
+    if (!subtitle) return ''
+
+    const normalized = subtitle.trim().toLowerCase()
+    if (normalized === 'lunar new year') return 'Tết Nguyên Đán'
+    if (normalized === 'mid-autumn festival') return 'Tết Trung Thu'
+    if (normalized === 'hue festival') return 'Festival Huế'
+    return subtitle
+  }
+
+  function localizeFestivalDescription(description) {
+    if (!description) return ''
+
+    if (description.includes('A large-scale cultural event honoring Hue heritage')) {
+      return 'Sự kiện văn hóa quy mô lớn tôn vinh di sản Huế cùng các chương trình nghệ thuật đương đại đặc sắc.'
+    }
+
+    if (description.includes('A children-centered festival filled with lanterns')) {
+      return 'Lễ hội dành cho thiếu nhi với đèn lồng, múa lân, bánh trung thu và không khí sum vầy dưới trăng rằm.'
+    }
+
+    return description
+  }
+
+  function localizeFestivalMeta(value) {
+    if (!value) return ''
+
+    const normalized = value.trim().toLowerCase()
+    if (normalized === 'festival season') return 'Mùa lễ hội'
+    if (normalized === 'central vietnam') return 'Miền Trung'
+    if (normalized === 'nationwide') return 'Toàn quốc'
+    return value
+  }
+
+  function localizeFestivalTag(tag) {
+    if (!tag) return ''
+
+    const normalized = tag.trim().toLowerCase()
+    if (normalized === 'lantern parade') return 'Rước đèn'
+    if (normalized === 'lion dance') return 'Múa lân'
+    if (normalized === 'mooncakes') return 'Bánh trung thu'
+    if (normalized === 'moon gazing') return 'Ngắm trăng'
+    if (normalized === 'royal arts') return 'Nghệ thuật cung đình'
+    if (normalized === 'night shows') return 'Trình diễn đêm'
+    if (normalized === 'ao dai') return 'Áo dài'
+    if (normalized === 'heritage performances') return 'Trình diễn di sản'
+    return tag
+  }
+
+  function localizeFestivalBadge(badge) {
+    if (!badge) return ''
+
+    const normalized = badge.trim().toLowerCase()
+    if (normalized === 'most important') return 'Nổi bật nhất'
+    if (normalized === "children's festival") return 'Lễ hội thiếu nhi'
+    if (normalized === 'cultural showcase') return 'Di sản trình diễn'
+    return badge
+  }
+
+  function withSafeImage(item) {
+    if (!item) return item
+
+    return {
+      ...item,
+      imageUrl: item.imageUrl && /^https?:\/\//.test(item.imageUrl) ? item.imageUrl : null,
+    }
+  }
+
+  function localizeEthnicityItem(item) {
+    return {
+      ...withSafeImage(item),
+      title: localizeEthnicityTitle(item.title),
+      description: localizeEthnicityDescription(item.description),
+    }
+  }
+
+  function localizeCuisineItem(item) {
+    return {
+      ...withSafeImage(item),
+      title: localizeCuisineTitle(item.title),
+      description: localizeCuisineDescription(item.description),
+    }
+  }
+
+  function localizeFestivalItem(item) {
+    return {
+      ...withSafeImage(item),
+      title: localizeFestivalTitle(item.title),
+      subtitle: localizeFestivalSubtitle(item.subtitle),
+      description: localizeFestivalDescription(item.description),
+      metaPrimary: localizeFestivalMeta(item.metaPrimary),
+      metaSecondary: localizeFestivalMeta(item.metaSecondary),
+      badge: localizeFestivalBadge(item.badge),
+      tags: (item.tags || []).map(localizeFestivalTag),
+    }
+  }
+
+  function localizeArtItem(item) {
+    return {
+      ...withSafeImage(item),
+      title: localizeArtTitle(item.title),
+      category: localizeArtCategory(item.category),
+      description: localizeArtDescription(item.description),
+    }
+  }
+
+  const localizedCuisineShowcaseCards = cuisineShowcaseCards.map(localizeCuisineItem)
+  const localizedFestivalShowcaseCards = festivalShowcaseCards.map(localizeFestivalItem)
+  const localizedFeaturedEthnicGroups = featuredEthnicGroups.map(localizeEthnicityItem)
+  const localizedFeaturedArt = featuredArt ? localizeArtItem(featuredArt) : null
+  const localizedAdditionalArts = additionalArts.map(localizeArtItem)
+  const localizedArtsTabs = artsShowcaseCards.slice(0, 3).map(localizeArtItem)
 
   return (
     <div className="page-shell">
@@ -100,20 +310,33 @@ export default function HomePage() {
         >
           <div className="hero-content hero-content--animated">
             <span className="section-badge">{homepage.hero.badge}</span>
-            <h1>{homepage.hero.title}</h1>
+            <h1>
+              {heroTitleLines.map((line, index) => (
+                <span key={`${line}-${index}`} className="hero-title-line">
+                  {line}
+                </span>
+              ))}
+            </h1>
             <p>{homepage.hero.subtitle}</p>
             <div className="hero-actions">
-              <Link to="/regions" className="primary-button nav-link-button">{homepage.hero.primaryCta}</Link>
-              <a href="#festivals" className="secondary-button nav-link-button">{homepage.hero.secondaryCta}</a>
+              <Link to="/regions" className="primary-button nav-link-button hero-action-button">{homepage.hero.primaryCta}</Link>
+              <a href="#festivals" className="secondary-button nav-link-button hero-action-button">{homepage.hero.secondaryCta}</a>
             </div>
-            <form className="ai-guide__composer search-bar glass-panel" onSubmit={handleSearch}>
+            <form className="ai-guide__composer search-bar glass-panel hero-search-bar" onSubmit={handleSearch}>
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={lang === 'vi' ? 'Tìm kiếm bài viết, vùng miền, món ăn...' : 'Search articles, regions, dishes...'}
               />
-              <button type="submit" className="gradient-button nav-link-button" disabled={searching}>
-                {searching ? '...' : copy.search}
+              <button
+                type="submit"
+                className="gradient-button nav-link-button hero-search-submit"
+                disabled={searching}
+                aria-label={copy.search}
+              >
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M10.5 4a6.5 6.5 0 1 0 4.03 11.6l4.43 4.43 1.06-1.06-4.43-4.43A6.5 6.5 0 0 0 10.5 4Zm0 1.5a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z" />
+                </svg>
               </button>
             </form>
             {results.length ? (
@@ -185,6 +408,15 @@ export default function HomePage() {
                 </article>
               ))}
             </div>
+
+            <div className="regions-showcase__footer fade-up">
+              <Link to="/regions" className="regions-showcase__button">
+                <span>Xem bản đồ đầy đủ</span>
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M12 22s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Zm0-9a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+                </svg>
+              </Link>
+            </div>
           </section>
 
           <section className="content-section dark-section ethnic-showcase" id="ethnic-groups">
@@ -211,7 +443,7 @@ export default function HomePage() {
             </div>
 
             <div className="ethnic-showcase__grid">
-              {featuredEthnicGroups.map((item, index) => (
+              {localizedFeaturedEthnicGroups.map((item, index) => (
                 <article key={item.code || item.id || index} className="ethnic-card fade-up">
                   {item.imageUrl ? (
                     <img src={item.imageUrl} alt={item.imageAlt || item.title} className="ethnic-card__image" />
@@ -269,7 +501,7 @@ export default function HomePage() {
             </div>
 
             <div className="festival-showcase__grid">
-              {festivalShowcaseCards.map((item, index) => (
+              {localizedFestivalShowcaseCards.map((item, index) => (
                 <article key={item.code || item.id || index} className={`festival-card fade-up is-${item.accent || 'red'}`}>
                   <div className="festival-card__media">
                     {item.imageUrl ? (
@@ -342,7 +574,7 @@ export default function HomePage() {
             </div>
 
             <div className="cuisine-showcase__grid">
-              {cuisineShowcaseCards.map((item, index) => (
+              {localizedCuisineShowcaseCards.map((item, index) => (
                 <article key={item.code || item.id || index} className="cuisine-card fade-up">
                   <div className="cuisine-card__media">
                     {item.imageUrl ? (
@@ -389,9 +621,96 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="content-section light-section arts-layout" id="arts">
-            <SectionHeading badge={copy.artsSectionBadge} title={copy.artsSectionTitle} description={copy.artsSectionDescription} />
-            <CardGrid items={homepage.arts} variant="arts-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
+          <section className="content-section light-section arts-layout arts-showcase" id="arts">
+            {localizedFeaturedArt ? (
+              <>
+                <div className="arts-showcase__header fade-up">
+                  <span className="arts-showcase__eyebrow">
+                    <span className="arts-showcase__eyebrow-star" aria-hidden="true">✦</span>
+                    <span>{copy.artsSectionBadge}</span>
+                    <span className="arts-showcase__eyebrow-star" aria-hidden="true">✦</span>
+                  </span>
+                  <h2>{copy.artsSectionTitle}</h2>
+                  <div className="arts-showcase__divider" aria-hidden="true">
+                    <span />
+                    <i />
+                    <b />
+                    <span />
+                  </div>
+                  <p>{copy.artsSectionDescription}</p>
+                </div>
+
+                <div className="arts-showcase__tabs fade-up">
+                  {localizedArtsTabs.map((item, index) => (
+                    <button
+                      key={item.code || item.id || index}
+                      type="button"
+                      className={`arts-showcase__tab ${index === 0 ? 'is-active' : ''}`}
+                    >
+                      <span className="arts-showcase__tab-title">{item.title}</span>
+                      {item.category ? <span className="arts-showcase__tab-category">{item.category}</span> : null}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="arts-showcase__hero fade-up">
+                  <div className="arts-showcase__hero-media">
+                    {localizedFeaturedArt.imageUrl ? (
+                      <img src={localizedFeaturedArt.imageUrl} alt={localizedFeaturedArt.imageAlt || localizedFeaturedArt.title} className="arts-showcase__hero-image" />
+                    ) : (
+                      <div className="arts-showcase__hero-image arts-showcase__hero-image--placeholder">{localizedFeaturedArt.title}</div>
+                    )}
+                    {localizedFeaturedArt.category ? <span className="arts-showcase__hero-badge">{localizedFeaturedArt.category}</span> : null}
+                    <button type="button" className="arts-showcase__hero-play" aria-label="Phát video giới thiệu">
+                      ▶
+                    </button>
+                  </div>
+
+                  <div className="arts-showcase__hero-body">
+                    {localizedFeaturedArt.category ? <span className="arts-showcase__hero-kicker">{localizedFeaturedArt.category}</span> : null}
+                    <h2>{localizedFeaturedArt.title}</h2>
+                    <span className="arts-showcase__hero-line" aria-hidden="true" />
+                    {localizedFeaturedArt.description ? <p>{localizedFeaturedArt.description}</p> : null}
+
+                    <div className="arts-showcase__hero-chips">
+                      {[
+                        localizedFeaturedArt.category,
+                        localizedFeaturedArt.publishedAt ? 'Tư liệu nổi bật' : null,
+                        localizedFeaturedArt.articleCount ? `${localizedFeaturedArt.articleCount}+ bài viết` : 'Khám phá di sản',
+                      ].filter(Boolean).slice(0, 3).map((chip) => (
+                        <span key={chip}>{chip}</span>
+                      ))}
+                    </div>
+
+                    <Link to={`/articles/${localizedFeaturedArt.code}`} className="arts-showcase__hero-cta">
+                      {`Xem ${localizedFeaturedArt.title}`}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {localizedAdditionalArts.length ? (
+                  <div className="arts-showcase__more fade-up">
+                    <h3>Thêm nghệ thuật & thủ công truyền thống</h3>
+                    <div className="arts-showcase__mini-grid">
+                      {localizedAdditionalArts.map((item, index) => (
+                        <Link
+                          key={item.code || item.id || index}
+                          to={`/articles/${item.code}`}
+                          className="arts-showcase__mini-card"
+                        >
+                          <span className={`arts-showcase__mini-icon arts-showcase__mini-icon--${index + 1}`} aria-hidden="true">
+                            <span className="arts-showcase__mini-icon-mark" />
+                          </span>
+                          <strong>{item.title}</strong>
+                          {item.description ? <span>{item.description}</span> : null}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </>
+            ) : null}
           </section>
 
           <section className="content-section light-section" id="blog">
