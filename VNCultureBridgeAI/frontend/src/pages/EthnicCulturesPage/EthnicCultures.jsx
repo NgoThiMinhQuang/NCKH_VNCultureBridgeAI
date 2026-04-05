@@ -4,6 +4,15 @@ import './EthnicCulturesPage.css';
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import Footer from '../../components/layout/Footer/Footer';
 import banner3 from '../../assets/banner3.jpg';
+import hmongImg from '../../assets/hmong.jpg';
+import daoImg from '../../assets/dao.jpg';
+import thaiImg from '../../assets/thai.jpg';
+import edeImg from '../../assets/ede.jpg';
+import banaImg from '../../assets/bana.jpg';
+import khmerImg from '../../assets/khmer.jpg';
+import chamImg from '../../assets/cham.jpg';
+import muongImg from '../../assets/muong.jpg';
+
 
 // Fake Data for mockups
 const stats = [
@@ -18,14 +27,14 @@ const filters = [
 ];
 
 const ethnicCards = [
-  { id: 1, name: "Dân tộc Mông", location: "Hà Giang, Sơn La,...", imgUrl: "https://placehold.co/400x300/3d271e/fff?text=Mong", status: "Nổi bật" },
-  { id: 2, name: "Dân tộc Dao", location: "Lào Cai, Yên Bái,...", imgUrl: "https://placehold.co/400x300/5c3a21/fff?text=Dao", status: "" },
-  { id: 3, name: "Dân tộc Thái", location: "Điện Biên, Lai Châu,...", imgUrl: "https://placehold.co/400x300/ac3b2a/fff?text=Thai", status: "" },
-  { id: 4, name: "Dân tộc Ê Đê", location: "Đắk Lắk, Đắk Nông,...", imgUrl: "https://placehold.co/400x300/2b0b05/fff?text=Ede", status: "Mới" },
-  { id: 5, name: "Dân tộc Ba Na", location: "Gia Lai, Kon Tum,...", imgUrl: "https://placehold.co/400x300/7d6257/fff?text=Bana", status: "" },
-  { id: 6, name: "Dân tộc Khmer", location: "Sóc Trăng, Trà Vinh,...", imgUrl: "https://placehold.co/400x300/b91c1c/fff?text=Khmer", status: "" },
-  { id: 7, name: "Dân tộc Chăm", location: "Ninh Thuận, Bình Thuận,...", imgUrl: "https://placehold.co/400x300/f59e0b/fff?text=Cham", status: "Nổi bật" },
-  { id: 8, name: "Dân tộc Mường", location: "Hòa Bình, Thanh Hóa,...", imgUrl: "https://placehold.co/400x300/4a140d/fff?text=Muong", status: "" },
+  { id: 1, name: "Dân tộc Mông", location: "Hà Giang, Sơn La,...", imgUrl: hmongImg, status: "Nổi bật" },
+  { id: 2, name: "Dân tộc Dao", location: "Lào Cai, Yên Bái,...", imgUrl: daoImg, status: "" },
+  { id: 3, name: "Dân tộc Thái", location: "Điện Biên, Lai Châu,...", imgUrl: thaiImg, status: "" },
+  { id: 4, name: "Dân tộc Ê Đê", location: "Đắk Lắk, Đắk Nông,...", imgUrl: edeImg, status: "Mới" },
+  { id: 5, name: "Dân tộc Ba Na", location: "Gia Lai, Kon Tum,...", imgUrl: banaImg, status: "" },
+  { id: 6, name: "Dân tộc Khmer", location: "Sóc Trăng, Trà Vinh,...", imgUrl: khmerImg, status: "" },
+  { id: 7, name: "Dân tộc Chăm", location: "Ninh Thuận, Bình Thuận,...", imgUrl: chamImg, status: "Nổi bật" },
+  { id: 8, name: "Dân tộc Mường", location: "Hòa Bình, Thanh Hóa,...", imgUrl: muongImg, status: "" },
 ];
 
 const features = [
@@ -35,7 +44,7 @@ const features = [
 ];
 
 const stories = [
-  { id: 1, title: "Lễ Cấp sắc của người Dao đỏ ở Bắc Kạn", desc: "Lễ cấp sắc là một nghi lễ quan trọng đánh dấu sự trưởng thành của người đàn ông dân tộc Dao đỏ.",  imgUrl: "https://placehold.co/400x300/2b0b05/fff" },
+  { id: 1, title: "Lễ Cấp sắc của người Dao đỏ ở Bắc Kạn", desc: "Lễ cấp sắc là một nghi lễ quan trọng đánh dấu sự trưởng thành của người đàn ông dân tộc Dao đỏ.", imgUrl: "https://placehold.co/400x300/2b0b05/fff" },
   { id: 2, title: "Khám phá dệt thổ cẩm của người Lô Lô", desc: "Nghề dệt thổ cẩm truyền thống của người Lô Lô mang đậm nét văn hóa độc đáo với những họa tiết sặc sỡ.", imgUrl: "https://placehold.co/400x300/7d6257/fff" },
   { id: 3, title: "Nét đặc sắc múa trống Sadam của người Khmer", desc: "Trống Sadam không chỉ là nhạc cụ mà còn là linh hồn trong các lễ hội truyền thống của người Khmer Nam Bộ.", imgUrl: "https://placehold.co/400x300/b91c1c/fff" },
 ];
@@ -58,27 +67,19 @@ export default function EthnicCultures() {
       <PageHeader
         lang={lang}
         onLangChange={setLang}
-        renderNav={() => (
-          <nav className="ph__nav" aria-label="Main navigation">
-            <Link to="/" className="ph__nav-link">Trang chủ</Link>
-            <Link to="/regions" className="ph__nav-link">Vùng miền</Link>
-            <Link to="/ethnic-groups" className="ph__nav-link active">54 Dân tộc</Link>
-            <Link to="/articles" className="ph__nav-link">Khám phá</Link>
-          </nav>
-        )}
       />
 
       <main className="ec-main">
         {/* HERO SECTION */}
-        <section 
-          className="ec-hero" 
+        <section
+          className="ec-hero"
           style={{ backgroundImage: `linear-gradient(rgba(30, 15, 10, 0.4), rgba(30, 15, 10, 0.7)), url(${banner3})` }}
         >
           <div className="ec-hero__content fade-up">
             <span className="ec-badge">Khám phá dải đất hình chữ S</span>
-            <h1 className="ec-hero__title">Khám phá văn hóa <br/>các dân tộc Việt Nam</h1>
+            <h1 className="ec-hero__title">Khám phá văn hóa <br />các dân tộc Việt Nam</h1>
             <p className="ec-hero__subtitle">Từ những đỉnh núi mờ sương Tây Bắc đến những bản làng yên bình nơi đồng bằng, khám phá sự đa dạng và giàu có của văn hóa 54 dân tộc anh em.</p>
-            
+
             <div className="ec-hero__search-opts">
               <button className="ec-opt-btn active">Dân tộc theo nhóm ngôn ngữ</button>
               <button className="ec-opt-btn">Phân bố</button>
@@ -115,8 +116,8 @@ export default function EthnicCultures() {
 
             <div className="ec-filters">
               {filters.map(f => (
-                <button 
-                  key={f} 
+                <button
+                  key={f}
                   className={`ec-filter-pill ${activeFilter === f ? 'active' : ''}`}
                   onClick={() => setActiveFilter(f)}
                 >
@@ -144,7 +145,7 @@ export default function EthnicCultures() {
                 </Link>
               ))}
             </div>
-            
+
             <div className="ec-center-action">
               <button className="ec-btn-outline">Xem tất cả dân tộc</button>
             </div>
@@ -163,9 +164,9 @@ export default function EthnicCultures() {
             </div>
             <div className="ec-feature-text fade-up delay-1">
               <span className="ec-section-eyebrow">Đặc trưng văn hóa</span>
-              <h2 className="ec-section-title">Nét văn hóa tiêu biểu<br/>của các dân tộc</h2>
+              <h2 className="ec-section-title">Nét văn hóa tiêu biểu<br />của các dân tộc</h2>
               <p className="ec-feature-desc">Mỗi dân tộc có một kho tàng văn hóa riêng biệt, được thể hiện độc đáo qua các khía cạnh phong phú của đời sống: Kiến trúc nhà ở, trang phục truyền thống, lễ hội, hay ẩm thực...</p>
-              
+
               <ul className="ec-feature-list">
                 <li>
                   <div className="ec-fl-icon">🏛️</div>
@@ -207,7 +208,7 @@ export default function EthnicCultures() {
             <div className="ec-section-header ec-flex-header">
               <div>
                 <span className="ec-section-eyebrow">Di sản độc đáo</span>
-                <h2 className="ec-section-title">Những nét văn hóa<br/>đặc sắc nhất</h2>
+                <h2 className="ec-section-title">Những nét văn hóa<br />đặc sắc nhất</h2>
               </div>
               <div className="ec-nav-buttons">
                 <button className="ec-nav-btn disable">&larr;</button>
@@ -238,7 +239,7 @@ export default function EthnicCultures() {
           <div className="ec-container">
             <div className="ec-section-header ec-center">
               <span className="ec-section-eyebrow">Thư viện ảnh</span>
-              <h2 className="ec-section-title ec-text-light">Khoảnh khắc văn hóa<br/>sống động</h2>
+              <h2 className="ec-section-title ec-text-light">Khoảnh khắc văn hóa<br />sống động</h2>
               <p className="ec-section-desc ec-text-light-muted">Những góc nhìn chân thật, chớp lấy vẻ đẹp rực rỡ và nhịp sống đời thường.</p>
             </div>
 
@@ -265,7 +266,7 @@ export default function EthnicCultures() {
             <div className="ec-section-header ec-flex-header">
               <div>
                 <span className="ec-section-eyebrow">Góc nhìn cận cảnh</span>
-                <h2 className="ec-section-title">Chuyện kể từ<br/>bản làng xa</h2>
+                <h2 className="ec-section-title">Chuyện kể từ<br />bản làng xa</h2>
               </div>
               <Link to="/articles" className="ec-link-more">Xem tất cả bài viết &rsaquo;</Link>
             </div>
