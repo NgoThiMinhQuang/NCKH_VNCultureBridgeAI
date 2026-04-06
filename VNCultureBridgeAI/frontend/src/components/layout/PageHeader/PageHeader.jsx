@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { labelKey: 2, path: '/ethnic-groups' },
   { labelKey: 3, path: '/festivals' },
   { labelKey: 4, path: '/cuisine' },
-  { labelKey: 5, path: '/arts' },
+  { labelKey: 5, path: '/articles' },
   { labelKey: 6, path: '/blog' },
 ]
 
@@ -27,6 +27,13 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
   function isActive(path) {
     if (path === '/') return location.pathname === '/'
     return location.pathname.startsWith(path)
+  }
+
+  function handleNavClick(e, path) {
+    if (path === '/' && location.pathname === '/') {
+      e.preventDefault()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
 
   return (
@@ -51,9 +58,10 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
           <nav className="ph__nav" aria-label="Main navigation">
             {NAV_LINKS.map(({ labelKey, path }) => (
               <Link
-                key={path}
+                key={path + labelKey}
                 to={path}
                 className={`ph__nav-link${isActive(path) ? ' is-active' : ''}`}
+                onClick={(e) => handleNavClick(e, path)}
               >
                 {copy.nav[labelKey]}
               </Link>
