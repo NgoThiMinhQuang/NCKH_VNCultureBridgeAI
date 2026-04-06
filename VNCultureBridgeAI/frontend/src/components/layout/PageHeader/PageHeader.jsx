@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { labelKey: 2, path: '/ethnic-groups' },
   { labelKey: 3, path: '/festivals' },
   { labelKey: 4, path: '/cuisine' },
-  { labelKey: 5, path: '/arts' },
+  { labelKey: 5, path: '/articles' },
   { labelKey: 6, path: '/blog' },
 ]
 
