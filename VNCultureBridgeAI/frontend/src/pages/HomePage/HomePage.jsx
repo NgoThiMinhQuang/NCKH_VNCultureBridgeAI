@@ -1085,17 +1085,6 @@ export default function HomePage() {
       <PageHeader
         lang={lang}
         onLangChange={setLang}
-        renderNav={() => (
-          <nav className="ph__nav" aria-label="Main navigation">
-            <a href="#hero" className="ph__nav-link">{copy.nav[0]}</a>
-            <Link to="/regions" className="ph__nav-link">{copy.nav[1]}</Link>
-            <Link to="/ethnic-groups" className="ph__nav-link">{copy.nav[2]}</Link>
-            <Link to="/festivals" className="ph__nav-link">{copy.nav[3]}</Link>
-            <Link to="/cuisine" className="ph__nav-link">{copy.nav[4]}</Link>
-            <Link to="/articles" className="ph__nav-link">{copy.nav[5]}</Link>
-            <Link to="/blog" className="ph__nav-link">{copy.nav[6]}</Link>
-          </nav>
-        )}
       />
 
       <main>
