@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head><title>Align</title></head>
+<body>
+<div id="output">Calculating...</div>
+<script>
+async function findOffset(baseFile, overlayFile) {
+    const baseImg = new Image();
+    baseImg.src = baseFile;
+    await new Promise(r => baseImg.onload = r);
+    
+    const overImg = new Image();
+    overImg.src = overlayFile;
+    await new Promise(r => overImg.onload = r);
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = baseImg.width;
+    canvas.height = baseImg.height;
+    const ctx = canvas.getContext('2d');
+    
+    ctx.drawImage(baseImg, 0, 0);
+    const baseData = ctx.getImageData(0, 0, baseImg.width, baseImg.height).data;
+    
+    const canvas2 = document.createElement('canvas');
+    canvas2.width = overImg.width;
+    canvas2.height = overImg.height;
+    const ctx2 = canvas2.getContext('2d');
+    
+    ctx2.drawImage(overImg, 0, 0);
+    const overData = ctx2.getImageData(0, 0, overImg.width, overImg.height).data;
+    
+    let bestX = 0, bestY = 0, minDiff = Infinity;
+    
+    // We only need an approximation. Let's just find the first pixel in base that's prominent and match it?
+    // Let's do a sliding window. OverImg is smaller than baseImg.
+    for (let y = 0; y <= baseImg.height - overImg.height; y += 1) {
+        for (let x = 0; x <= baseImg.width - overImg.width; x += 1) {
+            let diff = 0;
+            // sample 100 pixels to be fast
+            for (let s = 0; s < 200; s++) {
+                const ox = s % overImg.width;
+                const oy = Math.floor(s / overImg.width) % overImg.height;
+                const alphaOver = overData[(oy * overImg.width + ox) * 4 + 3];
+                if (alphaOver > 100) {
+                     const alphaBase = baseData[((y + oy) * baseImg.width + (x + ox)) * 4 + 3];
+                     diff += Math.abs(alphaOver - alphaBase);
+                }
+            }
+            if (diff < minDiff) {
+                minDiff = diff;
+                bestX = x;
+                bestY = y;
+            }
+        }
+    }
+
+    // After finding approximate x,y, let's do a full check to be sure?
+    // Actually sliding window is very fast in JS. Let's just do full check for alpha.
+    bestX = 0; bestY = 0; minDiff = Infinity;
+    for (let y = 0; y <= baseImg.height - overImg.height; y += 2) {
+        for (let x = 0; x <= baseImg.width - overImg.width; x += 2) {
+            let diff = 0;
+            for (let oy = 0; oy < overImg.height; oy+=4) {
+                for (let ox = 0; ox < overImg.width; ox+=4) {
+                    const alphaOver = overData[(oy * overImg.width + ox) * 4 + 3];
+                    const alphaBase = baseData[((y + oy) * baseImg.width + (x + ox)) * 4 + 3];
+                    diff += Math.abs(alphaOver - alphaBase);
+                }
+            }
+            if (diff < minDiff) {
+                minDiff = diff;
+                bestX = x;
+                bestY = y;
+            }
+        }
+    }
+    
+    return { name: overlayFile, x: bestX, y: bestY, width: overImg.width, height: overImg.height, bw: baseImg.width, bh: baseImg.height };
+}
+
+async function run() {
+    try {
+        const r1 = await findOffset('/maps/vietnam-map-base.png', '/maps/vietnam-map-north-active.png');
+        const r2 = await findOffset('/maps/vietnam-map-base.png', '/maps/vietnam-map-central-active.png');
+        const r3 = await findOffset('/maps/vietnam-map-base.png', '/maps/vietnam-map-south-active.png');
+        
+        document.getElementById('output').innerHTML = JSON.stringify([r1, r2, r3], null, 2);
+    } catch(e) {
+        document.getElementById('output').innerHTML = "ERROR " + e.message;
+    }
+}
+run();
+</script>
+</body>
+</html>
