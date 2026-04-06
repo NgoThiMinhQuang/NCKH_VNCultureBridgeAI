@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './RegionsPage.css'
 import { getRegions } from '../../services/region.service'
 import { ui } from '../../i18n/messages'
-import { featuredMapPoints } from '../../components/features/regions/VietnamMap'
+
 import VietnamMap from '../../components/features/regions/VietnamMap'
 import LoadingState from '../../components/common/LoadingState/LoadingState'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
@@ -17,14 +17,18 @@ const regionMeta = {
       headline: 'Sắc màu núi rừng và di sản ngàn năm',
       description: 'Từ Hà Nội, vịnh Hạ Long đến những cung đường Tây Bắc, miền Bắc mang đậm chiều sâu lịch sử và thiên nhiên hùng vĩ.',
       highlights: ['Hà Nội', 'Hạ Long', 'Sa Pa'],
+      experiences: 'Núi non hùng vĩ, văn hóa bản địa, ẩm thực tinh tế',
+      atmosphere: 'Cổ kính, đậm đà bản sắc, nhịp sống chậm rãi'
     },
     {
       key: 'central',
       badge: 'Miền Trung',
       mapLabel: 'Trung Bộ',
       headline: 'Dải đất di sản giữa biển và núi',
-      description: 'Miền Trung nổi bật với cố đô Huế, phố cổ Hội An, Đà Nẵng và những bãi biển trải dài đầy nắng gió.',
+      description: 'Vùng đất giao thoa giữa di sản, biển xanh và chiều sâu lịch sử tạo nên một bản sắc rất riêng trong hành trình khám phá Việt Nam.',
       highlights: ['Huế', 'Đà Nẵng', 'Hội An'],
+      experiences: 'Di sản, biển, kiến trúc cổ',
+      atmosphere: 'Sâu lắng, duyên dáng, giàu chiều sâu văn hóa'
     },
     {
       key: 'south',
@@ -33,32 +37,40 @@ const regionMeta = {
       headline: 'Nhịp sống sông nước và đô thị sôi động',
       description: 'Miền Nam gợi mở năng lượng trẻ trung của TP.HCM, miền Tây sông nước và các hành trình xanh phương Nam.',
       highlights: ['TP.HCM', 'Cần Thơ', 'Phú Quốc'],
+      experiences: 'Sông nước mênh mông, chợ nổi, sự giao thoa văn hóa',
+      atmosphere: 'Năng động, phóng khoáng, chân tình'
     },
   ],
   en: [
     {
       key: 'north',
-      badge: 'Northern Region',
+      badge: 'Northern',
       mapLabel: 'North',
       headline: 'Mountains, heritage, and timeless capital culture',
       description: 'Northern Vietnam blends Hanoi, Ha Long Bay, and the dramatic highlands into a region rich in history and scenery.',
       highlights: ['Hanoi', 'Ha Long', 'Sa Pa'],
+      experiences: 'Majestic mountains, indigenous culture, refined cuisine',
+      atmosphere: 'Ancient, rich in identity, slow-paced life'
     },
     {
       key: 'central',
-      badge: 'Central Region',
+      badge: 'Central',
       mapLabel: 'Central',
       headline: 'A heritage corridor between coast and mountains',
-      description: 'Central Vietnam brings together Hue, Hoi An, Da Nang, and a long ribbon of beaches and cultural landmarks.',
+      description: 'A land where heritage, blue seas, and historical depth intersect, creating a very unique identity in the journey to discover Vietnam.',
       highlights: ['Hue', 'Da Nang', 'Hoi An'],
+      experiences: 'Heritage, beaches, ancient architecture',
+      atmosphere: 'Profound, graceful, culturally rich'
     },
     {
       key: 'south',
-      badge: 'Southern Region',
+      badge: 'Southern',
       mapLabel: 'South',
       headline: 'River life, tropical islands, and modern energy',
       description: 'Southern Vietnam combines Ho Chi Minh City, Mekong Delta experiences, and vibrant journeys across the south.',
       highlights: ['Ho Chi Minh City', 'Can Tho', 'Phu Quoc'],
+      experiences: 'Vast rivers, floating markets, cultural intersection',
+      atmosphere: 'Dynamic, liberal, sincere'
     },
   ],
 }
@@ -89,19 +101,11 @@ export default function RegionsPage() {
   const [lang, setLang] = useState('vi')
   const [state, setState] = useState({ status: 'loading', data: null, error: '' })
   const [activeKey, setActiveKey] = useState('north')
-  const [activePointId, setActivePointId] = useState('hn')
   const copy = useMemo(() => ui[lang], [lang])
 
   function handleSelectRegion(regionKey) {
     setActiveKey(regionKey)
-    const nextPoints = featuredMapPoints[lang]?.[regionKey] || []
-    setActivePointId(nextPoints[0]?.id || '')
   }
-
-  useEffect(() => {
-    const nextPoints = featuredMapPoints[lang]?.[activeKey] || []
-    setActivePointId(nextPoints[0]?.id || '')
-  }, [lang, activeKey])
 
   useEffect(() => {
     let ignore = false
@@ -144,73 +148,80 @@ export default function RegionsPage() {
       />
 
       <div className="regions-page__shell">
-        <div className="regions-page__hero fade-up">
-          <div className="regions-page__hero-copy">
-            <span className="regions-page__eyebrow">{copy.regionSectionBadge}</span>
-            <h1>{lang === 'vi' ? 'Khám phá Việt Nam qua 3 vùng miền' : 'Discover Vietnam through its three regions'}</h1>
-            <p>{lang === 'vi'
-              ? 'Tham khảo cách trình bày map-led explorer từ các trang du lịch lớn, rồi tối giản lại cho dự án này: mở đầu bằng bản đồ Việt Nam, chọn 1 trong 3 miền và xem nhanh điểm nhấn từng vùng.'
-              : 'Inspired by map-led destination explorers, this page starts with a Vietnam map so visitors can quickly move across the country\'s three major cultural regions.'}</p>
+        <div className="regions-split-layout fade-up">
+          <div className="regions-split-layout__map">
+            <h2>{lang === 'vi' ? 'Bản đồ văn hóa' : 'Cultural map'}</h2>
+            <p className="regions-split-layout__map-desc">{lang === 'vi'
+              ? 'Chạm hoặc rê chuột vào từng vùng để khám phá những nét văn hóa đặc trưng từ Bắc chí Nam.'
+              : 'Hover or tap each region to explore the cultural identity of Vietnam from north to south.'}</p>
+            <VietnamMap
+              activeKey={activeKey}
+              onSelectRegion={handleSelectRegion}
+              lang={lang}
+            />
           </div>
-        </div>
 
-        <div className="regions-map-stage fade-up">
-          <h2>{lang === 'vi' ? 'Bản đồ văn hóa' : 'Cultural map'}</h2>
-          <p>{lang === 'vi'
-            ? 'Chạm hoặc rê chuột vào từng vùng để khám phá những nét văn hóa đặc trưng từ Bắc chí Nam.'
-            : 'Hover or tap each region to explore the cultural identity of Vietnam from north to south.'}</p>
-          <VietnamMap
-            items={mappedRegions}
-            activeKey={activeKey}
-            activePointId={activePointId}
-            onSelectRegion={handleSelectRegion}
-            onSelectPoint={setActivePointId}
-            lang={lang}
-          />
-        </div>
-
-        <div className="regions-explorer fade-up">
-          <div className="regions-explorer__panel">
-            <span className="regions-explorer__badge">{activeRegion.badge}</span>
-            <div className="regions-explorer__image">
-              {activeRegion.imageUrl ? (
-                <img src={activeRegion.imageUrl} alt={activeRegion.imageAlt} />
-              ) : (
-                <div className="regions-explorer__placeholder">{activeRegion.title}</div>
-              )}
-            </div>
-            <div className="regions-explorer__content">
-              <h2>{activeRegion.title}</h2>
-              <h3>{activeRegion.headline}</h3>
-              <p>{activeRegion.description}</p>
-              <div className="regions-explorer__chips">
-                {activeRegion.highlights.map((highlight) => (
-                  <span key={highlight}>{highlight}</span>
+          <div className="regions-split-layout__content">
+            <div className="region-card-wrapper">
+              <div className="region-tabs">
+                {mappedRegions.map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    className={`region-tab ${activeKey === item.key ? 'is-active' : ''}`}
+                    onClick={() => handleSelectRegion(item.key)}
+                  >
+                    {item.badge}
+                  </button>
                 ))}
               </div>
-              <div className="regions-explorer__actions">
-                <Link to={`/regions/${activeRegion.code || ''}`} className="regions-explorer__cta">
-                  {lang === 'vi' ? 'Khám phá vùng này' : 'Explore this region'}
-                </Link>
-              </div>
-            </div>
-          </div>
 
-          <div className="regions-explorer__legend-wrap">
-            <div className="regions-explorer__legend">
-              {mappedRegions.map((item) => (
-                <button
-                  key={item.key}
-                  type="button"
-                  className={`regions-explorer__legend-item${activeKey === item.key ? ' is-active' : ''}`}
-                  onMouseEnter={() => handleSelectRegion(item.key)}
-                  onClick={() => handleSelectRegion(item.key)}
-                >
-                  <span className={`regions-explorer__legend-dot regions-explorer__legend-dot--${item.key}`} />
-                  <strong>{item.badge}</strong>
-                  <small>{item.title}</small>
-                </button>
-              ))}
+              <div className="region-card">
+                <div className="region-card__header">
+                  <span className="region-card__decorator"></span>
+                  <h2>{activeRegion.badge}</h2>
+                </div>
+
+                <p className="region-card__desc">{activeRegion.description}</p>
+
+                <div className="region-card__details">
+                  <div className="region-card__detail-item">
+                    <div className="region-card__detail-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    </div>
+                    <div className="region-card__detail-text">
+                      <strong>{lang === 'vi' ? 'Điểm đến nổi bật' : 'Highlighted Destinations'}</strong>
+                      <span>{activeRegion.highlights.join(', ')}</span>
+                    </div>
+                  </div>
+
+                  <div className="region-card__detail-item">
+                    <div className="region-card__detail-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <div className="region-card__detail-text">
+                      <strong>{lang === 'vi' ? 'Trải nghiệm đặc trưng' : 'Signature Experiences'}</strong>
+                      <span>{activeRegion.experiences}</span>
+                    </div>
+                  </div>
+
+                  <div className="region-card__detail-item">
+                    <div className="region-card__detail-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    </div>
+                    <div className="region-card__detail-text">
+                      <strong>{lang === 'vi' ? 'Không khí' : 'Atmosphere'}</strong>
+                      <span>{activeRegion.atmosphere}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="region-card__actions">
+                  <Link to={`/regions/${activeRegion.code || ''}`} className="region-card__btn">
+                    {lang === 'vi' ? 'Xem chi tiết vùng miền' : 'Explore this region'} →
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>

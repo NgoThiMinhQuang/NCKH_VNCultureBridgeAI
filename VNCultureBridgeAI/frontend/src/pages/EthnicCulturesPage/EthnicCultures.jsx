@@ -106,10 +106,15 @@ export default function EthnicCultures() {
         {/* MAIN GRID - CÁC DÂN TỘC VIỆT NAM */}
         <section className="ec-section ec-section--light">
           <div className="ec-container">
-            <div className="ec-section-header">
+            <div className="ec-section-header ec-center">
               <div className="ec-section-title-wrap">
                 <span className="ec-section-eyebrow">Khám phá 54 dân tộc</span>
-                <h2 className="ec-section-title">Các dân tộc Việt Nam</h2>
+                <h2 className="ec-section-title">
+                  Các dân tộc <span className="ec-text-accent">Việt Nam</span>
+                </h2>
+                <div className="ec-divider" aria-hidden="true">
+                  <span /> <i /> <b /> <span />
+                </div>
                 <p className="ec-section-desc">Cộng đồng 54 dân tộc thiểu số và người Kinh sinh sống trải dài trên hình chữ S, tạo nên bản sắc văn hóa Việt Nam đa dạng, phong phú.</p>
               </div>
             </div>

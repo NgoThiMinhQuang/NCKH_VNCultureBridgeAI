@@ -29,6 +29,13 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
     return location.pathname.startsWith(path)
   }
 
+  function handleNavClick(e, path) {
+    if (path === '/' && location.pathname === '/') {
+      e.preventDefault()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
   return (
     <header className="ph">
       <div className="ph__bar">
@@ -51,9 +58,10 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
           <nav className="ph__nav" aria-label="Main navigation">
             {NAV_LINKS.map(({ labelKey, path }) => (
               <Link
-                key={path}
+                key={path + labelKey}
                 to={path}
                 className={`ph__nav-link${isActive(path) ? ' is-active' : ''}`}
+                onClick={(e) => handleNavClick(e, path)}
               >
                 {copy.nav[labelKey]}
               </Link>
