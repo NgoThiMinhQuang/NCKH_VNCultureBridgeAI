@@ -9,6 +9,8 @@ import ArticlePage from "../pages/ArticlePage/ArticlePage";
 import FestivalsPage from "../pages/FestivalsPage/FestivalsPage";
 
 import EthnicCultures from "../pages/EthnicCulturesPage/EthnicCultures";
+import CuisinePage from "../pages/CuisinePage/CuisinePage";
+import CuisineDetailPage from "../pages/CuisineDetailPage/CuisineDetailPage";
 
 /**
  * Cấu hình routing tập trung của ứng dụng.
@@ -27,6 +29,8 @@ export default function AppRouter() {
         <Route path="/ai-guide" element={<AIGuidePage />} />
         <Route path="/articles" element={<ArticlePage />} />
         <Route path="/festivals" element={<FestivalsPage />} />
+        <Route path="/cuisine" element={<CuisinePage />} />
+        <Route path="/cuisine/:id" element={<CuisineDetailPage />} />
       </Routes>
     </BrowserRouter>
   );
