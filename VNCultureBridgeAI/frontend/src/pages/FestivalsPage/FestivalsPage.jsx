@@ -585,6 +585,34 @@ export default function FestivalsPage() {
                     </div>
                 </section>
 
+                {/* --- Cultural Quote Section --- */}
+                <section className="festivals-quote" style={{ backgroundImage: `url(${banner1Img})` }}>
+                    <div className="festivals-quote__overlay"></div>
+                    <div className="festivals-quote__content fade-up">
+                        <div className="festivals-quote__decoration">
+                            <span className="quote-mark">“</span>
+                        </div>
+                        <h2 className="festivals-quote__title">Uống nước nhớ nguồn</h2>
+                        <p className="festivals-quote__subtitle">"When drinking water, remember the source"</p>
+                        
+                        <div className="festivals-quote__divider">
+                            <svg className="festivals-quote__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 2L2 12l10 10 10-10L12 2z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </div>
+
+                        <p className="festivals-quote__desc">
+                            This timeless proverb captures the profound gratitude and respect Vietnamese people hold for their ancestors and heritage. It is the spiritual foundation of countless festivals across the nation.
+                        </p>
+
+                        <button className="festivals-btn festivals-btn--primary festivals-quote__btn">Discover Culture</button>
+                    </div>
+                    
+                    {/* Optional floating particles effect - simple CSS version */}
+                    <div className="festivals-quote__particles"></div>
+                </section>
+
                 {/* Scroll to Top button */}
                 <button
                     className="festivals-scroll-top"
