@@ -5,7 +5,6 @@ import banner3 from '../../assets/banner3.jpg'
 import { getHomepage } from '../../services/homepage.service'
 import { searchArticles } from '../../services/content.service'
 import { ui } from '../../i18n/messages'
-import LoadingState from '../../components/common/LoadingState/LoadingState'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
 
@@ -48,7 +47,9 @@ export default function HomePage() {
     let ignore = false
     async function loadHomepage() {
       try {
-        setStatus('loading')
+        if (!homepage) {
+          setStatus('loading')
+        }
         setError('')
         const data = await getHomepage(lang)
         if (!ignore) {
@@ -79,19 +80,36 @@ export default function HomePage() {
     }
   }
 
-  if (status === 'loading') return <LoadingState message={copy.loading} />
-  if (status === 'error') return <LoadingState type="error" message={copy.error} detail={error} />
+  const isLoading = status === 'loading'
+  const isError = status === 'error'
+  const safeHomepage = homepage || {
+    hero: {
+      badge: copy.heroBadge,
+      title: copy.heroTitle,
+      subtitle: copy.heroSubtitle,
+      primaryCta: copy.heroPrimaryCta,
+      secondaryCta: copy.heroSecondaryCta,
+      searchPlaceholder: copy.heroSearchPlaceholder,
+    },
+    stats: copy.heroStats || [],
+    regions: [],
+    ethnicGroups: [],
+    festivals: [],
+    cuisine: [],
+    arts: [],
+    blogPosts: [],
+  }
 
-  const homepageRegions = homepage.regions || []
+  const homepageRegions = safeHomepage.regions || []
   const ethnicShowcaseStats = copy.ethnicShowcaseStats || []
-  const featuredEthnicGroups = (homepage.ethnicGroups || []).slice(0, 6)
-  const heroTitleLines = getHeroTitleLines(homepage.hero.title)
-  const festivalShowcaseCards = (homepage.festivals || []).slice(0, 3)
-  const cuisineShowcaseCards = (homepage.cuisine || []).slice(0, 3)
-  const artsShowcaseCards = homepage.arts || []
+  const featuredEthnicGroups = (safeHomepage.ethnicGroups || []).slice(0, 6)
+  const heroTitleLines = getHeroTitleLines(safeHomepage.hero.title)
+  const festivalShowcaseCards = (safeHomepage.festivals || []).slice(0, 3)
+  const cuisineShowcaseCards = (safeHomepage.cuisine || []).slice(0, 3)
+  const artsShowcaseCards = safeHomepage.arts || []
   const featuredArt = artsShowcaseCards[0]
   const additionalArts = artsShowcaseCards.slice(1, 7)
-  const blogPosts = homepage.blogPosts || []
+  const blogPosts = safeHomepage.blogPosts || []
   const featuredBlogPost = blogPosts[0] || null
   const secondaryBlogPosts = blogPosts.slice(1, 4)
   const blogFilterPills = lang === 'vi'
@@ -155,10 +173,40 @@ export default function HomePage() {
 
     const normalized = title.trim().toLowerCase()
     if (normalized === 'water puppetry') return 'Múa rối nước'
+    if (normalized === 'calligraphy') return 'Thư pháp'
+    if (normalized === 'dong ho painting') return 'Tranh Đông Hồ'
+    if (normalized === 'van phuc silk') return 'Lụa Vạn Phúc'
+    if (normalized === 'cheo theatre') return 'Nghệ thuật Chèo'
     if (normalized === 'lacquerware') return 'Sơn mài'
     if (normalized === 'bamboo crafts') return 'Thủ công tre'
     if (normalized === 'ao dai design') return 'Thiết kế áo dài'
     return title
+  }
+
+  function localizeArtMeta(value) {
+    if (!value) return ''
+
+    const normalized = value.trim().toLowerCase()
+    if (normalized === 'performing arts') return 'Nghệ thuật trình diễn'
+    if (normalized === 'visual arts') return 'Mỹ thuật'
+    if (normalized === 'musical heritage') return 'Di sản âm nhạc'
+    if (normalized === '1,000+ years old') return 'Hơn 1.000 năm tuổi'
+    if (normalized === 'unesco-recognized') return 'Được UNESCO ghi danh'
+    if (normalized === 'thang long theater') return 'Nhà hát Thăng Long'
+    return value
+  }
+
+  function localizeArtChip(chip) {
+    if (!chip) return ''
+
+    const normalized = chip.trim().toLowerCase()
+    if (normalized === 'featured archive') return 'Tư liệu nổi bật'
+    if (normalized === 'heritage discovery') return 'Khám phá di sản'
+    return localizeArtMeta(chip)
+  }
+
+  function localizeArtCta(title) {
+    return `Khám phá ${title}`
   }
 
   function localizeCuisineTitle(title) {
@@ -207,7 +255,31 @@ export default function HomePage() {
     if (!description) return ''
 
     if (description.includes('A distinctive performance art in which wooden puppets are controlled on water')) {
-      return 'Loại hình nghệ thuật độc đáo nơi những con rối gỗ được điều khiển trên mặt nước, gắn với đời sống và trí tưởng tượng dân gian Việt.'
+      return 'Loại hình nghệ thuật hơn 1.000 năm tuổi của đồng bằng Bắc Bộ, nơi nghệ nhân điều khiển rối gỗ trên mặt nước để kể chuyện dân gian, đời sống lao động và truyền thuyết Việt.'
+    }
+
+    if (description.includes('Folk woodblock paintings from Bac Ninh')) {
+      return 'Dòng tranh dân gian nổi tiếng của Bắc Ninh, phản ánh đời sống, ước vọng và vẻ đẹp mộc mạc qua kỹ thuật in ván gỗ truyền thống.'
+    }
+
+    if (description.includes('1,200-year-old traditional silk weaving')) {
+      return 'Làng lụa trứ danh với kỹ thuật dệt thủ công tinh xảo, gắn liền với vẻ đẹp thanh lịch của tơ lụa Việt.'
+    }
+
+    if (description.includes('Traditional rural opera of the North')) {
+      return 'Loại hình sân khấu dân gian miền Bắc giàu tính kể chuyện, âm nhạc và chất trào lộng sâu sắc.'
+    }
+
+    if (description.includes('Ornate hand-crafted lacquer art')) {
+      return 'Nghệ thuật sơn mài đặc sắc với nhiều lớp màu, vàng son và kỹ thuật thủ công công phu.'
+    }
+
+    if (description.includes('Intricate handmade bamboo products')) {
+      return 'Những sản phẩm tre thủ công bền đẹp, kết hợp kỹ thuật đan lát và thẩm mỹ mộc mạc Việt Nam.'
+    }
+
+    if (description.includes("Vietnam's iconic national garment")) {
+      return 'Biểu tượng trang phục Việt Nam với đường nét thanh lịch, tôn dáng và giàu giá trị văn hóa.'
     }
 
     return description
@@ -1096,7 +1168,7 @@ export default function HomePage() {
           }}
         >
           <div className="hero-content hero-content--animated">
-            <span className="section-badge">{homepage.hero.badge}</span>
+            <span className="section-badge">{safeHomepage.hero.badge || copy.heroBadge}</span>
             <h1>
               {heroTitleLines.map((line, index) => (
                 <span key={`${line}-${index}`} className="hero-title-line">
@@ -1104,10 +1176,10 @@ export default function HomePage() {
                 </span>
               ))}
             </h1>
-            <p>{homepage.hero.subtitle}</p>
+            <p>{safeHomepage.hero.subtitle}</p>
             <div className="hero-actions">
-              <Link to="/regions" className="primary-button nav-link-button hero-action-button">{homepage.hero.primaryCta}</Link>
-              <a href="#festivals" className="secondary-button nav-link-button hero-action-button">{homepage.hero.secondaryCta}</a>
+              <Link to="/regions" className="primary-button nav-link-button hero-action-button">{safeHomepage.hero.primaryCta}</Link>
+              <a href="#festivals" className="secondary-button nav-link-button hero-action-button">{safeHomepage.hero.secondaryCta}</a>
             </div>
             <form className="ai-guide__composer search-bar glass-panel hero-search-bar" onSubmit={handleSearch}>
               <input
@@ -1126,13 +1198,15 @@ export default function HomePage() {
                 </svg>
               </button>
             </form>
+            {isLoading ? <div className="home-loading-inline">{copy.loading}</div> : null}
+            {isError ? <div className="home-loading-inline home-loading-inline--error">{copy.error}</div> : null}
             {results.length ? (
               <div className="search-results fade-up">
                 <CardGrid items={results} variant="blog-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
               </div>
             ) : null}
             <div className="stats-row">
-              {homepage.stats.map((stat) => (
+              {(safeHomepage.stats || []).map((stat) => (
                 <div key={stat.label} className="stat-card float-card">
                   <strong>{stat.value}</strong>
                   <span>{stat.label}</span>
@@ -1161,7 +1235,7 @@ export default function HomePage() {
               {homepageRegions.map((region) => (
                 <article key={region.code || region.id} className={`region-showcase-card fade-up ${region.accentClass || ''}`}>
                   {region.imageUrl ? (
-                    <img src={region.imageUrl} alt={region.imageAlt} className="region-showcase-card__image" />
+                    <img src={region.imageUrl} alt={region.imageAlt} className="region-showcase-card__image" loading="lazy" decoding="async" />
                   ) : (
                     <div className="region-showcase-card__image region-showcase-card__image--placeholder">
                       {region.title}
@@ -1203,6 +1277,10 @@ export default function HomePage() {
                   <path d="M12 22s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Zm0-9a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
                 </svg>
               </Link>
+              <Link to="/provinces" className="regions-showcase__button secondary-btn">
+                <span>{lang === 'vi' ? 'Xem tất cả tỉnh thành' : 'View all provinces'}</span>
+                <span aria-hidden="true">→</span>
+              </Link>
             </div>
           </section>
 
@@ -1233,7 +1311,7 @@ export default function HomePage() {
               {localizedFeaturedEthnicGroups.map((item, index) => (
                 <article key={item.code || item.id || index} className="ethnic-card fade-up">
                   {item.imageUrl ? (
-                    <img src={item.imageUrl} alt={item.imageAlt || item.title} className="ethnic-card__image" />
+                    <img src={item.imageUrl} alt={item.imageAlt || item.title} className="ethnic-card__image" loading="lazy" decoding="async" />
                   ) : (
                     <div className="ethnic-card__image ethnic-card__image--placeholder">{item.title}</div>
                   )}
@@ -1303,7 +1381,7 @@ export default function HomePage() {
                   <article key={item.code || item.id || index} className={`festival-card fade-up is-${accent}`}>
                     <div className="festival-card__media">
                       {item.imageUrl ? (
-                        <img src={item.imageUrl} alt={item.imageAlt || item.title} className="festival-card__image" />
+                        <img src={item.imageUrl} alt={item.imageAlt || item.title} className="festival-card__image" loading="lazy" decoding="async" />
                       ) : (
                         <div className="festival-card__image festival-card__image--placeholder">{item.title}</div>
                       )}
@@ -1389,7 +1467,7 @@ export default function HomePage() {
                 <article key={item.code || item.id || index} className="cuisine-card fade-up">
                   <div className="cuisine-card__media">
                     {item.imageUrl ? (
-                      <img src={item.imageUrl} alt={item.imageAlt || item.title} className="cuisine-card__image" />
+                      <img src={item.imageUrl} alt={item.imageAlt || item.title} className="cuisine-card__image" loading="lazy" decoding="async" />
                     ) : (
                       <div className="cuisine-card__image cuisine-card__image--placeholder">{item.title}</div>
                     )}
@@ -1452,17 +1530,21 @@ export default function HomePage() {
                 <div className="arts-showcase__header fade-up">
                   <span className="arts-showcase__eyebrow">
                     <span className="arts-showcase__eyebrow-star" aria-hidden="true">✦</span>
-                    <span>{copy.artsSectionBadge}</span>
+                    <span>NGHỆ THUẬT & DI SẢN</span>
                     <span className="arts-showcase__eyebrow-star" aria-hidden="true">✦</span>
                   </span>
-                  <h2>{copy.artsSectionTitle}</h2>
+                  <h2>
+                    <span>Truyền thống</span>{' '}
+                    <span className="arts-showcase__title-accent">Sống động</span>
+                  </h2>
                   <div className="arts-showcase__divider" aria-hidden="true">
-                    <span />
-                    <i />
-                    <b />
-                    <span />
+                    <span className="arts-showcase__divider-line"></span>
+                    <i className="arts-showcase__divider-dot"></i>
+                    <span className="arts-showcase__divider-line"></span>
                   </div>
-                  <p>{copy.artsSectionDescription}</p>
+                  <p>
+                    Nghệ thuật Việt Nam là nhịp cầu sống động nối liền các thế hệ — giữ gìn bản sắc, tâm hồn và vẻ đẹp qua biểu diễn, thủ công và âm thanh.
+                  </p>
                 </div>
 
                 <div className="arts-showcase__tabs fade-up">
@@ -1481,13 +1563,15 @@ export default function HomePage() {
                 <div className="arts-showcase__hero fade-up">
                   <div className="arts-showcase__hero-media">
                     {localizedFeaturedArt.imageUrl ? (
-                      <img src={localizedFeaturedArt.imageUrl} alt={localizedFeaturedArt.imageAlt || localizedFeaturedArt.title} className="arts-showcase__hero-image" />
+                      <img src={localizedFeaturedArt.imageUrl} alt={localizedFeaturedArt.imageAlt || localizedFeaturedArt.title} className="arts-showcase__hero-image" loading="lazy" decoding="async" />
                     ) : (
                       <div className="arts-showcase__hero-image arts-showcase__hero-image--placeholder">{localizedFeaturedArt.title}</div>
                     )}
                     {localizedFeaturedArt.category ? <span className="arts-showcase__hero-badge">{localizedFeaturedArt.category}</span> : null}
                     <button type="button" className="arts-showcase__hero-play" aria-label="Phát video giới thiệu">
-                      ▶
+                      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
                     </button>
                   </div>
 
@@ -1499,16 +1583,16 @@ export default function HomePage() {
 
                     <div className="arts-showcase__hero-chips">
                       {[
-                        localizedFeaturedArt.category,
-                        localizedFeaturedArt.publishedAt ? 'Tư liệu nổi bật' : null,
-                        localizedFeaturedArt.articleCount ? `${localizedFeaturedArt.articleCount}+ bài viết` : 'Khám phá di sản',
-                      ].filter(Boolean).slice(0, 3).map((chip) => (
+                        localizeArtMeta('Hơn 1.000 năm tuổi'),
+                        localizeArtMeta('Được UNESCO công nhận'),
+                        localizeArtMeta('Nhà hát Thăng Long'),
+                      ].map((chip) => (
                         <span key={chip}>{chip}</span>
                       ))}
                     </div>
 
                     <Link to={`/articles/${localizedFeaturedArt.code}`} className="arts-showcase__hero-cta">
-                      {`Xem ${localizedFeaturedArt.title}`}
+                      {localizeArtCta(localizedFeaturedArt.title)}
                       <span aria-hidden="true">→</span>
                     </Link>
                   </div>
@@ -1573,7 +1657,7 @@ export default function HomePage() {
               <article className="blog-showcase__featured fade-up">
                 <div className="blog-showcase__featured-media">
                   {featuredBlogPost.imageUrl ? (
-                    <img src={featuredBlogPost.imageUrl} alt={featuredBlogPost.imageAlt || featuredBlogPost.title} className="blog-showcase__featured-image" />
+                    <img src={featuredBlogPost.imageUrl} alt={featuredBlogPost.imageAlt || featuredBlogPost.title} className="blog-showcase__featured-image" loading="lazy" decoding="async" />
                   ) : (
                     <div className="blog-showcase__featured-image blog-showcase__featured-image--placeholder">{featuredBlogPost.title}</div>
                   )}
@@ -1613,7 +1697,7 @@ export default function HomePage() {
                     <article key={item.code || item.id || index} className={`blog-card is-${accent}`}>
                       <div className="blog-card__media">
                         {item.imageUrl ? (
-                          <img src={item.imageUrl} alt={item.imageAlt || item.title} className="blog-card__image" />
+                          <img src={item.imageUrl} alt={item.imageAlt || item.title} className="blog-card__image" loading="lazy" decoding="async" />
                         ) : (
                           <div className="blog-card__image blog-card__image--placeholder">{item.title}</div>
                         )}

@@ -14,6 +14,39 @@
   gap: 28px;
 }
 
+.regions-loading-inline {
+  width: fit-content;
+  margin: 0 0 14px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(214, 185, 154, 0.45);
+  color: #5a4034;
+  font-size: 0.9rem;
+}
+
+.regions-loading-inline--error {
+  background: rgba(140, 24, 24, 0.1);
+  color: #8b1e1e;
+}
+
+.region-tabs:empty {
+  display: none;
+}
+
+.region-card-wrapper {
+  min-height: 320px;
+}
+
+.region-card {
+  min-height: 100%;
+}
+
+.region-card__desc,
+.region-card__detail-text span {
+  min-width: 0;
+}
+
 .regions-page__back {
   display: inline-flex;
   align-items: center;
@@ -419,4 +452,338 @@
   .region-card {
     padding: 24px;
   }
+}
+
+/* --- New Sections CSS --- */
+.regions-overview-section, .provinces-section, .highlights-section {
+  padding-top: 72px;
+  width: 100%;
+}
+
+/* SECTION 1: Overview Cards */
+.regions-overview__container {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+.regions-overview__card {
+  display: flex;
+  gap: 64px;
+  align-items: center;
+}
+.regions-overview__card.is-reversed {
+  flex-direction: row-reverse;
+}
+.regions-overview__image-col {
+  flex: 1.1;
+  min-width: 0;
+}
+.regions-overview__image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 40px;
+  overflow: hidden;
+  background: #fdf0e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+}
+.placeholder-image {
+  color: #c9a997;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.regions-overview__content-col {
+  flex: 0.9;
+  max-width: 500px;
+}
+.regions-overview__badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: #fcedcf;
+  color: #df911e;
+  font-weight: 800;
+  font-size: 0.74rem;
+  border-radius: 999px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.regions-overview__title {
+  font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 3vw, 2.8rem);
+  color: #19100c;
+  line-height: 1.25;
+  margin: 0 0 20px;
+}
+.regions-overview__desc {
+  color: #5c4a40;
+  line-height: 1.65;
+  font-size: 0.95rem;
+  margin: 0 0 32px;
+}
+.regions-overview__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.regions-overview__tag {
+  padding: 8px 18px;
+  background: #f6f7f8;
+  color: #2b1f1a;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.regions-overview__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #d15615;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+.regions-overview__cta:hover {
+  text-decoration: underline;
+}
+
+/* SECTION 2: Provinces Grid */
+.provinces-section {
+  background: #fffcf8;
+  padding: 80px 0;
+  border-radius: 40px;
+  margin-top: 64px;
+}
+.provinces__container, .highlights__container {
+  width: 100%;
+}
+.provinces__header, .highlights__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 48px;
+}
+.provinces__header h2, .highlights__header h2 {
+  font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 3.5vw, 2.6rem);
+  color: #1f2937;
+  margin: 0 0 16px;
+}
+.provinces__header p, .highlights__header p {
+  color: #6b7280;
+  font-size: 0.98rem;
+  margin: 0 0 24px;
+  line-height: 1.6;
+}
+.provinces__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  background: #e67e22;
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.9rem;
+  box-shadow: 0 8px 24px rgba(230, 126, 34, 0.3);
+}
+.provinces__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.province-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid rgba(220, 203, 192, 0.4);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+}
+.province-card__image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.1;
+  background: #f3f5f6;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.province-card__badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #ffffff;
+  color: #c98b3c;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.province-card__content h3 {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+  font-family: inherit;
+  color: #2b1f1a;
+  font-weight: 700;
+}
+.province-card__content p {
+  margin: 0 0 20px;
+  color: #69564c;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.province-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.province-card__tag-chip {
+  background: #fdf5e9;
+  color: #c98b3c;
+  padding: 6px 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 8px;
+}
+.province-card__footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(220, 203, 192, 0.6);
+}
+.province-card__location {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #928277;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.province-card__cta {
+  color: #d15615;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* SECTION 3: Highlights Grid */
+.highlights-section {
+  padding: 80px 0 120px;
+  background: #fdfefc;
+}
+.highlights__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+.highlight-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.04);
+  overflow: hidden;
+  border: 1px solid rgba(220, 203, 192, 0.3);
+}
+.highlight-card__image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.6;
+  background: #ddeadb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7b8e76;
+  font-weight: 700;
+}
+.highlight-card__top-labels {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.highlight-card__label-region {
+  background: rgba(230, 142, 45, 0.9);
+  color: #fff;
+}
+.highlight-card__label-cat {
+  background: rgba(255, 255, 255, 0.9);
+  color: #444;
+}
+.highlight-card__label-region, .highlight-card__label-cat {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  backdrop-filter: blur(8px);
+}
+.highlight-card__content {
+  padding: 24px;
+}
+.highlight-card__content h3 {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+  color: #1a1a1a;
+  font-weight: 800;
+}
+.highlight-card__content p {
+  margin: 0 0 20px;
+  color: #69564c;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.highlight-card__cta {
+  color: #e67e22;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 1024px) {
+  .regions-overview__card { gap: 40px; }
+  .provinces__grid, .highlights__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 900px) {
+  .regions-overview__card, .regions-overview__card.is-reversed {
+    flex-direction: column;
+  }
+  .regions-overview__content-col {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .provinces__grid, .highlights__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.section-view-all {
+  display: flex;
+  justify-content: center;
+  margin-top: 56px;
+  width: 100%;
+}
+.view-all-btn {
+  padding: 16px 36px !important;
+  font-size: 1.05rem !important;
+  background: #deb332 !important;
+  box-shadow: 0 10px 24px rgba(222, 179, 50, 0.25) !important;
+  transition: all 0.2s ease;
+}
+.view-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(222, 179, 50, 0.4) !important;
+  background: #cba22d !important;
 }

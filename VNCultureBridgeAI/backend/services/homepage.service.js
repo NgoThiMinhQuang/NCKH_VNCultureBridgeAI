@@ -80,20 +80,20 @@ async function getHomepage(lang = 'vi') {
     return cached.data
   }
 
-  const [regions, ethnicGroups, festivals, cuisine, arts, blogPosts, categories, prompts, latestFallbackArticles] =
+  const [regions, ethnicGroups, festivals, cuisine, arts, categories, prompts, latestArticles] =
     await Promise.all([
       homepageRepository.getFeaturedRegions(),
       homepageRepository.getFeaturedEthnicGroups(),
       homepageRepository.getFeaturedArticlesByCategory('LE_HOI', 3),
       homepageRepository.getFeaturedArticlesByCategory('AM_THUC', 3),
       homepageRepository.getFeaturedArticlesByCategory('NGHE_THUAT_DAN_GIAN', 6),
-      homepageRepository.getLatestArticles(3),
       homepageRepository.getCategories(),
       homepageRepository.getPromptSamples(),
       homepageRepository.getLatestArticles(12),
     ])
 
-  const homepageArts = mergeUniqueCards(arts, latestFallbackArticles, 6)
+  const homepageArts = mergeUniqueCards(arts, latestArticles, 6)
+  const blogPosts = latestArticles.slice(0, 3)
 
   const staticContent = getStaticContent(lang)
 
