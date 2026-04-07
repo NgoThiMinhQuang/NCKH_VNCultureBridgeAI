@@ -151,6 +151,33 @@ export const ui = {
         social: 'Theo dõi'
       }
     },
+    blogHero: {
+      badge: 'VĂN HÓA & TRUYỀN THỐNG',
+      title: 'Blog VNCulture',
+      subtitle: 'Khám phá những câu chuyện đậm chất Việt - từ ẩm thực, lễ hội đến nghệ thuật truyền thống',
+      searchPlaceholder: 'Tìm kiếm bài viết...',
+      searchBtn: 'Tìm kiếm',
+    },
+    blogFeatured: {
+      title: 'Các bài viết nổi bật',
+      badge: 'TIÊU ĐIỂM',
+      readNow: 'Đọc ngay',
+    },
+    blogRecent: {
+      title: 'Bài viết mới nhất',
+      badge: 'BẢN TIN',
+    },
+    blogSidebar: {
+      newsletterTitle: 'Đăng Ký Nhận Tin',
+      newsletterDesc: 'Nhận bài viết mới nhất về văn hóa Việt Nam',
+      newsletterBtn: 'Đăng ký ngay',
+      popularTitle: 'Bài Viết Phổ Biến',
+      topicsTitle: 'Chủ Đề Nổi Bật',
+      followTitle: 'Theo Dõi Chúng Tôi',
+      views: 'lượt xem',
+      readMore: 'Xem thêm bài viết',
+    },
+    blogCategories: ['Tất cả', 'Ẩm thực', 'Lễ hội', 'Nghệ thuật', 'Vùng miền', 'Truyền thống'],
   },
   en: {
     nav: ['Home', 'Explore Regions', 'Ethnic Cultures', 'Festivals', 'Cuisine', 'Arts', 'Blog'],
@@ -297,5 +324,32 @@ export const ui = {
         social: 'Follow Us'
       }
     },
+    blogHero: {
+      badge: 'CULTURE & TRADITION',
+      title: 'VNCulture Blog',
+      subtitle: 'Explore stories imbued with Vietnamese essence - from cuisine, festivals to traditional arts',
+      searchPlaceholder: 'Search articles...',
+      searchBtn: 'Search',
+    },
+    blogFeatured: {
+      title: 'Featured Articles',
+      badge: 'FEATURED',
+      readNow: 'Read now',
+    },
+    blogRecent: {
+      title: 'Recent Posts',
+      badge: 'NEWS',
+    },
+    blogSidebar: {
+      newsletterTitle: 'Subscribe for News',
+      newsletterDesc: 'Get the latest articles on Vietnamese culture',
+      newsletterBtn: 'Subscribe now',
+      popularTitle: 'Popular Posts',
+      topicsTitle: 'Featured Topics',
+      followTitle: 'Follow Us',
+      views: 'views',
+      readMore: 'See more posts',
+    },
+    blogCategories: ['All', 'Cuisine', 'Festivals', 'Arts', 'Regions', 'Traditions'],
   },
 }

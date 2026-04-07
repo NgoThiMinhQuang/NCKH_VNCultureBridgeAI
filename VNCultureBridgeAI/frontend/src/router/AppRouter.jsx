@@ -7,11 +7,14 @@ import EthnicityDetailPage from "../pages/EthnicityDetailPage/EthnicityDetailPag
 import AIGuidePage from "../pages/AIGuidePage/AIGuidePage";
 import ArticlePage from "../pages/ArticlePage/ArticlePage";
 import FestivalsPage from "../pages/FestivalsPage/FestivalsPage";
+import BlogPage from "../pages/BlogPage/BlogPage";
 
 import EthnicCultures from "../pages/EthnicCulturesPage/EthnicCultures";
 import CuisinePage from "../pages/CuisinePage/CuisinePage";
 import CuisineDetailPage from "../pages/CuisineDetailPage/CuisineDetailPage";
+import BlogDetailPage from "../pages/BlogDetailPage/BlogDetailPage";
 import ProvincesPage from "../pages/ProvincesPage/ProvincesPage";
+
 
 /**
  * Cấu hình routing tập trung của ứng dụng.
@@ -30,7 +33,10 @@ export default function AppRouter() {
         <Route path="/ai-guide" element={<AIGuidePage />} />
         <Route path="/articles" element={<ArticlePage />} />
         <Route path="/festivals" element={<FestivalsPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:code" element={<BlogDetailPage />} />
         <Route path="/cuisine" element={<CuisinePage />} />
+
         <Route path="/cuisine/:id" element={<CuisineDetailPage />} />
         <Route path="/provinces" element={<ProvincesPage />} />
       </Routes>
