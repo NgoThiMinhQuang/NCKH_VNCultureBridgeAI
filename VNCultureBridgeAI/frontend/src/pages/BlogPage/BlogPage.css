@@ -1,0 +1,29 @@
+.blog-page {
+  background: white;
+}
+
+.blog-page main {
+  background-color: #fff;
+}
+
+.page-content-shell {
+  width: min(1360px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 60px 0 100px;
+}
+
+.blog-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.blog-list-header {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .page-content-shell {
+    padding: 40px 20px 80px;
+  }
+}
