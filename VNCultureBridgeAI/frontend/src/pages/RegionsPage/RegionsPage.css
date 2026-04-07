@@ -685,14 +685,52 @@
 .regions-map-container {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .vietnam-map-wrapper {
   position: relative;
   width: min(380px, 100%);
-  margin: 28px auto 0;
+  margin: 20px 0 0;
   filter: drop-shadow(0 14px 24px rgba(118, 91, 10, 0.12));
+}
+
+.regions-split-layout__map {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.regions-split-layout__map h2,
+.regions-split-layout__map-desc {
+  text-align: left;
+}
+
+.regions-split-layout__map-desc {
+  margin: 8px 0 0;
+}
+
+@media (max-width: 1024px) {
+  .regions-map-container {
+    justify-content: center;
+  }
+
+  .vietnam-map-wrapper {
+    margin: 20px auto 0;
+  }
+
+  .regions-split-layout__map {
+    align-items: center;
+  }
+
+  .regions-split-layout__map h2,
+  .regions-split-layout__map-desc {
+    text-align: center;
+  }
+
+  .regions-split-layout__map-desc {
+    margin: 8px auto 0;
+  }
 }
 
 .vietnam-map-base {
@@ -2808,6 +2846,192 @@
   transform: translateY(30px);
   animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: 0.3s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RegionsPage typography sync with HomePage */
+.regions-page,
+.regions-page * {
+  font-family: var(--font-body);
+}
+
+.regions-page .regions-hero__title,
+.regions-page .regions-split-layout__map h2,
+.regions-page .regions-overview__header h2,
+.regions-page .inspiration__header h2,
+.regions-page .provinces-search__header h2,
+.regions-page .seasons__header h2,
+.regions-page .cultural-layers__header h2,
+.regions-page .regions-overview__title,
+.regions-page .region-card__header h2,
+.regions-page .season-card__top h3,
+.regions-page .culture-layer-card h3,
+.regions-page .cultural-layers__summary p,
+.regions-page .inspiration-card__content h3,
+.regions-page .province-item__title-row h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+.regions-page .regions-hero__title {
+  font-size: clamp(2.8rem, 6vw, 5.4rem);
+  line-height: 0.98;
+  color: #fff9f4;
+}
+
+.regions-page .regions-hero__desc,
+.regions-page .regions-overview__header p,
+.regions-page .inspiration__header p,
+.regions-page .provinces-search__header p,
+.regions-page .seasons__header p,
+.regions-page .cultural-layers__header p {
+  font-size: 1.08rem;
+  line-height: 1.8;
+}
+
+.regions-page .regions-hero__desc,
+.regions-page .inspiration__header p {
+  color: rgba(255, 245, 238, 0.88);
+}
+
+.regions-page .regions-overview__header h2,
+.regions-page .inspiration__header h2,
+.regions-page .provinces-search__header h2,
+.regions-page .seasons__header h2,
+.regions-page .cultural-layers__header h2,
+.regions-page .regions-overview__title,
+.regions-page .region-card__header h2,
+.regions-page .regions-split-layout__map h2,
+.regions-page .province-item__title-row h3,
+.regions-page .culture-layer-card h3 {
+  color: #27140d;
+}
+
+.regions-page .regions-overview__header p,
+.regions-page .provinces-search__header p,
+.regions-page .seasons__header p,
+.regions-page .cultural-layers__header p,
+.regions-page .region-card__desc,
+.regions-page .region-card__detail-text span,
+.regions-page .regions-overview__desc,
+.regions-page .regions-overview__detail-value,
+.regions-page .province-item__desc,
+.regions-page .culture-layer-card p,
+.regions-page .cultural-layers__summary span,
+.regions-page .regions-split-layout__map-desc {
+  color: #6f594d;
+}
+
+.regions-page .inspiration-card p,
+.regions-page .season-card__desc,
+.regions-page .season-card__detail-item,
+.regions-page .season-card__top h3 {
+  color: rgba(255, 245, 238, 0.88);
+}
+
+.regions-page .regions-overview__header h2,
+.regions-page .inspiration__header h2,
+.regions-page .provinces-search__header h2,
+.regions-page .seasons__header h2,
+.regions-page .cultural-layers__header h2,
+.regions-page .regions-overview__title,
+.regions-page .region-card__header h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.08;
+}
+
+.regions-page .region-card__desc,
+.regions-page .region-card__detail-text span,
+.regions-page .regions-overview__desc,
+.regions-page .regions-overview__detail-value,
+.regions-page .inspiration-card p,
+.regions-page .province-item__desc,
+.regions-page .season-card__desc,
+.regions-page .culture-layer-card p,
+.regions-page .cultural-layers__summary span {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.regions-page .regions-hero__badge,
+.regions-page .regions-overview__badge,
+.regions-page .province-item__badge,
+.regions-page .regions-overview__detail-label,
+.regions-page .season-card__months {
+  color: #d33a28;
+  letter-spacing: 0.12em;
+}
+
+.regions-page .filter-label,
+.regions-page .filter-chip,
+.regions-page .region-tab {
+  color: #5d4338;
+  letter-spacing: 0.12em;
+}
+
+.regions-page .region-card__detail-text strong {
+  color: #2b1f1a;
+}
+
+.regions-page .region-showcase-card__body h3,
+.regions-page .region-showcase-card__badge,
+.regions-page .region-showcase-card__number {
+  color: #fff9f4;
+}
+
+.regions-page .region-showcase-card__description {
+  color: rgba(255, 247, 242, 0.9);
+}
+
+.regions-page .region-showcase-card__chips span {
+  color: #fffaf6;
+}
+
+.regions-page .region-showcase-card__cta {
+  color: #ffbe45;
+}
+
+.regions-page .vietnam-map-text {
+  color: #27140d;
+}
+
+.regions-page .vietnam-map-text.is-active,
+.regions-page .filter-chip:hover,
+.regions-page .region-tab:hover {
+  color: #d33a28;
+}
+
+@media (max-width: 480px) {
+  .regions-page .regions-hero__title {
+    font-size: clamp(2.4rem, 10vw, 3.5rem);
+  }
+
+  .regions-page .regions-hero__desc,
+  .regions-page .regions-overview__header p,
+  .regions-page .inspiration__header p,
+  .regions-page .provinces-search__header p,
+  .regions-page .seasons__header p,
+  .regions-page .cultural-layers__header p {
+    font-size: 1rem;
+  }
+
+  .regions-page .region-card__desc,
+  .regions-page .region-card__detail-text span,
+  .regions-page .regions-overview__desc,
+  .regions-page .regions-overview__detail-value,
+  .regions-page .inspiration-card p,
+  .regions-page .province-item__desc,
+  .regions-page .season-card__desc,
+  .regions-page .culture-layer-card p,
+  .regions-page .cultural-layers__summary span {
+    font-size: 0.92rem;
+  }
 }
 
 @keyframes fadeUp {

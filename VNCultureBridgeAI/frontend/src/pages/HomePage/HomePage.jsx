@@ -1492,12 +1492,6 @@ export default function HomePage() {
                 <span />
               </div>
               <p>{copy.cuisineShowcaseDescription}</p>
-              <div className="cuisine-showcase__filters">
-                <span className="cuisine-showcase__filters-label">{copy.cuisineShowcaseFilterLabel}</span>
-                {copy.cuisineShowcaseFilters.map((filter) => (
-                  <span key={filter} className="cuisine-showcase__filter-pill">{filter}</span>
-                ))}
-              </div>
 
               <div className="cuisine-showcase__legend fade-up">
                 <span className="cuisine-showcase__legend-label">{copy.cuisineShowcaseLegendLabel}</span>
@@ -1661,23 +1655,21 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {localizedAdditionalArts.length ? (
-                  <div className="arts-showcase__more fade-up">
-                    <h3>Thêm nghệ thuật & thủ công truyền thống</h3>
-                    <div className="arts-showcase__mini-grid">
-                      {localizedAdditionalArts.map((item, index) => (
-                        <Link
-                          key={item.code || item.id || index}
-                          to={`/articles/${item.code}`}
-                          className="arts-showcase__mini-card"
-                        >
-                          <span className={`arts-showcase__mini-icon arts-showcase__mini-icon--${index + 1}`} aria-hidden="true">
-                            <span className="arts-showcase__mini-icon-mark" />
-                          </span>
-                          <strong>{item.title}</strong>
-                          {item.description ? <span>{item.description}</span> : null}
-                        </Link>
-                      ))}
+                {copy.moreArtsItems && copy.moreArtsItems.length ? (
+                  <div className="arts-showcase__more-shell fade-up">
+                    <div className="arts-showcase__more-container">
+                      <h3>{copy.moreArtsTitle}</h3>
+                      <div className="arts-showcase__mini-grid">
+                        {copy.moreArtsItems.map((item, index) => (
+                          <div key={index} className="arts-showcase__mini-card">
+                            <span className="arts-showcase__mini-emoji" aria-hidden="true">
+                              {item.icon}
+                            </span>
+                            <strong>{item.title}</strong>
+                            <span>{item.description}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ) : null}

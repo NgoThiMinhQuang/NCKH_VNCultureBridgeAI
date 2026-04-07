@@ -295,7 +295,7 @@ h6,
 }
 
 .page-shell {
-  padding-top: 6px;
+  padding-top: 0;
 }
 
 body:has(.page-shell) {

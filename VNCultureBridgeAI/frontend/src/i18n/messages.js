@@ -90,6 +90,7 @@ export const ui = {
         spiceLevel: 1,
         title: 'Phở',
         subtitle: 'Món nước truyền thống',
+        description: 'Món ăn biểu tượng với nước dùng trong, bánh phở mềm và hương vị thảo mộc tinh tế.',
         metaPrimary: 'Hà Nội / Nam Định',
         metaSecondary: '4–6 giờ',
         tags: ['Biểu tượng', 'Ẩm thực phố', 'Bò'],
@@ -100,6 +101,7 @@ export const ui = {
         spiceLevel: 2,
         title: 'Bánh Mì',
         subtitle: 'Món kẹp đặc sắc',
+        description: 'Sự kết hợp hoàn hảo giữa vỏ bánh giòn tan và nhân thịt, chả, bơ, đồ chua đậm đà.',
         metaPrimary: 'TP. Hồ Chí Minh',
         metaSecondary: '10 phút',
         tags: ['Dung hòa', 'Món phố', 'Nên thử'],
@@ -110,6 +112,7 @@ export const ui = {
         spiceLevel: 1,
         title: 'Gỏi Cuốn',
         subtitle: 'Món cuốn thanh đạm',
+        description: 'Món cuốn tươi ngon với tôm, thịt heo, rau sống và bún, chấm cùng tương đậu phộng.',
         metaPrimary: 'Miền Nam',
         metaSecondary: '20 phút',
         tags: ['Thanh mát', 'Tươi', 'Tôm'],
@@ -119,6 +122,39 @@ export const ui = {
     artsSectionTitle: 'Những truyền thống đang sống',
     artsSectionDescription:
       'Từ múa rối nước đến thư pháp và lụa thủ công, nghệ thuật dân gian là cầu nối giữa quá khứ và hiện tại.',
+    moreArtsTitle: 'Nghệ thuật & Thủ công truyền thống khác',
+    moreArtsItems: [
+      {
+        icon: '🎨',
+        title: 'Tranh Đông Hồ',
+        description: 'Tranh dân gian tiêu biểu từ Bắc Ninh',
+      },
+      {
+        icon: '🧣',
+        title: 'Lụa Vạn Phúc',
+        description: 'Làng nghề dệt lụa hơn 1.200 năm tuổi',
+      },
+      {
+        icon: '🎭',
+        title: 'Hát Chèo',
+        description: 'Nghệ thuật sân khấu truyền thống Bắc Bộ',
+      },
+      {
+        icon: '🏺',
+        title: 'Sơn mài',
+        description: 'Nghệ thuật sơn ta tinh xảo, tỉ mỉ',
+      },
+      {
+        icon: '🎋',
+        title: 'Thủ công mây tre',
+        description: 'Sản phẩm mây tre đan đặc sắc',
+      },
+      {
+        icon: '👗',
+        title: 'Thiết kế Áo Dài',
+        description: 'Trang phục biểu tượng văn hóa Việt Nam',
+      },
+    ],
     blogSectionBadge: 'Câu chuyện & bài viết',
     blogSectionTitle: 'Từ blog của chúng tôi',
     blogSectionDescription:
@@ -292,6 +328,39 @@ export const ui = {
     artsSectionTitle: 'Living traditions',
     artsSectionDescription:
       'From water puppetry to calligraphy and handcrafted silk, folk arts connect the past with the present.',
+    moreArtsTitle: 'More Traditional Arts & Crafts',
+    moreArtsItems: [
+      {
+        icon: '🎨',
+        title: 'Tranh Dong Ho',
+        description: 'Folk woodblock paintings from Bac Ninh',
+      },
+      {
+        icon: '🧣',
+        title: 'Van Phuc Silk',
+        description: '1,200-year-old traditional silk weaving',
+      },
+      {
+        icon: '🎭',
+        title: 'Cheo Theatre',
+        description: 'Traditional rural opera of the North',
+      },
+      {
+        icon: '🏺',
+        title: 'Lacquerware',
+        description: 'Ornate hand-crafted lacquer art',
+      },
+      {
+        icon: '🎋',
+        title: 'Bamboo Crafts',
+        description: 'Intricate handmade bamboo products',
+      },
+      {
+        icon: '👗',
+        title: 'Ao Dai Design',
+        description: "Vietnam's iconic national garment",
+      },
+    ],
     blogSectionBadge: 'Stories & articles',
     blogSectionTitle: 'From our blog',
     blogSectionDescription:
