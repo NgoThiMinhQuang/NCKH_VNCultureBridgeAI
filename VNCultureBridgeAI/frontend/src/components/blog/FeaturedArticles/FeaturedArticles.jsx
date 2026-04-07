@@ -28,7 +28,8 @@ export default function FeaturedArticles({ lang, articles }) {
         <div className="featured-articles__grid">
           {/* Main Large Article */}
           <div className="featured-articles__main">
-            <Link to={`/articles/${mainArticle.code}`} className="featured-card featured-card--large">
+            <Link to={`/blog/${mainArticle.code}`} className="featured-card featured-card--large">
+
               <div className="featured-card__image-wrapper">
                 <img src={mainArticle.imageUrl} alt={mainArticle.title} className="featured-card__image" />
                 <div className="featured-card__overlay" />
@@ -48,7 +49,8 @@ export default function FeaturedArticles({ lang, articles }) {
           {/* Side Articles */}
           <div className="featured-articles__side">
             {sideArticles.map((article) => (
-              <Link key={article.id} to={`/articles/${article.code}`} className="featured-card featured-card--small">
+              <Link key={article.id} to={`/blog/${article.code}`} className="featured-card featured-card--small">
+
                 <div className="featured-card__image-wrapper">
                   <img src={article.imageUrl} alt={article.title} className="featured-card__image" />
                 </div>

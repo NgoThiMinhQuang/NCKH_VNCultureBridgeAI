@@ -33,7 +33,8 @@ export default function BlogSidebar({ lang, popularPosts, trendingTopics }) {
         <h3 className="sidebar-widget__title">{copy.popularTitle}</h3>
         <div className="popular-posts">
           {popularPosts.map((post) => (
-            <Link key={post.id} to={`/articles/${post.code}`} className="popular-post-item">
+            <Link key={post.id} to={`/blog/${post.code}`} className="popular-post-item">
+
               <div className="popular-post-item__thumb">
                 <img src={post.imageUrl} alt={post.title} />
               </div>

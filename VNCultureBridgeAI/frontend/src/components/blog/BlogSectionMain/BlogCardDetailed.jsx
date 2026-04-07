@@ -7,7 +7,7 @@ import { formatDate } from '../../../utils/formatDate'
 export default function BlogCardDetailed({ article, lang }) {
   return (
     <article className="blog-card-detailed float-card fade-up">
-      <Link to={`/articles/${article.code}`} className="blog-card-detailed__media">
+      <Link to={`/blog/${article.code}`} className="blog-card-detailed__media">
         <img src={article.imageUrl} alt={article.title} />
         {article.category && (
           <span className="blog-card-detailed__badge">{article.category}</span>
@@ -34,7 +34,8 @@ export default function BlogCardDetailed({ article, lang }) {
           </div>
         </div>
 
-        <Link to={`/articles/${article.code}`}>
+        <Link to={`/blog/${article.code}`}>
+
           <h3 className="blog-card-detailed__title">{article.title}</h3>
         </Link>
         
