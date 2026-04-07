@@ -12,7 +12,13 @@ import banaImg from '../../assets/bana.jpg';
 import khmerImg from '../../assets/khmer.jpg';
 import chamImg from '../../assets/cham.jpg';
 import muongImg from '../../assets/muong.jpg';
-
+import ruongBacThangImg from '../../assets/ruong-bac-thang.jpg';
+import duaBoImg from '../../assets/dua-bo.jpg';
+import xoeThaiImg from '../../assets/xoe_thai.png';
+import congChiengImg from '../../assets/cong_chieng.png';
+import leCapSacImg from '../../assets/le-cap-sac.jpg';
+import detThoCamImg from '../../assets/det-tho-cam.jpg';
+import muaTrongImg from '../../assets/mua-trong-sadam.jpg';
 
 // Fake Data for mockups
 const stats = [
@@ -38,29 +44,31 @@ const ethnicCards = [
 ];
 
 const features = [
-  { id: 1, title: "Lễ hội đua bò Bảy Núi", imgUrl: "https://placehold.co/600x400/3d271e/fff?text=Đua+Bò", tag: "Nổi bật" },
-  { id: 2, title: "Nghệ thuật xòe Thái", imgUrl: "https://placehold.co/600x400/5c3a21/fff?text=Xòe+Thái", tag: "" },
-  { id: 3, title: "Không gian văn hóa Cồng Chiêng", imgUrl: "https://placehold.co/600x400/ac3b2a/fff?text=Cồng+Chiêng", tag: "Di sản" },
+  { id: 1, title: "Lễ hội đua bò Bảy Núi", imgUrl: duaBoImg, tag: "Nổi bật" },
+  { id: 2, title: "Nghệ thuật xòe Thái", imgUrl: xoeThaiImg, tag: "" },
+  { id: 3, title: "Không gian văn hóa Cồng Chiêng", imgUrl: congChiengImg, tag: "Di sản" },
 ];
 
 const stories = [
-  { id: 1, title: "Lễ Cấp sắc của người Dao đỏ ở Bắc Kạn", desc: "Lễ cấp sắc là một nghi lễ quan trọng đánh dấu sự trưởng thành của người đàn ông dân tộc Dao đỏ.", imgUrl: "https://placehold.co/400x300/2b0b05/fff" },
-  { id: 2, title: "Khám phá dệt thổ cẩm của người Lô Lô", desc: "Nghề dệt thổ cẩm truyền thống của người Lô Lô mang đậm nét văn hóa độc đáo với những họa tiết sặc sỡ.", imgUrl: "https://placehold.co/400x300/7d6257/fff" },
-  { id: 3, title: "Nét đặc sắc múa trống Sadam của người Khmer", desc: "Trống Sadam không chỉ là nhạc cụ mà còn là linh hồn trong các lễ hội truyền thống của người Khmer Nam Bộ.", imgUrl: "https://placehold.co/400x300/b91c1c/fff" },
+  { id: 1, title: "Lễ Cấp sắc của người Dao đỏ ở Bắc Kạn", desc: "Lễ cấp sắc là một nghi lễ quan trọng đánh dấu sự trưởng thành của người đàn ông dân tộc Dao đỏ.", imgUrl: leCapSacImg },
+  { id: 2, title: "Khám phá dệt thổ cẩm của người Lô Lô", desc: "Nghề dệt thổ cẩm truyền thống của người Lô Lô mang đậm nét văn hóa độc đáo với những họa tiết sặc sỡ.", imgUrl: detThoCamImg },
+  { id: 3, title: "Nét đặc sắc múa trống Sadam của người Khmer", desc: "Trống Sadam không chỉ là nhạc cụ mà còn là linh hồn trong các lễ hội truyền thống của người Khmer Nam Bộ.", imgUrl: muaTrongImg },
 ];
 
 const masonryImages = [
-  { size: "large", imgUrl: "https://placehold.co/600x800/ac3b2a/fff" },
-  { size: "small", imgUrl: "https://placehold.co/400x380/5c3a21/fff" },
-  { size: "small", imgUrl: "https://placehold.co/400x380/3d271e/fff" },
-  { size: "tall", imgUrl: "https://placehold.co/400x800/2b0b05/fff" },
-  { size: "small", imgUrl: "https://placehold.co/400x380/f59e0b/fff" },
-  { size: "wide", imgUrl: "https://placehold.co/800x380/4a140d/fff" },
+  { size: "large", imgUrl: ruongBacThangImg },
+  { size: "small", imgUrl: hmongImg },
+  { size: "small", imgUrl: chamImg },
+  { size: "tall", imgUrl: xoeThaiImg },
+  { size: "small", imgUrl: edeImg },
+  { size: "wide", imgUrl: duaBoImg },
+  { size: "small", imgUrl: congChiengImg },
 ];
 
 export default function EthnicCultures() {
   const [lang, setLang] = useState('vi');
   const [activeFilter, setActiveFilter] = useState("Tất cả dân tộc");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <div className="ec-page-shell">
@@ -120,16 +128,31 @@ export default function EthnicCultures() {
             </div>
 
             <div className="ec-filters">
-              {filters.map(f => (
-                <button
-                  key={f}
-                  className={`ec-filter-pill ${activeFilter === f ? 'active' : ''}`}
-                  onClick={() => setActiveFilter(f)}
+              <div className="ec-custom-dropdown">
+                <div
+                  className={`ec-dropdown-header ${isDropdownOpen ? 'open' : ''}`}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  {f}
-                </button>
-              ))}
-              <div className="ec-filter-arrow">&gt;</div>
+                  {activeFilter}
+                  <span className="ec-dropdown-arrow">▼</span>
+                </div>
+                {isDropdownOpen && (
+                  <ul className="ec-dropdown-list">
+                    {filters.map(f => (
+                      <li
+                        key={f}
+                        className={`ec-dropdown-item ${activeFilter === f ? 'selected' : ''}`}
+                        onClick={() => {
+                          setActiveFilter(f);
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
 
             <div className="ec-grid ec-grid--4cols fade-up">
@@ -161,7 +184,7 @@ export default function EthnicCultures() {
         <section className="ec-section ec-section--dark">
           <div className="ec-container ec-feature-split">
             <div className="ec-feature-img fade-up">
-              <img src="https://placehold.co/800x600/3d271e/fff?text=Nét+văn+hóa" alt="Nét văn hóa tiêu biểu" />
+              <img src={ruongBacThangImg} alt="Nét văn hóa tiêu biểu: Ruộng bậc thang" />
               <div className="ec-feature-img-caption">
                 <strong>Ruộng bậc thang Mù Cang Chải</strong>
                 <span>Kiệt tác kiến trúc nông nghiệp của đồng bào Mông</span>
