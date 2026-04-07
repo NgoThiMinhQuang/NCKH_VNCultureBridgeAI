@@ -34,7 +34,10 @@
       "Bash(cp \"D:/NCKH/VNCultureBridgeAI/FE/FE/public/img/flyout-map-central-active.png\" \"D:/NCKH_VNCultureBridgeAI/VNCultureBridgeAI/frontend/public/maps/vietnam-map-central-active.png\")",
       "Bash(cp \"D:/NCKH/VNCultureBridgeAI/FE/FE/public/img/flyout-map-south-active.png\" \"D:/NCKH_VNCultureBridgeAI/VNCultureBridgeAI/frontend/public/maps/vietnam-map-south-active.png\")",
       "Bash(python:*)",
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(powershell:*)",
+      "Bash(taskkill:*)",
+      "Bash(printf '\\\\n---\\\\n')"
     ]
   }
 }

@@ -5,6 +5,75 @@ const { pickLocalized } = require('../utils/locale')
 const HOMEPAGE_CACHE_TTL_MS = 60 * 1000
 const homepageCache = new Map()
 
+function fixMojibake(value) {
+  if (typeof value !== 'string' || !value) return value
+  if (!/[ÃÂáàảãạăắằẳẵặâấầẩẫậđêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ]/.test(value)) {
+    return value
+  }
+
+  try {
+    return Buffer.from(value, 'latin1').toString('utf8')
+  } catch {
+    return value
+  }
+}
+
+function fixMojibakeArray(values) {
+  return Array.isArray(values) ? values.map((item) => fixMojibake(item)) : values
+}
+
+function fixMojibakeRow(row, fields) {
+  const nextRow = { ...row }
+
+  for (const field of fields) {
+    nextRow[field] = fixMojibake(nextRow[field])
+  }
+
+  return nextRow
+}
+
+function normalizeHomepageRegionRow(row) {
+  const normalized = fixMojibakeRow(row, [
+    'TenVI',
+    'HomepageBadgeVI',
+    'HomepageTitleVI',
+    'HomepageDescriptionVI',
+    'HomepageHighlightsVI',
+    'HomepageCtaVI',
+    'HomepageImageAltVI',
+    'AltTextVI',
+  ])
+
+  normalized._fixedHighlights = fixMojibakeArray(parseHighlights(normalized.HomepageHighlightsVI))
+
+  return normalized
+}
+
+function normalizeCardRow(row) {
+  return fixMojibakeRow(row, [
+    'TenVI',
+    'MoTaVI',
+    'TieuDeVI',
+    'MoTaNganVI',
+    'AltTextVI',
+    'CategoryTenVI',
+  ])
+}
+
+function normalizePromptRow(row) {
+  return fixMojibakeRow(row, ['TenPrompt', 'NoiDungPrompt'])
+}
+
+function normalizeRows(rows, mapper) {
+  return rows.map(mapper)
+}
+
+function clearHomepageCache() {
+  homepageCache.clear()
+}
+
+clearHomepageCache()
+
 function mergeUniqueCards(primaryRows, fallbackRows, limit = 6) {
   const seen = new Set()
   const merged = []
@@ -55,7 +124,7 @@ function mapHomepageRegion(row, lang) {
     badge: row.HomepageBadgeVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
     title: row.HomepageTitleVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
     description: row.HomepageDescriptionVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
-    highlights: parseHighlights(row.HomepageHighlightsVI),
+    highlights: row._fixedHighlights || parseHighlights(row.HomepageHighlightsVI),
     cta: row.HomepageCtaVI || `Khám phá ${pickLocalized(row, 'TenVI', 'TenEN', lang)}`,
     imageUrl: row.ImageUrl || null,
     imageAlt: row.HomepageImageAltVI || row.AltTextVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
@@ -80,7 +149,7 @@ async function getHomepage(lang = 'vi') {
     return cached.data
   }
 
-  const [regions, ethnicGroups, festivals, cuisine, arts, categories, prompts, latestArticles] =
+  let [regions, ethnicGroups, festivals, cuisine, arts, categories, prompts, latestArticles] =
     await Promise.all([
       homepageRepository.getFeaturedRegions(),
       homepageRepository.getFeaturedEthnicGroups(),
@@ -91,6 +160,15 @@ async function getHomepage(lang = 'vi') {
       homepageRepository.getPromptSamples(),
       homepageRepository.getLatestArticles(12),
     ])
+
+  regions = normalizeRows(regions, normalizeHomepageRegionRow)
+  ethnicGroups = normalizeRows(ethnicGroups, normalizeCardRow)
+  festivals = normalizeRows(festivals, normalizeCardRow)
+  cuisine = normalizeRows(cuisine, normalizeCardRow)
+  arts = normalizeRows(arts, normalizeCardRow)
+  categories = normalizeRows(categories, normalizeCardRow)
+  prompts = normalizeRows(prompts, normalizePromptRow)
+  latestArticles = normalizeRows(latestArticles, normalizeCardRow)
 
   const homepageArts = mergeUniqueCards(arts, latestArticles, 6)
   const blogPosts = latestArticles.slice(0, 3)

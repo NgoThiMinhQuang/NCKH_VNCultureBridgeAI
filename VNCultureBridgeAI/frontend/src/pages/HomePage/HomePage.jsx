@@ -104,14 +104,21 @@ export default function HomePage() {
   const ethnicShowcaseStats = copy.ethnicShowcaseStats || []
   const featuredEthnicGroups = (safeHomepage.ethnicGroups || []).slice(0, 6)
   const heroTitleLines = getHeroTitleLines(safeHomepage.hero.title)
-  const festivalShowcaseCards = (safeHomepage.festivals || []).slice(0, 3)
-  const cuisineShowcaseCards = (safeHomepage.cuisine || []).slice(0, 3)
+  const festivalShowcaseCards = (copy.festivalShowcaseCards || []).map((item, idx) => {
+    const apiItem = (safeHomepage.festivals || [])[idx] || {}
+    return { ...apiItem, ...item }
+  })
+  const cuisineShowcaseCards = (copy.cuisineShowcaseCards || []).map((item, idx) => {
+    const apiItem = (safeHomepage.cuisine || [])[idx] || {}
+    return { ...apiItem, ...item }
+  })
   const artsShowcaseCards = safeHomepage.arts || []
   const featuredArt = artsShowcaseCards[0]
   const additionalArts = artsShowcaseCards.slice(1, 7)
   const blogPosts = safeHomepage.blogPosts || []
   const featuredBlogPost = blogPosts[0] || null
   const secondaryBlogPosts = blogPosts.slice(1, 4)
+  const localizedArtsCards = artsShowcaseCards.slice(0, 6).map(localizeArtItem)
   const blogFilterPills = lang === 'vi'
     ? ['Tất cả', 'Du lịch', 'Văn hoá', 'Ẩm thực', 'Dân tộc', 'Nghệ thuật']
     : ['All', 'Travel', 'Culture', 'Cuisine', 'Ethnic Cultures', 'Arts']
@@ -207,6 +214,46 @@ export default function HomePage() {
 
   function localizeArtCta(title) {
     return `Khám phá ${title}`
+  }
+
+  function getArtsSectionTitle() {
+    return lang === 'vi' ? 'Thêm nghệ thuật và thủ công truyền thống' : 'More Traditional Arts & Crafts'
+  }
+
+  function getArtTileIcon(item, index) {
+    const normalized = `${item?.title || ''} ${item?.category || ''}`.trim().toLowerCase()
+
+    if (normalized.includes('đông hồ') || normalized.includes('dong ho')) return '🎨'
+    if (normalized.includes('lụa') || normalized.includes('silk')) return '🧵'
+    if (normalized.includes('chèo') || normalized.includes('cheo')) return '🎭'
+    if (normalized.includes('sơn mài') || normalized.includes('lacquer')) return '🏺'
+    if (normalized.includes('tre') || normalized.includes('bamboo')) return '🎍'
+    if (normalized.includes('áo dài') || normalized.includes('ao dai')) return '👘'
+    if (normalized.includes('múa rối nước') || normalized.includes('water puppetry')) return '🎎'
+    if (normalized.includes('thư pháp') || normalized.includes('calligraphy')) return '✒️'
+
+    return ['🎨', '🧵', '🎭', '🏺', '🎍', '👘'][index % 6]
+  }
+
+  function getArtTileSubtitle(item) {
+    if (item?.category) return item.category
+    if (item?.description) return item.description
+    return lang === 'vi' ? 'Di sản thủ công truyền thống' : 'Traditional cultural heritage'
+  }
+
+  function localizeArtItem(item) {
+    const safeItem = withSafeImage(item)
+    const title = lang === 'vi' ? localizeArtTitle(safeItem.title) : safeItem.title
+    const category = lang === 'vi' ? localizeArtCategory(safeItem.category) : safeItem.category
+    const description = lang === 'vi' ? localizeArtDescription(safeItem.description) : safeItem.description
+
+    return {
+      ...safeItem,
+      title,
+      category,
+      description,
+      subtitle: getArtTileSubtitle({ ...safeItem, category, description }),
+    }
   }
 
   function localizeCuisineTitle(title) {
@@ -403,24 +450,24 @@ export default function HomePage() {
 
   function localizeCuisineItem(item) {
     const safeItem = withSafeImage(item)
-    const title = localizeCuisineTitle(safeItem.title)
-    const subtitle = safeItem.category || (lang === 'vi' ? 'Ẩm thực Việt Nam' : 'Vietnamese cuisine')
-    const tags = extractDynamicTags(title, subtitle, safeItem.description)
-    const rating = '★'.repeat(Math.max(3, Math.min(5, safeItem.articleCount || 4)))
+    const title = item.title || localizeCuisineTitle(safeItem.title)
+    const subtitle = item.subtitle || safeItem.category || (lang === 'vi' ? 'Ẩm thực Việt Nam' : 'Vietnamese cuisine')
+    const tags = item.tags || extractDynamicTags(title, subtitle, safeItem.description)
+    const rating = item.footerIcon || '★'.repeat(Math.max(3, Math.min(5, safeItem.articleCount || 4)))
 
     return {
       ...safeItem,
       title,
       subtitle,
-      description: localizeCuisineDescription(safeItem.description),
-      metaPrimary: formatHomepageMetaPrimary(safeItem),
-      metaSecondary: safeItem.category || (lang === 'vi' ? 'Món nổi bật' : 'Featured dish'),
+      description: item.description || localizeCuisineDescription(safeItem.description),
+      metaPrimary: item.metaPrimary || formatHomepageMetaPrimary(safeItem),
+      metaSecondary: item.metaSecondary || safeItem.category || (lang === 'vi' ? 'Món nổi bật' : 'Featured dish'),
       tags,
-      score: safeItem.articleCount ? `${safeItem.articleCount}+` : 'Top',
+      score: item.score || (safeItem.articleCount ? `${safeItem.articleCount}+` : 'Top'),
       scoreLabel: lang === 'vi' ? 'Món nổi bật' : 'Featured dish',
       cornerIcon: '🍽️',
       footerIcon: rating,
-      spiceLevel: Math.max(1, Math.min(5, safeItem.articleCount || 3)),
+      spiceLevel: item.spiceLevel || Math.max(1, Math.min(5, safeItem.articleCount || 3)),
     }
   }
 
@@ -1136,15 +1183,6 @@ export default function HomePage() {
     return Boolean(getFestivalCardRichClass(item))
   }
 
-  function localizeArtItem(item) {
-    return {
-      ...withSafeImage(item),
-      title: localizeArtTitle(item.title),
-      category: localizeArtCategory(item.category),
-      description: localizeArtDescription(item.description),
-    }
-  }
-
   const localizedCuisineShowcaseCards = cuisineShowcaseCards.map(localizeCuisineItem)
   const localizedFestivalShowcaseCards = festivalShowcaseCards.map(localizeFestivalItem)
   const localizedFeaturedEthnicGroups = featuredEthnicGroups.map(localizeEthnicityItem)
@@ -1460,6 +1498,24 @@ export default function HomePage() {
                   <span key={filter} className="cuisine-showcase__filter-pill">{filter}</span>
                 ))}
               </div>
+
+              <div className="cuisine-showcase__legend fade-up">
+                <span className="cuisine-showcase__legend-label">{copy.cuisineShowcaseLegendLabel}</span>
+                <div className="cuisine-showcase__legend-items">
+                  <div className="cuisine-showcase__legend-item">
+                    <span className="spice-icon spice-icon--mild">🔥</span>
+                    <span>{copy.cuisineShowcaseLegendMild}</span>
+                  </div>
+                  <div className="cuisine-showcase__legend-item">
+                    <span className="spice-icon spice-icon--medium">🔥🔥</span>
+                    <span>{copy.cuisineShowcaseLegendMedium}</span>
+                  </div>
+                  <div className="cuisine-showcase__legend-item">
+                    <span className="spice-icon spice-icon--fiery">🔥🔥🔥</span>
+                    <span>{copy.cuisineShowcaseLegendFiery}</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="cuisine-showcase__grid">
@@ -1472,30 +1528,38 @@ export default function HomePage() {
                       <div className="cuisine-card__image cuisine-card__image--placeholder">{item.title}</div>
                     )}
 
-                    <span className="cuisine-card__score">{item.scoreLabel}</span>
-                    <button type="button" className="cuisine-card__favorite" aria-label={item.title}>
-                      {item.cornerIcon}
-                    </button>
-                    <span className="cuisine-card__spice">
-                      {'🔥'.repeat(item.spiceLevel || 1)}
-                      {'🖤'.repeat(Math.max(0, 5 - (item.spiceLevel || 1)))}
-                    </span>
+                    <div className="cuisine-card__badges-top">
+                      <span className="cuisine-card__popularity-badge">
+                        <span className="heart-icon">❤</span> {item.score}
+                      </span>
+                      <button type="button" className="cuisine-card__favorite-btn" aria-label="Add to favorites">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div className="cuisine-card__spice-overlay">
+                      <span className="spice-flames">
+                        {'🔥'.repeat(item.spiceLevel || 1)}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="cuisine-card__body">
                     <h3>{item.title}</h3>
-                    <p className="cuisine-card__subtitle">{item.subtitle}</p>
+                    <p className="cuisine-card__red-subtitle">{item.subtitle}</p>
                     {item.description ? <p className="cuisine-card__description">{item.description}</p> : null}
 
-                    <div className="cuisine-card__meta">
-                      <span>
-                        <span aria-hidden="true">🗓️</span>
+                    <div className="cuisine-card__info-row">
+                      <div className="info-item">
+                        <span className="info-icon">📍</span>
                         <span>{item.metaPrimary}</span>
-                      </span>
-                      <span>
-                        <span aria-hidden="true">📍</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-icon">🕒</span>
                         <span>{item.metaSecondary}</span>
-                      </span>
+                      </div>
                     </div>
 
                     <div className="cuisine-card__chips">
@@ -1509,7 +1573,6 @@ export default function HomePage() {
                         {copy.learnMore}
                         <span aria-hidden="true">→</span>
                       </Link>
-                      <span className="cuisine-card__rating" aria-hidden="true">{item.footerIcon}</span>
                     </div>
                   </div>
                 </article>

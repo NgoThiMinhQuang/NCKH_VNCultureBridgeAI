@@ -6,6 +6,7 @@ import { ui } from '../../i18n/messages'
 
 import VietnamMap from '../../components/features/regions/VietnamMap'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
+import Footer from '../../components/layout/Footer/Footer'
 
 // Import Region Overviews
 import imgOverviewNorth from '../../assets/images/regions/region_overview_north.png'
@@ -29,6 +30,9 @@ import imgHlHoiAn from '../../assets/images/regions/highlight_hoian.png'
 import imgHlDaNang from '../../assets/images/regions/highlight_danang.png'
 import imgHlCanTho from '../../assets/images/regions/highlight_cantho.png'
 import imgHlNamBo from '../../assets/images/regions/highlight_nambo.png'
+
+// Import Hero BG
+import imgHeroBg from '../../assets/images/regions/regions_hero_bg.png'
 
 const regionMeta = {
   vi: [
@@ -123,36 +127,87 @@ const overviewRegions = [
   {
     id: 'north',
     badge: 'Miền Bắc',
-    title: 'Núi rừng hùng vĩ, văn hiến nghìn năm',
-    desc: 'Từ Hà Giang đến Hạ Long, miền Bắc mang trong mình vẻ đẹp của núi non hùng vĩ, ruộng bậc thang nghìn tầng, và nền văn hóa Kinh Bắc lâu đời. Phố cổ, hồ sen, làng nghề và những món ăn đậm đà tạo nên bản sắc riêng.',
-    tags: ['Hà Nội', 'Hạ Long', 'Sa Pa', 'Ninh Bình'],
+    title: 'Nơi mây núi tích tụ từng lớp lịch sử',
+    desc: 'Miền Bắc mang trong mình sự trầm lắng, kín đáo như tầng tầng lớp lớp ruộng bậc thang. Từ thủ đô nghìn năm văn hiến đến những bản làng cao nguyên, mỗi góc đất đều thấm đượm hồn văn hiến và sức sống bền bỉ của con người vùng núi.',
+    details: [
+      { label: 'CẢNH QUAN ĐẶC TRƯNG', value: 'Ruộng bậc thang Mù Cang Chải, núi non Hà Giang, vịnh Hạ Long, Ninh Bình tiên cảnh, đồng bằng sông Hồng' },
+      { label: 'NÉT ẨM THỰC', value: 'Phở Hà Nội, bún chả, nem rán, bánh cuốn, cà phê trứng, đặc sản vùng cao' },
+      { label: 'LỄ HỘI TIÊU BIỂU', value: 'Hội Lim, Chùa Hương, Lễ hội Đền Hùng, Tết Nguyên Đán, Hội Gióng' },
+      { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Gốm Bát Tràng, lụa Vạn Phúc, tranh Đông Hồ, ca trù, quan họ Bắc Ninh' }
+    ],
     image: imgOverviewNorth, 
+    link: '/regions/bac-bo'
   },
   {
     id: 'central',
     badge: 'Miền Trung',
-    title: 'Di sản hoàng triều, biển xanh cát trắng',
-    desc: 'Miền Trung là nơi giao thoa giữa di sản văn hóa thế giới và vẻ đẹp thiên nhiên tuyệt mỹ. Từ cố đô Huế, phố cổ Hội An đến hang động Sơn Đoòng, mỗi điểm đến đều là một câu chuyện lịch sử sống động.',
-    tags: ['Huế', 'Hội An', 'Đà Nẵng', 'Phong Nha'],
+    title: 'Dải đất di sản giữa núi và biển',
+    desc: 'Miền Trung là nơi hội tụ của núi non hùng vĩ và biển cả mênh mông. Từ cố đô Huế với hoàng cung nguy nga đến phố cổ Hội An thơ mộng, vùng đất này chứa đựng những di sản văn hoá vật thể và phi vật thể quý giá nhất của Việt Nam.',
+    details: [
+      { label: 'CẢNH QUAN ĐẶC TRƯNG', value: 'Cố đô Huế, phố cổ Hội An, thánh địa Mỹ Sơn, động Phong Nha, bán đảo Sơn Trà, Quy Nhơn biển xanh' },
+      { label: 'NÉT ẨM THỰC', value: 'Bún bò Huế, cao lầu, mì Quảng, bánh xèo, nem lụi, ẩm thực cung đình Huế' },
+      { label: 'LỄ HỘI TIÊU BIỂU', value: 'Festival Huế, Lễ hội Hoa đăng Hội An, Lễ hội Cầu Ngư, Tết Nguyên Tiêu' },
+      { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Thêu tay Huế, mộc điêu khắc, đèn lồng Hội An, tranh cát Mộc Nghệ, nhã nhạc cung đình' }
+    ],
     image: imgOverviewCentral,
+    link: '/regions/trung-bo'
   },
   {
     id: 'south',
     badge: 'Miền Nam',
-    title: 'Sông nước mênh mông, nhịp sống năng động',
-    desc: 'Đồng bằng sông Cửu Long với những chợ nổi rực rỡ, vườn trái cây trĩu quả, và nét văn hóa đặc trưng. Từ Sài Gòn sôi động đến Phú Quốc thơ mộng, miền Nam là điểm đến của sự năng động và hiếu khách.',
-    tags: ['TP. HCM', 'Cần Thơ', 'Phú Quốc', 'Vũng Tàu'],
+    title: 'Vùng sông nước bao la, lòng người rộng mở',
+    desc: 'Miền Nam là vùng đất của những dòng sông giao thoa, nơi nhịp sống chảy theo dòng nước. Từ Sài Gòn sôi động đến đồng bằng sông Cửu Long thơ mộng, miền Nam toát lên sự rộng mở, phóng khoáng và lòng mến khách.',
+    details: [
+      { label: 'CẢNH QUAN ĐẶC TRƯNG', value: 'Đồng bằng sông Cửu Long, chợ nổi Cái Răng, rừng tràm Trà Sư, Phú Quốc đảo ngọc, Côn Đảo hoang sơ' },
+      { label: 'NÉT ẨM THỰC', value: 'Hủ tiếu Nam Vang, bánh tráng trộn, lẩu mắm, cá lóc nướng trui, trái cây miệt vườn, cơm tấm' },
+      { label: 'LỄ HỘI TIÊU BIỂU', value: 'Lễ hội Ok Om Bok, Lễ hội Nghinh Ông, Tết Chol Chnam Thmay, Lễ hội Cầu Bông' },
+      { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Lụa Tân Châu, đan lát cói, gốm sứ Biên Hoà, đờn ca tài tử, hát bội Nam Bộ' }
+    ],
     image: imgOverviewSouth,
+    link: '/regions/nam-bo'
+  }
+];
+
+const inspirationCards = [
+  {
+    title: 'Miền núi và mây',
+    desc: 'Khám phá những cao nguyên mờ sương, bản làng dân tộc và những thửa ruộng bậc thang trải dài như tranh.',
+    image: imgHlSapa
+  },
+  {
+    title: 'Di sản và ký ức',
+    desc: 'Những cố đô hoàng triều, đền chùa nghìn năm, kiến trúc cổ kính lưu giữ linh hồn của dân tộc.',
+    image: imgHlHue
+  },
+  {
+    title: 'Sông nước và chợ quê',
+    desc: 'Nhịp sống chảy theo dòng sông, chợ nổi, lòng chài và cuộc sống gắn bó với lúa nước.',
+    image: imgHlCanTho
+  },
+  {
+    title: 'Biển xanh và làng chài',
+    desc: 'Những bãi biển hoang sơ, làng chài yên bình và cuộc sống gắn liền với biển cả.',
+    image: imgHlDaNang
+  },
+  {
+    title: 'Ẩm thực địa phương',
+    desc: 'Từ phở Hà Nội, bún bò Huế đến hủ tiếu Nam Vang - hành trình khám phá hương vị từng vùng miền.',
+    image: imgHlHanoi
+  },
+  {
+    title: 'Làng nghề và thủ công',
+    desc: 'Khám phá các làng nghề truyền thống: gốm sứ, lụa tơ tằm, tranh dân gian và tay nghề thủ công tinh xảo.',
+    image: imgHlNamBo
   }
 ];
 
 const provincesData = [
-  { id: 1, name: 'Hà Giang', desc: 'Cao nguyên đá, hoa tam giác mạch, đèo Mã Pí Lèng', tags: ['Cao nguyên đá Đồng Văn', 'Đèo Mã Pì Lèng', 'Hoa tam giác mạch'], region: 'Tây Bắc', image: imgProvHaGiang },
-  { id: 2, name: 'Cao Bằng', desc: 'Thác Bản Giốc, động Ngườm Ngao, núi non hùng vĩ', tags: ['Thác Bản Giốc', 'Động Ngườm Ngao', 'Hồ Ba Bể'], region: 'Tây Bắc', image: imgProvCaoBang },
-  { id: 3, name: 'Lai Châu', desc: 'Mù Cang Chải, ruộng bậc thang, văn hóa Thái', tags: ['Ruộng bậc thang', 'Đỉnh Phan Xi Păng', 'Làng văn hóa'], region: 'Tây Bắc', image: imgProvLaiChau },
-  { id: 4, name: 'Lào Cai', desc: 'Sa Pa, Fansipan, thị trấn sương mù', tags: ['Sa Pa', 'Đỉnh Phan Xi Păng', 'Bản Cát Cát'], region: 'Tây Bắc', image: imgProvLaoCai },
-  { id: 5, name: 'Điện Biên', desc: 'Điện Biên Phủ, di tích lịch sử, văn hóa Thái', tags: ['Điện Biên Phủ', 'Đồi A1', 'Thung lũng Mường Thanh'], region: 'Tây Bắc', image: imgProvDienBien },
-  { id: 6, name: 'Sơn La', desc: 'Mộc Châu, đồi chè, thác Dải Yếm', tags: ['Cao nguyên Mộc Châu', 'Đồi chè', 'Thác Dải Yếm'], region: 'Tây Bắc', image: imgProvSonLa }
+  { id: 1, name: 'Hà Nội', desc: 'Thủ đô nghìn năm văn bản cùng phố cổ, hồ Hoàn Kiếm và nền văn hóa truyền thống đậm đà', tags: ['Phố cổ', 'Di sản', 'Ẩm thực'], region: 'Miền Bắc', image: imgHlHanoi },
+  { id: 2, name: 'Huế', desc: 'Cố đô với hoàng cung, lăng tẩm và ẩm thực cung đình tinh tế', tags: ['Hoàng cung', 'Di sản UNESCO', 'Văn hóa'], region: 'Miền Trung', image: imgHlHue },
+  { id: 3, name: 'Hội An', desc: 'Phố cổ đèn lồng với kiến trúc giao thoa văn hóa Việt - Nhật - Hoa', tags: ['Phố cổ', 'Đèn lồng', 'Kiến trúc'], region: 'Miền Trung', image: imgHlHoiAn },
+  { id: 4, name: 'Sapa', desc: 'Cao nguyên mờ sương với ruộng bậc thang và văn hóa dân tộc đa dạng', tags: ['Núi rừng', 'Ruộng bậc thang', 'Dân tộc'], region: 'Miền Bắc', image: imgHlSapa },
+  { id: 5, name: 'Cần Thơ', desc: 'Thủ phụ miền Tây với chợ nổi Cái Răng và vườn trái cây miệt vườn', tags: ['Chợ nổi', 'Sông nước', 'Ẩm thực'], region: 'Miền Nam', image: imgHlCanTho },
+  { id: 6, name: 'Phú Quốc', desc: 'Đảo ngọc với bãi biển hoang sơ, rừng nguyên sinh và hải sản tươi ngon', tags: ['Biển đảo', 'Thiên nhiên', 'Nghỉ dưỡng'], region: 'Miền Nam', image: imgHlNamBo }
 ];
 
 const highlightsData = [
@@ -166,11 +221,86 @@ const highlightsData = [
   { id: 8, name: 'Miệt vườn Nam Bộ', desc: 'Đời sống bình yên giữa vườn trái cây trĩu quả và dòng sông hiền hòa...', region: 'Miền Nam', tag: 'Đời sống', image: imgHlNamBo },
   { id: 9, name: 'Phú Quốc biển đảo', desc: 'Thiên đường biển xanh cát trắng với vẻ đẹp hoang sơ quyến rũ...', region: 'Miền Nam', tag: 'Biển đảo', image: imgHlDaNang }
 ];
+const seasonsData = [
+  {
+    id: 'spring',
+    title: 'Mùa xuân',
+    months: 'THÁNG 1 - 3',
+    desc: 'Hoa nở, lễ hội Tết, không khí tươi mới.',
+    details: [
+      { region: 'Miền Bắc', text: 'Hoa đào, mai nở rộ' },
+      { region: 'Miền Trung', text: 'Tiết trời ấm áp' },
+      { region: 'Miền Nam', text: 'Vườn trái cây đầu mùa' }
+    ],
+    image: imgHlTrangAn
+  },
+  {
+    id: 'summer',
+    title: 'Mùa hè',
+    months: 'THÁNG 4 - 6',
+    desc: 'Biển xanh, núi mát, lễ hội mùa màng.',
+    details: [
+      { region: 'Miền Bắc', text: 'Mùa lúa xanh' },
+      { region: 'Miền Trung', text: 'Biển đẹp nhất năm' },
+      { region: 'Miền Nam', text: 'Trái cây chín rộ' }
+    ],
+    image: imgOverviewSouth
+  },
+  {
+    id: 'autumn',
+    title: 'Mùa thu',
+    months: 'THÁNG 7 - 9',
+    desc: 'Lúa chín vàng, trời trong xanh, se se lạnh.',
+    details: [
+      { region: 'Miền Bắc', text: 'Mùa lúa chín vàng' },
+      { region: 'Miền Trung', text: 'Mùa mưa bão' },
+      { region: 'Miền Nam', text: 'Nước nổi đồng bằng' }
+    ],
+    image: imgProvLaoCai
+  },
+  {
+    id: 'winter',
+    title: 'Mùa đông',
+    months: 'THÁNG 10 - 12',
+    desc: 'Sương mù, se lạnh, không khí tĩnh lặng.',
+    details: [
+      { region: 'Miền Bắc', text: 'Sương mù, băng giá Sapa' },
+      { region: 'Miền Trung', text: 'Nắng ấm dần' },
+      { region: 'Miền Nam', text: 'Khô ráo, dễ chịu' }
+    ],
+    image: imgProvHaGiang
+  }
+];
+
+const culturalCategories = [
+  { id: 'culinary', title: 'Ẩm thực', icon: '🍴', desc: 'Từ phở Bắc, bún Huế đến hủ tiếu Nam - ẩm thực là linh hồn vùng miền' },
+  { id: 'festival', title: 'Lễ hội', icon: '🏮', desc: 'Tết Nguyên Đán, Festival Huế, lễ hội đền chùa - văn hóa tín ngưỡng đa dạng' },
+  { id: 'architecture', title: 'Kiến trúc', icon: '🏠', desc: 'Từ nhà sàn, nhà rường đến kiến trúc cung đình và phố cổ' },
+  { id: 'craft', title: 'Nghệ thủ công', icon: '🎨', desc: 'Gốm sứ, lụa tơ tằm, tranh dân gian - tay nghề tinh xảo qua thế hệ' },
+  { id: 'music', title: 'Âm nhạc dân gian', icon: '🎻', desc: 'Ca trù, quan họ, đờn ca tài tử - điệu nhạc của từng vùng miền' },
+  { id: 'custom', title: 'Phong tục', icon: '🧺', desc: 'Tục lệ cưới hỏi, tang lễ, lễ nghi - giá trị truyền thống' },
+  { id: 'fashion', title: 'Trang phục', icon: '👗', desc: 'Áo dài, áo tứ thân, trang phục dân tộc - bản sắc qua trang phục' },
+  { id: 'community', title: 'Sinh hoạt cộng đồng', icon: '👥', desc: 'Làng xã, hội làng, tương thân tương ái - tinh thần cộng đồng' }
+];
+
+const filterOptions = [
+  { id: 'all', label: 'Tất cả' },
+  { id: 'regions', label: 'Vùng miền' },
+  { id: 'nature', label: 'Thiên nhiên' },
+  { id: 'heritage', label: 'Di sản' },
+  { id: 'food', label: 'Ẩm thực' },
+  { id: 'sea', label: 'Biển đảo' },
+  { id: 'mountains', label: 'Núi rừng' },
+  { id: 'oldtown', label: 'Phố cổ' },
+  { id: 'craft', label: 'Làng nghề' }
+];
 
 export default function RegionsPage() {
   const [lang, setLang] = useState('vi')
   const [state, setState] = useState({ status: 'loading', data: null, error: '' })
   const [activeKey, setActiveKey] = useState('north')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [activeFilter, setActiveFilter] = useState('all')
   const copy = useMemo(() => ui[lang], [lang])
 
   function handleSelectRegion(regionKey) {
@@ -209,7 +339,7 @@ export default function RegionsPage() {
   const activeRegion = mappedRegions.find((item) => item.key === activeKey) || mappedRegions[0] || fallbackRegion
 
   return (
-    <div className="regions-page">
+    <div className="page-shell">
       <PageHeader
         lang={lang}
         onLangChange={setLang}
@@ -217,6 +347,62 @@ export default function RegionsPage() {
           { label: lang === 'vi' ? 'Khám phá vùng miền' : 'Explore Regions' },
         ]}
       />
+
+      <main className="regions-page">
+        <section className="regions-hero">
+        <div className="regions-hero__bg">
+          <img src={imgHeroBg} alt="Vietnam Cultural Heritage" />
+          <div className="regions-hero__overlay"></div>
+        </div>
+        
+        <div className="regions-hero__content fade-up">
+          <div className="regions-hero__badge">
+            <span className="regions-hero__badge-icon">✨</span>
+            <span>{lang === 'vi' ? 'Hành trình qua những miền đất Việt' : 'A journey through Vietnamese lands'}</span>
+          </div>
+          
+          <h1 className="regions-hero__title">
+            {lang === 'vi' ? 'Khám phá vùng miền' : 'Discover the Regions of'}
+            <span className="regions-hero__title-accent"> {lang === 'vi' ? 'Việt Nam' : 'Vietnam'}</span>
+          </h1>
+          
+          <p className="regions-hero__desc">
+            {lang === 'vi' 
+              ? 'Mỗi vùng đất là một nịp sống, một lớp ký ức, một sắc màu văn hoá riêng đang chờ được cảm nhận.'
+              : 'Each land is a heartbeat, a layer of memory, a unique cultural color waiting to be felt.'}
+          </p>
+          
+          <div className="regions-hero__actions">
+            <button 
+              className="regions-hero__btn regions-hero__btn--primary"
+              onClick={() => document.querySelector('.regions-split-layout')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              {lang === 'vi' ? 'Khám phá ngay' : 'Explore Now'} 
+              <span className="btn-icon">→</span>
+            </button>
+            <button 
+              className="regions-hero__btn regions-hero__btn--secondary"
+              onClick={() => document.querySelector('.regions-split-layout__map')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              <span className="btn-icon">🗺️</span>
+              {lang === 'vi' ? 'Xem bản đồ vùng miền' : 'View Region Map'}
+            </button>
+          </div>
+        </div>
+
+        <div className="regions-hero__categories fade-up-delayed">
+          {[
+            { vi: 'Di sản đặc sắc', en: 'Unique Heritage' },
+            { vi: 'Ẩm thực bản địa', en: 'Local Cuisine' },
+            { vi: 'Lễ hội bốn mùa', en: 'Four Seasons Festivals' },
+            { vi: 'Bản sắc cộng đồng', en: 'Community Identity' }
+          ].map((cat, idx) => (
+            <div key={idx} className="hero-category-tag">
+              {lang === 'vi' ? cat.vi : cat.en}
+            </div>
+          ))}
+        </div>
+      </section>
 
       <div className="regions-page__shell">
         <div className="regions-split-layout fade-up">
@@ -299,8 +485,14 @@ export default function RegionsPage() {
           </div>
         </div>
 
-        {/* Section 1: Overview Regions */}
         <section className="regions-overview-section">
+          <div className="regions-overview__header fade-up">
+            <h2>{lang === 'vi' ? 'Câu chuyện từng vùng đất' : 'Stories of every land'}</h2>
+            <p>{lang === 'vi' 
+              ? 'Mỗi vùng miền là một bản giao hưởng văn hoá riêng, được tạo nên từ phong cảnh, ẩm thực, lễ hội và tâm hồn con người.' 
+              : 'Each region is a unique cultural symphony, created from landscape, cuisine, festivals, and human soul.'}
+            </p>
+          </div>
           <div className="regions-overview__container fade-up">
             {overviewRegions.map((region, idx) => {
               const isReversed = idx % 2 !== 0;
@@ -319,13 +511,18 @@ export default function RegionsPage() {
                     <span className="regions-overview__badge">{region.badge}</span>
                     <h3 className="regions-overview__title">{region.title}</h3>
                     <p className="regions-overview__desc">{region.desc}</p>
-                    <div className="regions-overview__tags">
-                      {region.tags.map(tag => (
-                        <span key={tag} className="regions-overview__tag">{tag}</span>
+                    
+                    <div className="regions-overview__details">
+                      {(region.details || []).map((detail, dIdx) => (
+                        <div key={dIdx} className="regions-overview__detail-row">
+                          <span className="regions-overview__detail-label">{detail.label}</span>
+                          <span className="regions-overview__detail-value">{detail.value}</span>
+                        </div>
                       ))}
                     </div>
-                    <Link to="/provinces" state={{ search: region.badge }} className="regions-overview__cta">
-                      Xem tỉnh thành trong vùng <span aria-hidden="true">→</span>
+
+                    <Link to={region.link || "/provinces"} className="regions-overview__cta-btn">
+                      {lang === 'vi' ? 'Xem sâu hơn' : 'View more'} <span aria-hidden="true">→</span>
                     </Link>
                   </div>
                 </div>
@@ -337,95 +534,164 @@ export default function RegionsPage() {
           </div>
         </section>
 
-        {/* Section 2: Provinces Grid */}
-        <section className="provinces-section">
-          <div className="provinces__container fade-up">
-            <div className="provinces__header">
-              <h2>Khám phá tỉnh thành</h2>
-              <p>63 tỉnh thành với những câu chuyện độc đáo và trải nghiệm khó quên</p>
-              <Link to="/provinces" className="provinces__button">Xem tất cả tỉnh thành →</Link>
+        {/* Section 2: Inspiration Section */}
+        <section className="inspiration-section">
+          <div className="inspiration__container fade-up">
+            <div className="inspiration__header">
+              <h2>{lang === 'vi' ? 'Khám phá theo cảm hứng' : 'Explore by Inspiration'}</h2>
+              <p>{lang === 'vi' 
+                ? 'Hãy để trái tim dẫn lối - chọn những chủ đề để gợi cảm xúc và khám phá vùng đất phù hợp với tâm trạng của bạn.'
+                : 'Let your heart lead the way - choose themes to evoke emotions and discover land that fits your mood.'}
+              </p>
             </div>
             
-            <div className="provinces__grid">
-              {provincesData.map(prov => (
-                <div key={prov.id} className="province-card">
-                  <div className="province-card__image-wrapper">
-                    {prov.image ? (
-                      <img src={prov.image} alt={prov.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
-                    ) : (
-                      <div className="province-card__image-placeholder">
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" style={{color: '#bcbcbc'}}>
-                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                          <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                          <polyline points="21 15 16 10 5 21"></polyline>
-                        </svg>
-                      </div>
-                    )}
-                    <span className="province-card__badge">Miền Bắc</span>
+            <div className="inspiration__grid">
+              {inspirationCards.map((card, idx) => (
+                <div key={idx} className="inspiration-card">
+                  <div className="inspiration-card__bg">
+                    <img src={card.image} alt={card.title} />
+                    <div className="inspiration-card__overlay"></div>
                   </div>
-                  <div className="province-card__content">
-                    <h3>{prov.name}</h3>
-                    <p>{prov.desc}</p>
-                    <div className="province-card__tags">
-                      {prov.tags.map(tag => (
-                        <span key={tag} className="province-card__tag-chip">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="province-card__footer">
-                    <span className="province-card__location">
-                      <span aria-hidden="true">📍</span>
-                      {prov.region}
-                    </span>
-                    <Link to="/provinces" state={{ search: prov.name }} className="province-card__cta">Xem chi tiết <span aria-hidden="true">→</span></Link>
+                  <div className="inspiration-card__content">
+                    <h3>{card.title}</h3>
+                    <p>{card.desc}</p>
                   </div>
                 </div>
               ))}
-            </div>
-            <div className="section-view-all">
-              <Link to="/provinces" className="provinces__button view-all-btn">Xem tất cả tỉnh thành →</Link>
             </div>
           </div>
         </section>
 
-        {/* Section 3: Highlights Grid */}
-        <section className="highlights-section fade-up">
-          <div className="highlights__container">
-            <div className="highlights__header">
-              <h2>Điểm nổi bật theo vùng</h2>
-              <p>Những trải nghiệm tiêu biểu giúp bạn cảm nhận rõ nét tinh thần của từng miền đất</p>
+        {/* Section: Searchable Provinces */}
+        <section className="provinces-search-section">
+          <div className="provinces-search__container fade-up">
+            <div className="provinces-search__header">
+              <h2>Từ vùng miền đến từng tỉnh thành</h2>
+              <p>Khám phá chi tiết từng điểm đến, lên kế hoạch hành trình riêng của bạn.</p>
             </div>
-            
-            <div className="highlights__grid">
-              {highlightsData.map(item => (
-                <div key={item.id} className="highlight-card">
-                  <div className="highlight-card__image-wrapper">
-                    {item.image ? (
-                      <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+
+            <div className="provinces-search__controls">
+              <div className="search-bar-wrapper">
+                <span className="search-icon">🔍</span>
+                <input 
+                  type="text" 
+                  placeholder="Tìm tỉnh, thành phố..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              <div className="filter-chips">
+                <span className="filter-label">📍 Lọc theo:</span>
+                {filterOptions.map(filter => (
+                  <button 
+                    key={filter.id}
+                    className={`filter-chip ${activeFilter === filter.id ? 'is-active' : ''}`}
+                    onClick={() => setActiveFilter(filter.id)}
+                  >
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="provinces-search__grid">
+              {provincesData.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase())).map(prov => (
+                <div key={prov.id} className="province-item-card">
+                  <div className="province-item__image">
+                    {prov.image ? (
+                      <img src={prov.image} alt={prov.name} />
                     ) : (
-                      <div className="highlight-card__image-placeholder">
-                        Ảnh {item.name}
-                      </div>
+                      <div className="province-item__placeholder">Ảnh {prov.name}</div>
                     )}
-                    <div className="highlight-card__top-labels">
-                      <span className="highlight-card__label-region">{item.region}</span>
-                      <span className="highlight-card__label-cat">{item.tag}</span>
-                    </div>
+                    <span className="province-item__badge">{prov.region}</span>
                   </div>
-                  <div className="highlight-card__content">
-                    <h3>{item.name}</h3>
-                    <p>{item.desc}</p>
-                    <Link to="#" className="highlight-card__cta">Xem chi tiết <span aria-hidden="true">→</span></Link>
+                  <div className="province-item__content">
+                    <div className="province-item__title-row">
+                      <h3>{prov.name}</h3>
+                      <span className="location-icon">📍</span>
+                    </div>
+                    <p className="province-item__desc">{prov.desc}</p>
+                    <div className="province-item__tags">
+                      {prov.tags.map(tag => (
+                        <span key={tag} className="province-item__tag">{tag}</span>
+                      ))}
+                    </div>
+                    <Link to="/provinces" className="province-item__cta">Xem chi tiết <span aria-hidden="true">→</span></Link>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="section-view-all">
-              <Link to="/highlights" className="provinces__button view-all-btn">Xem tất cả địa danh →</Link>
+
+            <div className="provinces-search__footer">
+              <Link to="/all-provinces" className="view-all-provinces-btn">Xem thêm tỉnh thành</Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Seasons Showcase */}
+        <section className="seasons-section">
+          <div className="seasons__container fade-up">
+            <div className="seasons__header">
+              <h2>Vẻ đẹp theo mùa</h2>
+              <p>Mỗi mùa mang một sắc thái riêng, khám phá vùng miền Việt Nam qua bốn mùa thay đổi.</p>
+            </div>
+            
+            <div className="seasons__grid">
+              {seasonsData.map(season => (
+                <div key={season.id} className="season-card">
+                  <div className="season-card__bg">
+                    <img src={season.image} alt={season.title} />
+                    <div className="season-card__overlay"></div>
+                  </div>
+                  <div className="season-card__content">
+                    <div className="season-card__top">
+                      <h3>{season.title}</h3>
+                      <span className="season-card__months">{season.months}</span>
+                    </div>
+                    <p className="season-card__desc">{season.desc}</p>
+                    <div className="season-card__details">
+                      {season.details.map((d, i) => (
+                        <div key={i} className="season-card__detail-item">
+                          <strong>{d.region}:</strong> {d.text}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Cultural Layers */}
+        <section className="cultural-layers-section">
+          <div className="cultural-layers__container fade-up">
+            <div className="cultural-layers__header">
+              <h2>Những lớp văn hoá tạo nên một vùng đất</h2>
+              <p>Văn hoá không phải một khối đơn thuần mà là sự giao thoa của nhiều chiều kích - từ ẩm thực, lễ hội, kiến trúc đến nghệ thuật và phong tục.</p>
+            </div>
+
+            <div className="cultural-layers__grid">
+              {culturalCategories.map(cat => (
+                <div key={cat.id} className="culture-layer-card">
+                  <div className="culture-layer__icon-box">{cat.icon}</div>
+                  <h3>{cat.title}</h3>
+                  <p>{cat.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="cultural-layers__summary">
+              <p>"Mỗi vùng đất là một bản giao hưởng văn hoá"</p>
+              <span>Khám phá chi tiết từng chiều kích văn hoá để hiểu sâu hơn về tinh thần và bản sắc của từng vùng miền Việt Nam.</span>
             </div>
           </div>
         </section>
       </div>
+      </main>
+
+      <Footer lang={lang} />
     </div>
   )
 }
