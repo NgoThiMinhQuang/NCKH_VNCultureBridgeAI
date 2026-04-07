@@ -1,0 +1,414 @@
+/* EthnicCulturesDetailPage.css */
+
+.page-shell {
+  min-height: 100vh;
+}
+
+.ed-main {
+  overflow: hidden;
+}
+
+/* --- HERO SECTION --- */
+.ed-hero {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 80px; /* Space for sticky header */
+  padding-bottom: 120px;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+}
+
+.ed-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(30, 15, 10, 0.2), rgba(30, 15, 10, 0.8));
+}
+
+.ed-hero__content {
+  position: relative;
+  z-index: 2;
+  width: min(1000px, 90%);
+  margin: 0 auto;
+}
+
+.ed-back-btn {
+  position: absolute;
+  top: 80px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+}
+
+.ed-back-btn:hover {
+  background: white;
+  color: #1e0f0a;
+  transform: translateX(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.ed-back-btn svg {
+  font-size: 1.1rem;
+}
+
+.ed-hero__title {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.ed-hero__desc {
+  font-size: 1.15rem;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Category Nav in Hero */
+.ed-hero__nav {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 24px 40px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: 20px;
+  width: fit-content;
+  margin-inline: auto;
+}
+
+.ed-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.ed-nav-item:hover {
+  transform: translateY(-5px);
+}
+
+.ed-nav-icon {
+  width: 54px;
+  height: 54px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.ed-nav-item:hover .ed-nav-icon {
+  background: white;
+  color: var(--dark);
+}
+
+.ed-nav-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- COMMON SECTION STYLES --- */
+.ed-section {
+  padding: 100px 0;
+  position: relative;
+}
+
+.ed-container {
+  width: min(1360px, calc(100% - 64px));
+  margin: 0 auto;
+}
+
+.ed-section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.ed-section-badge {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.ed-section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--text-heading);
+  margin-bottom: 20px;
+}
+
+.ed-section-subtitle {
+  color: var(--muted);
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* --- INTRO SECTION --- */
+.ed-intro__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.ed-intro__text {
+  position: relative;
+}
+
+.ed-drop-cap {
+  float: left;
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  line-height: 0.8;
+  padding-top: 4px;
+  padding-right: 12px;
+  color: #c29d66;
+}
+
+.ed-intro__body {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.ed-intro__image {
+  border-radius: 20px;
+  box-shadow: 30px 30px 0 #e4d7c7;
+  overflow: hidden;
+}
+
+/* --- TEXTILES FEATURE --- */
+.ed-textiles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.ed-textile-img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.ed-textiles-footer {
+  text-align: center;
+  max-width: 800px;
+  margin: 40px auto 0;
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* --- FESTIVALS SECTION --- */
+.ed-festivals {
+  background-color: white;
+}
+
+.ed-festival-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.ed-fest-card {
+  background: var(--surface);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.ed-fest-card:hover {
+  transform: translateY(-10px);
+}
+
+.ed-fest-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.ed-fest-content {
+  padding: 24px;
+}
+
+.ed-fest-tag {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.ed-fest-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.ed-fest-desc {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* --- CUISINE SECTION --- */
+.ed-cuisine-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.ed-cuisine-item {
+  text-align: center;
+}
+
+.ed-cuisine-img {
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 24px;
+  margin-bottom: 24px;
+}
+
+.ed-cuisine-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+/* --- ARCHITECTURE SECTION --- */
+.ed-arch__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.ed-arch-img {
+  border-radius: 32px;
+  box-shadow: var(--shadow);
+}
+
+/* --- GALLERY --- */
+.ed-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 200px;
+  gap: 20px;
+}
+
+.ed-gallery-item {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ddd;
+}
+
+.ed-gallery-item img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.ed-gallery-item.tall { grid-row: span 2; }
+.ed-gallery-item.wide { grid-column: span 2; }
+.ed-gallery-item.large { grid-column: span 2; grid-row: span 2; }
+
+/* --- RELATED SECTION --- */
+.ed-related {
+  background: #fdf6ee;
+}
+
+.ed-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.ed-related-card {
+  position: relative;
+  aspect-ratio: 4/3;
+  border-radius: 24px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ed-related-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+}
+
+.ed-related-info {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 2;
+  color: white;
+}
+
+/* --- CTA BANNER --- */
+.ed-cta-banner {
+  background: linear-gradient(90deg, #7d3c0f, #311b11);
+  padding: 60px 0;
+  text-align: center;
+  color: white;
+}
+
+.ed-cta-title {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+/* Responsive Overrides */
+@media (max-width: 992px) {
+  .ed-intro__grid, .ed-arch__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .ed-festival-grid, .ed-cuisine-grid, .ed-related-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ed-textiles-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ed-festival-grid, .ed-cuisine-grid, .ed-related-grid, .ed-textiles-grid {
+    grid-template-columns: 1fr;
+  }
+}

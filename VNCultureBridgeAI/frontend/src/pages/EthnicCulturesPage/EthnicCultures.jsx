@@ -19,6 +19,7 @@ import congChiengImg from '../../assets/cong_chieng.png';
 import leCapSacImg from '../../assets/le-cap-sac.jpg';
 import detThoCamImg from '../../assets/det-tho-cam.jpg';
 import muaTrongImg from '../../assets/mua-trong-sadam.jpg';
+import { LuShirt, LuStar, LuUtensils, LuBookOpen, LuSearch, LuChevronDown } from 'react-icons/lu';
 
 // Fake Data for mockups
 const stats = [
@@ -28,19 +29,27 @@ const stats = [
   { value: '1,000,000+', label: 'Hiện vật', subtext: 'về văn hóa các dân tộc đang được lưu giữ' }
 ];
 
+const regions = [
+  "Tất cả vùng", "Miền Bắc", "Miền Trung", "Miền Nam", "Tây Nguyên"
+];
+
+const heroEthnicGroups = [
+  "Tất cả dân tộc", "Kinh", "Tày", "H'Mông", "Khmer", "Chăm", "Dao", "Ê Đê", "Mường"
+];
+
 const filters = [
   "Tất cả dân tộc", "Mường", "Thái", "H'Mông", "Dao", "Kinh", "Khmer"
 ];
 
 const ethnicCards = [
-  { id: 1, name: "Dân tộc Mông", location: "Hà Giang, Sơn La,...", imgUrl: hmongImg, status: "Nổi bật" },
-  { id: 2, name: "Dân tộc Dao", location: "Lào Cai, Yên Bái,...", imgUrl: daoImg, status: "" },
-  { id: 3, name: "Dân tộc Thái", location: "Điện Biên, Lai Châu,...", imgUrl: thaiImg, status: "" },
-  { id: 4, name: "Dân tộc Ê Đê", location: "Đắk Lắk, Đắk Nông,...", imgUrl: edeImg, status: "Mới" },
-  { id: 5, name: "Dân tộc Ba Na", location: "Gia Lai, Kon Tum,...", imgUrl: banaImg, status: "" },
-  { id: 6, name: "Dân tộc Khmer", location: "Sóc Trăng, Trà Vinh,...", imgUrl: khmerImg, status: "" },
-  { id: 7, name: "Dân tộc Chăm", location: "Ninh Thuận, Bình Thuận,...", imgUrl: chamImg, status: "Nổi bật" },
-  { id: 8, name: "Dân tộc Mường", location: "Hòa Bình, Thanh Hóa,...", imgUrl: muongImg, status: "" },
+  { id: "hmong", name: "Dân tộc Mông", location: "Hà Giang, Sơn La,...", imgUrl: hmongImg, status: "Nổi bật" },
+  { id: "dao", name: "Dân tộc Dao", location: "Lào Cai, Yên Bái,...", imgUrl: daoImg, status: "" },
+  { id: "thai", name: "Dân tộc Thái", location: "Điện Biên, Lai Châu,...", imgUrl: thaiImg, status: "" },
+  { id: "ede", name: "Dân tộc Ê Đê", location: "Đắk Lắk, Đắk Nông,...", imgUrl: edeImg, status: "Mới" },
+  { id: "bana", name: "Dân tộc Ba Na", location: "Gia Lai, Kon Tum,...", imgUrl: banaImg, status: "" },
+  { id: "khmer", name: "Dân tộc Khmer", location: "Sóc Trăng, Trà Vinh,...", imgUrl: khmerImg, status: "" },
+  { id: "cham", name: "Dân tộc Chăm", location: "Ninh Thuận, Bình Thuận,...", imgUrl: chamImg, status: "Nổi bật" },
+  { id: "muong", name: "Dân tộc Mường", location: "Hòa Bình, Thanh Hóa,...", imgUrl: muongImg, status: "" },
 ];
 
 const features = [
@@ -69,6 +78,10 @@ export default function EthnicCultures() {
   const [lang, setLang] = useState('vi');
   const [activeFilter, setActiveFilter] = useState("Tất cả dân tộc");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [activeRegion, setActiveRegion] = useState("Tất cả vùng");
+  const [isRegionOpen, setIsRegionOpen] = useState(false);
+  const [activeHeroEthnic, setActiveHeroEthnic] = useState("Tất cả dân tộc");
+  const [isHeroEthnicOpen, setIsHeroEthnicOpen] = useState(false);
 
   return (
     <div className="ec-page-shell">
@@ -88,11 +101,80 @@ export default function EthnicCultures() {
             <h1 className="ec-hero__title">Khám phá văn hóa <br />các dân tộc Việt Nam</h1>
             <p className="ec-hero__subtitle">Từ những đỉnh núi mờ sương Tây Bắc đến những bản làng yên bình nơi đồng bằng, khám phá sự đa dạng và giàu có của văn hóa 54 dân tộc anh em.</p>
 
-            <div className="ec-hero__search-opts">
-              <button className="ec-opt-btn active">Dân tộc theo nhóm ngôn ngữ</button>
-              <button className="ec-opt-btn">Phân bố</button>
-              <button className="ec-opt-btn">Thời điểm nổi bật</button>
-              <button className="ec-opt-btn">Tìm kiếm</button>
+            <div className="ec-hero__search-bar fade-up delay-1">
+              <div className="ec-search-field">
+                <LuSearch className="ec-search-icon" />
+                <input type="text" placeholder="Tìm kiếm dân tộc, văn hóa..." />
+              </div>
+              <div className="ec-search-divider" />
+
+              {/* Region Dropdown */}
+              <div className="ec-search-field-wrapper">
+                <div
+                  className={`ec-search-field ${isRegionOpen ? 'active' : ''}`}
+                  onClick={() => {
+                    setIsRegionOpen(!isRegionOpen);
+                    setIsHeroEthnicOpen(false); // Close other menu
+                  }}
+                >
+                  <span>{activeRegion}</span>
+                  <LuChevronDown className={`ec-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
+                </div>
+
+                {isRegionOpen && (
+                  <ul className="ec-hero-dropdown">
+                    {regions.map(r => (
+                      <li
+                        key={r}
+                        className={`ec-hero-dropdown-item ${activeRegion === r ? 'selected' : ''}`}
+                        onClick={() => {
+                          setActiveRegion(r);
+                          setIsRegionOpen(false);
+                        }}
+                      >
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="ec-search-divider" />
+
+              {/* Ethnic Group Dropdown */}
+              <div className="ec-search-field-wrapper">
+                <div
+                  className={`ec-search-field ${isHeroEthnicOpen ? 'active' : ''}`}
+                  onClick={() => {
+                    setIsHeroEthnicOpen(!isHeroEthnicOpen);
+                    setIsRegionOpen(false); // Close other menu
+                  }}
+                >
+                  <span>{activeHeroEthnic}</span>
+                  <LuChevronDown className={`ec-chevron-icon ${isHeroEthnicOpen ? 'rotate' : ''}`} />
+                </div>
+
+                {isHeroEthnicOpen && (
+                  <ul className="ec-hero-dropdown">
+                    {heroEthnicGroups.map(e => (
+                      <li
+                        key={e}
+                        className={`ec-hero-dropdown-item ${activeHeroEthnic === e ? 'selected' : ''}`}
+                        onClick={() => {
+                          setActiveHeroEthnic(e);
+                          setIsHeroEthnicOpen(false);
+                        }}
+                      >
+                        {e}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <button className="ec-hero__cta-btn">
+                Khám phá ngay
+              </button>
             </div>
           </div>
         </section>
@@ -116,14 +198,16 @@ export default function EthnicCultures() {
           <div className="ec-container">
             <div className="ec-section-header ec-center">
               <div className="ec-section-title-wrap">
-                <span className="ec-section-eyebrow">Khám phá 54 dân tộc</span>
-                <h2 className="ec-section-title">
-                  Các dân tộc <span className="ec-text-accent">Việt Nam</span>
+                <span className="ec-section-eyebrow ec-eyebrow-capsule">CỘNG ĐỒNG 54 DÂN TỘC</span>
+                <h2 className="ec-section-title ec-serif">
+                  Các dân tộc Việt Nam
                 </h2>
-                <div className="ec-divider" aria-hidden="true">
-                  <span /> <i /> <b /> <span />
+                <p className="ec-section-desc">Mỗi dân tộc là một kho tàng văn hóa độc đáo, góp phần tạo nên sự đa dạng <br /> và phong phú của đất nước</p>
+                <div className="ec-divider-ornament" aria-hidden="true">
+                  <span className="ec-line-main" />
+                  <span className="ec-dot" />
+                  <span className="ec-dot" />
                 </div>
-                <p className="ec-section-desc">Cộng đồng 54 dân tộc thiểu số và người Kinh sinh sống trải dài trên hình chữ S, tạo nên bản sắc văn hóa Việt Nam đa dạng, phong phú.</p>
               </div>
             </div>
 
@@ -181,52 +265,75 @@ export default function EthnicCultures() {
         </section>
 
         {/* FEATURE HIGHLIGHT - NÉT VĂN HÓA TIÊU BIỂU */}
-        <section className="ec-section ec-section--dark">
+        <section className="ec-section ec-section--dark ec-section--wavy">
+          <div className="ec-section-wave ec-section-wave--top">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
+            </svg>
+          </div>
+
           <div className="ec-container ec-feature-split">
-            <div className="ec-feature-img fade-up">
-              <img src={ruongBacThangImg} alt="Nét văn hóa tiêu biểu: Ruộng bậc thang" />
-              <div className="ec-feature-img-caption">
-                <strong>Ruộng bậc thang Mù Cang Chải</strong>
-                <span>Kiệt tác kiến trúc nông nghiệp của đồng bào Mông</span>
+            {/* ... contents ... */}
+            <div className="ec-feature-img-wrapper fade-up">
+              <div className="ec-feature-img-frame">
+                <img src={ruongBacThangImg} alt="Nét văn hóa tiêu biểu: Ruộng bậc thang" />
+              </div>
+              <div className="ec-feature-img-tag glass-panel">
+                <div className="ec-tag-icon"><LuStar /></div>
+                <div className="ec-tag-text">
+                  <strong>Di sản văn hóa phi vật thể</strong>
+                  <span>UNESCO công nhận - Bảo tồn và phát huy</span>
+                </div>
               </div>
             </div>
+
             <div className="ec-feature-text fade-up delay-1">
-              <span className="ec-section-eyebrow">Đặc trưng văn hóa</span>
+              <span className="ec-badge ec-badge--accent">Văn hóa tiêu biểu</span>
               <h2 className="ec-section-title">Nét văn hóa tiêu biểu<br />của các dân tộc</h2>
-              <p className="ec-feature-desc">Mỗi dân tộc có một kho tàng văn hóa riêng biệt, được thể hiện độc đáo qua các khía cạnh phong phú của đời sống: Kiến trúc nhà ở, trang phục truyền thống, lễ hội, hay ẩm thực...</p>
+              <p className="ec-feature-desc">Mỗi dân tộc Việt Nam mang trong mình một kho tàng văn hóa vô giá — được bồi đắp qua hàng nghìn năm lịch sử, gắn liền với đất đai, sông núi và tâm hồn con người nơi đó.</p>
 
               <ul className="ec-feature-list">
-                <li>
-                  <div className="ec-fl-icon">🏛️</div>
-                  <div className="ec-fl-content">
-                    <h4>Kiến trúc</h4>
-                    <p>Nhà rông uy nghi, nhà dài mộc mạc, kiến trúc nhà trệt cổ kính mang đậm lối thiết kế bản địa.</p>
-                  </div>
-                </li>
-                <li>
-                  <div className="ec-fl-icon">👗</div>
-                  <div className="ec-fl-content">
+                <li className="ec-feature-item">
+                  <div className="ec-fi-icon ec-fi-icon--red"><LuShirt /></div>
+                  <div className="ec-fi-content">
                     <h4>Trang phục</h4>
-                    <p>Mỗi hoa văn, chất liệu, màu sắc trang phục đều gửi gắm những câu chuyện văn hóa.</p>
+                    <p>Thổ cẩm thêu tay rực rỡ, mỗi hoa văn mang ý nghĩa tâm linh sâu sắc, truyền từ đời này sang đời khác.</p>
                   </div>
                 </li>
-                <li>
-                  <div className="ec-fl-icon">🎉</div>
-                  <div className="ec-fl-content">
+                <li className="ec-feature-item">
+                  <div className="ec-fi-icon ec-fi-icon--orange"><LuStar /></div>
+                  <div className="ec-fi-content">
                     <h4>Lễ hội</h4>
-                    <p>Đồng bào dân tộc tự hào với vô vàn lễ hội phản ánh đời sống tâm linh, nghệ thuật phong phú.</p>
+                    <p>Hơn 500 lễ hội truyền thống diễn ra quanh năm, từ Tết Nguyên Đán đến các lễ hội cồng chiêng Tây Nguyên.</p>
                   </div>
                 </li>
-                <li>
-                  <div className="ec-fl-icon">🍲</div>
-                  <div className="ec-fl-content">
+                <li className="ec-feature-item">
+                  <div className="ec-fi-icon ec-fi-icon--brown"><LuUtensils /></div>
+                  <div className="ec-fi-content">
                     <h4>Ẩm thực</h4>
-                    <p>Hương vị đặc trưng từ rau rừng, thịt sấy, cá suối làm nức lòng du khách.</p>
+                    <p>Mỗi vùng miền có đặc sản riêng – từ phở Bắc, bún bò Huế đến cơm tấm Nam Bộ và canh thụt Tây Nguyên.</p>
+                  </div>
+                </li>
+                <li className="ec-feature-item">
+                  <div className="ec-fi-icon ec-fi-icon--green"><LuBookOpen /></div>
+                  <div className="ec-fi-content">
+                    <h4>Phong tục</h4>
+                    <p>Nghi lễ vòng đời, hôn nhân, tang ma mang đậm bản sắc từng dân tộc, phản ánh triết lý sống hài hòa với thiên nhiên.</p>
                   </div>
                 </li>
               </ul>
-              <button className="ec-btn-primary">Tìm hiểu thêm</button>
+
+              <div className="ec-feature-actions">
+                <button className="ec-btn-filled-brown">Khám phá văn hóa</button>
+                <button className="ec-btn-outline-light">Xem thư viện ảnh</button>
+              </div>
             </div>
+          </div>
+
+          <div className="ec-section-wave ec-section-wave--bottom">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
+            </svg>
           </div>
         </section>
 
@@ -263,8 +370,14 @@ export default function EthnicCultures() {
         </section>
 
         {/* MASONRY COLLAGE - KHOẢNH KHẮC VĂN HÓA SỐNG ĐỘNG */}
-        <section className="ec-section ec-section--dark-alt">
+        <section className="ec-section ec-section--dark-alt ec-section--wavy">
+          <div className="ec-section-wave ec-section-wave--top">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
+            </svg>
+          </div>
           <div className="ec-container">
+            {/* ... contents ... */}
             <div className="ec-section-header ec-center">
               <span className="ec-section-eyebrow">Thư viện ảnh</span>
               <h2 className="ec-section-title ec-text-light">Khoảnh khắc văn hóa<br />sống động</h2>
@@ -285,6 +398,11 @@ export default function EthnicCultures() {
             <div className="ec-center-action">
               <button className="ec-btn-outline ec-btn-outline--light">Xem thêm thư viện ảnh</button>
             </div>
+          </div>
+          <div className="ec-section-wave ec-section-wave--bottom">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
+            </svg>
           </div>
         </section>
 

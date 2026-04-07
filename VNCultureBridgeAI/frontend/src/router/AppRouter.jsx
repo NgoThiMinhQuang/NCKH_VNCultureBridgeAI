@@ -3,10 +3,10 @@ import HomePage from "../pages/HomePage/HomePage";
 import ArticleDetailPage from "../pages/ArticleDetailPage/ArticleDetailPage";
 import RegionsPage from "../pages/RegionsPage/RegionsPage";
 import RegionDetailPage from "../pages/RegionDetailPage/RegionDetailPage";
-import EthnicityDetailPage from "../pages/EthnicityDetailPage/EthnicityDetailPage";
+import EthnicCulturesDetailPage from "../pages/EthnicCulturesDetailPage/EthnicCulturesDetailPage";
 import AIGuidePage from "../pages/AIGuidePage/AIGuidePage";
 import ArticlePage from "../pages/ArticlePage/ArticlePage";
-import FestivalsPage from "../pages/FestivalsPage/FestivalsPage";
+// import FestivalsPage from "../pages/FestivalsPage/FestivalsPage";
 import BlogPage from "../pages/BlogPage/BlogPage";
 
 import EthnicCultures from "../pages/EthnicCulturesPage/EthnicCultures";
@@ -29,10 +29,10 @@ export default function AppRouter() {
         <Route path="/regions" element={<RegionsPage />} />
         <Route path="/regions/:code" element={<RegionDetailPage />} />
         <Route path="/ethnic-groups" element={<EthnicCultures />} />
-        <Route path="/ethnic-groups/:code" element={<EthnicityDetailPage />} />
+        <Route path="/ethnic-groups/:code" element={<EthnicCulturesDetailPage />} />
         <Route path="/ai-guide" element={<AIGuidePage />} />
         <Route path="/articles" element={<ArticlePage />} />
-        <Route path="/festivals" element={<FestivalsPage />} />
+        {/* <Route path="/festivals" element={<FestivalsPage />} /> */}
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:code" element={<BlogDetailPage />} />
         <Route path="/cuisine" element={<CuisinePage />} />

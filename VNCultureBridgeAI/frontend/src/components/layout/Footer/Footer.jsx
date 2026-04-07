@@ -47,13 +47,13 @@ export default function Footer({ lang = 'vi' }) {
             <div className="vnc-links-grid">
               <div className="vnc-links-group">
                 <Link to="/">{ui[lang].nav[0]}</Link>
-                <a href="/#ethnic-groups">{ui[lang].nav[2]}</a>
-                <a href="/#cuisine">{ui[lang].nav[4]}</a>
-                <a href="/#blog">{ui[lang].nav[6] || 'Blog'}</a>
+                <Link to="/#ethnic-groups">{ui[lang].nav[2]}</Link>
+                <Link to="/#cuisine">{ui[lang].nav[4]}</Link>
+                <Link to="/#blog">{ui[lang].nav[6] || 'Blog'}</Link>
               </div>
               <div className="vnc-links-group">
                 <Link to="/regions">{ui[lang].nav[1]}</Link>
-                <a href="/#festivals">{ui[lang].nav[3]}</a>
+                <Link to="/#festivals">{ui[lang].nav[3]}</Link>
                 <Link to="/provinces">{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</Link>
                 <Link to="/articles">{ui[lang].nav[5] || 'Articles'}</Link>
               </div>
