@@ -54,6 +54,7 @@ export default function Footer({ lang = 'vi' }) {
               <div className="vnc-links-group">
                 <Link to="/regions">{ui[lang].nav[1]}</Link>
                 <a href="/#festivals">{ui[lang].nav[3]}</a>
+                <Link to="/provinces">{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</Link>
                 <Link to="/articles">{ui[lang].nav[5] || 'Articles'}</Link>
               </div>
             </div>

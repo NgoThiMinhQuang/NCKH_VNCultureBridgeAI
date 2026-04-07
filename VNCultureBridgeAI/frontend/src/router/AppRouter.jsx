@@ -12,6 +12,7 @@ import BlogPage from "../pages/BlogPage/BlogPage";
 import EthnicCultures from "../pages/EthnicCulturesPage/EthnicCultures";
 import CuisinePage from "../pages/CuisinePage/CuisinePage";
 import CuisineDetailPage from "../pages/CuisineDetailPage/CuisineDetailPage";
+import ProvincesPage from "../pages/ProvincesPage/ProvincesPage";
 
 /**
  * Cấu hình routing tập trung của ứng dụng.
@@ -33,6 +34,7 @@ export default function AppRouter() {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/cuisine" element={<CuisinePage />} />
         <Route path="/cuisine/:id" element={<CuisineDetailPage />} />
+        <Route path="/provinces" element={<ProvincesPage />} />
       </Routes>
     </BrowserRouter>
   );
