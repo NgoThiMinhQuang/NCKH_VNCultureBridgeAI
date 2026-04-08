@@ -1,0 +1,475 @@
+.province-detail {
+  --color-primary: #d33a28;
+  --color-secondary: #ffbe45;
+  --color-text-main: #1f0b06;
+  --color-text-muted: #6f594d;
+  --color-bg-page: #faf6f0;
+  --color-bg-white: #ffffff;
+  --color-dark-section: #2b1f1a;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+  
+  background-color: var(--color-bg-page);
+  color: var(--color-text-main);
+  font-family: var(--font-body);
+}
+
+/* --- Global Section Padding --- */
+.province-section {
+  padding: 100px 0;
+}
+
+/* --- Transparent Header Handling --- */
+.province-detail .page-header {
+  background: transparent !important;
+  border-bottom: none !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.province-detail .page-header__nav-link {
+  color: #fff !important;
+}
+
+/* --- Hero Section --- */
+.province-hero {
+  position: relative;
+  height: 92vh;
+  min-height: 700px;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.province-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85); /* Slightly brighter but still readable */
+}
+
+.province-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 40px;
+}
+
+.province-hero__breadcrumb {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.province-hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(4rem, 10vw, 7.5rem);
+  color: #fff;
+  margin-bottom: 24px;
+  line-height: 0.9;
+  font-weight: 700;
+}
+
+.province-hero p {
+  font-size: 1.4rem;
+  color: rgba(255,255,255,0.95);
+  max-width: 700px;
+  margin-bottom: 48px;
+  letter-spacing: 0.05em;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 16px 36px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #fff;
+  padding: 16px 36px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.4);
+  backdrop-filter: blur(4px);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(211, 58, 40, 0.3);
+}
+
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #fff;
+}
+
+/* --- Floating Metrics Row --- */
+.province-metrics-bar {
+  width: min(1320px, calc(100% - 40px));
+  background: #fff;
+  margin: -50px auto 0;
+  position: relative;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 60px;
+  border-radius: 30px;
+  box-shadow: 0 20px 80px rgba(43, 31, 26, 0.12);
+  border: 1px solid rgba(143, 102, 82, 0.05);
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.metric-item__icon {
+  width: 48px;
+  height: 48px;
+  background: #fdf5f0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--color-primary);
+}
+
+.metric-item__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-item__label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.metric-item__value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+/* --- Overview --- */
+.overview-layout {
+  display: flex;
+  gap: 80px;
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.overview-main {
+  flex: 1;
+}
+
+.overview-main h2 {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.overview-main p {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.overview-sidebar {
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.sidebar-facts {
+  background: #fff;
+  padding: 40px;
+  border-radius: 32px;
+  box-shadow: 0 10px 40px rgba(43, 31, 26, 0.04);
+}
+
+.sidebar-facts h3 {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.fact-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.fact-row label {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.fact-row span {
+  font-weight: 700;
+}
+
+.sidebar-img {
+  width: 100%;
+  height: 480px;
+  border-radius: 32px;
+  object-fit: cover;
+  box-shadow: 0 15px 45px rgba(43, 31, 26, 0.1);
+}
+
+/* --- Places --- */
+.section-title {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.section-title h2 {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.section-title p {
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+}
+
+.attractions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.attraction-card {
+  background: #fff;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(43, 31, 26, 0.05);
+  transition: transform 0.4s ease;
+}
+
+.attraction-card:hover {
+  transform: translateY(-8px);
+}
+
+.attraction-card__img {
+  height: 320px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.attraction-card__body {
+  padding: 32px;
+}
+
+.attraction-card__body h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.attraction-card__body p {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* --- Dark Culture Section --- */
+.culture-section {
+  background: var(--color-dark-section);
+  color: #fff;
+}
+
+.culture-items {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  width: min(1320px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.culture-box {
+  background: rgba(255,255,255,0.04);
+  padding: 50px 30px;
+  border-radius: 40px;
+  text-align: center;
+  border: 1.5px solid rgba(255,255,255,0.08);
+  transition: all 0.3s ease;
+}
+
+.culture-box:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: var(--color-secondary);
+}
+
+.culture-box i {
+  font-size: 2.5rem;
+  margin-bottom: 24px;
+  display: block;
+}
+
+.culture-box span {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* --- Cuisine --- */
+.cuisine-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.cuisine-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 40px;
+  height: 520px;
+  box-shadow: 0 15px 40px rgba(43, 31, 26, 0.1);
+}
+
+.cuisine-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.cuisine-item:hover img {
+  transform: scale(1.05);
+}
+
+.cuisine-item__info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  padding: 40px;
+  color: #fff;
+}
+
+.cuisine-item__info h4 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+/* --- Itinerary --- */
+.itinerary-container {
+  width: min(900px, calc(100% - 40px));
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 48px;
+  padding: 80px 100px;
+  box-shadow: 0 30px 100px rgba(43, 31, 26, 0.1);
+}
+
+.itinerary-step {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.itinerary-step::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 40px;
+  bottom: -40px;
+  width: 2px;
+  border-left: 2px dashed rgba(211, 58, 40, 0.2);
+}
+
+.itinerary-step:last-child::before {
+  display: none;
+}
+
+.step-marker {
+  width: 32px;
+  height: 32px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 6px solid #fff;
+  box-shadow: 0 0 0 8px rgba(211, 58, 40, 0.1);
+}
+
+.step-content strong {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.step-content p {
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+  .province-metrics-bar {
+    padding: 24px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .overview-layout {
+    flex-direction: column;
+  }
+  .overview-sidebar {
+    width: 100%;
+  }
+  .attractions-grid {
+    grid-template-columns: 1fr;
+  }
+  .culture-items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .cuisine-grid {
+    grid-template-columns: 1fr;
+  }
+  .itinerary-container {
+    padding: 40px;
+  }
+}

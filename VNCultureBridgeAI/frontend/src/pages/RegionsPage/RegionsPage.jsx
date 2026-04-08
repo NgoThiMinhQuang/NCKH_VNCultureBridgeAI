@@ -202,12 +202,12 @@ const inspirationCards = [
 ];
 
 const provincesData = [
-  { id: 1, name: 'Hà Nội', desc: 'Thủ đô nghìn năm văn bản cùng phố cổ, hồ Hoàn Kiếm và nền văn hóa truyền thống đậm đà', tags: ['Phố cổ', 'Di sản', 'Ẩm thực'], region: 'Miền Bắc', image: imgHlHanoi },
-  { id: 2, name: 'Huế', desc: 'Cố đô với hoàng cung, lăng tẩm và ẩm thực cung đình tinh tế', tags: ['Hoàng cung', 'Di sản UNESCO', 'Văn hóa'], region: 'Miền Trung', image: imgHlHue },
-  { id: 3, name: 'Hội An', desc: 'Phố cổ đèn lồng với kiến trúc giao thoa văn hóa Việt - Nhật - Hoa', tags: ['Phố cổ', 'Đèn lồng', 'Kiến trúc'], region: 'Miền Trung', image: imgHlHoiAn },
-  { id: 4, name: 'Sapa', desc: 'Cao nguyên mờ sương với ruộng bậc thang và văn hóa dân tộc đa dạng', tags: ['Núi rừng', 'Ruộng bậc thang', 'Dân tộc'], region: 'Miền Bắc', image: imgHlSapa },
-  { id: 5, name: 'Cần Thơ', desc: 'Thủ phụ miền Tây với chợ nổi Cái Răng và vườn trái cây miệt vườn', tags: ['Chợ nổi', 'Sông nước', 'Ẩm thực'], region: 'Miền Nam', image: imgHlCanTho },
-  { id: 6, name: 'Phú Quốc', desc: 'Đảo ngọc với bãi biển hoang sơ, rừng nguyên sinh và hải sản tươi ngon', tags: ['Biển đảo', 'Thiên nhiên', 'Nghỉ dưỡng'], region: 'Miền Nam', image: imgHlNamBo }
+  { id: 1, name: 'Hà Nội', code: 'ha-noi', desc: 'Thủ đô nghìn năm văn bản cùng phố cổ, hồ Hoàn Kiếm và nền văn hóa truyền thống đậm đà', tags: ['Phố cổ', 'Di sản', 'Ẩm thực'], region: 'Miền Bắc', image: imgHlHanoi },
+  { id: 2, name: 'Huế', code: 'hue', desc: 'Cố đô với hoàng cung, lăng tẩm và ẩm thực cung đình tinh tế', tags: ['Hoàng cung', 'Di sản UNESCO', 'Văn hóa'], region: 'Miền Trung', image: imgHlHue },
+  { id: 3, name: 'Hội An', code: 'hoi-an', desc: 'Phố cổ đèn lồng với kiến trúc giao thoa văn hóa Việt - Nhật - Hoa', tags: ['Phố cổ', 'Đèn lồng', 'Kiến trúc'], region: 'Miền Trung', image: imgHlHoiAn },
+  { id: 4, name: 'Sapa', code: 'sapa', desc: 'Cao nguyên mờ sương với ruộng bậc thang và văn hóa dân tộc đa dạng', tags: ['Núi rừng', 'Ruộng bậc thang', 'Dân tộc'], region: 'Miền Bắc', image: imgHlSapa },
+  { id: 5, name: 'Cần Thơ', code: 'can-tho', desc: 'Thủ phụ miền Tây với chợ nổi Cái Răng và vườn trái cây miệt vườn', tags: ['Chợ nổi', 'Sông nước', 'Ẩm thực'], region: 'Miền Nam', image: imgHlCanTho },
+  { id: 6, name: 'Phú Quốc', code: 'phu-quoc', desc: 'Đảo ngọc với bãi biển hoang sơ, rừng nguyên sinh và hải sản tươi ngon', tags: ['Biển đảo', 'Thiên nhiên', 'Nghỉ dưỡng'], region: 'Miền Nam', image: imgHlNamBo }
 ];
 
 const highlightsData = [
@@ -617,7 +617,7 @@ export default function RegionsPage() {
                         <span key={tag} className="province-item__tag">{tag}</span>
                       ))}
                     </div>
-                    <Link to="/provinces" className="province-item__cta">Xem chi tiết <span aria-hidden="true">→</span></Link>
+                    <Link to={`/provinces/${prov.code}`} className="province-item__cta">Xem chi tiết <span aria-hidden="true">→</span></Link>
                   </div>
                 </div>
               ))}

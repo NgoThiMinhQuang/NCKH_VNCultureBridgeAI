@@ -119,9 +119,10 @@ export const ui = {
       },
     ],
     artsSectionBadge: 'Nghệ thuật & di sản',
-    artsSectionTitle: 'Những truyền thống đang sống',
+    artsSectionTitle: 'Truyền thống',
+    artsSectionTitleAccent: 'sống động',
     artsSectionDescription:
-      'Từ múa rối nước đến thư pháp và lụa thủ công, nghệ thuật dân gian là cầu nối giữa quá khứ và hiện tại.',
+      'Nghệ thuật Việt Nam là nhịp cầu sống động nối liền các thế hệ — giữ gìn bản sắc, tâm hồn và vẻ đẹp qua biểu diễn, thủ công và âm thanh.',
     moreArtsTitle: 'Nghệ thuật & Thủ công truyền thống khác',
     moreArtsItems: [
       {
@@ -214,6 +215,50 @@ export const ui = {
       readMore: 'Xem thêm bài viết',
     },
     blogCategories: ['Tất cả', 'Ẩm thực', 'Lễ hội', 'Nghệ thuật', 'Vùng miền', 'Truyền thống'],
+    provinceDetail: {
+      metrics: {
+        weather: 'Thời tiết',
+        bestTime: 'Thời điểm tốt nhất',
+        population: 'Dân số',
+        area: 'Diện tích'
+      },
+      overview: {
+        title: 'Tổng quan vùng đất',
+        quickInfo: 'Thông tin nhanh',
+        founded: 'Năm thành lập',
+        administrative: 'Hành chính'
+      },
+      sections: {
+        places: 'Đi đâu ở',
+        culture: 'Văn hóa và di sản',
+        cuisine: 'Ăn gì ở',
+        itinerary: 'Lịch trình gợi ý',
+        tips: 'Cẩm nang nhanh',
+        related: 'Bài viết liên quan'
+      },
+      cta: {
+        explore: 'Khám phá ngay',
+        readMore: 'Đọc thêm',
+        itineraryBtn: ['1 Ngày', '2 Ngày', '3 Ngày']
+      },
+      hanoi: {
+        title: 'Hà Nội',
+        subtitle: 'Thủ đô nghìn năm văn hiến',
+        metro: '24°C - Có mây',
+        bestTimeVal: 'Tháng 8 - Tháng 11',
+        popVal: '8.4 triệu người',
+        areaVal: '3,358 km²',
+        foundedVal: '1010 (Lý Thái Tổ)',
+        adminVal: '12 quận, 17 huyện, 1 thị xã',
+        desc: 'Hà Nội, thủ đô của nước Cộng hòa Xã hội chủ nghĩa Việt Nam, là trung tâm chính trị, văn hóa, giáo dục và khoa học kỹ thuật quan trọng nhất của cả nước. Với hơn một nghìn năm lịch sử, Hà Nội mang trong mình vẻ đẹp cổ kính xen lẫn hiện đại, là nơi hội tụ tinh hoa văn hóa của dân tộc Việt.',
+        places: [
+          { title: 'Hồ Hoàn Kiếm', desc: 'Trái tim của thủ đô với Tháp Rùa cổ kính.' },
+          { title: 'Lăng Chủ tịch Hồ Chí Minh', desc: 'Nơi an nghỉ của vị lãnh tụ kính yêu.' },
+          { title: 'Văn Miếu - Quốc Tử Giám', desc: 'Trường đại học đầu tiên của Việt Nam.' },
+          { title: 'Phố Cổ Hà Nội', desc: 'Nơi lưu giữ linh hồn và nghề truyền thống.' }
+        ]
+      }
+    }
   },
   en: {
     nav: ['Home', 'Explore Regions', 'Ethnic Cultures', 'Festivals', 'Cuisine', 'Arts', 'Blog'],
@@ -325,7 +370,8 @@ export const ui = {
       },
     ],
     artsSectionBadge: 'Arts & heritage',
-    artsSectionTitle: 'Living traditions',
+    artsSectionTitle: 'Living',
+    artsSectionTitleAccent: 'traditions',
     artsSectionDescription:
       'From water puppetry to calligraphy and handcrafted silk, folk arts connect the past with the present.',
     moreArtsTitle: 'More Traditional Arts & Crafts',
@@ -420,5 +466,49 @@ export const ui = {
       readMore: 'See more posts',
     },
     blogCategories: ['All', 'Cuisine', 'Festivals', 'Arts', 'Regions', 'Traditions'],
+    provinceDetail: {
+      metrics: {
+        weather: 'Weather',
+        bestTime: 'Best Time',
+        population: 'Population',
+        area: 'Area'
+      },
+      overview: {
+        title: 'Land Overview',
+        quickInfo: 'Quick Info',
+        founded: 'Founded',
+        administrative: 'Administrative'
+      },
+      sections: {
+        places: 'Where to go in',
+        culture: 'Culture & Heritage',
+        cuisine: 'What to eat in',
+        itinerary: 'Suggested Itinerary',
+        tips: 'Quick Tips',
+        related: 'Related Articles'
+      },
+      cta: {
+        explore: 'Explore now',
+        readMore: 'Read more',
+        itineraryBtn: ['1 Day', '2 Days', '3 Days']
+      },
+      hanoi: {
+        title: 'Ha Noi',
+        subtitle: 'A capital of thousand years of civilization',
+        metro: '24°C - Cloudy',
+        bestTimeVal: 'August - November',
+        popVal: '8.4 million',
+        areaVal: '3,358 km²',
+        foundedVal: '1010',
+        adminVal: '12 districts, 17 suburban, 1 town',
+        desc: 'Ha Noi, the capital of Vietnam, is the most important political, cultural, educational, and scientific center of the country. With over a thousand years of history, Ha Noi carries an ancient beauty mixed with modernity.',
+        places: [
+          { title: 'Hoan Kiem Lake', desc: 'The heart of the capital with the ancient Turtle Tower.' },
+          { title: 'Ho Chi Minh Mausoleum', desc: 'The resting place of the beloved leader.' },
+          { title: 'Temple of Literature', desc: 'Vietnam\'s first national university.' },
+          { title: 'Ha Noi Old Quarter', desc: 'Keeping the soul and traditional crafts alive.' }
+        ]
+      }
+    }
   },
 }
