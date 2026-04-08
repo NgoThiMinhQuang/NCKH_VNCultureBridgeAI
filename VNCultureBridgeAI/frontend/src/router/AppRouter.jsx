@@ -7,6 +7,7 @@ import EthnicityDetailPage from "../pages/EthnicityDetailPage/EthnicityDetailPag
 import AIGuidePage from "../pages/AIGuidePage/AIGuidePage";
 import ArticlePage from "../pages/ArticlePage/ArticlePage";
 import FestivalsPage from "../pages/FestivalsPage/FestivalsPage";
+import FestivalsDetailPage from "../pages/FestivalsDetailPage/FestivalsDetailPage";
 import BlogPage from "../pages/BlogPage/BlogPage";
 
 import EthnicCultures from "../pages/EthnicCulturesPage/EthnicCultures";
@@ -33,10 +34,10 @@ export default function AppRouter() {
         <Route path="/ai-guide" element={<AIGuidePage />} />
         <Route path="/articles" element={<ArticlePage />} />
         <Route path="/festivals" element={<FestivalsPage />} />
+        <Route path="/festivals/:id" element={<FestivalsDetailPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:code" element={<BlogDetailPage />} />
         <Route path="/cuisine" element={<CuisinePage />} />
-
         <Route path="/cuisine/:id" element={<CuisineDetailPage />} />
         <Route path="/provinces" element={<ProvincesPage />} />
       </Routes>
