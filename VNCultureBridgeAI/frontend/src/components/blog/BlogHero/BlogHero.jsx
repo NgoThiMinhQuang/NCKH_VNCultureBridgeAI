@@ -13,18 +13,13 @@ export default function BlogHero({ lang }) {
   const copy = useMemo(() => ui[lang].blogHero, [lang])
 
   return (
-    <section 
-      className="blog-hero" 
+    <section
+      className="blog-hero"
       style={{ backgroundImage: `url(${blogHeroBg})` }}
     >
       <div className="blog-hero__overlay"></div>
       <div className="blog-hero__container">
-        {/* Breadcrumb */}
-        <nav className="blog-hero__breadcrumb" aria-label="Breadcrumb">
-          <Link to="/">{lang === 'vi' ? 'Trang chủ' : 'Home'}</Link>
-          <span className="blog-hero__breadcrumb-sep">/</span>
-          <span className="blog-hero__breadcrumb-current">Blog</span>
-        </nav>
+
 
         {/* Badge */}
         <div className="blog-hero__badge">
@@ -51,10 +46,10 @@ export default function BlogHero({ lang }) {
         {/* Search Bar */}
         <div className="blog-hero__search">
           <form className="blog-hero__search-form" onSubmit={(e) => e.preventDefault()}>
-            <input 
-              type="text" 
-              className="blog-hero__search-input" 
-              placeholder={copy.searchPlaceholder} 
+            <input
+              type="text"
+              className="blog-hero__search-input"
+              placeholder={copy.searchPlaceholder}
             />
             <button type="submit" className="blog-hero__search-btn">
               {copy.searchBtn}

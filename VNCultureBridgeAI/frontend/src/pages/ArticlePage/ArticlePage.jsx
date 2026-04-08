@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
 import './ArticlePage.css'
-import heroBg from '../../assets/banner1.jpg'
+import heroBg from '../../assets/ruong-bac-thang.jpg'
 import img2 from '../../assets/banner2.jpg'
 import img3 from '../../assets/banner3.jpg'
 import img4 from '../../assets/cham.jpg'
@@ -142,40 +142,98 @@ export default function ArticlePage() {
                 lang={lang}
                 onLangChange={setLang}
                 breadcrumb={[
-                    { label: lang === 'vi' ? 'Bài viết văn hóa' : 'Cultural Articles' },
+                    { label: lang === 'vi' ? 'Nghệ thuật & Di sản Việt Nam' : 'Vietnamese Arts & Heritage' },
                 ]}
             />
 
             <main>
                 <section className="article-hero">
+                    {/* Background & overlays */}
                     <div className="article-hero__bg" style={{ backgroundImage: `url(${heroBg})` }}></div>
                     <div className="article-hero__overlay"></div>
-                    <div className="article-hero__content fade-up">
-                        <h1 className="article-hero__title">
-                            {lang === 'vi' ? (
-                                <>
-                                    Nghệ thuật <span className="article-hero__divider"></span> & Di sản Việt Nam
-                                </>
-                            ) : (
-                                <>
-                                    Vietnamese Arts <span className="article-hero__divider"></span> & Heritage
-                                </>
-                            )}
-                        </h1>
-                        <p className="article-hero__subtitle">
-                            {lang === 'vi' ? (
-                                <>
-                                    Nơi truyền thống cổ xưa hòa quyện cùng biểu đạt hiện đại,<br />
-                                    mang theo câu chuyện ngàn năm trong từng nét vẽ
-                                </>
-                            ) : (
-                                <>
-                                    Where ancient traditions weave through modern expression,<br />
-                                    carrying stories of a thousand years in every brushstroke
-                                </>
-                            )}
-                        </p>
+
+                    {/* Ornamental corner motifs (CSS-only Đông Sơn drum pattern) */}
+                    <div className="article-hero__ornament article-hero__ornament--tl"></div>
+                    <div className="article-hero__ornament article-hero__ornament--br"></div>
+
+                    {/* Main content split layout */}
+                    <div className="article-hero__inner">
+
+                        {/* LEFT: Text content */}
+                        <div className="article-hero__left fade-up">
+                            {/* Badge */}
+                            <div className="article-hero__badge">
+                                <span className="article-hero__badge-dot"></span>
+                                {lang === 'vi' ? 'Văn hoá · Di sản · Nghệ thuật' : 'Culture · Heritage · Art'}
+                            </div>
+
+                            {/* Heading */}
+                            <h1 className="article-hero__title">
+                                {lang === 'vi' ? (
+                                    <>
+                                        <span className="article-hero__title-line">Nghệ Thuật</span>
+                                        <span className="article-hero__title-accent">&amp; Di Sản</span>
+                                        <span className="article-hero__title-line">Việt Nam</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="article-hero__title-line">Vietnamese</span>
+                                        <span className="article-hero__title-accent">Arts &amp; Heritage</span>
+                                    </>
+                                )}
+                            </h1>
+
+                            {/* Ornamental divider */}
+                            <div className="article-hero__divider-row">
+                                <span className="article-hero__divider-line"></span>
+                                <span className="article-hero__divider-diamond">◆</span>
+                                <span className="article-hero__divider-line"></span>
+                            </div>
+
+                            {/* Subtitle */}
+                            <p className="article-hero__subtitle">
+                                {lang === 'vi'
+                                    ? 'Nơi truyền thống cổ xưa hòa quyện cùng biểu đạt hiện đại — mang theo câu chuyện ngàn năm trong từng nét vẽ, từng điệu múa.'
+                                    : 'Where ancient traditions weave through modern expression — carrying stories of a thousand years in every brushstroke and dance.'
+                                }
+                            </p>
+
+                            {/* Cultural stats */}
+                            <div className="article-hero__stats">
+                                <div className="article-hero__stat">
+                                    <strong>4.000+</strong>
+                                    <span>{lang === 'vi' ? 'Năm lịch sử' : 'Years of history'}</span>
+                                </div>
+                                <div className="article-hero__stat-sep">|</div>
+                                <div className="article-hero__stat">
+                                    <strong>54</strong>
+                                    <span>{lang === 'vi' ? 'Dân tộc anh em' : 'Ethnic groups'}</span>
+                                </div>
+                                <div className="article-hero__stat-sep">|</div>
+                                <div className="article-hero__stat">
+                                    <strong>8</strong>
+                                    <span>{lang === 'vi' ? 'Di sản UNESCO' : 'UNESCO Heritages'}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* RIGHT: Image collage */}
+                        <div className="article-hero__right fade-up">
+                            <div className="article-hero__img-frame">
+                                <img src={heroBg} alt="Ruộng bậc thang Việt Nam" className="article-hero__img-main" />
+                                {/* Floating badge */}
+                                <div className="article-hero__img-badge">
+                                    <span className="article-hero__img-badge-icon">🏔️</span>
+                                    <span>{lang === 'vi' ? 'Ruộng bậc thang Tây Bắc' : 'Northwestern Terraces'}</span>
+                                </div>
+                                {/* Decorative ring */}
+                                <div className="article-hero__img-ring"></div>
+                            </div>
+                        </div>
+
                     </div>
+
+                    {/* Scroll indicator */}
                     <div className="article-hero__scroll">
                         <div className="mouse-icon"></div>
                     </div>
@@ -237,7 +295,7 @@ export default function ArticlePage() {
                                         <span>{lang === 'vi' ? filtered[0].dateVi : filtered[0].dateEn}</span>
                                         <span className="ap-meta-dot">·</span>
                                         <span>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:'4px', verticalAlign:'middle'}}>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '4px', verticalAlign: 'middle' }}>
                                                 <circle cx="12" cy="12" r="10" />
                                                 <polyline points="12 6 12 12 16 14" />
                                             </svg>

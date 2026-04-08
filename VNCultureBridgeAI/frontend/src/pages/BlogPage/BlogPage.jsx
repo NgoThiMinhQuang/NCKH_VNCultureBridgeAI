@@ -95,6 +95,9 @@ export default function BlogPage() {
       <PageHeader
         lang={lang}
         onLangChange={setLang}
+        breadcrumb={[
+          { label: lang === 'vi' ? 'Bài viết văn hóa' : 'Cultural Articles' },
+        ]}
       />
 
       <main>
@@ -110,9 +113,9 @@ export default function BlogPage() {
 
         {/* Main Content & Sidebar Section */}
         <div className="section-layer section-layer--main">
-          <BlogSectionMain 
-            lang={lang} 
-            articles={recentArticles} 
+          <BlogSectionMain
+            lang={lang}
+            articles={recentArticles}
             popularPosts={popularPosts}
             trendingTopics={trendingTopics}
           />
