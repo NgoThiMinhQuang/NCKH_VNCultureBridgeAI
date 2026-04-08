@@ -216,6 +216,7 @@
 }
 
 @media (max-width: 480px) {
+
   .regions-hero__desc,
   .regions-overview__header p,
   .inspiration__header p,
@@ -255,6 +256,7 @@
 }
 
 @media (max-width: 480px) {
+
   .regions-hero__desc,
   .regions-overview__header p,
   .inspiration__header p,
@@ -444,6 +446,7 @@
 }
 
 @media (max-width: 480px) {
+
   .regions-hero__desc,
   .regions-overview__header p,
   .inspiration__header p,
@@ -685,29 +688,29 @@
 .regions-map-container {
   width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .vietnam-map-wrapper {
   position: relative;
   width: min(380px, 100%);
-  margin: 20px 0 0;
+  margin: 20px auto 0;
   filter: drop-shadow(0 14px 24px rgba(118, 91, 10, 0.12));
 }
 
 .regions-split-layout__map {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .regions-split-layout__map h2,
 .regions-split-layout__map-desc {
-  text-align: left;
+  text-align: center;
 }
 
 .regions-split-layout__map-desc {
-  margin: 8px 0 0;
+  margin: 8px auto 0;
 }
 
 @media (max-width: 1024px) {
@@ -763,27 +766,30 @@
 
 .vietnam-map-overlay--north {
   width: 58.21%;
-  top: 0;
-  left: 0;
+  top: -3%;
+  left: -3%;
 }
+
 .vietnam-map-overlay--north img {
   transform-origin: 50% 50%;
 }
 
 .vietnam-map-overlay--central {
   width: 55.97%;
-  top: 25.4%;
-  right: 0;
+  top: 15.5%;
+  right: 31%;
 }
+
 .vietnam-map-overlay--central img {
   transform-origin: 50% 50%;
 }
 
 .vietnam-map-overlay--south {
   width: 42.91%;
-  bottom: 0;
-  left: 23%;
+  bottom: -1.5%;
+  left: 9.75%;
 }
+
 .vietnam-map-overlay--south img {
   transform-origin: 50% 50%;
 }
@@ -820,14 +826,16 @@
 }
 
 .vietnam-map-marker--north {
-  left: 48%;
-  top: 22%;
+  left: 60%;
+  top: 17%;
   font-size: 18px;
 }
+
 .vietnam-map-marker--central {
-  left: 61%;
+  left: 73%;
   top: 51%;
 }
+
 .vietnam-map-marker--south {
   left: 36%;
   top: 83%;
@@ -852,10 +860,12 @@
   left: 65%;
   top: 15%;
 }
+
 .vietnam-map-text--central {
   left: 78%;
   top: 48%;
 }
+
 .vietnam-map-text--south {
   left: 65%;
   top: 86%;
@@ -878,10 +888,12 @@
   top: 0;
   height: 38%;
 }
+
 .central-zone {
   top: 38%;
   height: 34%;
 }
+
 .south-zone {
   top: 72%;
   height: 28%;
@@ -903,18 +915,26 @@
 
 .regions-split-layout__map h2 {
   margin: 0 0 8px;
+  text-align: center;
 }
 
 .regions-split-layout__map-desc {
   margin: 8px auto 0;
+  text-align: center;
 }
 
 .region-card-wrapper {
   position: sticky;
-  top: 96px;
+  top: 176px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: 70px;
+}
+
+.regions-split-layout__content {
+  width: 100%;
+  margin: 70px 0 0;
 }
 
 .region-tabs {
@@ -1067,8 +1087,8 @@
 }
 
 .region-card-wrapper {
-  position: sticky;
-  top: 120px;
+  position: static;
+  top: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1244,7 +1264,9 @@
 }
 
 /* --- New Sections CSS --- */
-.regions-overview-section, .provinces-section, .highlights-section {
+.regions-overview-section,
+.provinces-section,
+.highlights-section {
   padding-top: 80px;
   width: 100%;
 }
@@ -1274,8 +1296,8 @@
 }
 
 .region-card-wrapper {
-  position: sticky;
-  top: 120px;
+  position: static;
+  top: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1451,7 +1473,9 @@
 }
 
 /* --- New Sections CSS --- */
-.regions-overview-section, .provinces-section, .highlights-section {
+.regions-overview-section,
+.provinces-section,
+.highlights-section {
   padding-top: 80px;
   width: 100%;
 }
@@ -1485,20 +1509,24 @@
   gap: 120px;
   padding-bottom: 40px;
 }
+
 .regions-overview__card {
   display: flex;
   gap: 80px;
   align-items: flex-start;
 }
+
 .regions-overview__card.is-reversed {
   flex-direction: row-reverse;
 }
+
 .regions-overview__image-col {
   flex: 1;
   min-width: 0;
   position: sticky;
   top: 120px;
 }
+
 .regions-overview__image {
   width: 100%;
   aspect-ratio: 4/5;
@@ -1508,21 +1536,25 @@
   box-shadow: 0 40px 80px rgba(25, 16, 12, 0.12);
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 .regions-overview__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.8s ease;
 }
+
 .regions-overview__card:hover .regions-overview__image img {
   transform: scale(1.05);
 }
+
 .regions-overview__content-col {
   flex: 1.1;
   display: flex;
   flex-direction: column;
   padding-top: 20px;
 }
+
 .regions-overview__badge {
   display: inline-block;
   padding: 8px 20px;
@@ -1535,6 +1567,7 @@
   letter-spacing: 0.1em;
   width: fit-content;
 }
+
 .regions-overview__title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(2.4rem, 4.5vw, 3.2rem);
@@ -1543,6 +1576,7 @@
   margin: 0 0 28px;
   font-weight: 800;
 }
+
 .regions-overview__desc {
   color: #5c4a40;
   line-height: 1.7;
@@ -1550,6 +1584,7 @@
   margin: 0 0 40px;
   opacity: 0.9;
 }
+
 .regions-overview__details {
   display: flex;
   flex-direction: column;
@@ -1558,11 +1593,13 @@
   border-left: 2px solid rgba(231, 111, 81, 0.15);
   padding-left: 28px;
 }
+
 .regions-overview__detail-row {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
 .regions-overview__detail-label {
   font-size: 0.75rem;
   font-weight: 800;
@@ -1570,12 +1607,14 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+
 .regions-overview__detail-value {
   color: #2d2621;
   font-size: 0.95rem;
   line-height: 1.5;
   font-weight: 500;
 }
+
 .regions-overview__cta-btn {
   display: inline-flex;
   align-items: center;
@@ -1592,6 +1631,7 @@
   box-shadow: 0 12px 30px rgba(231, 111, 81, 0.25);
   gap: 12px;
 }
+
 .regions-overview__cta-btn:hover {
   background: #f4a261;
   transform: translateY(-3px) translateX(4px);
@@ -1691,7 +1731,7 @@
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .filter-chip:hover {
@@ -1716,7 +1756,7 @@
   background: #fff;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -1724,7 +1764,7 @@
 
 .province-item-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 .province-item__image {
@@ -1946,13 +1986,13 @@
   height: 500px;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.5s ease;
 }
 
 .season-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
 .season-card__bg {
@@ -1981,7 +2021,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4), rgba(0,0,0,0.9));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
   z-index: 2;
 }
 
@@ -2113,13 +2153,13 @@
   height: 500px;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.5s ease;
 }
 
 .season-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
 .season-card__bg {
@@ -2148,7 +2188,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4), rgba(0,0,0,0.9));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
   z-index: 2;
 }
 
@@ -2302,15 +2342,37 @@
 }
 
 @media (max-width: 1200px) {
-  .seasons__grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  .season-card { height: 450px; }
-  .cultural-layers__grid { grid-template-columns: repeat(2, 1fr); }
-  .provinces-search__grid { grid-template-columns: repeat(2, 1fr); }
+  .seasons__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .season-card {
+    height: 450px;
+  }
+
+  .cultural-layers__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .provinces-search__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 650px) {
-  .seasons__grid, .cultural-layers__grid, .provinces-search__grid { grid-template-columns: 1fr; }
-  .filter-chips { justify-content: flex-start; overflow-x: auto; padding-bottom: 8px; }
+
+  .seasons__grid,
+  .cultural-layers__grid,
+  .provinces-search__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-chips {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
 }
 
 
@@ -2385,12 +2447,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 10%,
-    rgba(0, 0, 0, 0.4) 50%,
-    rgba(0, 0, 0, 0.9) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 10%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.9) 100%);
   z-index: 2;
   transition: opacity 0.3s ease;
 }
@@ -2429,12 +2489,10 @@
 }
 
 .inspiration-card:hover .inspiration-card__overlay {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.5) 40%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.5) 40%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 @media (max-width: 1100px) {
@@ -2444,9 +2502,17 @@
 }
 
 @media (max-width: 650px) {
-  .inspiration__header { margin-bottom: 40px; }
-  .inspiration__grid { grid-template-columns: 1fr; }
-  .inspiration-card { aspect-ratio: 1 / 1.2; }
+  .inspiration__header {
+    margin-bottom: 40px;
+  }
+
+  .inspiration__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .inspiration-card {
+    aspect-ratio: 1 / 1.2;
+  }
 }
 
 /* SECTION 2: Provinces Grid */
@@ -2456,26 +2522,35 @@
   border-radius: 40px;
   margin-top: 64px;
 }
-.provinces__container, .highlights__container {
+
+.provinces__container,
+.highlights__container {
   width: 100%;
 }
-.provinces__header, .highlights__header {
+
+.provinces__header,
+.highlights__header {
   text-align: center;
   max-width: 600px;
   margin: 0 auto 48px;
 }
-.provinces__header h2, .highlights__header h2 {
+
+.provinces__header h2,
+.highlights__header h2 {
   font-family: 'Playfair Display', 'Cormorant Garamond', serif;
   font-size: clamp(2.2rem, 3.5vw, 2.6rem);
   color: #1f2937;
   margin: 0 0 16px;
 }
-.provinces__header p, .highlights__header p {
+
+.provinces__header p,
+.highlights__header p {
   color: #6b7280;
   font-size: 0.98rem;
   margin: 0 0 24px;
   line-height: 1.6;
 }
+
 .provinces__button {
   display: inline-flex;
   align-items: center;
@@ -2489,20 +2564,23 @@
   font-size: 0.9rem;
   box-shadow: 0 8px 24px rgba(230, 126, 34, 0.3);
 }
+
 .provinces__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
 }
+
 .province-card {
   background: #ffffff;
   border-radius: 20px;
   padding: 24px;
   border: 1px solid rgba(220, 203, 192, 0.4);
-  box-shadow: 0 12px 36px rgba(0,0,0,0.02);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.02);
   display: flex;
   flex-direction: column;
 }
+
 .province-card__image-wrapper {
   position: relative;
   width: 100%;
@@ -2514,6 +2592,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .province-card__badge {
   position: absolute;
   top: 14px;
@@ -2524,8 +2603,9 @@
   font-weight: 800;
   padding: 6px 14px;
   border-radius: 999px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
+
 .province-card__content h3 {
   margin: 0 0 10px;
   font-size: 1.25rem;
@@ -2533,18 +2613,21 @@
   color: #2b1f1a;
   font-weight: 700;
 }
+
 .province-card__content p {
   margin: 0 0 20px;
   color: #69564c;
   font-size: 0.88rem;
   line-height: 1.5;
 }
+
 .province-card__tags {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 32px;
 }
+
 .province-card__tag-chip {
   background: #fdf5e9;
   color: #c98b3c;
@@ -2553,6 +2636,7 @@
   font-weight: 700;
   border-radius: 8px;
 }
+
 .province-card__footer {
   margin-top: auto;
   display: flex;
@@ -2561,6 +2645,7 @@
   padding-top: 18px;
   border-top: 1px dashed rgba(220, 203, 192, 0.6);
 }
+
 .province-card__location {
   display: inline-flex;
   align-items: center;
@@ -2569,6 +2654,7 @@
   font-size: 0.78rem;
   font-weight: 600;
 }
+
 .province-card__cta {
   color: #d15615;
   text-decoration: none;
@@ -2581,18 +2667,21 @@
   padding: 80px 0 120px;
   background: #fdfefc;
 }
+
 .highlights__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
 }
+
 .highlight-card {
   background: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.04);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   border: 1px solid rgba(220, 203, 192, 0.3);
 }
+
 .highlight-card__image-wrapper {
   position: relative;
   width: 100%;
@@ -2604,6 +2693,7 @@
   color: #7b8e76;
   font-weight: 700;
 }
+
 .highlight-card__top-labels {
   position: absolute;
   top: 16px;
@@ -2612,36 +2702,44 @@
   display: flex;
   justify-content: space-between;
 }
+
 .highlight-card__label-region {
   background: rgba(230, 142, 45, 0.9);
   color: #fff;
 }
+
 .highlight-card__label-cat {
   background: rgba(255, 255, 255, 0.9);
   color: #444;
 }
-.highlight-card__label-region, .highlight-card__label-cat {
+
+.highlight-card__label-region,
+.highlight-card__label-cat {
   padding: 6px 14px;
   border-radius: 999px;
   font-size: 0.7rem;
   font-weight: 800;
   backdrop-filter: blur(8px);
 }
+
 .highlight-card__content {
   padding: 24px;
 }
+
 .highlight-card__content h3 {
   margin: 0 0 12px;
   font-size: 1.2rem;
   color: #1a1a1a;
   font-weight: 800;
 }
+
 .highlight-card__content p {
   margin: 0 0 20px;
   color: #69564c;
   font-size: 0.88rem;
   line-height: 1.6;
 }
+
 .highlight-card__cta {
   color: #e67e22;
   text-decoration: none;
@@ -2650,14 +2748,23 @@
 }
 
 @media (max-width: 1024px) {
-  .regions-overview__card { gap: 40px; }
-  .provinces__grid, .highlights__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .regions-overview__card {
+    gap: 40px;
+  }
+
+  .provinces__grid,
+  .highlights__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 900px) {
-  .regions-overview__card, .regions-overview__card.is-reversed {
+
+  .regions-overview__card,
+  .regions-overview__card.is-reversed {
     flex-direction: column;
   }
+
   .regions-overview__content-col {
     max-width: 100%;
   }
@@ -2675,7 +2782,8 @@
   color: #fff;
   overflow: hidden;
   padding: 100px 24px;
-  gap: 60px; /* Space between content and categories */
+  gap: 60px;
+  /* Space between content and categories */
 }
 
 .regions-hero__bg {
@@ -2700,12 +2808,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(14, 11, 8, 0.4) 0%,
-    rgba(14, 11, 8, 0.2) 40%,
-    rgba(25, 16, 12, 0.95) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(14, 11, 8, 0.4) 0%,
+      rgba(14, 11, 8, 0.2) 40%,
+      rgba(25, 16, 12, 0.95) 100%);
 }
 
 .regions-hero__content {
@@ -3047,6 +3153,7 @@
   margin-top: 8px;
   width: 100%;
 }
+
 .view-all-btn {
   padding: 16px 36px !important;
   font-size: 1.05rem !important;
@@ -3054,6 +3161,7 @@
   box-shadow: 0 10px 24px rgba(222, 179, 50, 0.25) !important;
   transition: all 0.2s ease;
 }
+
 .view-all-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 30px rgba(222, 179, 50, 0.4) !important;

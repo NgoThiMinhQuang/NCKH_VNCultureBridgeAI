@@ -1587,21 +1587,20 @@ export default function HomePage() {
                 <div className="arts-showcase__header fade-up">
                   <span className="arts-showcase__eyebrow">
                     <span className="arts-showcase__eyebrow-star" aria-hidden="true">✦</span>
-                    <span>NGHỆ THUẬT & DI SẢN</span>
+                    <span>{copy.artsSectionBadge}</span>
                     <span className="arts-showcase__eyebrow-star" aria-hidden="true">✦</span>
                   </span>
                   <h2>
-                    <span>Truyền thống</span>{' '}
-                    <span className="arts-showcase__title-accent">Sống động</span>
+                    <span>{copy.artsSectionTitle}</span>{' '}
+                    <span className="arts-showcase__title-accent">{copy.artsSectionTitleAccent}</span>
                   </h2>
                   <div className="arts-showcase__divider" aria-hidden="true">
-                    <span className="arts-showcase__divider-line"></span>
-                    <i className="arts-showcase__divider-dot"></i>
-                    <span className="arts-showcase__divider-line"></span>
+                    <span />
+                    <i />
+                    <b />
+                    <span />
                   </div>
-                  <p>
-                    Nghệ thuật Việt Nam là nhịp cầu sống động nối liền các thế hệ — giữ gìn bản sắc, tâm hồn và vẻ đẹp qua biểu diễn, thủ công và âm thanh.
-                  </p>
+                  <p>{copy.artsSectionDescription}</p>
                 </div>
 
                 <div className="arts-showcase__tabs fade-up">
