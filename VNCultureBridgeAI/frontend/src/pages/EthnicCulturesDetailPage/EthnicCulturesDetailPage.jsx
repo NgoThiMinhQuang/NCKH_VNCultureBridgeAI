@@ -45,32 +45,72 @@ export default function EthnicCulturesDetailPage() {
 
       <main className="ed-main">
         {/* HERO SECTION */}
-        <section 
-          className="ed-hero" 
-          style={{ backgroundImage: `url(${hmongHero})` }}
-        >
-          <Link to="/ethnic-groups" className="ed-back-btn" aria-label="Quay lại">
-            <FiArrowLeft /> <span>Quay lại</span>
-          </Link>
-          <div className="ed-hero__content">
-            <h1 className="ed-hero__title">Dân tộc H'Mông</h1>
-            <p className="ed-hero__desc">
-              Một trong những cộng đồng dân tộc lâu đời và có nền văn hóa phong phú nhất tại vùng núi cao phía Bắc Việt Nam.
-            </p>
+        <section className="ed-hero">
+          <div className="ed-hero__bg" style={{ backgroundImage: `url(${hmongHero})` }}></div>
+          <div className="ed-hero__overlay"></div>
 
-            <nav className="ed-hero__nav">
-              {navItems.map((item, idx) => (
-                <div key={idx} className="ed-nav-item">
-                  <div className="ed-nav-icon">{item.icon}</div>
-                  <span className="ed-nav-label">{item.label}</span>
+          {/* Ornamental Motif */}
+          <div className="ed-hero__ornament ed-hero__ornament--tl"></div>
+          <div className="ed-hero__ornament ed-hero__ornament--br"></div>
+
+          <div className="ed-hero__inner">
+            <div className="ed-hero__left fade-up">
+              <Link to="/ethnic-groups" className="ed-back-btn" aria-label="Quay lại" style={{position:'relative', top: 0, left: 0, display: 'inline-flex', marginBottom: '24px', width: 'fit-content'}}>
+                <FiArrowLeft /> <span>Quay lại</span>
+              </Link>
+              
+              <div className="ed-hero__badge">
+                <span className="ed-hero__badge-dot"></span>
+                Dân tộc Việt Nam
+              </div>
+
+              <h1 className="ed-hero__title">
+                Dân tộc H'Mông
+              </h1>
+
+              <p className="ed-hero__subtitle">
+                Một trong những cộng đồng dân tộc lâu đời và có nền văn hóa phong phú nhất tại vùng núi cao phía Bắc Việt Nam.
+              </p>
+
+              <div className="ed-hero__stats">
+                <div className="ed-hero__stat">
+                  <strong>1.393.656</strong>
+                  <span>Dân số (2019)</span>
                 </div>
-              ))}
-            </nav>
+                <div className="ed-hero__stat-sep"></div>
+                <div className="ed-hero__stat">
+                  <strong>Miền núi phía Bắc</strong>
+                  <span>Khu vực chính</span>
+                </div>
+              </div>
+
+               <nav className="ed-hero__nav-inline">
+                {navItems.map((item, idx) => (
+                  <div key={idx} className="ed-nav-item">
+                    <div className="ed-nav-icon">{item.icon}</div>
+                    <span className="ed-nav-label">{item.label}</span>
+                  </div>
+                ))}
+              </nav>
+            </div>
+
+            <div className="ed-hero__right fade-up delay-1">
+              <div className="ed-hero__img-frame">
+                <img src={hmongIntro} alt="Người H'Mông" className="ed-hero__img-main" />
+                <div className="ed-hero__img-ring"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="ed-section-wave">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
+            </svg>
           </div>
         </section>
 
         {/* INTRODUCTION */}
-        <section className="ed-section ed-intro">
+        <section className="ed-section ed-section--light ed-intro">
           <div className="ed-container">
             <div className="ed-intro__grid">
               <div className="ed-intro__text">
@@ -96,7 +136,7 @@ export default function EthnicCulturesDetailPage() {
         </section>
 
         {/* TEXTILES */}
-        <section className="ed-section ed-textiles">
+        <section className="ed-section ed-section--cream ed-textiles">
           <div className="ed-container">
             <header className="ed-section-header">
               <span className="ed-section-badge">Nghệ thuật đặc trưng</span>
@@ -117,7 +157,7 @@ export default function EthnicCulturesDetailPage() {
         </section>
 
         {/* FESTIVALS */}
-        <section className="ed-section ed-festivals">
+        <section className="ed-section ed-section--light ed-festivals">
           <div className="ed-container">
             <header className="ed-section-header">
               <span className="ed-section-badge">Di sản sống</span>
@@ -156,7 +196,7 @@ export default function EthnicCulturesDetailPage() {
         </section>
 
         {/* MUSIC & ARTS */}
-        <section className="ed-section ed-music">
+        <section className="ed-section ed-section--cream ed-music">
           <div className="ed-container">
             <div className="ed-arch__grid">
               <div className="ed-arch-text">
@@ -174,7 +214,7 @@ export default function EthnicCulturesDetailPage() {
         </section>
 
         {/* CUISINE */}
-        <section className="ed-section ed-cuisine">
+        <section className="ed-section ed-section--light ed-cuisine">
           <div className="ed-container">
             <div className="ed-cuisine-grid">
               <div className="ed-cuisine-item">
@@ -194,7 +234,7 @@ export default function EthnicCulturesDetailPage() {
         </section>
 
         {/* ARCHITECTURE */}
-        <section className="ed-section ed-architecture">
+        <section className="ed-section ed-section--cream ed-architecture">
           <div className="ed-container">
             <div className="ed-arch__grid">
               <div className="ed-arch-image">
@@ -212,7 +252,7 @@ export default function EthnicCulturesDetailPage() {
         </section>
 
         {/* GALLERY */}
-        <section className="ed-section ed-gallery">
+        <section className="ed-section ed-section--light ed-gallery">
           <div className="ed-container">
             <header className="ed-section-header">
               <h2 className="ed-section-title">Thư viện hình ảnh</h2>

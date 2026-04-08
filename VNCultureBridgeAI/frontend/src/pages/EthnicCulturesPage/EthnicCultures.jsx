@@ -42,14 +42,22 @@ const filters = [
 ];
 
 const ethnicCards = [
-  { id: "hmong", name: "Dân tộc Mông", location: "Hà Giang, Sơn La,...", imgUrl: hmongImg, status: "Nổi bật" },
-  { id: "dao", name: "Dân tộc Dao", location: "Lào Cai, Yên Bái,...", imgUrl: daoImg, status: "" },
-  { id: "thai", name: "Dân tộc Thái", location: "Điện Biên, Lai Châu,...", imgUrl: thaiImg, status: "" },
-  { id: "ede", name: "Dân tộc Ê Đê", location: "Đắk Lắk, Đắk Nông,...", imgUrl: edeImg, status: "Mới" },
-  { id: "bana", name: "Dân tộc Ba Na", location: "Gia Lai, Kon Tum,...", imgUrl: banaImg, status: "" },
-  { id: "khmer", name: "Dân tộc Khmer", location: "Sóc Trăng, Trà Vinh,...", imgUrl: khmerImg, status: "" },
-  { id: "cham", name: "Dân tộc Chăm", location: "Ninh Thuận, Bình Thuận,...", imgUrl: chamImg, status: "Nổi bật" },
-  { id: "muong", name: "Dân tộc Mường", location: "Hòa Bình, Thanh Hóa,...", imgUrl: muongImg, status: "" },
+  { id: "hmong", name: "Dân tộc Mông", location: "Hà Giang, Sơn La,...", imgUrl: hmongImg, status: "Nổi bật", region: "Miền Bắc" },
+  { id: "dao", name: "Dân tộc Dao", location: "Lào Cai, Yên Bái,...", imgUrl: daoImg, status: "", region: "Miền Bắc" },
+  { id: "thai", name: "Dân tộc Thái", location: "Điện Biên, Lai Châu,...", imgUrl: thaiImg, status: "", region: "Miền Bắc" },
+  { id: "ede", name: "Dân tộc Ê Đê", location: "Đắk Lắk, Đắk Nông,...", imgUrl: edeImg, status: "Mới", region: "Tây Nguyên" },
+  { id: "bana", name: "Dân tộc Ba Na", location: "Gia Lai, Kon Tum,...", imgUrl: banaImg, status: "", region: "Tây Nguyên" },
+  { id: "khmer", name: "Dân tộc Khmer", location: "Sóc Trăng, Trà Vinh,...", imgUrl: khmerImg, status: "", region: "Miền Nam" },
+  { id: "cham", name: "Dân tộc Chăm", location: "Ninh Thuận, Bình Thuận,...", imgUrl: chamImg, status: "Nổi bật", region: "Miền Nam" },
+  { id: "muong", name: "Dân tộc Mường", location: "Hòa Bình, Thanh Hóa,...", imgUrl: muongImg, status: "", region: "Miền Bắc" },
+  { id: "tày", name: "Dân tộc Tày", location: "Cao Bằng, Lạng Sơn,...", imgUrl: thaiImg, status: "", region: "Miền Bắc" },
+  { id: "nung", name: "Dân tộc Nùng", location: "Lạng Sơn, Cao Bằng,...", imgUrl: daoImg, status: "", region: "Miền Bắc" },
+  { id: "hà-nhì", name: "Dân tộc Hà Nhì", location: "Lai Châu, Lào Cai,...", imgUrl: hmongImg, status: "", region: "Miền Bắc" },
+  { id: "ta-oi", name: "Dân tộc Tà Ôi", location: "Thừa Thiên Huế,...", imgUrl: banaImg, status: "", region: "Miền Trung" },
+  { id: "churu", name: "Dân tộc Chu Ru", location: "Lâm Đồng, Ninh Thuận,...", imgUrl: edeImg, status: "", region: "Tây Nguyên" },
+  { id: "san-diu", name: "Dân tộc Sán Dìu", location: "Vĩnh Phúc, Thái Nguyên,...", imgUrl: chamImg, status: "", region: "Miền Bắc" },
+  { id: "co-tu", name: "Dân tộc Cơ Tu", location: "Quảng Nam, Đà Nẵng,...", imgUrl: muongImg, status: "", region: "Miền Trung" },
+  { id: "jrai", name: "Dân tộc J'rai", location: "Gia Lai, Kon Tum,...", imgUrl: edeImg, status: "", region: "Tây Nguyên" }
 ];
 
 const features = [
@@ -76,12 +84,31 @@ const masonryImages = [
 
 export default function EthnicCultures() {
   const [lang, setLang] = useState('vi');
-  const [activeFilter, setActiveFilter] = useState("Tất cả dân tộc");
+  const [activeFilter, setActiveFilter] = useState("Tất cả vùng");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeRegion, setActiveRegion] = useState("Tất cả vùng");
   const [isRegionOpen, setIsRegionOpen] = useState(false);
   const [activeHeroEthnic, setActiveHeroEthnic] = useState("Tất cả dân tộc");
   const [isHeroEthnicOpen, setIsHeroEthnicOpen] = useState(false);
+
+  // Pagination Logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 8;
+  
+  const filteredCards = ethnicCards.filter(c => 
+    activeFilter === "Tất cả vùng" ? true : c.region === activeFilter
+  );
+  const totalPages = Math.ceil(filteredCards.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentCards = filteredCards.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({
+      top: document.getElementById('ethnic-grid-section')?.offsetTop - 80 || 0,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <div className="ec-page-shell">
@@ -92,109 +119,156 @@ export default function EthnicCultures() {
 
       <main className="ec-main">
         {/* HERO SECTION */}
-        <section
-          className="ec-hero"
-          style={{ backgroundImage: `linear-gradient(rgba(30, 15, 10, 0.4), rgba(30, 15, 10, 0.7)), url(${banner3})` }}
-        >
-          <div className="ec-hero__content fade-up">
-            <span className="ec-badge">Khám phá dải đất hình chữ S</span>
-            <h1 className="ec-hero__title">Khám phá văn hóa <br />các dân tộc Việt Nam</h1>
-            <p className="ec-hero__subtitle">Từ những đỉnh núi mờ sương Tây Bắc đến những bản làng yên bình nơi đồng bằng, khám phá sự đa dạng và giàu có của văn hóa 54 dân tộc anh em.</p>
+        <section className="ec-hero">
+          <div className="ec-hero__bg" style={{ backgroundImage: `url(${banner3})` }}></div>
+          <div className="ec-hero__overlay"></div>
 
-            <div className="ec-hero__search-bar fade-up delay-1">
-              <div className="ec-search-field">
-                <LuSearch className="ec-search-icon" />
-                <input type="text" placeholder="Tìm kiếm dân tộc, văn hóa..." />
+          {/* Ornamental Motif */}
+          <div className="ec-hero__ornament ec-hero__ornament--tl"></div>
+          <div className="ec-hero__ornament ec-hero__ornament--br"></div>
+
+          <div className="ec-hero__inner">
+            {/* LEFT: Content & Search */}
+            <div className="ec-hero__left fade-up">
+              <div className="ec-hero__badge">
+                <span className="ec-hero__badge-dot"></span>
+                Khám phá dải đất hình chữ S
               </div>
-              <div className="ec-search-divider" />
 
-              {/* Region Dropdown */}
-              <div className="ec-search-field-wrapper">
-                <div
-                  className={`ec-search-field ${isRegionOpen ? 'active' : ''}`}
-                  onClick={() => {
-                    setIsRegionOpen(!isRegionOpen);
-                    setIsHeroEthnicOpen(false); // Close other menu
-                  }}
-                >
-                  <span>{activeRegion}</span>
-                  <LuChevronDown className={`ec-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
+              <h1 className="ec-hero__title">
+                <span className="ec-hero__title-line">Văn Hóa</span>
+                <span className="ec-hero__title-accent">Các Dân Tộc</span>
+                <span className="ec-hero__title-line">Việt Nam</span>
+              </h1>
+
+              <div className="ec-hero__divider-row">
+                <span className="ec-hero__divider-line"></span>
+                <span className="ec-hero__divider-diamond">◆</span>
+                <span className="ec-hero__divider-line"></span>
+              </div>
+
+              <p className="ec-hero__subtitle">
+                Từ những đỉnh núi mờ sương Tây Bắc đến những bản làng yên bình nơi đồng bằng, khám phá sự đa dạng và giàu có của văn hóa 54 dân tộc anh em.
+              </p>
+
+              {/* Cultural stats */}
+              <div className="ec-hero__stats">
+                <div className="ec-hero__stat">
+                  <strong>54</strong>
+                  <span>Dân tộc</span>
+                </div>
+                <div className="ec-hero__stat-sep">|</div>
+                <div className="ec-hero__stat">
+                  <strong>8</strong>
+                  <span>Vùng văn hóa</span>
+                </div>
+                <div className="ec-hero__stat-sep">|</div>
+                <div className="ec-hero__stat">
+                  <strong>5.000+</strong>
+                  <span>Lễ hội</span>
+                </div>
+              </div>
+
+              {/* Search Bar Restyled */}
+              <div className="ec-hero__search-bar">
+                <div className="ec-search-field-wrapper" style={{ flex: 1.2 }}>
+                  <div className="ec-search-field" style={{ paddingLeft: '24px' }}>
+                    <LuSearch className="ec-search-icon" />
+                    <input type="text" placeholder="Tìm kiếm dân tộc..." />
+                  </div>
                 </div>
 
-                {isRegionOpen && (
-                  <ul className="ec-hero-dropdown">
-                    {regions.map(r => (
-                      <li
-                        key={r}
-                        className={`ec-hero-dropdown-item ${activeRegion === r ? 'selected' : ''}`}
-                        onClick={() => {
-                          setActiveRegion(r);
-                          setIsRegionOpen(false);
-                        }}
-                      >
-                        {r}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+                <div className="ec-search-divider" />
 
-              <div className="ec-search-divider" />
+                <div className="ec-search-field-wrapper">
+                  <div
+                    className={`ec-search-field ${isRegionOpen ? 'active' : ''}`}
+                    onClick={() => {
+                      setIsRegionOpen(!isRegionOpen);
+                      setIsHeroEthnicOpen(false);
+                    }}
+                  >
+                    <span>{activeRegion === 'Tất cả vùng' ? 'Vùng' : activeRegion}</span>
+                    <LuChevronDown className={`ec-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
+                  </div>
 
-              {/* Ethnic Group Dropdown */}
-              <div className="ec-search-field-wrapper">
-                <div
-                  className={`ec-search-field ${isHeroEthnicOpen ? 'active' : ''}`}
-                  onClick={() => {
-                    setIsHeroEthnicOpen(!isHeroEthnicOpen);
-                    setIsRegionOpen(false); // Close other menu
-                  }}
-                >
-                  <span>{activeHeroEthnic}</span>
-                  <LuChevronDown className={`ec-chevron-icon ${isHeroEthnicOpen ? 'rotate' : ''}`} />
+                  {isRegionOpen && (
+                    <ul className="ec-hero-dropdown">
+                      {regions.map(r => (
+                        <li
+                          key={r}
+                          className={`ec-hero-dropdown-item ${activeRegion === r ? 'selected' : ''}`}
+                          onClick={() => {
+                            setActiveRegion(r);
+                            setIsRegionOpen(false);
+                          }}
+                        >
+                          {r}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
 
-                {isHeroEthnicOpen && (
-                  <ul className="ec-hero-dropdown">
-                    {heroEthnicGroups.map(e => (
-                      <li
-                        key={e}
-                        className={`ec-hero-dropdown-item ${activeHeroEthnic === e ? 'selected' : ''}`}
-                        onClick={() => {
-                          setActiveHeroEthnic(e);
-                          setIsHeroEthnicOpen(false);
-                        }}
-                      >
-                        {e}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <div className="ec-search-divider" />
+
+                <div className="ec-search-field-wrapper">
+                  <div
+                    className={`ec-search-field ${isHeroEthnicOpen ? 'active' : ''}`}
+                    onClick={() => {
+                      setIsHeroEthnicOpen(!isHeroEthnicOpen);
+                      setIsRegionOpen(false);
+                    }}
+                  >
+                    <span>{activeHeroEthnic === 'Tất cả dân tộc' ? 'Dân tộc' : activeHeroEthnic}</span>
+                    <LuChevronDown className={`ec-chevron-icon ${isHeroEthnicOpen ? 'rotate' : ''}`} />
+                  </div>
+
+                  {isHeroEthnicOpen && (
+                    <ul className="ec-hero-dropdown">
+                      {heroEthnicGroups.map(e => (
+                        <li
+                          key={e}
+                          className={`ec-hero-dropdown-item ${activeHeroEthnic === e ? 'selected' : ''}`}
+                          onClick={() => {
+                            setActiveHeroEthnic(e);
+                            setIsHeroEthnicOpen(false);
+                          }}
+                        >
+                          {e}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <button className="ec-hero__cta-btn">
+                  Tìm kiếm
+                </button>
               </div>
 
-              <button className="ec-hero__cta-btn">
-                Khám phá ngay
-              </button>
+            </div>
+
+            {/* RIGHT: Image Frame */}
+            <div className="ec-hero__right fade-up">
+              <div className="ec-hero__img-frame">
+                <img src={hmongImg} alt="Dân tộc" className="ec-hero__img-main" />
+                <div className="ec-hero__img-ring"></div>
+                <div className="ec-hero__img-badge">
+                  <span className="ec-hero__img-badge-icon">🌟</span>
+                  Bản sắc độc đáo
+                </div>
+              </div>
             </div>
           </div>
-        </section>
 
-        {/* STATS SECTION */}
-        <div className="ec-stats-wrapper">
-          <div className="ec-stats fade-up">
-            {stats.map((s, idx) => (
-              <div className="ec-stat-card" key={idx}>
-                <div className="ec-stat-icon"></div>
-                <h3 className="ec-stat-val">{s.value}</h3>
-                <p className="ec-stat-label">{s.label}</p>
-                <span className="ec-stat-sub">{s.subtext}</span>
-              </div>
-            ))}
+          <div className="ec-section-wave ec-section-wave--bottom">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
+            </svg>
           </div>
-        </div>
-
-        {/* MAIN GRID - CÁC DÂN TỘC VIỆT NAM */}
-        <section className="ec-section ec-section--light">
+        </section>        {/* MAIN GRID - CÁC DÂN TỘC VIỆT NAM */}
+        <section className="ec-section ec-section--light" id="ethnic-grid-section">
           <div className="ec-container">
             <div className="ec-section-header ec-center">
               <div className="ec-section-title-wrap">
@@ -222,16 +296,17 @@ export default function EthnicCultures() {
                 </div>
                 {isDropdownOpen && (
                   <ul className="ec-dropdown-list">
-                    {filters.map(f => (
+                    {regions.map(r => (
                       <li
-                        key={f}
-                        className={`ec-dropdown-item ${activeFilter === f ? 'selected' : ''}`}
+                        key={r}
+                        className={`ec-dropdown-item ${activeFilter === r ? 'selected' : ''}`}
                         onClick={() => {
-                          setActiveFilter(f);
+                          setActiveFilter(r);
                           setIsDropdownOpen(false);
+                          handlePageChange(1);
                         }}
                       >
-                        {f}
+                        {r}
                       </li>
                     ))}
                   </ul>
@@ -240,7 +315,7 @@ export default function EthnicCultures() {
             </div>
 
             <div className="ec-grid ec-grid--4cols fade-up">
-              {ethnicCards.map(c => (
+              {currentCards.map(c => (
                 <Link to={`/ethnic-groups/${c.id}`} className="ec-card" key={c.id}>
                   <div className="ec-card__img-wrap">
                     {c.status && <span className="ec-card__status">{c.status}</span>}
@@ -258,14 +333,47 @@ export default function EthnicCultures() {
               ))}
             </div>
 
-            <div className="ec-center-action">
-              <button className="ec-btn-outline">Xem tất cả dân tộc</button>
-            </div>
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="ec-pagination fade-up">
+                <button
+                  className="ec-pagination__btn ec-pagination__nav"
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                                
+                <div className="ec-pagination__pages">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      className={`ec-pagination__btn ${currentPage === page ? 'active' : ''}`}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  className="ec-pagination__btn ec-pagination__nav"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         </section>
 
         {/* FEATURE HIGHLIGHT - NÉT VĂN HÓA TIÊU BIỂU */}
-        <section className="ec-section ec-section--dark ec-section--wavy">
+        <section className="ec-section ec-section--cream ec-section--wavy">
           <div className="ec-section-wave ec-section-wave--top">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
               <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
@@ -324,8 +432,8 @@ export default function EthnicCultures() {
               </ul>
 
               <div className="ec-feature-actions">
-                <button className="ec-btn-filled-brown">Khám phá văn hóa</button>
-                <button className="ec-btn-outline-light">Xem thư viện ảnh</button>
+                <button className="ec-btn-primary">Khám phá văn hóa</button>
+                <button className="ec-btn-outline">Xem thư viện ảnh</button>
               </div>
             </div>
           </div>
@@ -370,7 +478,7 @@ export default function EthnicCultures() {
         </section>
 
         {/* MASONRY COLLAGE - KHOẢNH KHẮC VĂN HÓA SỐNG ĐỘNG */}
-        <section className="ec-section ec-section--dark-alt ec-section--wavy">
+        <section className="ec-section ec-section--cream ec-section--wavy">
           <div className="ec-section-wave ec-section-wave--top">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
               <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
@@ -380,8 +488,8 @@ export default function EthnicCultures() {
             {/* ... contents ... */}
             <div className="ec-section-header ec-center">
               <span className="ec-section-eyebrow">Thư viện ảnh</span>
-              <h2 className="ec-section-title ec-text-light">Khoảnh khắc văn hóa<br />sống động</h2>
-              <p className="ec-section-desc ec-text-light-muted">Những góc nhìn chân thật, chớp lấy vẻ đẹp rực rỡ và nhịp sống đời thường.</p>
+              <h2 className="ec-section-title">Khoảnh khắc văn hóa<br />sống động</h2>
+              <p className="ec-section-desc">Những góc nhìn chân thật, chớp lấy vẻ đẹp rực rỡ và nhịp sống đời thường.</p>
             </div>
 
             <div className="ec-masonry fade-up">
@@ -396,7 +504,7 @@ export default function EthnicCultures() {
             </div>
 
             <div className="ec-center-action">
-              <button className="ec-btn-outline ec-btn-outline--light">Xem thêm thư viện ảnh</button>
+              <button className="ec-btn-outline">Xem thêm thư viện ảnh</button>
             </div>
           </div>
           <div className="ec-section-wave ec-section-wave--bottom">
