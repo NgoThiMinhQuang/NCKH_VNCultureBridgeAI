@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { LuSearch, LuChevronDown, LuShirt, LuStar, LuUtensils, LuBookOpen } from 'react-icons/lu';
 import './EthnicCulturesPage.css';
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import Footer from '../../components/layout/Footer/Footer';
@@ -142,14 +143,20 @@ export default function EthnicCultures() {
   const [isRegionOpen, setIsRegionOpen] = useState(false);
   const [activeHeroEthnic, setActiveHeroEthnic] = useState("Tất cả dân tộc");
   const [isHeroEthnicOpen, setIsHeroEthnicOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 8;
-  
-  const filteredCards = ethnicCards.filter(c => 
-    activeFilter === "Tất cả vùng" ? true : c.region === activeFilter
-  );
+
+  const filteredCards = ethnicCards.filter(c => {
+    const matchRegionFilter = activeFilter === "Tất cả vùng" ? true : c.region === activeFilter;
+    const matchHeroRegion = activeRegion === "Tất cả vùng" ? true : c.region === activeRegion;
+    const matchHeroEthnic = activeHeroEthnic === "Tất cả dân tộc" ? true : c.name.toLowerCase().includes(activeHeroEthnic.toLowerCase());
+    const matchSearchQuery = searchQuery === "" ? true : c.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchRegionFilter && matchHeroRegion && matchHeroEthnic && matchSearchQuery;
+  });
   const totalPages = Math.ceil(filteredCards.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentCards = filteredCards.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -175,12 +182,6 @@ export default function EthnicCultures() {
           <div className="ec-hero__bg" style={{ backgroundImage: `url(${banner3})` }}></div>
           <div className="ec-hero__overlay"></div>
 
-<<<<<<< HEAD
-            <div className="ec-hero__search-bar fade-up delay-1">
-              <div className="ec-search-field">
-                <SearchIcon className="ec-search-icon" />
-                <input type="text" placeholder="Tìm kiếm dân tộc, văn hóa..." />
-=======
           {/* Ornamental Motif */}
           <div className="ec-hero__ornament ec-hero__ornament--tl"></div>
           <div className="ec-hero__ornament ec-hero__ornament--br"></div>
@@ -191,22 +192,8 @@ export default function EthnicCultures() {
               <div className="ec-hero__badge">
                 <span className="ec-hero__badge-dot"></span>
                 Khám phá dải đất hình chữ S
->>>>>>> e73d377bfe900afa97b56652ba7a89bb4ddd872a
               </div>
 
-<<<<<<< HEAD
-              {/* Region Dropdown */}
-              <div className="ec-search-field-wrapper">
-                <div
-                  className={`ec-search-field ${isRegionOpen ? 'active' : ''}`}
-                  onClick={() => {
-                    setIsRegionOpen(!isRegionOpen);
-                    setIsHeroEthnicOpen(false); // Close other menu
-                  }}
-                >
-                  <span>{activeRegion}</span>
-                  <ChevronDownIcon className={`ec-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
-=======
               <h1 className="ec-hero__title">
                 <span className="ec-hero__title-line">Văn Hóa</span>
                 <span className="ec-hero__title-accent">Các Dân Tộc</span>
@@ -246,9 +233,13 @@ export default function EthnicCultures() {
                 <div className="ec-search-field-wrapper" style={{ flex: 1.2 }}>
                   <div className="ec-search-field" style={{ paddingLeft: '24px' }}>
                     <LuSearch className="ec-search-icon" />
-                    <input type="text" placeholder="Tìm kiếm dân tộc..." />
+                    <input
+                      type="text"
+                      placeholder="Tìm kiếm dân tộc..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
                   </div>
->>>>>>> e73d377bfe900afa97b56652ba7a89bb4ddd872a
                 </div>
 
                 <div className="ec-search-divider" />
@@ -265,19 +256,6 @@ export default function EthnicCultures() {
                     <LuChevronDown className={`ec-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
                   </div>
 
-<<<<<<< HEAD
-              {/* Ethnic Group Dropdown */}
-              <div className="ec-search-field-wrapper">
-                <div
-                  className={`ec-search-field ${isHeroEthnicOpen ? 'active' : ''}`}
-                  onClick={() => {
-                    setIsHeroEthnicOpen(!isHeroEthnicOpen);
-                    setIsRegionOpen(false); // Close other menu
-                  }}
-                >
-                  <span>{activeHeroEthnic}</span>
-                  <ChevronDownIcon className={`ec-chevron-icon ${isHeroEthnicOpen ? 'rotate' : ''}`} />
-=======
                   {isRegionOpen && (
                     <ul className="ec-hero-dropdown">
                       {regions.map(r => (
@@ -294,7 +272,6 @@ export default function EthnicCultures() {
                       ))}
                     </ul>
                   )}
->>>>>>> e73d377bfe900afa97b56652ba7a89bb4ddd872a
                 </div>
 
                 <div className="ec-search-divider" />
@@ -432,7 +409,7 @@ export default function EthnicCultures() {
                     <polyline points="15 18 9 12 15 6" />
                   </svg>
                 </button>
-                                
+
                 <div className="ec-pagination__pages">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                     <button
@@ -474,7 +451,7 @@ export default function EthnicCultures() {
                 <img src={ruongBacThangImg} alt="Nét văn hóa tiêu biểu: Ruộng bậc thang" />
               </div>
               <div className="ec-feature-img-tag glass-panel">
-                <div className="ec-tag-icon"><StarIcon /></div>
+                <div className="ec-tag-icon"><LuStar /></div>
                 <div className="ec-tag-text">
                   <strong>Di sản văn hóa phi vật thể</strong>
                   <span>UNESCO công nhận - Bảo tồn và phát huy</span>
@@ -489,28 +466,28 @@ export default function EthnicCultures() {
 
               <ul className="ec-feature-list">
                 <li className="ec-feature-item">
-                  <div className="ec-fi-icon ec-fi-icon--red"><ShirtIcon /></div>
+                  <div className="ec-fi-icon ec-fi-icon--red"><LuShirt /></div>
                   <div className="ec-fi-content">
                     <h4>Trang phục</h4>
                     <p>Thổ cẩm thêu tay rực rỡ, mỗi hoa văn mang ý nghĩa tâm linh sâu sắc, truyền từ đời này sang đời khác.</p>
                   </div>
                 </li>
                 <li className="ec-feature-item">
-                  <div className="ec-fi-icon ec-fi-icon--orange"><StarIcon /></div>
+                  <div className="ec-fi-icon ec-fi-icon--orange"><LuStar /></div>
                   <div className="ec-fi-content">
                     <h4>Lễ hội</h4>
                     <p>Hơn 500 lễ hội truyền thống diễn ra quanh năm, từ Tết Nguyên Đán đến các lễ hội cồng chiêng Tây Nguyên.</p>
                   </div>
                 </li>
                 <li className="ec-feature-item">
-                  <div className="ec-fi-icon ec-fi-icon--brown"><CoffeeIcon /></div>
+                  <div className="ec-fi-icon ec-fi-icon--brown"><LuUtensils /></div>
                   <div className="ec-fi-content">
                     <h4>Ẩm thực</h4>
                     <p>Mỗi vùng miền có đặc sản riêng – từ phở Bắc, bún bò Huế đến cơm tấm Nam Bộ và canh thụt Tây Nguyên.</p>
                   </div>
                 </li>
                 <li className="ec-feature-item">
-                  <div className="ec-fi-icon ec-fi-icon--green"><BookOpenIcon /></div>
+                  <div className="ec-fi-icon ec-fi-icon--green"><LuBookOpen /></div>
                   <div className="ec-fi-content">
                     <h4>Phong tục</h4>
                     <p>Nghi lễ vòng đời, hôn nhân, tang ma mang đậm bản sắc từng dân tộc, phản ánh triết lý sống hài hòa với thiên nhiên.</p>
