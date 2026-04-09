@@ -1,9 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
 import './ArticlePage.css'
-import heroBg from '../../assets/banner1.jpg'
+import heroBg from '../../assets/ruong-bac-thang.jpg'
 import img2 from '../../assets/banner2.jpg'
 import img3 from '../../assets/banner3.jpg'
 import img4 from '../../assets/cham.jpg'
@@ -17,6 +17,18 @@ import img10 from '../../assets/thai.jpg'
 export default function ArticlePage() {
     const [lang, setLang] = useState('vi')
     const [activeCategory, setActiveCategory] = useState('all')
+    const [currentPage, setCurrentPage] = useState(1)
+    const ITEMS_PER_PAGE = 5
+    const articlesRef = useRef(null)
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+        if (articlesRef.current) {
+            const yOffset = -100; 
+            const y = articlesRef.current.getBoundingClientRect().top + window.scrollY + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+    }
 
     // ── Mock articles list ──────────────────────────────────────────────────
     const allArticles = useMemo(() => [
@@ -136,53 +148,115 @@ export default function ArticlePage() {
         return allArticles.filter(a => (lang === 'vi' ? a.categoryVi : a.categoryEn) === activeCategory)
     }, [activeCategory, allArticles, lang])
 
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE)
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+    const currentArticles = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+
     return (
         <div className="page-shell">
             <PageHeader
                 lang={lang}
                 onLangChange={setLang}
                 breadcrumb={[
-                    { label: lang === 'vi' ? 'Bài viết văn hóa' : 'Cultural Articles' },
+                    { label: lang === 'vi' ? 'Nghệ thuật & Di sản Việt Nam' : 'Vietnamese Arts & Heritage' },
                 ]}
             />
 
             <main>
                 <section className="article-hero">
+                    {/* Background & overlays */}
                     <div className="article-hero__bg" style={{ backgroundImage: `url(${heroBg})` }}></div>
                     <div className="article-hero__overlay"></div>
-                    <div className="article-hero__content fade-up">
-                        <h1 className="article-hero__title">
-                            {lang === 'vi' ? (
-                                <>
-                                    Nghệ thuật <span className="article-hero__divider"></span> & Di sản Việt Nam
-                                </>
-                            ) : (
-                                <>
-                                    Vietnamese Arts <span className="article-hero__divider"></span> & Heritage
-                                </>
-                            )}
-                        </h1>
-                        <p className="article-hero__subtitle">
-                            {lang === 'vi' ? (
-                                <>
-                                    Nơi truyền thống cổ xưa hòa quyện cùng biểu đạt hiện đại,<br />
-                                    mang theo câu chuyện ngàn năm trong từng nét vẽ
-                                </>
-                            ) : (
-                                <>
-                                    Where ancient traditions weave through modern expression,<br />
-                                    carrying stories of a thousand years in every brushstroke
-                                </>
-                            )}
-                        </p>
+
+                    {/* Ornamental corner motifs (CSS-only Đông Sơn drum pattern) */}
+                    <div className="article-hero__ornament article-hero__ornament--tl"></div>
+                    <div className="article-hero__ornament article-hero__ornament--br"></div>
+
+                    {/* Main content split layout */}
+                    <div className="article-hero__inner">
+
+                        {/* LEFT: Text content */}
+                        <div className="article-hero__left fade-up">
+                            {/* Badge */}
+                            <div className="article-hero__badge">
+                                <span className="article-hero__badge-dot"></span>
+                                {lang === 'vi' ? 'Văn hoá · Di sản · Nghệ thuật' : 'Culture · Heritage · Art'}
+                            </div>
+
+                            {/* Heading */}
+                            <h1 className="article-hero__title">
+                                {lang === 'vi' ? (
+                                    <>
+                                        <span className="article-hero__title-line">Nghệ Thuật</span>
+                                        <span className="article-hero__title-accent">&amp; Di Sản</span>
+                                        <span className="article-hero__title-line">Việt Nam</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="article-hero__title-line">Vietnamese</span>
+                                        <span className="article-hero__title-accent">Arts &amp; Heritage</span>
+                                    </>
+                                )}
+                            </h1>
+
+                            {/* Ornamental divider */}
+                            <div className="article-hero__divider-row">
+                                <span className="article-hero__divider-line"></span>
+                                <span className="article-hero__divider-diamond">◆</span>
+                                <span className="article-hero__divider-line"></span>
+                            </div>
+
+                            {/* Subtitle */}
+                            <p className="article-hero__subtitle">
+                                {lang === 'vi'
+                                    ? 'Nơi truyền thống cổ xưa hòa quyện cùng biểu đạt hiện đại — mang theo câu chuyện ngàn năm trong từng nét vẽ, từng điệu múa.'
+                                    : 'Where ancient traditions weave through modern expression — carrying stories of a thousand years in every brushstroke and dance.'
+                                }
+                            </p>
+
+                            {/* Cultural stats */}
+                            <div className="article-hero__stats">
+                                <div className="article-hero__stat">
+                                    <strong>4.000+</strong>
+                                    <span>{lang === 'vi' ? 'Năm lịch sử' : 'Years of history'}</span>
+                                </div>
+                                <div className="article-hero__stat-sep">|</div>
+                                <div className="article-hero__stat">
+                                    <strong>54</strong>
+                                    <span>{lang === 'vi' ? 'Dân tộc anh em' : 'Ethnic groups'}</span>
+                                </div>
+                                <div className="article-hero__stat-sep">|</div>
+                                <div className="article-hero__stat">
+                                    <strong>8</strong>
+                                    <span>{lang === 'vi' ? 'Di sản UNESCO' : 'UNESCO Heritages'}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* RIGHT: Image collage */}
+                        <div className="article-hero__right fade-up">
+                            <div className="article-hero__img-frame">
+                                <img src={heroBg} alt="Ruộng bậc thang Việt Nam" className="article-hero__img-main" />
+                                {/* Floating badge */}
+                                <div className="article-hero__img-badge">
+                                    <span className="article-hero__img-badge-icon">🏔️</span>
+                                    <span>{lang === 'vi' ? 'Ruộng bậc thang Tây Bắc' : 'Northwestern Terraces'}</span>
+                                </div>
+                                {/* Decorative ring */}
+                                <div className="article-hero__img-ring"></div>
+                            </div>
+                        </div>
+
                     </div>
+
+                    {/* Scroll indicator */}
                     <div className="article-hero__scroll">
                         <div className="mouse-icon"></div>
                     </div>
                 </section>
 
                 {/* ── Article Listing Section ───────────────────────────── */}
-                <section className="ap-articles-section">
+                <section className="ap-articles-section" ref={articlesRef}>
                     <div className="section-container">
                         <div className="ap-articles__header fade-up">
                             <h2 className="ap-articles__title">
@@ -201,29 +275,32 @@ export default function ArticlePage() {
                                 <button
                                     key={cat}
                                     className={`ap-filter__btn${activeCategory === cat ? ' active' : ''}`}
-                                    onClick={() => setActiveCategory(cat)}
+                                    onClick={() => {
+                                        setActiveCategory(cat)
+                                        handlePageChange(1)
+                                    }}
                                 >
                                     {cat === 'all' ? (lang === 'vi' ? 'Tất cả' : 'All') : cat}
                                 </button>
                             ))}
                         </div>
 
-                        {/* Featured article (first one) */}
-                        {filtered[0] && (
-                            <Link to={`/articles/${filtered[0].code}`} className="ap-featured-card fade-up">
+                        {/* Featured article (only on page 1) */}
+                        {currentPage === 1 && currentArticles[0] && (
+                            <Link to={`/articles/${currentArticles[0].code}`} className="ap-featured-card fade-up">
                                 <div className="ap-featured-card__img">
-                                    <img src={filtered[0].image} alt={lang === 'vi' ? filtered[0].titleVi : filtered[0].titleEn} />
+                                    <img src={currentArticles[0].image} alt={lang === 'vi' ? currentArticles[0].titleVi : currentArticles[0].titleEn} />
                                     <span className="ap-featured-card__badge">
                                         {lang === 'vi' ? '✦ Nổi Bật' : '✦ Featured'}
                                     </span>
                                 </div>
                                 <div className="ap-featured-card__body">
-                                    <span className="ap-cat-tag">{lang === 'vi' ? filtered[0].categoryVi : filtered[0].categoryEn}</span>
+                                    <span className="ap-cat-tag">{lang === 'vi' ? currentArticles[0].categoryVi : currentArticles[0].categoryEn}</span>
                                     <h3 className="ap-featured-card__title">
-                                        {lang === 'vi' ? filtered[0].titleVi : filtered[0].titleEn}
+                                        {lang === 'vi' ? currentArticles[0].titleVi : currentArticles[0].titleEn}
                                     </h3>
                                     <p className="ap-featured-card__desc">
-                                        {lang === 'vi' ? filtered[0].descVi : filtered[0].descEn}
+                                        {lang === 'vi' ? currentArticles[0].descVi : currentArticles[0].descEn}
                                     </p>
                                     <div className="ap-featured-card__meta">
                                         <span className="ap-meta-author">
@@ -231,17 +308,17 @@ export default function ArticlePage() {
                                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                                                 <circle cx="12" cy="7" r="4" />
                                             </svg>
-                                            {lang === 'vi' ? filtered[0].authorVi : filtered[0].authorEn}
+                                            {lang === 'vi' ? currentArticles[0].authorVi : currentArticles[0].authorEn}
                                         </span>
                                         <span className="ap-meta-dot">·</span>
-                                        <span>{lang === 'vi' ? filtered[0].dateVi : filtered[0].dateEn}</span>
+                                        <span>{lang === 'vi' ? currentArticles[0].dateVi : currentArticles[0].dateEn}</span>
                                         <span className="ap-meta-dot">·</span>
                                         <span>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:'4px', verticalAlign:'middle'}}>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '4px', verticalAlign: 'middle' }}>
                                                 <circle cx="12" cy="12" r="10" />
                                                 <polyline points="12 6 12 12 16 14" />
                                             </svg>
-                                            {lang === 'vi' ? filtered[0].readVi : filtered[0].readEn}
+                                            {lang === 'vi' ? currentArticles[0].readVi : currentArticles[0].readEn}
                                         </span>
                                     </div>
                                     <div className="ap-featured-card__cta">
@@ -256,7 +333,7 @@ export default function ArticlePage() {
 
                         {/* Regular grid */}
                         <div className="ap-grid fade-up">
-                            {filtered.slice(1).map((art) => (
+                            {(currentPage === 1 ? currentArticles.slice(1) : currentArticles).map((art) => (
                                 <Link to={`/articles/${art.code}`} key={art.code} className="ap-card">
                                     <div className="ap-card__img">
                                         <img src={art.image} alt={lang === 'vi' ? art.titleVi : art.titleEn} loading="lazy" />
@@ -279,6 +356,43 @@ export default function ArticlePage() {
                                 </Link>
                             ))}
                         </div>
+
+                        {/* Pagination Controls */}
+                        {totalPages > 1 && (
+                            <div className="ap-pagination fade-up">
+                                <button
+                                    className="ap-pagination__btn ap-pagination__nav"
+                                    disabled={currentPage === 1}
+                                    onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <polyline points="15 18 9 12 15 6" />
+                                    </svg>
+                                </button>
+                                
+                                <div className="ap-pagination__pages">
+                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                        <button
+                                            key={page}
+                                            className={`ap-pagination__btn ${currentPage === page ? 'active' : ''}`}
+                                            onClick={() => handlePageChange(page)}
+                                        >
+                                            {page}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <button
+                                    className="ap-pagination__btn ap-pagination__nav"
+                                    disabled={currentPage === totalPages}
+                                    onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <polyline points="9 18 15 12 9 6" />
+                                    </svg>
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </section>
 

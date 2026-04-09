@@ -27,7 +27,7 @@
 }
 
 .featured-articles__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 2.5rem;
   color: var(--text-heading);
   margin: 0;
@@ -96,7 +96,7 @@
 }
 
 .featured-card__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   margin: 0 0 12px;
   line-height: 1.3;
 }
@@ -160,7 +160,7 @@
   flex-direction: row;
   height: 120px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .featured-card--small:last-child {
@@ -184,6 +184,7 @@
   margin-bottom: 5px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -208,16 +209,16 @@
   .featured-articles__container {
     padding: 0 20px;
   }
-  
+
   .featured-card--large .featured-card__title {
     font-size: 1.5rem;
   }
-  
+
   .featured-card--small {
     height: auto;
     flex-direction: column;
   }
-  
+
   .featured-card--small .featured-card__image-wrapper {
     width: 100%;
     height: 180px;

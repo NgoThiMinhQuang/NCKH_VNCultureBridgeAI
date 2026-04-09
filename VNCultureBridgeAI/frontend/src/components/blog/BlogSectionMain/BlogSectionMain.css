@@ -1,6 +1,6 @@
 .blog-section-main {
   padding: 60px 0 100px;
-  background-color: #f7f2eb; /* Layered background color, slightly different from Hero */
+  background-color: #f7efe5; /* Color B: Warm Cream */
 }
 
 .blog-section-main__container {
@@ -147,7 +147,7 @@
 }
 
 .blog-card-detailed__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.4rem;
   color: var(--text-heading);
   margin: 0 0 12px;
@@ -200,7 +200,7 @@
 }
 
 .sidebar-widget__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.5rem;
   color: var(--text-heading);
   margin: 0 0 24px;
@@ -232,7 +232,7 @@
 }
 
 .newsletter-box h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.8rem;
   margin: 0 0 10px;
 }
@@ -305,7 +305,7 @@
 }
 
 .popular-post-item__info h4 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1rem;
   margin: 0 0 5px;
   line-height: 1.35;

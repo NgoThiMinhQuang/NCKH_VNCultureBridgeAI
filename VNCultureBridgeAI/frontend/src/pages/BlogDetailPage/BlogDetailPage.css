@@ -56,7 +56,7 @@
 }
 
 .blog-detail__title {
-  font-family: 'Playfair Display', 'Georgia', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.5rem, 5vw, 3.8rem);
   line-height: 1.2;
   color: var(--text-heading, #311b11);
@@ -196,7 +196,7 @@
 
 /* Content Styles */
 .blog-detail__sub-title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   color: var(--text-heading, #311b11);
   margin: 3.5rem 0 1.5rem;
@@ -252,7 +252,7 @@
 }
 
 .blog-detail__quote-text {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.6rem;
   line-height: 1.4;
   color: var(--text-heading, #311b11);
@@ -285,7 +285,7 @@
 }
 
 .blog-detail__custom-num {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--accent, #b91c1c);
@@ -309,7 +309,7 @@
 }
 
 .blog-detail__conclusion-title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.75rem;
   color: var(--text-heading, #311b11);
   margin-bottom: 1.25rem;
@@ -397,7 +397,7 @@
 .blog-detail__comments-title {
   display: flex;
   align-items: center;
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.75rem;
   color: var(--text-heading, #311b11);
   margin-bottom: 2rem;
