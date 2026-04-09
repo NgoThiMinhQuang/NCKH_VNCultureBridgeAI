@@ -19,7 +19,59 @@ import congChiengImg from '../../assets/cong_chieng.png';
 import leCapSacImg from '../../assets/le-cap-sac.jpg';
 import detThoCamImg from '../../assets/det-tho-cam.jpg';
 import muaTrongImg from '../../assets/mua-trong-sadam.jpg';
-import { LuShirt, LuStar, LuUtensils, LuBookOpen, LuSearch, LuChevronDown } from 'react-icons/lu';
+function SearchIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.35-4.35" />
+    </svg>
+  );
+}
+
+function ChevronDownIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+function ShirtIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="m4 7 5-3 2 3 2-3 5 3" />
+      <path d="M7 4h10l2 5-2 2v9H7v-9L5 9z" />
+    </svg>
+  );
+}
+
+function StarIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="m12 2.5 3.09 6.26 6.91 1.01-5 4.87 1.18 6.88L12 18.3 5.82 21.52 7 14.64 2 9.77l6.91-1.01L12 2.5z" />
+    </svg>
+  );
+}
+
+function CoffeeIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M4 8h13a3 3 0 0 1 0 6H4z" />
+      <path d="M4 8v7a4 4 0 0 0 4 4h5a4 4 0 0 0 4-4v-1" />
+      <path d="M18 9h2a2 2 0 0 1 0 4h-2" />
+    </svg>
+  );
+}
+
+function BookOpenIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M12 7v14" />
+      <path d="M3 6a3 3 0 0 1 3-3h8v15H6a3 3 0 0 0-3 3z" />
+      <path d="M21 6a3 3 0 0 0-3-3h-8v15h8a3 3 0 0 1 3 3z" />
+    </svg>
+  );
+}
 
 // Fake Data for mockups
 const stats = [
@@ -103,7 +155,7 @@ export default function EthnicCultures() {
 
             <div className="ec-hero__search-bar fade-up delay-1">
               <div className="ec-search-field">
-                <LuSearch className="ec-search-icon" />
+                <SearchIcon className="ec-search-icon" />
                 <input type="text" placeholder="Tìm kiếm dân tộc, văn hóa..." />
               </div>
               <div className="ec-search-divider" />
@@ -118,7 +170,7 @@ export default function EthnicCultures() {
                   }}
                 >
                   <span>{activeRegion}</span>
-                  <LuChevronDown className={`ec-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
+                  <ChevronDownIcon className={`ec-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
                 </div>
 
                 {isRegionOpen && (
@@ -151,7 +203,7 @@ export default function EthnicCultures() {
                   }}
                 >
                   <span>{activeHeroEthnic}</span>
-                  <LuChevronDown className={`ec-chevron-icon ${isHeroEthnicOpen ? 'rotate' : ''}`} />
+                  <ChevronDownIcon className={`ec-chevron-icon ${isHeroEthnicOpen ? 'rotate' : ''}`} />
                 </div>
 
                 {isHeroEthnicOpen && (
@@ -279,7 +331,7 @@ export default function EthnicCultures() {
                 <img src={ruongBacThangImg} alt="Nét văn hóa tiêu biểu: Ruộng bậc thang" />
               </div>
               <div className="ec-feature-img-tag glass-panel">
-                <div className="ec-tag-icon"><LuStar /></div>
+                <div className="ec-tag-icon"><StarIcon /></div>
                 <div className="ec-tag-text">
                   <strong>Di sản văn hóa phi vật thể</strong>
                   <span>UNESCO công nhận - Bảo tồn và phát huy</span>
@@ -294,28 +346,28 @@ export default function EthnicCultures() {
 
               <ul className="ec-feature-list">
                 <li className="ec-feature-item">
-                  <div className="ec-fi-icon ec-fi-icon--red"><LuShirt /></div>
+                  <div className="ec-fi-icon ec-fi-icon--red"><ShirtIcon /></div>
                   <div className="ec-fi-content">
                     <h4>Trang phục</h4>
                     <p>Thổ cẩm thêu tay rực rỡ, mỗi hoa văn mang ý nghĩa tâm linh sâu sắc, truyền từ đời này sang đời khác.</p>
                   </div>
                 </li>
                 <li className="ec-feature-item">
-                  <div className="ec-fi-icon ec-fi-icon--orange"><LuStar /></div>
+                  <div className="ec-fi-icon ec-fi-icon--orange"><StarIcon /></div>
                   <div className="ec-fi-content">
                     <h4>Lễ hội</h4>
                     <p>Hơn 500 lễ hội truyền thống diễn ra quanh năm, từ Tết Nguyên Đán đến các lễ hội cồng chiêng Tây Nguyên.</p>
                   </div>
                 </li>
                 <li className="ec-feature-item">
-                  <div className="ec-fi-icon ec-fi-icon--brown"><LuUtensils /></div>
+                  <div className="ec-fi-icon ec-fi-icon--brown"><CoffeeIcon /></div>
                   <div className="ec-fi-content">
                     <h4>Ẩm thực</h4>
                     <p>Mỗi vùng miền có đặc sản riêng – từ phở Bắc, bún bò Huế đến cơm tấm Nam Bộ và canh thụt Tây Nguyên.</p>
                   </div>
                 </li>
                 <li className="ec-feature-item">
-                  <div className="ec-fi-icon ec-fi-icon--green"><LuBookOpen /></div>
+                  <div className="ec-fi-icon ec-fi-icon--green"><BookOpenIcon /></div>
                   <div className="ec-fi-content">
                     <h4>Phong tục</h4>
                     <p>Nghi lễ vòng đời, hôn nhân, tang ma mang đậm bản sắc từng dân tộc, phản ánh triết lý sống hài hòa với thiên nhiên.</p>

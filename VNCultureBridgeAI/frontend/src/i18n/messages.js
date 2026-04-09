@@ -120,9 +120,9 @@ export const ui = {
     ],
     artsSectionBadge: 'Nghệ thuật & di sản',
     artsSectionTitle: 'Truyền thống',
-    artsSectionTitleAccent: 'sống động',
+    artsSectionTitleAccent: 'đương đại',
     artsSectionDescription:
-      'Nghệ thuật Việt Nam là nhịp cầu sống động nối liền các thế hệ — giữ gìn bản sắc, tâm hồn và vẻ đẹp qua biểu diễn, thủ công và âm thanh.',
+      'Nghệ thuật Việt Nam là nhịp cầu nối giữa các thế hệ — gìn giữ bản sắc, tâm hồn và vẻ đẹp qua trình diễn, thủ công và âm thanh.',
     moreArtsTitle: 'Nghệ thuật & Thủ công truyền thống khác',
     moreArtsItems: [
       {

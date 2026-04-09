@@ -1591,14 +1591,14 @@ export default function HomePage() {
                     <span className="arts-showcase__eyebrow-star" aria-hidden="true">✦</span>
                   </span>
                   <h2>
-                    <span>{copy.artsSectionTitle}</span>{' '}
+                    <span className="arts-showcase__title-base">{copy.artsSectionTitle}</span>{' '}
                     <span className="arts-showcase__title-accent">{copy.artsSectionTitleAccent}</span>
                   </h2>
                   <div className="arts-showcase__divider" aria-hidden="true">
-                    <span />
-                    <i />
-                    <b />
-                    <span />
+                    <span className="arts-showcase__divider-line" />
+                    <i className="arts-showcase__divider-dot arts-showcase__divider-dot--gold" />
+                    <b className="arts-showcase__divider-dot arts-showcase__divider-dot--rose" />
+                    <span className="arts-showcase__divider-line" />
                   </div>
                   <p>{copy.artsSectionDescription}</p>
                 </div>
@@ -1611,7 +1611,7 @@ export default function HomePage() {
                       className={`arts-showcase__tab ${index === 0 ? 'is-active' : ''}`}
                     >
                       <span className="arts-showcase__tab-title">{item.title}</span>
-                      {item.category ? <span className="arts-showcase__tab-category">{item.category}</span> : null}
+                      {item.category ? <span className="arts-showcase__tab-category">{localizeArtCategory(item.category)}</span> : null}
                     </button>
                   ))}
                 </div>
