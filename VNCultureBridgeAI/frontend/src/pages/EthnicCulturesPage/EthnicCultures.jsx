@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { LuChevronDown, LuSearch } from 'react-icons/lu';
 import './EthnicCulturesPage.css';
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import Footer from '../../components/layout/Footer/Footer';
@@ -175,12 +176,6 @@ export default function EthnicCultures() {
           <div className="ec-hero__bg" style={{ backgroundImage: `url(${banner3})` }}></div>
           <div className="ec-hero__overlay"></div>
 
-<<<<<<< HEAD
-            <div className="ec-hero__search-bar fade-up delay-1">
-              <div className="ec-search-field">
-                <SearchIcon className="ec-search-icon" />
-                <input type="text" placeholder="Tìm kiếm dân tộc, văn hóa..." />
-=======
           {/* Ornamental Motif */}
           <div className="ec-hero__ornament ec-hero__ornament--tl"></div>
           <div className="ec-hero__ornament ec-hero__ornament--br"></div>
@@ -191,22 +186,8 @@ export default function EthnicCultures() {
               <div className="ec-hero__badge">
                 <span className="ec-hero__badge-dot"></span>
                 Khám phá dải đất hình chữ S
->>>>>>> e73d377bfe900afa97b56652ba7a89bb4ddd872a
               </div>
 
-<<<<<<< HEAD
-              {/* Region Dropdown */}
-              <div className="ec-search-field-wrapper">
-                <div
-                  className={`ec-search-field ${isRegionOpen ? 'active' : ''}`}
-                  onClick={() => {
-                    setIsRegionOpen(!isRegionOpen);
-                    setIsHeroEthnicOpen(false); // Close other menu
-                  }}
-                >
-                  <span>{activeRegion}</span>
-                  <ChevronDownIcon className={`ec-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
-=======
               <h1 className="ec-hero__title">
                 <span className="ec-hero__title-line">Văn Hóa</span>
                 <span className="ec-hero__title-accent">Các Dân Tộc</span>
@@ -248,7 +229,6 @@ export default function EthnicCultures() {
                     <LuSearch className="ec-search-icon" />
                     <input type="text" placeholder="Tìm kiếm dân tộc..." />
                   </div>
->>>>>>> e73d377bfe900afa97b56652ba7a89bb4ddd872a
                 </div>
 
                 <div className="ec-search-divider" />
@@ -265,19 +245,6 @@ export default function EthnicCultures() {
                     <LuChevronDown className={`ec-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
                   </div>
 
-<<<<<<< HEAD
-              {/* Ethnic Group Dropdown */}
-              <div className="ec-search-field-wrapper">
-                <div
-                  className={`ec-search-field ${isHeroEthnicOpen ? 'active' : ''}`}
-                  onClick={() => {
-                    setIsHeroEthnicOpen(!isHeroEthnicOpen);
-                    setIsRegionOpen(false); // Close other menu
-                  }}
-                >
-                  <span>{activeHeroEthnic}</span>
-                  <ChevronDownIcon className={`ec-chevron-icon ${isHeroEthnicOpen ? 'rotate' : ''}`} />
-=======
                   {isRegionOpen && (
                     <ul className="ec-hero-dropdown">
                       {regions.map(r => (
@@ -294,7 +261,6 @@ export default function EthnicCultures() {
                       ))}
                     </ul>
                   )}
->>>>>>> e73d377bfe900afa97b56652ba7a89bb4ddd872a
                 </div>
 
                 <div className="ec-search-divider" />
@@ -351,10 +317,12 @@ export default function EthnicCultures() {
 
           <div className="ec-section-wave ec-section-wave--bottom">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
             </svg>
           </div>
-        </section>        {/* MAIN GRID - CÁC DÂN TỘC VIỆT NAM */}
+        </section>
+
+        {/* MAIN GRID - CÁC DÂN TỘC VIỆT NAM */}
         <section className="ec-section ec-section--light" id="ethnic-grid-section">
           <div className="ec-container">
             <div className="ec-section-header ec-center">
