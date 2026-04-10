@@ -169,7 +169,7 @@ const FESTIVALS_DB = {
 
 export default function FestivalsDetailPage() {
   const [lang, setLang] = useState('vi');
-  const [showMoreFood, setShowMoreFood] = useState(false);
+  const [foodPage, setFoodPage] = useState(1);
   const { id } = useParams();
 
   // Find festival by ID from params. If not found or no ID is provided, default to ID 1 (Tết)
@@ -356,81 +356,105 @@ export default function FestivalsDetailPage() {
                 <p>Taste the essence of the new year with indispensable holiday delicacies that tell stories of earth, heaven, and ancestors.</p>
               </div>
               
-              <div className="traditional-foods-grid">
-                {festivalData.traditionalFoods.map((food, idx) => (
-                  <div className="food-card" key={idx}>
-                    <div className="food-img-wrap">
-                      <img src={food.image} alt={food.title} />
+              <div className="foods-container">
+                {foodPage === 1 && (
+                  <div className="traditional-foods-grid animation-fade-in">
+                    {festivalData.traditionalFoods.map((food, idx) => (
+                      <div className="food-card" key={idx}>
+                        <div className="food-img-wrap">
+                          <img src={food.image} alt={food.title} />
+                        </div>
+                        <div className="food-content">
+                          <h4>{food.title}</h4>
+                          <p>{food.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {foodPage === 2 && festivalData.regionalFoods && (
+                  <div className="regional-foods-grid animation-fade-in">
+                    <div className="region-col">
+                      <span className="region-badge highlight-red">Northern</span>
+                      <div className="region-food-list">
+                        {festivalData.regionalFoods.north.map((item, idx) => (
+                          <div className="food-card small" key={idx}>
+                            <div className="food-img-wrap">
+                              <img src={item.image} alt={item.title} />
+                            </div>
+                            <div className="food-content">
+                              <h4>{item.title}</h4>
+                              <p>{item.desc}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="food-content">
-                      <h4>{food.title}</h4>
-                      <p>{food.desc}</p>
+                    <div className="region-col">
+                      <span className="region-badge highlight-yellow">Central</span>
+                      <div className="region-food-list">
+                        {festivalData.regionalFoods.central.map((item, idx) => (
+                          <div className="food-card small" key={idx}>
+                            <div className="food-img-wrap">
+                              <img src={item.image} alt={item.title} />
+                            </div>
+                            <div className="food-content">
+                              <h4>{item.title}</h4>
+                              <p>{item.desc}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="region-col">
+                      <span className="region-badge highlight-orange">Southern</span>
+                      <div className="region-food-list">
+                        {festivalData.regionalFoods.south.map((item, idx) => (
+                          <div className="food-card small" key={idx}>
+                            <div className="food-img-wrap">
+                              <img src={item.image} alt={item.title} />
+                            </div>
+                            <div className="food-content">
+                              <h4>{item.title}</h4>
+                              <p>{item.desc}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
 
               {festivalData.regionalFoods && (
-                <div className="food-expand-wrapper">
+                <div className="food-pagination">
                   <button 
-                    className="view-more-btn"
-                    onClick={() => setShowMoreFood(!showMoreFood)}
+                    className="pagination-btn" 
+                    onClick={() => setFoodPage(1)} 
+                    disabled={foodPage === 1}
                   >
-                    {showMoreFood ? 'Hide Regional Guide' : 'View More Regional Dishes'}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                   </button>
-
-                  <div className={`regional-foods-container ${showMoreFood ? 'expanded' : ''}`}>
-                    <div className="regional-foods-grid">
-                      <div className="region-col">
-                        <span className="region-badge highlight-red">Northern</span>
-                        <div className="region-food-list">
-                          {festivalData.regionalFoods.north.map((item, idx) => (
-                            <div className="food-card small" key={idx}>
-                              <div className="food-img-wrap">
-                                <img src={item.image} alt={item.title} />
-                              </div>
-                              <div className="food-content">
-                                <h4>{item.title}</h4>
-                                <p>{item.desc}</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="region-col">
-                        <span className="region-badge highlight-yellow">Central</span>
-                        <div className="region-food-list">
-                          {festivalData.regionalFoods.central.map((item, idx) => (
-                            <div className="food-card small" key={idx}>
-                              <div className="food-img-wrap">
-                                <img src={item.image} alt={item.title} />
-                              </div>
-                              <div className="food-content">
-                                <h4>{item.title}</h4>
-                                <p>{item.desc}</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="region-col">
-                        <span className="region-badge highlight-orange">Southern</span>
-                        <div className="region-food-list">
-                          {festivalData.regionalFoods.south.map((item, idx) => (
-                            <div className="food-card small" key={idx}>
-                              <div className="food-img-wrap">
-                                <img src={item.image} alt={item.title} />
-                              </div>
-                              <div className="food-content">
-                                <h4>{item.title}</h4>
-                                <p>{item.desc}</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <button 
+                    className={`pagination-btn ${foodPage === 1 ? 'active' : ''}`}
+                    onClick={() => setFoodPage(1)}
+                  >
+                    1
+                  </button>
+                  <button 
+                    className={`pagination-btn ${foodPage === 2 ? 'active' : ''}`}
+                    onClick={() => setFoodPage(2)}
+                  >
+                    2
+                  </button>
+                  <button 
+                    className="pagination-btn" 
+                    onClick={() => setFoodPage(2)} 
+                    disabled={foodPage === 2}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
                 </div>
               )}
             </section>
