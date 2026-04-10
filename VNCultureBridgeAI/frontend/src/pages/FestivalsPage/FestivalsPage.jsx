@@ -237,36 +237,97 @@ export default function FestivalsPage() {
 
       <main className="festivals-main">
         {/* festival hero */}
-        <section
-          className="festivals-hero"
-          style={{ backgroundImage: `url(${bannerImg})` }}
-        >
+        <section className="festivals-hero">
+          {/* Background image */}
+          <div className="festivals-hero__bg" style={{ backgroundImage: `url(${bannerImg})` }}></div>
+          {/* Overlay */}
           <div className="festivals-hero__overlay"></div>
-          <div className="festivals-hero__content">
-            <h1 className="festivals-hero__title">
-              Vietnamese
-              <br />
-              Festivals
-            </h1>
-            <p className="festivals-hero__subtitle">
-              Experience the vibrant traditions of Vietnam through
-              <br />
-              celebrations that have endured for centuries
-            </p>
-            <div className="festivals-hero__actions">
-              <a
-                href="#explore"
-                className="festivals-btn festivals-btn--primary"
-              >
-                Explore Festivals
-              </a>
-              <Link
-                to="/ai-guide"
-                className="festivals-btn festivals-btn--secondary"
-              >
-                Ask AI Guide
-              </Link>
+
+          {/* Ornamental corners */}
+          <div className="festivals-hero__ornament festivals-hero__ornament--tl"></div>
+          <div className="festivals-hero__ornament festivals-hero__ornament--br"></div>
+
+          {/* Split layout */}
+          <div className="festivals-hero__inner">
+
+            {/* LEFT: Text */}
+            <div className="festivals-hero__left">
+              {/* Badge */}
+              <div className="festivals-hero__badge">
+                <span className="festivals-hero__badge-dot"></span>
+                {lang === 'vi' ? 'Lễ hội · Văn hóa · Truyền thống' : 'Festivals · Culture · Traditions'}
+              </div>
+
+              {/* Heading */}
+              <h1 className="festivals-hero__title">
+                {lang === 'vi' ? (
+                  <>
+                    <span className="festivals-hero__title-line">Tinh Hoa</span>
+                    <span className="festivals-hero__title-accent">Lễ Hội</span>
+                    <span className="festivals-hero__title-line">Việt Nam</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="festivals-hero__title-line">Vietnamese</span>
+                    <span className="festivals-hero__title-accent">Festivals</span>
+                    <span className="festivals-hero__title-line">&amp; Traditions</span>
+                  </>
+                )}
+              </h1>
+
+              {/* Ornamental divider */}
+              <div className="festivals-hero__divider-row">
+                <span className="festivals-hero__divider-line"></span>
+                <span className="festivals-hero__divider-diamond">◆</span>
+                <span className="festivals-hero__divider-line"></span>
+              </div>
+
+              {/* Subtitle */}
+              <p className="festivals-hero__subtitle">
+                {lang === 'vi'
+                  ? 'Hàng nghìn năm truyền thống hội tụ trong từng lễ hội — nơi sắc màu, âm thanh và tâm hồn Việt hòa quyện thành một.'
+                  : 'Thousands of years of tradition converge in every festival — where colors, sounds, and the Vietnamese spirit unite as one.'
+                }
+              </p>
+
+              {/* Stats */}
+              <div className="festivals-hero__stats">
+                <div className="festivals-hero__stat">
+                  <strong>8.000+</strong>
+                  <span>{lang === 'vi' ? 'Lễ hội hàng năm' : 'Annual festivals'}</span>
+                </div>
+                <div className="festivals-hero__stat-sep">|</div>
+                <div className="festivals-hero__stat">
+                  <strong>54</strong>
+                  <span>{lang === 'vi' ? 'Dân tộc anh em' : 'Ethnic groups'}</span>
+                </div>
+                <div className="festivals-hero__stat-sep">|</div>
+                <div className="festivals-hero__stat">
+                  <strong>63</strong>
+                  <span>{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</span>
+                </div>
+              </div>
             </div>
+
+            {/* RIGHT: Image */}
+            <div className="festivals-hero__right">
+              <div className="festivals-hero__img-frame">
+                <img src={bannerImg} alt="Vietnamese Festival" className="festivals-hero__img-main" />
+                {/* Floating badge */}
+                <div className="festivals-hero__img-badge">
+                  <span className="festivals-hero__img-badge-icon">🎏</span>
+                  <span>{lang === 'vi' ? 'Lễ hội truyền thống Việt Nam' : 'Vietnamese Traditional Festivals'}</span>
+                </div>
+                {/* Decorative ring */}
+                <div className="festivals-hero__img-ring"></div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="festivals-hero__scroll">
+            <div className="festivals-mouse-icon"></div>
           </div>
         </section>
 

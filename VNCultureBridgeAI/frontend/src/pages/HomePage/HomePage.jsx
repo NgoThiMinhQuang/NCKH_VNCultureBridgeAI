@@ -106,11 +106,11 @@ export default function HomePage() {
   const heroTitleLines = getHeroTitleLines(safeHomepage.hero.title)
   const festivalShowcaseCards = (copy.festivalShowcaseCards || []).map((item, idx) => {
     const apiItem = (safeHomepage.festivals || [])[idx] || {}
-    return { ...apiItem, ...item }
+    return { ...item, ...apiItem }
   })
   const cuisineShowcaseCards = (copy.cuisineShowcaseCards || []).map((item, idx) => {
     const apiItem = (safeHomepage.cuisine || [])[idx] || {}
-    return { ...apiItem, ...item }
+    return { ...item, ...apiItem }
   })
   const artsShowcaseCards = safeHomepage.arts || []
   const featuredArt = artsShowcaseCards[0]

@@ -51,6 +51,31 @@ async function getRegion(req, res, next) {
   }
 }
 
+async function listProvinces(req, res, next) {
+  try {
+    const lang = normalizeLang(req.query.lang)
+    const data = await contentService.listProvinces(req.query, lang)
+    res.json({ ok: true, data })
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function getProvince(req, res, next) {
+  try {
+    const lang = normalizeLang(req.query.lang)
+    const data = await contentService.getProvince(req.params.code, lang)
+
+    if (!data) {
+      return res.status(404).json({ ok: false, message: 'Province not found' })
+    }
+
+    return res.json({ ok: true, data })
+  } catch (error) {
+    next(error)
+  }
+}
+
 async function listEthnicities(req, res, next) {
   try {
     const lang = normalizeLang(req.query.lang)
@@ -94,6 +119,8 @@ module.exports = {
   getArticle,
   listRegions,
   getRegion,
+  listProvinces,
+  getProvince,
   listEthnicities,
   getEthnicity,
   askAi,

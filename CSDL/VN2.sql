@@ -723,7 +723,176 @@ SELECT
 WHERE NOT EXISTS (SELECT 1 FROM dbo.MauPrompt WHERE MaPrompt = 'PROMPT_SOFT_REFUSAL_EN');
 
 /* =========================================================
-   11. NHẬT KÝ CÂU HỎI AI
+   11. TỈNH THÀNH / THÀNH PHỐ
+   ========================================================= */
+
+INSERT INTO dbo.TinhThanh (
+    MaTinh, TenVI, TenEN, LoaiTinhVI, LoaiTinhEN, VungID,
+    TieuVungVI, TieuVungEN, DienTichKm2, DanSo,
+    AreaDisplayVI, AreaDisplayEN, PopulationDisplayVI, PopulationDisplayEN,
+    TagsJsonVI, TagsJsonEN, TagsTextVI, TagsTextEN,
+    AnhDaiDienUrl, AnhDaiDienAltVI, AnhDaiDienAltEN,
+    TieuDePhuVI, TieuDePhuEN, TongQuanVI, TongQuanEN,
+    ThoiTietMacDinhVI, ThoiTietMacDinhEN, ThoiDiemDepVI, ThoiDiemDepEN,
+    ThongTinThanhLapVI, ThongTinThanhLapEN, ThongTinHanhChinhVI, ThongTinHanhChinhEN,
+    MuiGio, MaVungDienThoai,
+    HeroImageUrl, HeroImageAltVI, HeroImageAltEN,
+    SidebarImageUrl, SidebarImageAltVI, SidebarImageAltEN,
+    DiaDiemJsonVI, DiaDiemJsonEN,
+    VanHoaJsonVI, VanHoaJsonEN,
+    AmThucJsonVI, AmThucJsonEN,
+    LichTrinhJsonVI, LichTrinhJsonEN,
+    HoatDong, ThuTuHienThi
+)
+SELECT
+    'ha-noi', N'Hà Nội', N'Hanoi', N'Thành phố trực thuộc TW', N'Municipality', vv.VungID,
+    N'Đồng bằng sông Hồng', N'Red River Delta', 3358.60, 8400000,
+    N'3,358 km²', N'3,358 km²', N'8.4 triệu người', N'8.4 million people',
+    N'["Thủ đô","Văn hiến","Hồ Gươm"]', N'["Capital","Heritage","Hoan Kiem Lake"]',
+    N'Thủ đô, Văn hiến, Hồ Gươm', N'Capital, Heritage, Hoan Kiem Lake',
+    N'https://images.unsplash.com/photo-1543783230-dc081f2163b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=800',
+    N'Phố cổ Hà Nội nhìn từ trên cao',
+    N'Aerial view of Hanoi Old Quarter',
+    N'Thủ đô nghìn năm văn hiến',
+    N'The thousand-year-old capital of culture',
+    N'Hà Nội là trung tâm chính trị, văn hóa và giáo dục quan trọng bậc nhất Việt Nam. Thành phố lưu giữ vẻ đẹp cổ kính của phố cổ, hồ nước, di tích lịch sử và nhịp sống thanh lịch rất riêng.',
+    N'Hanoi is Vietnam''s political, cultural, and educational center. The city preserves the charm of its old quarter, lakes, historical sites, and a distinctly elegant rhythm of life.',
+    N'24°C - Có mây', N'24°C - Cloudy',
+    N'Tháng 8 - Tháng 11', N'August - November',
+    N'1010 (Lý Thái Tổ)', N'1010 (Ly Thai To)',
+    N'12 quận, 17 huyện, 1 thị xã', N'12 urban districts, 17 rural districts, 1 town',
+    N'UTC+7', N'024',
+    N'https://images.unsplash.com/photo-1509030450996-dd1a26dda07a?auto=format&fit=crop&w=1400&q=80',
+    N'Hoàng hôn bên hồ Gươm tại Hà Nội',
+    N'Sunset by Hoan Kiem Lake in Hanoi',
+    N'https://images.unsplash.com/photo-1543783230-dc081f2163b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=800',
+    N'Góc nhìn hành trình tại Hà Nội',
+    N'Hanoi travel moment',
+    N'[{"title":"Hồ Hoàn Kiếm","desc":"Trái tim của thủ đô với Tháp Rùa, đền Ngọc Sơn và không gian đi bộ cuối tuần."},{"title":"Văn Miếu - Quốc Tử Giám","desc":"Biểu tượng của truyền thống hiếu học và là trường đại học đầu tiên của Việt Nam."},{"title":"Phố Cổ Hà Nội","desc":"Không gian lưu giữ nhịp sống, nghề thủ công và ẩm thực phố lâu đời."}]',
+    N'[{"title":"Hoan Kiem Lake","desc":"The symbolic heart of Hanoi with Turtle Tower, Ngoc Son Temple, and a lively walking area."},{"title":"Temple of Literature","desc":"A symbol of learning and the first university of Vietnam."},{"title":"Hanoi Old Quarter","desc":"A historic maze of streets preserving crafts, food, and urban memory."}]',
+    N'["🎭 Múa rối nước","📜 Thư pháp","🍶 Gốm Bát Tràng","🎻 Ca trù","👗 Áo dài"]',
+    N'["🎭 Water puppetry","📜 Calligraphy","🍶 Bat Trang ceramics","🎻 Ca tru singing","👗 Ao Dai"]',
+    N'[{"title":"Phở bò Hà Nội","imageUrl":"https://images.unsplash.com/photo-1582878826629-29b7ad1cb438?q=80&w=1964&auto=format&fit=crop"},{"title":"Bún chả","imageUrl":"https://images.unsplash.com/photo-1555126634-ba092c2ddf7f?q=80&w=2070&auto=format&fit=crop"},{"title":"Chả cá Lã Vọng","imageUrl":"https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=2070&auto=format&fit=crop"}]',
+    N'[{"title":"Hanoi Beef Pho","imageUrl":"https://images.unsplash.com/photo-1582878826629-29b7ad1cb438?q=80&w=1964&auto=format&fit=crop"},{"title":"Bun Cha","imageUrl":"https://images.unsplash.com/photo-1555126634-ba092c2ddf7f?q=80&w=2070&auto=format&fit=crop"},{"title":"Cha Ca La Vong","imageUrl":"https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=2070&auto=format&fit=crop"}]',
+    N'[{"time":"07:30","task":"Bắt đầu ngày mới với một bát phở Hà Nội nóng hổi tại khu Phố Cổ."},{"time":"09:00","task":"Tham quan Quảng trường Ba Đình, Lăng Chủ tịch Hồ Chí Minh và Chùa Một Cột."},{"time":"14:00","task":"Khám phá Văn Miếu - Quốc Tử Giám và thưởng thức cà phê trứng."},{"time":"17:00","task":"Dạo hồ Tây, ngắm hoàng hôn và thưởng thức ẩm thực đường phố."}]',
+    N'[{"time":"07:30","task":"Start your morning with a bowl of Hanoi pho in the Old Quarter."},{"time":"09:00","task":"Visit Ba Dinh Square, Ho Chi Minh Mausoleum, and One Pillar Pagoda."},{"time":"14:00","task":"Explore the Temple of Literature and enjoy Vietnamese egg coffee."},{"time":"17:00","task":"Walk around West Lake, catch the sunset, and sample local street food."}]',
+    1, 1
+FROM dbo.VungVanHoa vv
+WHERE vv.MaVung = 'BAC_BO'
+  AND NOT EXISTS (SELECT 1 FROM dbo.TinhThanh WHERE MaTinh = 'ha-noi');
+
+INSERT INTO dbo.TinhThanh (
+    MaTinh, TenVI, TenEN, LoaiTinhVI, LoaiTinhEN, VungID,
+    TieuVungVI, TieuVungEN, DienTichKm2, DanSo,
+    AreaDisplayVI, AreaDisplayEN, PopulationDisplayVI, PopulationDisplayEN,
+    TagsJsonVI, TagsJsonEN, TagsTextVI, TagsTextEN,
+    AnhDaiDienUrl, AnhDaiDienAltVI, AnhDaiDienAltEN,
+    TieuDePhuVI, TieuDePhuEN, TongQuanVI, TongQuanEN,
+    ThoiTietMacDinhVI, ThoiTietMacDinhEN, ThoiDiemDepVI, ThoiDiemDepEN,
+    ThongTinThanhLapVI, ThongTinThanhLapEN, ThongTinHanhChinhVI, ThongTinHanhChinhEN,
+    MuiGio, MaVungDienThoai,
+    HeroImageUrl, HeroImageAltVI, HeroImageAltEN,
+    SidebarImageUrl, SidebarImageAltVI, SidebarImageAltEN,
+    DiaDiemJsonVI, DiaDiemJsonEN,
+    VanHoaJsonVI, VanHoaJsonEN,
+    AmThucJsonVI, AmThucJsonEN,
+    LichTrinhJsonVI, LichTrinhJsonEN,
+    HoatDong, ThuTuHienThi
+)
+SELECT
+    'hue', N'Huế', N'Hue', N'Thành phố trực thuộc tỉnh', N'Provincial city', vv.VungID,
+    N'Bắc Trung Bộ', N'North Central Coast', 265.99, 455000,
+    N'266 km²', N'266 km²', N'455 nghìn người', N'455 thousand people',
+    N'["Cố đô","Sông Hương","Nhã nhạc"]', N'["Ancient capital","Perfume River","Royal court music"]',
+    N'Cố đô, Sông Hương, Nhã nhạc', N'Ancient capital, Perfume River, Royal court music',
+    N'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80',
+    N'Đại Nội Huế nhìn từ bên ngoài',
+    N'Exterior view of Hue Imperial Citadel',
+    N'Cố đô mộng mơ bên dòng Hương Giang',
+    N'The poetic ancient capital by the Perfume River',
+    N'Huế nổi bật với chiều sâu lịch sử, hệ thống cung điện, lăng tẩm và nhã nhạc cung đình. Thành phố mang nhịp sống chậm, trầm lắng và rất giàu chiều sâu văn hóa.',
+    N'Hue stands out for its historical depth, imperial architecture, royal tombs, and court music heritage. The city has a calm rhythm and a deeply cultural atmosphere.',
+    N'26°C - Nắng nhẹ', N'26°C - Light sun',
+    N'Tháng 1 - Tháng 4', N'January - April',
+    N'1802 (Kinh đô triều Nguyễn)', N'1802 (Nguyen dynasty capital)',
+    N'2 quận, 4 huyện, 2 thị xã', N'2 districts, 4 rural districts, 2 towns',
+    N'UTC+7', N'234',
+    N'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1400&q=80',
+    N'Không gian di sản cố đô Huế',
+    N'Hue heritage landscape',
+    N'https://images.unsplash.com/photo-1565967511849-76a60a516170?auto=format&fit=crop&w=800&q=80',
+    N'Sông Hương và cầu Trường Tiền',
+    N'Perfume River and Truong Tien Bridge',
+    N'[{"title":"Đại Nội Huế","desc":"Quần thể cung điện và tường thành mang dấu ấn triều Nguyễn."},{"title":"Lăng Khải Định","desc":"Công trình giao thoa kiến trúc Á - Âu độc đáo bậc nhất Huế."},{"title":"Chùa Thiên Mụ","desc":"Biểu tượng tâm linh bên dòng sông Hương thơ mộng."}]',
+    N'[{"title":"Hue Imperial Citadel","desc":"The palace complex and walls reflecting the Nguyen dynasty legacy."},{"title":"Khai Dinh Tomb","desc":"A unique fusion of Asian and European architectural styles."},{"title":"Thien Mu Pagoda","desc":"A spiritual landmark by the poetic Perfume River."}]',
+    N'["🎼 Nhã nhạc cung đình","🏯 Kiến trúc hoàng cung","🕯 Lễ nghi cung đình","👘 Áo dài Huế"]',
+    N'["🎼 Royal court music","🏯 Imperial architecture","🕯 Court rituals","👘 Hue Ao Dai"]',
+    N'[{"title":"Bún bò Huế","imageUrl":"https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1000&q=80"},{"title":"Cơm hến","imageUrl":"https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=2071&auto=format&fit=crop"},{"title":"Chè Huế","imageUrl":"https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1000&q=80"}]',
+    N'[{"title":"Hue beef noodle soup","imageUrl":"https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1000&q=80"},{"title":"Com Hen","imageUrl":"https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=2071&auto=format&fit=crop"},{"title":"Hue sweet soups","imageUrl":"https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1000&q=80"}]',
+    N'[{"time":"08:00","task":"Tham quan Đại Nội và tìm hiểu lịch sử triều Nguyễn."},{"time":"11:30","task":"Thưởng thức bún bò Huế và các món ăn cung đình."},{"time":"15:00","task":"Ghé lăng Khải Định hoặc lăng Minh Mạng."},{"time":"18:00","task":"Đi thuyền trên sông Hương và nghe ca Huế."}]',
+    N'[{"time":"08:00","task":"Visit the Imperial Citadel and explore Nguyen dynasty history."},{"time":"11:30","task":"Enjoy bun bo Hue and refined royal cuisine."},{"time":"15:00","task":"Stop by Khai Dinh or Minh Mang Tomb."},{"time":"18:00","task":"Take a Perfume River boat ride and enjoy Hue traditional music."}]',
+    1, 2
+FROM dbo.VungVanHoa vv
+WHERE vv.MaVung = 'TRUNG_BO'
+  AND NOT EXISTS (SELECT 1 FROM dbo.TinhThanh WHERE MaTinh = 'hue');
+
+INSERT INTO dbo.TinhThanh (
+    MaTinh, TenVI, TenEN, LoaiTinhVI, LoaiTinhEN, VungID,
+    TieuVungVI, TieuVungEN, DienTichKm2, DanSo,
+    AreaDisplayVI, AreaDisplayEN, PopulationDisplayVI, PopulationDisplayEN,
+    TagsJsonVI, TagsJsonEN, TagsTextVI, TagsTextEN,
+    AnhDaiDienUrl, AnhDaiDienAltVI, AnhDaiDienAltEN,
+    TieuDePhuVI, TieuDePhuEN, TongQuanVI, TongQuanEN,
+    ThoiTietMacDinhVI, ThoiTietMacDinhEN, ThoiDiemDepVI, ThoiDiemDepEN,
+    ThongTinThanhLapVI, ThongTinThanhLapEN, ThongTinHanhChinhVI, ThongTinHanhChinhEN,
+    MuiGio, MaVungDienThoai,
+    HeroImageUrl, HeroImageAltVI, HeroImageAltEN,
+    SidebarImageUrl, SidebarImageAltVI, SidebarImageAltEN,
+    DiaDiemJsonVI, DiaDiemJsonEN,
+    VanHoaJsonVI, VanHoaJsonEN,
+    AmThucJsonVI, AmThucJsonEN,
+    LichTrinhJsonVI, LichTrinhJsonEN,
+    HoatDong, ThuTuHienThi
+)
+SELECT
+    'can-tho', N'Cần Thơ', N'Can Tho', N'Thành phố trực thuộc TW', N'Municipality', vv.VungID,
+    N'Đồng bằng sông Cửu Long', N'Mekong Delta', 1438.96, 1240000,
+    N'1,439 km²', N'1,439 km²', N'1.24 triệu người', N'1.24 million people',
+    N'["Chợ nổi","Sông nước","Ẩm thực"]', N'["Floating market","River life","Cuisine"]',
+    N'Chợ nổi, Sông nước, Ẩm thực', N'Floating market, River life, Cuisine',
+    N'https://images.unsplash.com/photo-1604577844302-37f54c62bd16?auto=format&fit=crop&w=1200&q=80',
+    N'Chợ nổi miền Tây tại Cần Thơ',
+    N'Floating market in Can Tho',
+    N'Thủ phủ miền Tây sông nước',
+    N'The lively heart of the Mekong Delta',
+    N'Cần Thơ là trung tâm quan trọng của đồng bằng sông Cửu Long với hệ thống sông ngòi, chợ nổi và đời sống miệt vườn đặc trưng. Thành phố mang vẻ đẹp gần gũi, chan hòa và trù phú.',
+    N'Can Tho is a key city of the Mekong Delta, known for its rivers, floating markets, and orchard life. It offers a warm, fertile, and welcoming atmosphere.',
+    N'29°C - Nắng đẹp', N'29°C - Sunny',
+    N'Tháng 12 - Tháng 4', N'December - April',
+    N'2004 (trực thuộc TW)', N'2004 (municipality status)',
+    N'5 quận, 4 huyện', N'5 urban districts, 4 rural districts',
+    N'UTC+7', N'292',
+    N'https://images.unsplash.com/photo-1604577844302-37f54c62bd16?auto=format&fit=crop&w=1400&q=80',
+    N'Khung cảnh sông nước Cần Thơ',
+    N'Can Tho river landscape',
+    N'https://images.unsplash.com/photo-1582230842845-6f6eb3906385?auto=format&fit=crop&w=800&q=80',
+    N'Trọng tâm đời sống sông nước miền Tây',
+    N'Mekong riverside city life',
+    N'[{"title":"Chợ nổi Cái Răng","desc":"Biểu tượng của văn hóa mua bán trên sông ở miền Tây Nam Bộ."},{"title":"Bến Ninh Kiều","desc":"Không gian ven sông thơ mộng, sôi động về đêm."},{"title":"Vườn trái cây Phong Điền","desc":"Trải nghiệm miệt vườn xanh mát và trái cây theo mùa."}]',
+    N'[{"title":"Cai Rang Floating Market","desc":"A signature example of river-based trading culture in the Mekong Delta."},{"title":"Ninh Kieu Wharf","desc":"A lively and scenic riverside promenade, especially charming at night."},{"title":"Phong Dien Orchards","desc":"A green countryside escape with seasonal tropical fruits."}]',
+    N'["🛶 Chợ nổi","🎶 Đờn ca tài tử","🌾 Miệt vườn","🍃 Đời sống ven sông"]',
+    N'["🛶 Floating markets","🎶 Southern folk music","🌾 Orchard life","🍃 Riverside living"]',
+    N'[{"title":"Lẩu mắm","imageUrl":"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80"},{"title":"Bánh xèo miền Tây","imageUrl":"https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=80"},{"title":"Trái cây miệt vườn","imageUrl":"https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1000&q=80"}]',
+    N'[{"title":"Fermented fish hotpot","imageUrl":"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80"},{"title":"Mekong-style banh xeo","imageUrl":"https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=80"},{"title":"Orchard fruits","imageUrl":"https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1000&q=80"}]',
+    N'[{"time":"06:00","task":"Đi thuyền ra chợ nổi Cái Răng để cảm nhận nhịp sống sông nước buổi sớm."},{"time":"09:30","task":"Tham quan vườn trái cây và thưởng thức đặc sản tại Phong Điền."},{"time":"15:00","task":"Dạo bến Ninh Kiều và ghé chợ đêm."},{"time":"18:30","task":"Thưởng thức đờn ca tài tử và ẩm thực miền Tây."}]',
+    N'[{"time":"06:00","task":"Take a boat to Cai Rang Floating Market and experience the morning river trade."},{"time":"09:30","task":"Visit orchards in Phong Dien and taste local fruits."},{"time":"15:00","task":"Walk around Ninh Kieu Wharf and explore the night market."},{"time":"18:30","task":"Enjoy southern folk music and Mekong cuisine."}]',
+    1, 3
+FROM dbo.VungVanHoa vv
+WHERE vv.MaVung = 'NAM_BO'
+  AND NOT EXISTS (SELECT 1 FROM dbo.TinhThanh WHERE MaTinh = 'can-tho');
+
+/* =========================================================
+   12. NHẬT KÝ CÂU HỎI AI
    ========================================================= */
 INSERT INTO dbo.NhatKyCauHoiAI (
     BaiVietNguCanhID, NgonNguCauHoi, NoiDungCauHoi, LoaiYDinh,

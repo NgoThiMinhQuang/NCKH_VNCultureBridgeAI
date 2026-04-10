@@ -2,8 +2,9 @@ import { useState, useMemo, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import './ProvincesPage.css'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
+import { getProvinces } from '../../services/province.service'
 
-const PROVINCES_DATA = [
+const FALLBACK_PROVINCES_DATA = [
   // Miền Bắc
   { id: 1, name: 'Hà Nội', region: 'Miền Bắc', subRegion: 'Đồng bằng sông Hồng', type: 'Thành phố trực thuộc TW', tags: ['Thủ đô', 'Văn hiến', 'Hồ Gươm'], area: '3.359 km²', pop: '8.33 Triệu' },
   { id: 2, name: 'Hải Phòng', region: 'Miền Bắc', subRegion: 'Đồng bằng sông Hồng', type: 'Thành phố trực thuộc TW', tags: ['Cảng biển', 'Hoa phượng đỏ'], area: '1.562 km²', pop: '2.07 Triệu' },
@@ -80,15 +81,41 @@ export default function ProvincesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const [viewMode, setViewMode] = useState('grid');
+  const [state, setState] = useState({ status: 'loading', data: [], error: '' });
 
   useEffect(() => {
     if (location.state?.search) {
       setSearchTerm(location.state.search);
     }
   }, [location.state]);
-  
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function load() {
+      try {
+        setState({ status: 'loading', data: [], error: '' });
+        const provinces = await getProvinces(lang);
+        if (!ignore) {
+          setState({ status: 'success', data: provinces, error: '' });
+        }
+      } catch (error) {
+        if (!ignore) {
+          setState({ status: 'error', data: FALLBACK_PROVINCES_DATA, error: error.message });
+        }
+      }
+    }
+
+    load();
+    return () => {
+      ignore = true;
+    };
+  }, [lang]);
+
+  const provinces = state.data.length ? state.data : FALLBACK_PROVINCES_DATA;
+
   const filteredData = useMemo(() => {
-    let result = PROVINCES_DATA.filter(p => 
+    let result = provinces.filter(p =>
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
       p.region.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -101,7 +128,7 @@ export default function ProvincesPage() {
     }
     
     return result;
-  }, [searchTerm, sortBy]);
+  }, [provinces, searchTerm, sortBy]);
 
   const groupedData = useMemo(() => {
     const groups = {
@@ -186,12 +213,15 @@ export default function ProvincesPage() {
                 <svg className="provinces-search__icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder={lang === 'vi' ? 'Tìm kiếm tỉnh thành, địa danh...' : 'Search provinces, landmarks...'}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                {state.status === 'error' && (
+                  <span className="provinces-search__status">{lang === 'vi' ? 'Đang dùng dữ liệu dự phòng.' : 'Using fallback data.'}</span>
+                )}
               </div>
               
               <div className="provinces-sort">
@@ -292,7 +322,7 @@ export default function ProvincesPage() {
                             {p.tags.map(t => <span key={t} className="province-card-v2__tag">#{t}</span>)}
                           </div>
                         )}
-                        <Link to={`/regions/provinces/${p.id}`} className="province-card-v2__btn">
+                        <Link to={`/provinces/${p.code}`} className="province-card-v2__btn">
                           {lang === 'vi' ? 'Xem chi tiết' : 'View Detail'}
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />

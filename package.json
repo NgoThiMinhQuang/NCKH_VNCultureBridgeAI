@@ -1,0 +1,9 @@
+{
+  "name": "vnculturebridgeai-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "node -e \"const { spawn } = require('child_process'); const procs = [ ['npm.cmd', ['run', 'dev'], { cwd: 'VNCultureBridgeAI/backend' }], ['npm.cmd', ['run', 'dev'], { cwd: 'VNCultureBridgeAI/frontend' }] ]; procs.forEach(([cmd, args, opts]) => { const child = spawn(cmd, args, { ...opts, stdio: 'inherit', shell: true }); child.on('exit', code => { if (code && code !== 0) process.exitCode = code; }); });\"",
+    "dev:backend": "npm --prefix VNCultureBridgeAI/backend run dev",
+    "dev:frontend": "npm --prefix VNCultureBridgeAI/frontend run dev"
+  }
+}

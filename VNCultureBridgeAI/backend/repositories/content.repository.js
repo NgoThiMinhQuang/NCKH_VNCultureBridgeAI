@@ -155,6 +155,113 @@ async function getRegionByCode(code) {
   return rows[0] || null
 }
 
+async function getProvinces({ region, q, limit = 200 } = {}) {
+  const filters = [`tt.HoatDong = 1`]
+
+  if (region) {
+    filters.push(`vv.MaVung = @region`)
+  }
+
+  if (q) {
+    filters.push(`(
+      tt.TenVI LIKE '%' + @q + '%' OR
+      tt.TenEN LIKE '%' + @q + '%' OR
+      vv.TenVI LIKE '%' + @q + '%' OR
+      vv.TenEN LIKE '%' + @q + '%' OR
+      tt.TagsTextVI LIKE '%' + @q + '%' OR
+      tt.TagsTextEN LIKE '%' + @q + '%'
+    )`)
+  }
+
+  return query(`
+    SELECT TOP (${Number(limit) || 200})
+      tt.TinhThanhID,
+      tt.MaTinh,
+      tt.TenVI,
+      tt.TenEN,
+      tt.LoaiTinhVI,
+      tt.LoaiTinhEN,
+      tt.TieuVungVI,
+      tt.TieuVungEN,
+      tt.AreaDisplayVI,
+      tt.AreaDisplayEN,
+      tt.PopulationDisplayVI,
+      tt.PopulationDisplayEN,
+      tt.TagsJsonVI,
+      tt.TagsJsonEN,
+      tt.AnhDaiDienUrl,
+      tt.AnhDaiDienAltVI,
+      tt.AnhDaiDienAltEN,
+      vv.MaVung,
+      vv.TenVI AS VungTenVI,
+      vv.TenEN AS VungTenEN,
+      tt.ThuTuHienThi
+    FROM dbo.TinhThanh tt
+    JOIN dbo.VungVanHoa vv ON vv.VungID = tt.VungID
+    WHERE ${filters.join('\n      AND ')}
+    ORDER BY tt.ThuTuHienThi ASC, tt.TinhThanhID ASC
+  `, { region, q })
+}
+
+async function getProvinceByCode(code) {
+  const rows = await query(`
+    SELECT TOP 1
+      tt.TinhThanhID,
+      tt.MaTinh,
+      tt.TenVI,
+      tt.TenEN,
+      tt.LoaiTinhVI,
+      tt.LoaiTinhEN,
+      tt.TieuVungVI,
+      tt.TieuVungEN,
+      tt.AreaDisplayVI,
+      tt.AreaDisplayEN,
+      tt.PopulationDisplayVI,
+      tt.PopulationDisplayEN,
+      tt.TagsJsonVI,
+      tt.TagsJsonEN,
+      tt.AnhDaiDienUrl,
+      tt.AnhDaiDienAltVI,
+      tt.AnhDaiDienAltEN,
+      tt.TieuDePhuVI,
+      tt.TieuDePhuEN,
+      tt.TongQuanVI,
+      tt.TongQuanEN,
+      tt.ThoiTietMacDinhVI,
+      tt.ThoiTietMacDinhEN,
+      tt.ThoiDiemDepVI,
+      tt.ThoiDiemDepEN,
+      tt.ThongTinThanhLapVI,
+      tt.ThongTinThanhLapEN,
+      tt.ThongTinHanhChinhVI,
+      tt.ThongTinHanhChinhEN,
+      tt.MuiGio,
+      tt.MaVungDienThoai,
+      tt.HeroImageUrl,
+      tt.HeroImageAltVI,
+      tt.HeroImageAltEN,
+      tt.SidebarImageUrl,
+      tt.SidebarImageAltVI,
+      tt.SidebarImageAltEN,
+      tt.DiaDiemJsonVI,
+      tt.DiaDiemJsonEN,
+      tt.VanHoaJsonVI,
+      tt.VanHoaJsonEN,
+      tt.AmThucJsonVI,
+      tt.AmThucJsonEN,
+      tt.LichTrinhJsonVI,
+      tt.LichTrinhJsonEN,
+      vv.MaVung,
+      vv.TenVI AS VungTenVI,
+      vv.TenEN AS VungTenEN
+    FROM dbo.TinhThanh tt
+    JOIN dbo.VungVanHoa vv ON vv.VungID = tt.VungID
+    WHERE tt.HoatDong = 1 AND tt.MaTinh = @code
+  `, { code })
+
+  return rows[0] || null
+}
+
 async function getEthnicities() {
   return query(`
     SELECT DanTocID, MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN
@@ -180,6 +287,8 @@ module.exports = {
   getArticleByCode,
   getRegions,
   getRegionByCode,
+  getProvinces,
+  getProvinceByCode,
   getEthnicities,
   getEthnicityByCode,
 }

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './RegionsPage.css'
 import { getRegions } from '../../services/region.service'
+import { getProvinces } from '../../services/province.service'
 import { ui } from '../../i18n/messages'
 
 import VietnamMap from '../../components/features/regions/VietnamMap'
@@ -301,6 +302,7 @@ export default function RegionsPage() {
   const [activeKey, setActiveKey] = useState('north')
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState('all')
+  const [provinceState, setProvinceState] = useState({ status: 'loading', data: [], error: '' })
   const copy = useMemo(() => ui[lang], [lang])
 
   function handleSelectRegion(regionKey) {
@@ -326,7 +328,22 @@ export default function RegionsPage() {
       }
     }
 
+    async function loadProvinces() {
+      try {
+        setProvinceState({ status: 'loading', data: [], error: '' })
+        const provinces = await getProvinces(lang)
+        if (!ignore) {
+          setProvinceState({ status: 'success', data: provinces.slice(0, 6), error: '' })
+        }
+      } catch (error) {
+        if (!ignore) {
+          setProvinceState({ status: 'error', data: provincesData, error: error.message })
+        }
+      }
+    }
+
     loadRegions()
+    loadProvinces()
     return () => { ignore = true }
   }, [lang])
 
@@ -596,35 +613,37 @@ export default function RegionsPage() {
             </div>
 
             <div className="provinces-search__grid">
-              {provincesData.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase())).map(prov => (
-                <div key={prov.id} className="province-item-card">
-                  <div className="province-item__image">
-                    {prov.image ? (
-                      <img src={prov.image} alt={prov.name} />
-                    ) : (
-                      <div className="province-item__placeholder">Ảnh {prov.name}</div>
-                    )}
-                    <span className="province-item__badge">{prov.region}</span>
-                  </div>
-                  <div className="province-item__content">
-                    <div className="province-item__title-row">
-                      <h3>{prov.name}</h3>
-                      <span className="location-icon">📍</span>
+              {(provinceState.data.length ? provinceState.data : provincesData)
+                .filter((p) => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                .map((prov) => (
+                  <div key={prov.id} className="province-item-card">
+                    <div className="province-item__image">
+                      {prov.imageUrl || prov.image ? (
+                        <img src={prov.imageUrl || prov.image} alt={prov.name} />
+                      ) : (
+                        <div className="province-item__placeholder">Ảnh {prov.name}</div>
+                      )}
+                      <span className="province-item__badge">{prov.region}</span>
                     </div>
-                    <p className="province-item__desc">{prov.desc}</p>
-                    <div className="province-item__tags">
-                      {prov.tags.map(tag => (
-                        <span key={tag} className="province-item__tag">{tag}</span>
-                      ))}
+                    <div className="province-item__content">
+                      <div className="province-item__title-row">
+                        <h3>{prov.name}</h3>
+                        <span className="location-icon">📍</span>
+                      </div>
+                      <p className="province-item__desc">{prov.desc || `${prov.type} thuộc ${prov.subRegion}`}</p>
+                      <div className="province-item__tags">
+                        {(prov.tags || []).map((tag) => (
+                          <span key={tag} className="province-item__tag">{tag}</span>
+                        ))}
+                      </div>
+                      <Link to={`/provinces/${prov.code}`} className="province-item__cta">Xem chi tiết <span aria-hidden="true">→</span></Link>
                     </div>
-                    <Link to={`/provinces/${prov.code}`} className="province-item__cta">Xem chi tiết <span aria-hidden="true">→</span></Link>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
 
             <div className="provinces-search__footer">
-              <Link to="/all-provinces" className="view-all-provinces-btn">Xem thêm tỉnh thành</Link>
+              <Link to="/provinces" className="view-all-provinces-btn">Xem thêm tỉnh thành</Link>
             </div>
           </div>
         </section>
