@@ -14,6 +14,24 @@
   font-family: var(--font-body);
 }
 
+.province-detail__status {
+  width: min(1200px, calc(100% - 40px));
+  margin: 100px auto 0;
+  padding: 14px 18px;
+  border-radius: 16px;
+  font-weight: 600;
+}
+
+.province-detail__status--loading {
+  background: #fff3cd;
+  color: #7c5700;
+}
+
+.province-detail__status--error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 /* --- Global Section Padding --- */
 .province-section {
   padding: 100px 0;

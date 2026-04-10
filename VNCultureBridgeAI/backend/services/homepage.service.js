@@ -64,6 +64,10 @@ function normalizePromptRow(row) {
   return fixMojibakeRow(row, ['TenPrompt', 'NoiDungPrompt'])
 }
 
+function hasBrokenText(value) {
+  return typeof value === 'string' && /[�\u0011]/.test(value)
+}
+
 function normalizeRows(rows, mapper) {
   return rows.map(mapper)
 }
@@ -89,22 +93,6 @@ function mergeUniqueCards(primaryRows, fallbackRows, limit = 6) {
   return merged
 }
 
-function mapCard(row, lang) {
-  return {
-    id: row.BaiVietID || row.VungID || row.DanTocID || row.DanhMucID,
-    code: row.MaBaiViet || row.MaVung || row.MaDanToc || row.MaDanhMuc,
-    title: pickLocalized(row, 'TieuDeVI', 'TieuDeEN', lang) || pickLocalized(row, 'TenVI', 'TenEN', lang),
-    description:
-      pickLocalized(row, 'MoTaNganVI', 'MoTaNganEN', lang) ||
-      pickLocalized(row, 'MoTaVI', 'MoTaEN', lang),
-    imageUrl: row.ImageUrl || null,
-    imageAlt: pickLocalized(row, 'AltTextVI', 'AltTextEN', lang),
-    articleCount: row.ArticleCount || 0,
-    publishedAt: row.NgayXuatBan || null,
-    category: pickLocalized(row, 'CategoryTenVI', 'CategoryTenEN', lang),
-  }
-}
-
 function parseHighlights(value) {
   if (!value) return []
 
@@ -116,18 +104,63 @@ function parseHighlights(value) {
   }
 }
 
+const HOMEPAGE_REGION_COPY_VI = {
+  BAC_BO: {
+    badge: 'Miền Bắc',
+    title: 'Miền Bắc',
+    description: 'Khám phá Hà Nội, Hạ Long và những ruộng bậc thang hùng vĩ của vùng núi phía Bắc.',
+    highlights: ['Hà Nội', 'Hạ Long', 'Sa Pa', 'Hà Giang'],
+    cta: 'Khám phá Miền Bắc',
+    imageAlt: 'Cảnh sắc ruộng bậc thang miền Bắc Việt Nam',
+  },
+  TRUNG_BO: {
+    badge: 'Miền Trung',
+    title: 'Miền Trung',
+    description: 'Từ Huế, Hội An đến Đà Nẵng, miền Trung mang vẻ đẹp giao hòa giữa lịch sử và thiên nhiên.',
+    highlights: ['Huế', 'Hội An', 'Đà Nẵng', 'Mỹ Sơn'],
+    cta: 'Khám phá Miền Trung',
+    imageAlt: 'Đèn lồng phố cổ Hội An về đêm',
+  },
+  NAM_BO: {
+    badge: 'Miền Nam',
+    title: 'Miền Nam',
+    description: 'Miền Nam nổi bật với TP.HCM, miền Tây sông nước và hành trình ẩm thực, chợ nổi, biển đảo.',
+    highlights: ['TP.HCM', 'Cần Thơ', 'Mekong', 'Phú Quốc'],
+    cta: 'Khám phá Miền Nam',
+    imageAlt: 'Khung cảnh sông nước miền Nam Việt Nam',
+  },
+}
+
 function mapHomepageRegion(row, lang) {
+  const fallbackVi = lang === 'vi' ? HOMEPAGE_REGION_COPY_VI[row.MaVung] || {} : {}
+
+  const badge = row.HomepageBadgeVI || pickLocalized(row, 'TenVI', 'TenEN', lang)
+  const title = row.HomepageTitleVI || pickLocalized(row, 'TenVI', 'TenEN', lang)
+  const description = row.HomepageDescriptionVI || pickLocalized(row, 'TenVI', 'TenEN', lang)
+  const highlights = row._fixedHighlights || parseHighlights(row.HomepageHighlightsVI)
+  const cta = row.HomepageCtaVI || `Khám phá ${pickLocalized(row, 'TenVI', 'TenEN', lang)}`
+  const imageAlt = row.HomepageImageAltVI || row.AltTextVI || pickLocalized(row, 'TenVI', 'TenEN', lang)
+
+  const resolvedBadge = lang === 'vi' && /[�\u0011]/.test(badge || '') ? fallbackVi.badge || badge : badge
+  const resolvedTitle = lang === 'vi' && /[�\u0011]/.test(title || '') ? fallbackVi.title || title : title
+  const resolvedDescription = lang === 'vi' && /[�\u0011]/.test(description || '') ? fallbackVi.description || description : description
+  const resolvedHighlights = lang === 'vi' && (!highlights.length || highlights.some((item) => /[�\u0011]/.test(item || '')))
+    ? fallbackVi.highlights || highlights
+    : highlights
+  const resolvedCta = lang === 'vi' && /[�\u0011]/.test(cta || '') ? fallbackVi.cta || cta : cta
+  const resolvedImageAlt = lang === 'vi' && /[�\u0011]/.test(imageAlt || '') ? fallbackVi.imageAlt || imageAlt : imageAlt
+
   return {
     id: row.VungID,
     code: row.MaVung,
     displayOrder: row.HomepageDisplayOrder || 0,
-    badge: row.HomepageBadgeVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
-    title: row.HomepageTitleVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
-    description: row.HomepageDescriptionVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
-    highlights: row._fixedHighlights || parseHighlights(row.HomepageHighlightsVI),
-    cta: row.HomepageCtaVI || `Khám phá ${pickLocalized(row, 'TenVI', 'TenEN', lang)}`,
+    badge: resolvedBadge,
+    title: resolvedTitle,
+    description: resolvedDescription,
+    highlights: resolvedHighlights,
+    cta: resolvedCta,
     imageUrl: row.ImageUrl || null,
-    imageAlt: row.HomepageImageAltVI || row.AltTextVI || pickLocalized(row, 'TenVI', 'TenEN', lang),
+    imageAlt: resolvedImageAlt,
     articleCount: row.ArticleCount || 0,
     accentClass:
       row.MaVung === 'BAC_BO'
@@ -140,6 +173,33 @@ function mapHomepageRegion(row, lang) {
     number: String(row.HomepageDisplayOrder || '').padStart(2, '0'),
   }
 }
+
+function mapCard(row, lang) {
+  const rawTitle = pickLocalized(row, 'TieuDeVI', 'TieuDeEN', lang) || pickLocalized(row, 'TenVI', 'TenEN', lang)
+  const rawDescription =
+    pickLocalized(row, 'MoTaNganVI', 'MoTaNganEN', lang) ||
+    pickLocalized(row, 'MoTaVI', 'MoTaEN', lang)
+  const rawCategory = pickLocalized(row, 'CategoryTenVI', 'CategoryTenEN', lang)
+  const rawImageAlt = pickLocalized(row, 'AltTextVI', 'AltTextEN', lang)
+
+  const fixedTitle = fixMojibake(rawTitle)
+  const fixedDescription = fixMojibake(rawDescription)
+  const fixedCategory = fixMojibake(rawCategory)
+  const fixedImageAlt = fixMojibake(rawImageAlt)
+
+  return {
+    id: row.BaiVietID || row.VungID || row.DanTocID || row.DanhMucID,
+    code: row.MaBaiViet || row.MaVung || row.MaDanToc || row.MaDanhMuc,
+    title: fixedTitle,
+    description: fixedDescription,
+    imageUrl: row.ImageUrl || null,
+    imageAlt: fixedImageAlt,
+    articleCount: row.ArticleCount || 0,
+    publishedAt: row.NgayXuatBan || null,
+    category: fixedCategory,
+  }
+}
+
 
 async function getHomepage(lang = 'vi') {
   const now = Date.now()

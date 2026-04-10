@@ -592,4 +592,93 @@ BEGIN
 END
 GO
 
+/* =========================================================
+   14. TỈNH THÀNH / THÀNH PHỐ
+   Phục vụ giao diện động cho danh sách và chi tiết tỉnh thành
+   ========================================================= */
+
+IF OBJECT_ID('dbo.TinhThanh', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.TinhThanh (
+        TinhThanhID              INT IDENTITY(1,1) PRIMARY KEY,
+        MaTinh                   VARCHAR(80) NOT NULL UNIQUE,
+        TenVI                    NVARCHAR(200) NOT NULL,
+        TenEN                    NVARCHAR(200) NOT NULL,
+        LoaiTinhVI               NVARCHAR(100) NOT NULL,
+        LoaiTinhEN               NVARCHAR(100) NOT NULL,
+        VungID                   INT NOT NULL,
+        TieuVungVI               NVARCHAR(200) NULL,
+        TieuVungEN               NVARCHAR(200) NULL,
+        DienTichKm2              DECIMAL(12,2) NULL,
+        DanSo                    BIGINT NULL,
+        AreaDisplayVI            NVARCHAR(100) NULL,
+        AreaDisplayEN            NVARCHAR(100) NULL,
+        PopulationDisplayVI      NVARCHAR(100) NULL,
+        PopulationDisplayEN      NVARCHAR(100) NULL,
+        TagsJsonVI               NVARCHAR(MAX) NULL,
+        TagsJsonEN               NVARCHAR(MAX) NULL,
+        TagsTextVI               NVARCHAR(1000) NULL,
+        TagsTextEN               NVARCHAR(1000) NULL,
+        AnhDaiDienUrl            NVARCHAR(1000) NULL,
+        AnhDaiDienAltVI          NVARCHAR(500) NULL,
+        AnhDaiDienAltEN          NVARCHAR(500) NULL,
+        TieuDePhuVI              NVARCHAR(300) NULL,
+        TieuDePhuEN              NVARCHAR(300) NULL,
+        TongQuanVI               NVARCHAR(MAX) NULL,
+        TongQuanEN               NVARCHAR(MAX) NULL,
+        ThoiTietMacDinhVI        NVARCHAR(100) NULL,
+        ThoiTietMacDinhEN        NVARCHAR(100) NULL,
+        ThoiDiemDepVI            NVARCHAR(200) NULL,
+        ThoiDiemDepEN            NVARCHAR(200) NULL,
+        ThongTinThanhLapVI       NVARCHAR(200) NULL,
+        ThongTinThanhLapEN       NVARCHAR(200) NULL,
+        ThongTinHanhChinhVI      NVARCHAR(300) NULL,
+        ThongTinHanhChinhEN      NVARCHAR(300) NULL,
+        MuiGio                   NVARCHAR(50) NULL,
+        MaVungDienThoai          NVARCHAR(20) NULL,
+        HeroImageUrl             NVARCHAR(1000) NULL,
+        HeroImageAltVI           NVARCHAR(500) NULL,
+        HeroImageAltEN           NVARCHAR(500) NULL,
+        SidebarImageUrl          NVARCHAR(1000) NULL,
+        SidebarImageAltVI        NVARCHAR(500) NULL,
+        SidebarImageAltEN        NVARCHAR(500) NULL,
+        DiaDiemJsonVI            NVARCHAR(MAX) NULL,
+        DiaDiemJsonEN            NVARCHAR(MAX) NULL,
+        VanHoaJsonVI             NVARCHAR(MAX) NULL,
+        VanHoaJsonEN             NVARCHAR(MAX) NULL,
+        AmThucJsonVI             NVARCHAR(MAX) NULL,
+        AmThucJsonEN             NVARCHAR(MAX) NULL,
+        LichTrinhJsonVI          NVARCHAR(MAX) NULL,
+        LichTrinhJsonEN          NVARCHAR(MAX) NULL,
+        HoatDong                 BIT NOT NULL DEFAULT 1,
+        ThuTuHienThi             INT NOT NULL DEFAULT 0,
+        NgayTao                  DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        NgayCapNhat              DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT FK_TinhThanh_VungVanHoa FOREIGN KEY (VungID) REFERENCES dbo.VungVanHoa(VungID)
+    );
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = 'IX_TinhThanh_Vung_ThuTu'
+      AND object_id = OBJECT_ID('dbo.TinhThanh')
+)
+BEGIN
+    CREATE INDEX IX_TinhThanh_Vung_ThuTu ON dbo.TinhThanh (VungID, ThuTuHienThi, HoatDong);
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = 'IX_TinhThanh_MaTinh'
+      AND object_id = OBJECT_ID('dbo.TinhThanh')
+)
+BEGIN
+    CREATE INDEX IX_TinhThanh_MaTinh ON dbo.TinhThanh (MaTinh, HoatDong);
+END
+GO
+
 
