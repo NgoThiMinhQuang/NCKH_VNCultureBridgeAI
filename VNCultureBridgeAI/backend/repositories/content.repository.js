@@ -138,18 +138,86 @@ async function getArticleByCode(code) {
 
 async function getRegions() {
   return query(`
-    SELECT VungID, MaVung, TenVI, TenEN, LoaiVung
-    FROM dbo.VungVanHoa
-    WHERE HoatDong = 1
-    ORDER BY VungID ASC
+    SELECT
+      vv.VungID,
+      vv.MaVung,
+      vv.TenVI,
+      vv.TenEN,
+      vv.LoaiVung,
+      vv.HomepageBadgeVI,
+      vv.HomepageTitleVI,
+      vv.HomepageDescriptionVI,
+      vv.HomepageHighlightsVI,
+      vv.HomepageCtaVI,
+      vv.HomepageImageUrl,
+      vv.HomepageImageAltVI,
+      COUNT(DISTINCT bv.BaiVietID) AS ArticleCount,
+      COALESCE(vv.HomepageImageUrl, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END)) AS ImageUrl,
+      COALESCE(vv.HomepageImageAltVI, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END)) AS AltTextVI,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextEN END) AS AltTextEN
+    FROM dbo.VungVanHoa vv
+    LEFT JOIN dbo.BaiViet_Vung bvv ON bvv.VungID = vv.VungID
+    LEFT JOIN dbo.BaiViet bv ON bv.BaiVietID = bvv.BaiVietID
+      AND bv.TrangThaiDuyet = 'APPROVED'
+      AND bv.TrangThaiXuatBan = 'PUBLISHED'
+    LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
+    WHERE vv.HoatDong = 1
+    GROUP BY
+      vv.VungID,
+      vv.MaVung,
+      vv.TenVI,
+      vv.TenEN,
+      vv.LoaiVung,
+      vv.HomepageBadgeVI,
+      vv.HomepageTitleVI,
+      vv.HomepageDescriptionVI,
+      vv.HomepageHighlightsVI,
+      vv.HomepageCtaVI,
+      vv.HomepageImageUrl,
+      vv.HomepageImageAltVI
+    ORDER BY vv.VungID ASC
   `)
 }
 
 async function getRegionByCode(code) {
   const rows = await query(`
-    SELECT TOP 1 VungID, MaVung, TenVI, TenEN, LoaiVung
-    FROM dbo.VungVanHoa
-    WHERE HoatDong = 1 AND MaVung = @code
+    SELECT TOP 1
+      vv.VungID,
+      vv.MaVung,
+      vv.TenVI,
+      vv.TenEN,
+      vv.LoaiVung,
+      vv.HomepageBadgeVI,
+      vv.HomepageTitleVI,
+      vv.HomepageDescriptionVI,
+      vv.HomepageHighlightsVI,
+      vv.HomepageCtaVI,
+      vv.HomepageImageUrl,
+      vv.HomepageImageAltVI,
+      COUNT(DISTINCT bv.BaiVietID) AS ArticleCount,
+      COALESCE(vv.HomepageImageUrl, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END)) AS ImageUrl,
+      COALESCE(vv.HomepageImageAltVI, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END)) AS AltTextVI,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextEN END) AS AltTextEN
+    FROM dbo.VungVanHoa vv
+    LEFT JOIN dbo.BaiViet_Vung bvv ON bvv.VungID = vv.VungID
+    LEFT JOIN dbo.BaiViet bv ON bv.BaiVietID = bvv.BaiVietID
+      AND bv.TrangThaiDuyet = 'APPROVED'
+      AND bv.TrangThaiXuatBan = 'PUBLISHED'
+    LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
+    WHERE vv.HoatDong = 1 AND vv.MaVung = @code
+    GROUP BY
+      vv.VungID,
+      vv.MaVung,
+      vv.TenVI,
+      vv.TenEN,
+      vv.LoaiVung,
+      vv.HomepageBadgeVI,
+      vv.HomepageTitleVI,
+      vv.HomepageDescriptionVI,
+      vv.HomepageHighlightsVI,
+      vv.HomepageCtaVI,
+      vv.HomepageImageUrl,
+      vv.HomepageImageAltVI
   `, { code })
 
   return rows[0] || null

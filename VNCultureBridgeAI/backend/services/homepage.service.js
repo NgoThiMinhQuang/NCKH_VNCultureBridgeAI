@@ -131,6 +131,122 @@ const HOMEPAGE_REGION_COPY_VI = {
   },
 }
 
+const CATEGORY_COPY = {
+  AM_THUC: { vi: 'Ẩm thực', en: 'Cuisine' },
+  LE_HOI: { vi: 'Lễ hội', en: 'Festivals' },
+  NGHE_THUAT_DAN_GIAN: { vi: 'Nghệ thuật dân gian', en: 'Folk arts' },
+}
+
+function resolveCategory(row, lang, value) {
+  const fixedValue = fixMojibake(value)
+
+  if (fixedValue && !hasBrokenText(fixedValue)) {
+    return fixedValue
+  }
+
+  const fallback = CATEGORY_COPY[row.MaDanhMuc]
+  if (!fallback) {
+    return fixedValue || value || null
+  }
+
+  return lang === 'en' ? fallback.en : fallback.vi
+}
+
+function resolveCardTitle(row, lang, value) {
+  const fixedValue = fixMojibake(value)
+
+  if (fixedValue && !hasBrokenText(fixedValue)) {
+    return fixedValue
+  }
+
+  return lang === 'vi'
+    ? fixMojibake(row.TieuDeEN || row.TenEN || fixedValue)
+    : fixMojibake(row.TieuDeVI || row.TenVI || fixedValue)
+}
+
+function resolveCardDescription(row, lang, value) {
+  const fixedValue = fixMojibake(value)
+
+  if (fixedValue && !hasBrokenText(fixedValue)) {
+    return fixedValue
+  }
+
+  return lang === 'vi'
+    ? fixMojibake(row.MoTaNganEN || row.MoTaEN || fixedValue)
+    : fixMojibake(row.MoTaNganVI || row.MoTaVI || fixedValue)
+}
+
+function resolveImageAlt(row, lang, value, title) {
+  const fixedValue = fixMojibake(value)
+
+  if (fixedValue && !hasBrokenText(fixedValue)) {
+    return fixedValue
+  }
+
+  return lang === 'vi'
+    ? fixMojibake(row.AltTextEN || title)
+    : fixMojibake(row.AltTextVI || title)
+}
+
+function resolvePublishedAt(row) {
+  return row.NgayXuatBan || null
+}
+
+function getFallbackArticleCount(row) {
+  return row.ArticleCount || 0
+}
+
+function resolveCardCode(row) {
+  return row.MaBaiViet || row.MaVung || row.MaDanToc || row.MaDanhMuc
+}
+
+function resolveCardId(row) {
+  return row.BaiVietID || row.VungID || row.DanTocID || row.DanhMucID
+}
+
+function resolveCardImage(row) {
+  return row.ImageUrl || null
+}
+
+function resolveCardTitleAndDescription(row, lang) {
+  const rawTitle = pickLocalized(row, 'TieuDeVI', 'TieuDeEN', lang) || pickLocalized(row, 'TenVI', 'TenEN', lang)
+  const rawDescription =
+    pickLocalized(row, 'MoTaNganVI', 'MoTaNganEN', lang) ||
+    pickLocalized(row, 'MoTaVI', 'MoTaEN', lang)
+
+  return {
+    title: resolveCardTitle(row, lang, rawTitle),
+    description: resolveCardDescription(row, lang, rawDescription),
+  }
+}
+
+function resolveCardMeta(row, lang, title) {
+  const rawCategory = pickLocalized(row, 'CategoryTenVI', 'CategoryTenEN', lang)
+  const rawImageAlt = pickLocalized(row, 'AltTextVI', 'AltTextEN', lang)
+
+  return {
+    category: resolveCategory(row, lang, rawCategory),
+    imageAlt: resolveImageAlt(row, lang, rawImageAlt, title),
+  }
+}
+
+function mapCard(row, lang) {
+  const { title, description } = resolveCardTitleAndDescription(row, lang)
+  const { category, imageAlt } = resolveCardMeta(row, lang, title)
+
+  return {
+    id: resolveCardId(row),
+    code: resolveCardCode(row),
+    title,
+    description,
+    imageUrl: resolveCardImage(row),
+    imageAlt,
+    articleCount: getFallbackArticleCount(row),
+    publishedAt: resolvePublishedAt(row),
+    category,
+  }
+}
+
 function mapHomepageRegion(row, lang) {
   const fallbackVi = lang === 'vi' ? HOMEPAGE_REGION_COPY_VI[row.MaVung] || {} : {}
 
@@ -173,33 +289,6 @@ function mapHomepageRegion(row, lang) {
     number: String(row.HomepageDisplayOrder || '').padStart(2, '0'),
   }
 }
-
-function mapCard(row, lang) {
-  const rawTitle = pickLocalized(row, 'TieuDeVI', 'TieuDeEN', lang) || pickLocalized(row, 'TenVI', 'TenEN', lang)
-  const rawDescription =
-    pickLocalized(row, 'MoTaNganVI', 'MoTaNganEN', lang) ||
-    pickLocalized(row, 'MoTaVI', 'MoTaEN', lang)
-  const rawCategory = pickLocalized(row, 'CategoryTenVI', 'CategoryTenEN', lang)
-  const rawImageAlt = pickLocalized(row, 'AltTextVI', 'AltTextEN', lang)
-
-  const fixedTitle = fixMojibake(rawTitle)
-  const fixedDescription = fixMojibake(rawDescription)
-  const fixedCategory = fixMojibake(rawCategory)
-  const fixedImageAlt = fixMojibake(rawImageAlt)
-
-  return {
-    id: row.BaiVietID || row.VungID || row.DanTocID || row.DanhMucID,
-    code: row.MaBaiViet || row.MaVung || row.MaDanToc || row.MaDanhMuc,
-    title: fixedTitle,
-    description: fixedDescription,
-    imageUrl: row.ImageUrl || null,
-    imageAlt: fixedImageAlt,
-    articleCount: row.ArticleCount || 0,
-    publishedAt: row.NgayXuatBan || null,
-    category: fixedCategory,
-  }
-}
-
 
 async function getHomepage(lang = 'vi') {
   const now = Date.now()

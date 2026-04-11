@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ui } from '../../i18n/messages'
 import './ProvinceDetailPage.css'
@@ -47,6 +47,9 @@ function buildFallbackProvince(copy) {
     heroImageUrl: hanoiStreet,
     heroImageAlt: data.title,
     breadcrumbLabel: data.title,
+    region: 'Miền Bắc',
+    subRegion: 'Đồng bằng sông Hồng',
+    tags: ['Thủ đô', 'Văn hiến', 'Hồ Gươm'],
     metrics: {
       weather: data.metro,
       bestTime: data.bestTimeVal,
@@ -72,13 +75,18 @@ function buildFallbackProvince(copy) {
 }
 
 function formatProvinceData(remoteData, fallbackData) {
-  if (!remoteData) return fallbackData
+  if (!remoteData) return null
 
   return {
     ...fallbackData,
     ...remoteData,
-    heroImageUrl: remoteData.heroImageUrl || fallbackData.heroImageUrl,
-    heroImageAlt: remoteData.heroImageAlt || fallbackData.heroImageAlt,
+    title: remoteData.name || remoteData.title || fallbackData.title,
+    subtitle: remoteData.subtitle || fallbackData.subtitle,
+    region: remoteData.region || fallbackData.region,
+    subRegion: remoteData.subRegion || fallbackData.subRegion,
+    tags: remoteData.tags?.length ? remoteData.tags : fallbackData.tags,
+    heroImageUrl: remoteData.heroImageUrl || remoteData.imageUrl || fallbackData.heroImageUrl,
+    heroImageAlt: remoteData.heroImageAlt || remoteData.imageAlt || fallbackData.heroImageAlt,
     overview: {
       ...fallbackData.overview,
       ...(remoteData.overview || {}),
@@ -98,36 +106,129 @@ function formatProvinceData(remoteData, fallbackData) {
   }
 }
 
+function getProvinceBadge(data, lang) {
+  return data.region || (lang === 'vi' ? 'Khám phá tỉnh thành' : 'Explore Province')
+}
+
+function getHeroDescription(data) {
+  return String(data.overview?.content || '').split(/\n+/)[0]
+}
+
+function getAttractionDescription(place) {
+  return place.desc || place.description || ''
+}
+
+function getCuisineDescription(dish, data, lang) {
+  if (dish.description) return dish.description
+  return lang === 'vi'
+    ? `Một trong những đặc sản không thể bỏ qua tại ${data.title}.`
+    : `One of the signature dishes you should try in ${data.title}.`
+}
+
+function getGuideCards(lang, data) {
+  return [
+    {
+      icon: '✈️',
+      title: lang === 'vi' ? 'Di chuyển' : 'Getting Around',
+      body: data.overview?.quickInfo?.administrative || (lang === 'vi' ? 'Thông tin hành chính và kết nối liên tỉnh.' : 'Administrative and inter-province access information.'),
+    },
+    {
+      icon: '🏨',
+      title: lang === 'vi' ? 'Lưu trú' : 'Stays',
+      body: data.subRegion || (lang === 'vi' ? 'Lựa chọn lưu trú theo khu vực trung tâm và điểm tham quan.' : 'Choose stays around the center and key attractions.'),
+    },
+    {
+      icon: '🎒',
+      title: lang === 'vi' ? 'Trải nghiệm' : 'Experiences',
+      body: data.metrics?.bestTime || (lang === 'vi' ? 'Xem mùa đẹp để lên lịch trải nghiệm phù hợp.' : 'Check the best season to plan your experience.'),
+    },
+    {
+      icon: '🛍️',
+      title: lang === 'vi' ? 'Đặc trưng địa phương' : 'Local Highlights',
+      body: (data.tags || []).join(', ') || (lang === 'vi' ? 'Khám phá những điểm nhấn văn hóa và đặc sản địa phương.' : 'Discover local cultural highlights and specialties.'),
+    },
+  ]
+}
+
 export default function ProvinceDetailPage() {
   const { code = 'ha-noi' } = useParams()
   const [lang, setLang] = useState('vi')
   const copy = useMemo(() => ui[lang], [lang])
-  const t = useMemo(() => copy.provinceDetail, [copy])
   const fallbackData = useMemo(() => buildFallbackProvince(copy), [copy])
   const { status, data: remoteData, error } = useDetailLoader(getProvince, lang, code)
   const data = useMemo(() => formatProvinceData(remoteData, fallbackData), [remoteData, fallbackData])
+  const cultureItems = useMemo(() => (data?.culture || []).map(parseCultureItem), [data])
+  const guideCards = useMemo(() => (data ? getGuideCards(lang, data) : []), [lang, data])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [code])
 
-  const cultureItems = data.culture.map(parseCultureItem)
+  useEffect(() => {
+    if (data?.title) {
+      document.title = `${data.title} - VietCultura`
+    }
+  }, [data?.title])
+
+  if (status === 'loading') {
+    return (
+      <div className="province-detail">
+        <PageHeader lang={lang} onLangChange={setLang} />
+        <div className="province-detail__status province-detail__status--loading">
+          {lang === 'vi' ? 'Đang tải dữ liệu tỉnh...' : 'Loading province data...'}
+        </div>
+        <Footer lang={lang} />
+      </div>
+    )
+  }
+
+  if (status === 'error') {
+    const isNotFound = /not found/i.test(error || '')
+
+    return (
+      <div className="province-detail">
+        <PageHeader lang={lang} onLangChange={setLang} />
+        <div className="province-detail__status province-detail__status--error">
+          {isNotFound
+            ? (lang === 'vi' ? 'Không tìm thấy tỉnh thành phù hợp.' : 'Province not found.')
+            : (lang === 'vi' ? `Không tải được dữ liệu tỉnh. ${error}` : `Could not load province data. ${error}`)}
+        </div>
+        <div className="province-top-nav">
+          <Link to="/" className="breadcrumb-link">{lang === 'vi' ? 'Trang chủ' : 'Home'}</Link>
+          <span className="breadcrumb-separator">›</span>
+          <Link to="/provinces" className="breadcrumb-link">{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</Link>
+        </div>
+        <section className="province-section bg-light">
+          <div className="section-title center">
+            <h2>{isNotFound ? (lang === 'vi' ? 'Mã tỉnh không tồn tại' : 'Unknown province code') : (lang === 'vi' ? 'Không thể tải dữ liệu tỉnh' : 'Could not load province data')}</h2>
+            <p>
+              {isNotFound
+                ? (lang === 'vi' ? 'Hãy quay lại danh sách tỉnh thành và chọn một địa phương hợp lệ.' : 'Please return to the province list and choose a valid location.')
+                : (lang === 'vi' ? 'Vui lòng thử lại hoặc quay về danh sách tỉnh thành.' : 'Please try again or go back to the province list.')}
+            </p>
+            <Link to="/provinces" className="btn-primary">{lang === 'vi' ? 'Quay lại danh sách tỉnh thành' : 'Back to provinces'}</Link>
+          </div>
+        </section>
+        <Footer lang={lang} />
+      </div>
+    )
+  }
+
+  if (!data) {
+    return null
+  }
 
   return (
     <div className="province-detail">
       <PageHeader lang={lang} onLangChange={setLang} />
 
-      {status === 'error' && (
-        <div className="province-detail__status province-detail__status--error">
-          {lang === 'vi' ? `Không tải được dữ liệu tỉnh. ${error}` : `Could not load province data. ${error}`}
-        </div>
-      )}
-
-      {status === 'loading' && (
-        <div className="province-detail__status province-detail__status--loading">
-          {lang === 'vi' ? 'Đang tải dữ liệu tỉnh...' : 'Loading province data...'}
-        </div>
-      )}
+      <div className="province-top-nav">
+        <Link to="/" className="breadcrumb-link">{lang === 'vi' ? 'Trang chủ' : 'Home'}</Link>
+        <span className="breadcrumb-separator">›</span>
+        <Link to="/provinces" className="breadcrumb-link">{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</Link>
+        <span className="breadcrumb-separator">›</span>
+        <span className="breadcrumb-current">{data.title}</span>
+      </div>
 
       <section className="province-hero">
         <img
@@ -136,42 +237,53 @@ export default function ProvinceDetailPage() {
           className="province-hero__img"
         />
         <div className="province-hero__overlay">
-          <span className="province-hero__breadcrumb">TRANG CHỦ  /  VÙNG MIỀN  /  {data.breadcrumbLabel || data.title}</span>
-          <h1>{data.title}</h1>
-          <p>{data.subtitle}</p>
-          <div className="hero-actions">
-            <Link to="#" className="btn-primary">KHÁM PHÁ NGAY</Link>
-            <Link to="#" className="btn-ghost">XEM BẢN ĐỒ</Link>
+          <div className="hero-content-wrapper">
+            <span className="province-hero__badge">{getProvinceBadge(data, lang)}</span>
+            <h1>{data.title}</h1>
+            <p className="hero-subtitle">{data.subtitle}</p>
+            <p className="hero-desc">{getHeroDescription(data)}</p>
+            <div className="hero-actions">
+              <Link to="#places" className="btn-primary">{lang === 'vi' ? 'Khám phá điểm đến' : 'Explore places'}</Link>
+              <Link to="#itinerary" className="btn-ghost">{lang === 'vi' ? 'Lưu hành trình' : 'Save itinerary'}</Link>
+            </div>
           </div>
         </div>
       </section>
 
       <div className="province-metrics-bar">
         <div className="metric-item">
-          <div className="metric-item__icon">☁️</div>
+          <div className="metric-item__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          </div>
           <div className="metric-item__info">
-            <span className="metric-item__label">{t.metrics.weather}</span>
-            <span className="metric-item__value">{data.metrics.weather}</span>
+            <span className="metric-item__label">{lang === 'vi' ? 'THUỘC VÙNG' : 'REGION'}</span>
+            <span className="metric-item__value">{data.region}</span>
           </div>
         </div>
         <div className="metric-item">
-          <div className="metric-item__icon">🍂</div>
+          <div className="metric-item__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          </div>
           <div className="metric-item__info">
-            <span className="metric-item__label">{t.metrics.bestTime}</span>
+            <span className="metric-item__label">{lang === 'vi' ? 'MÙA ĐẸP' : 'BEST TIME'}</span>
             <span className="metric-item__value">{data.metrics.bestTime}</span>
           </div>
         </div>
         <div className="metric-item">
-          <div className="metric-item__icon">👥</div>
+          <div className="metric-item__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
           <div className="metric-item__info">
-            <span className="metric-item__label">{t.metrics.population}</span>
+            <span className="metric-item__label">{lang === 'vi' ? 'DÂN SỐ' : 'POPULATION'}</span>
             <span className="metric-item__value">{data.metrics.population}</span>
           </div>
         </div>
         <div className="metric-item">
-          <div className="metric-item__icon">📏</div>
+          <div className="metric-item__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
           <div className="metric-item__info">
-            <span className="metric-item__label">{t.metrics.area}</span>
+            <span className="metric-item__label">{lang === 'vi' ? 'DIỆN TÍCH' : 'AREA'}</span>
             <span className="metric-item__value">{data.metrics.area}</span>
           </div>
         </div>
@@ -180,7 +292,7 @@ export default function ProvinceDetailPage() {
       <section className="province-section">
         <div className="overview-layout">
           <div className="overview-main">
-            <h2>{t.overview.title}</h2>
+            <h2>{lang === 'vi' ? 'Tổng quan vùng đất' : 'Overview'}</h2>
             {String(data.overview.content || '')
               .split(/\n+/)
               .filter(Boolean)
@@ -189,38 +301,42 @@ export default function ProvinceDetailPage() {
               ))}
           </div>
           <div className="overview-sidebar">
-            <div className="sidebar-facts">
-              <h3>{t.overview.quickInfo}</h3>
-              <div className="fact-row">
-                <label>{t.overview.founded}</label>
-                <span>{data.overview.quickInfo.founded}</span>
+            <div className="fact-card">
+              <div className="fact-card__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
               </div>
-              <div className="fact-row">
-                <label>{t.overview.administrative}</label>
+              <div className="fact-card__info">
+                <label>{lang === 'vi' ? 'Vị trí' : 'Administrative'}</label>
                 <span>{data.overview.quickInfo.administrative}</span>
               </div>
-              <div className="fact-row">
-                <label>Múi giờ</label>
-                <span>{data.overview.quickInfo.timezone}</span>
+            </div>
+            <div className="fact-card">
+              <div className="fact-card__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
               </div>
-              <div className="fact-row">
-                <label>Mã vùng</label>
-                <span>{data.overview.quickInfo.dialCode}</span>
+              <div className="fact-card__info">
+                <label>{lang === 'vi' ? 'Diện tích / Dân số' : 'Area / Population'}</label>
+                <span>{data.metrics.area} / {data.metrics.population}</span>
               </div>
             </div>
-            <img
-              src={data.overview.sidebarImageUrl}
-              alt={data.overview.sidebarImageAlt || data.title}
-              className="sidebar-img"
-            />
+            <div className="fact-card">
+              <div className="fact-card__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </div>
+              <div className="fact-card__info">
+                <label>{lang === 'vi' ? 'Thời gian lý tưởng' : 'Best Time'}</label>
+                <span>{data.metrics.bestTime}</span>
+              </div>
+            </div>
+            <img src={data.overview.sidebarImageUrl || data.imageUrl || hanoiStreet} alt={data.overview.sidebarImageAlt || data.title} className="sidebar-img" />
           </div>
         </div>
       </section>
 
-      <section className="province-section">
-        <div className="section-title">
-          <h2>{`Đi đâu ở ${data.title}`}</h2>
-          <p>Khám phá những địa danh biểu tượng làm nên linh hồn của vùng đất này</p>
+      <section className="province-section" id="places">
+        <div className="section-title center">
+          <h2>{lang === 'vi' ? `Đi đâu ở ${data.title}` : `Where to go in ${data.title}`}</h2>
+          <p>{lang === 'vi' ? 'Khám phá những địa danh biểu tượng làm nên linh hồn của vùng đất này' : 'Discover the landmarks that define the spirit of this place'}</p>
         </div>
         <div className="attractions-grid">
           {data.places.map((place, idx) => (
@@ -230,9 +346,13 @@ export default function ProvinceDetailPage() {
                 alt={place.title}
                 className="attraction-card__img"
               />
-              <div className="attraction-card__body">
+              <div className="attraction-card__content">
                 <h4>{place.title}</h4>
-                <p>{place.desc}</p>
+                <p>{getAttractionDescription(place)}</p>
+                <div className="attraction-card__meta">
+                  <span className="dot">•</span>
+                  <span className="meta-text">{lang === 'vi' ? 'Tham quan / Di tích' : 'Visit / Heritage'}</span>
+                </div>
               </div>
             </div>
           ))}
@@ -240,47 +360,60 @@ export default function ProvinceDetailPage() {
       </section>
 
       <section className="province-section culture-section">
-        <div className="section-title">
-          <h2 style={{ color: '#fff' }}>Văn hóa và Di sản</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)' }}>Gìn giữ bản sắc truyền thống giữa lòng thành phố hiện đại</p>
+        <div className="section-title center white">
+          <h2>{lang === 'vi' ? 'Văn hóa và di sản' : 'Culture and Heritage'}</h2>
+          <p>{lang === 'vi' ? 'Gìn giữ bản sắc truyền thống qua từng thế hệ' : 'Preserving identity across generations'}</p>
         </div>
         <div className="culture-items">
           {cultureItems.map((item, idx) => (
             <div key={`${item.label}-${idx}`} className="culture-box">
-              <i>{item.icon}</i>
-              <span>{item.label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="province-section">
-        <div className="section-title">
-          <h2>{`Ăn gì ở ${data.title}`}</h2>
-          <p>Tinh hoa ẩm thực kỳ công trong từng hương vị</p>
-        </div>
-        <div className="cuisine-grid">
-          {data.cuisine.map((dish, idx) => (
-            <div key={`${dish.title}-${idx}`} className="cuisine-item">
-              <img src={dish.imageUrl} alt={dish.title} />
-              <div className="cuisine-item__info">
-                <h4>{dish.title}</h4>
-                <Link to="#" style={{ color: 'var(--color-secondary)', fontWeight: '700' }}>Khám phá thêm →</Link>
+              <div className="culture-box__icon-wrapper">
+                <i>{item.icon}</i>
+              </div>
+              <div className="culture-box__text">
+                <span>{item.label}</span>
+                <p>{lang === 'vi' ? 'Di sản văn hóa phi vật thể' : 'Intangible cultural heritage'}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="province-section" style={{ background: '#fdf7f2' }}>
-        <div className="section-title">
-          <h2>Lịch trình gợi ý</h2>
-          <p>Gợi ý hành trình cho những trải nghiệm trọn vẹn nhất</p>
+      <section className="province-section">
+        <div className="section-title center">
+          <h2>{lang === 'vi' ? `Ăn gì ở ${data.title}` : `What to eat in ${data.title}`}</h2>
+          <p>{lang === 'vi' ? 'Tinh hoa ẩm thực kỳ công trong từng hương vị' : 'Culinary highlights in every flavor'}</p>
+        </div>
+        <div className="cuisine-grid">
+          {data.cuisine.map((dish, idx) => (
+            <div key={`${dish.title}-${idx}`} className="cuisine-card">
+              <div className="cuisine-card__img-wrapper">
+                <img src={dish.imageUrl} alt={dish.title} />
+              </div>
+              <div className="cuisine-card__body">
+                <h4>{dish.title}</h4>
+                <p>{getCuisineDescription(dish, data, lang)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="province-section itinerary-section" id="itinerary">
+        <div className="section-title center">
+          <h2>{lang === 'vi' ? 'Lịch trình gợi ý' : 'Suggested Itinerary'}</h2>
+          <p>{lang === 'vi' ? 'Gợi ý hành trình cho những trải nghiệm trọn vẹn nhất' : 'A suggested route for a complete experience'}</p>
+        </div>
+        <div className="itinerary-tabs">
+          <button className="tab-btn active">1 {lang === 'vi' ? 'ngày' : 'day'}</button>
+          <button className="tab-btn">2 {lang === 'vi' ? 'ngày' : 'days'}</button>
+          <button className="tab-btn">3 {lang === 'vi' ? 'ngày' : 'days'}</button>
         </div>
         <div className="itinerary-container">
+          <div className="timeline-line"></div>
           {data.itinerary.map((item, idx) => (
             <div key={`${item.time}-${idx}`} className="itinerary-step">
-              <div className="step-marker"></div>
+              <div className="step-marker"><span></span></div>
               <div className="step-content">
                 <strong>{item.time}</strong>
                 <p>{item.task}</p>
@@ -290,20 +423,19 @@ export default function ProvinceDetailPage() {
         </div>
       </section>
 
-      <section className="province-section" style={{ background: 'var(--color-dark-section)', color: '#fff', textAlign: 'center' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '3rem', marginBottom: '24px' }}>Cảm hứng gửi đến bạn mỗi tuần</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.2rem', marginBottom: '48px' }}>
-            Đăng ký để nhận những thông tin mới nhất về di sản, lễ hội và cẩm nang du lịch Việt Nam qua email.
-          </p>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <input
-              type="email"
-              placeholder="Email của bạn"
-              style={{ padding: '18px 24px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.05)', color: '#fff', width: '400px' }}
-            />
-            <button className="btn-primary">ĐĂNG KÝ</button>
-          </div>
+      <section className="province-section bg-light">
+        <div className="section-title center">
+          <h2>{lang === 'vi' ? 'Cẩm nang nhanh' : 'Quick Guide'}</h2>
+          <p>{lang === 'vi' ? 'Những thông tin cần biết trước khi đến thăm' : 'Things to know before you visit'}</p>
+        </div>
+        <div className="guide-grid">
+          {guideCards.map((card) => (
+            <div key={card.title} className="guide-card">
+              <div className="guide-icon">{card.icon}</div>
+              <h4>{card.title}</h4>
+              <p>{card.body}</p>
+            </div>
+          ))}
         </div>
       </section>
 
