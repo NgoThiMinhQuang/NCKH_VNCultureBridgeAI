@@ -1,0 +1,413 @@
+/* Trang Login V2 - Thiết kế siêu sang */
+.login-v2-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7efe5;
+  overflow: hidden;
+  font-family: var(--font-body);
+}
+
+/* Các hình khối mờ ảo tạo chiều sâu (ambient background) */
+.login-v2-bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
+  opacity: 0.6;
+}
+.login-v2-bg-shape.shape-1 {
+  top: -10%;
+  left: -5%;
+  width: 50vw;
+  height: 50vw;
+  background: rgba(185, 28, 28, 0.15); /* Đỏ accent */
+  animation: floatV2 12s ease-in-out infinite alternate;
+}
+.login-v2-bg-shape.shape-2 {
+  bottom: -20%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: rgba(245, 158, 11, 0.12); /* Cam accent-2 */
+  animation: floatV2 18s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatV2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, -50px) scale(1.1); }
+}
+
+/* Nút quay lại trang chủ */
+.back-to-home-btn {
+  position: absolute;
+  top: 32px;
+  left: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(125, 98, 87, 0.1);
+  border-radius: 999px;
+  color: var(--text-heading);
+  font-weight: 500;
+  font-size: 0.95rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 20;
+  box-shadow: 0 4px 14px rgba(86, 37, 24, 0.05);
+  cursor: pointer;
+}
+
+.back-to-home-btn:hover {
+  background: #ffffff;
+  transform: translateX(-4px);
+  box-shadow: 0 8px 24px rgba(86, 37, 24, 0.12);
+  color: var(--accent);
+}
+
+/* Container chia cột */
+.login-v2-container {
+  display: flex;
+  width: min(1200px, 92%);
+  min-height: 720px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 32px;
+  box-shadow: 0 32px 80px rgba(43, 11, 5, 0.08),
+              inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  z-index: 10;
+  position: relative;
+}
+
+/* Phần hiển thị ảnh */
+.login-v2-showcase {
+  flex: 1.1;
+  padding: 20px;
+}
+
+.showcase-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(43, 11, 5, 0.15);
+}
+
+.showcase-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 10s ease;
+}
+
+.showcase-image-wrapper:hover .showcase-img {
+  transform: scale(1.05);
+}
+
+.showcase-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(43, 11, 5, 0) 0%, rgba(20, 5, 2, 0.85) 100%);
+}
+
+.showcase-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 48px;
+  color: #ffffff;
+}
+
+.showcase-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.showcase-title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin: 0 0 16px;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.showcase-desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.85;
+  margin: 0;
+  max-width: 90%;
+}
+
+/* Phần form */
+.login-v2-form-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+
+.login-v2-form-inner {
+  width: 100%;
+  max-width: 380px;
+}
+
+.box-fade-in {
+  animation: boxFadeIn 0.8s ease backwards;
+}
+@keyframes boxFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-header {
+  margin-bottom: 36px;
+}
+
+.form-header h1 {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--text-heading);
+  margin: 0 0 8px;
+}
+
+.form-header p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Các trường nhập */
+.v2-input-group {
+  margin-bottom: 20px;
+}
+
+.v2-input-group label {
+  display: block;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  width: 20px;
+  height: 20px;
+  color: var(--muted);
+  pointer-events: none;
+  transition: color 0.3s;
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 14px 16px 14px 46px;
+  border: 1px solid rgba(125, 98, 87, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.6);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.input-with-icon input:focus {
+  background: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.08);
+}
+
+.input-with-icon input:focus + .input-icon,
+.input-with-icon input:not(:placeholder-shown) + .input-icon {
+  color: var(--accent);
+}
+
+/* Các tùy chọn form */
+.v2-form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  margin-top: 10px;
+}
+
+.v2-checkbox-label {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text);
+  cursor: pointer;
+  position: relative;
+  padding-left: 28px;
+  user-select: none;
+}
+
+.v2-checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(125, 98, 87, 0.3);
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.v2-checkbox-label:hover input ~ .checkmark {
+  background-color: #fff;
+  border-color: var(--accent);
+}
+
+.v2-checkbox-label input:checked ~ .checkmark {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.v2-checkbox-label input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.v2-forgot-link {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.v2-forgot-link:hover {
+  color: var(--dark);
+}
+
+/* Nút Submit */
+.v2-submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--accent);
+  border: none;
+  border-radius: 14px;
+  color: white;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(185, 28, 28, 0.2);
+  transition: all 0.3s ease;
+  margin-bottom: 24px;
+}
+
+.v2-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 36px rgba(185, 28, 28, 0.3);
+  background: var(--dark-2);
+}
+
+.v2-submit-btn:active {
+  transform: translateY(1px);
+}
+
+/* Form Footer */
+.v2-form-footer {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.v2-form-footer a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+
+
+/* Responsive */
+@media (max-width: 960px) {
+  .login-v2-container {
+    flex-direction: column;
+    min-height: auto;
+    border-radius: 20px;
+    margin: 80px 20px 40px;
+  }
+  
+  .login-v2-showcase {
+    padding: 12px;
+    height: 260px;
+    flex: none;
+  }
+  
+  .showcase-content {
+    padding: 24px;
+  }
+  
+  .showcase-title {
+    font-size: 1.8rem;
+  }
+  
+  .showcase-desc {
+    display: none; /* Hide desc on mobile for space */
+  }
+  
+  .login-v2-form-wrapper {
+    padding: 40px 24px;
+  }
+  
+  .back-to-home-btn {
+    top: 20px;
+    left: 20px;
+  }
+}

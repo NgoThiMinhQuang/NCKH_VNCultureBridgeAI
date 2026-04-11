@@ -1,15 +1,50 @@
 const contentRepository = require('../repositories/content.repository')
 const homepageRepository = require('../repositories/homepage.repository')
-const { pickLocalized } = require('../utils/locale')
+const { pickLocalized, fixMojibake } = require('../utils/locale')
+
+function fixText(value) {
+  return typeof value === 'string' ? fixMojibake(value) : value
+}
+
+function mapText(row, viKey, enKey, lang) {
+  return fixText(pickLocalized(row, viKey, enKey, lang))
+}
+
+function mapArrayText(values) {
+  return Array.isArray(values)
+    ? values.map((item) => {
+        if (typeof item === 'string') return fixText(item)
+        if (item && typeof item === 'object') {
+          return Object.fromEntries(
+            Object.entries(item).map(([key, value]) => [key, typeof value === 'string' ? fixText(value) : value]),
+          )
+        }
+        return item
+      })
+    : values
+}
+
+function parseLocalizedJson(row, viKey, enKey, lang, fallback = []) {
+  const value = mapText(row, viKey, enKey, lang)
+
+  if (!value) return fallback
+
+  try {
+    const parsed = JSON.parse(value)
+    return Array.isArray(parsed) ? mapArrayText(parsed) : fallback
+  } catch {
+    return fallback
+  }
+}
 
 function mapArticleCard(row, lang) {
   return {
     id: row.BaiVietID,
     code: row.MaBaiViet,
-    title: pickLocalized(row, 'TieuDeVI', 'TieuDeEN', lang),
-    description: pickLocalized(row, 'MoTaNganVI', 'MoTaNganEN', lang),
+    title: mapText(row, 'TieuDeVI', 'TieuDeEN', lang),
+    description: mapText(row, 'MoTaNganVI', 'MoTaNganEN', lang),
     imageUrl: row.ImageUrl || null,
-    imageAlt: pickLocalized(row, 'AltTextVI', 'AltTextEN', lang),
+    imageAlt: mapText(row, 'AltTextVI', 'AltTextEN', lang),
     publishedAt: row.NgayXuatBan || null,
   }
 }
@@ -17,72 +52,131 @@ function mapArticleCard(row, lang) {
 function mapArticle(row, lang) {
   return {
     ...mapArticleCard(row, lang),
-    intro: pickLocalized(row, 'GioiThieuVI', 'GioiThieuEN', lang),
-    origin: pickLocalized(row, 'NguonGocVI', 'NguonGocEN', lang),
-    meaning: pickLocalized(row, 'YNghiaVanHoaVI', 'YNghiaVanHoaEN', lang),
-    context: pickLocalized(row, 'BoiCanhVI', 'BoiCanhEN', lang),
-    content: pickLocalized(row, 'NoiDungChinhVI', 'NoiDungChinhEN', lang),
-    aiSummary: pickLocalized(row, 'TomTatChoAIVI', 'TomTatChoAIEN', lang),
+    intro: mapText(row, 'GioiThieuVI', 'GioiThieuEN', lang),
+    origin: mapText(row, 'NguonGocVI', 'NguonGocEN', lang),
+    meaning: mapText(row, 'YNghiaVanHoaVI', 'YNghiaVanHoaEN', lang),
+    context: mapText(row, 'BoiCanhVI', 'BoiCanhEN', lang),
+    content: mapText(row, 'NoiDungChinhVI', 'NoiDungChinhEN', lang),
+    aiSummary: mapText(row, 'TomTatChoAIVI', 'TomTatChoAIEN', lang),
   }
 }
 
-function parseLocalizedJson(row, viKey, enKey, lang, fallback = []) {
-  const value = pickLocalized(row, viKey, enKey, lang)
+const REGION_NAME_COPY = {
+  BAC_BO: { vi: 'Miền Bắc', en: 'Northern Vietnam' },
+  TRUNG_BO: { vi: 'Miền Trung', en: 'Central Vietnam' },
+  NAM_BO: { vi: 'Miền Nam', en: 'Southern Vietnam' },
+  TAY_NGUYEN: { vi: 'Tây Nguyên', en: 'Central Highlands' },
+  DBSCL: { vi: 'Đồng bằng sông Cửu Long', en: 'Mekong Delta' },
+}
 
-  if (!value) return fallback
+function resolveRegionName(code, lang, currentValue) {
+  if (currentValue) {
+    if (lang === 'vi' && REGION_NAME_COPY[code]?.en === currentValue) {
+      return REGION_NAME_COPY[code].vi
+    }
 
-  try {
-    const parsed = JSON.parse(value)
-    return Array.isArray(parsed) ? parsed : fallback
-  } catch {
-    return fallback
+    return currentValue
   }
+
+  const fallback = REGION_NAME_COPY[code]
+  if (!fallback) return currentValue || null
+  return lang === 'en' ? fallback.en : fallback.vi
 }
 
 function mapProvinceCard(row, lang) {
   return {
     id: row.TinhThanhID,
     code: row.MaTinh,
-    name: pickLocalized(row, 'TenVI', 'TenEN', lang),
-    region: pickLocalized(row, 'VungTenVI', 'VungTenEN', lang),
-    subRegion: pickLocalized(row, 'TieuVungVI', 'TieuVungEN', lang),
-    type: pickLocalized(row, 'LoaiTinhVI', 'LoaiTinhEN', lang),
+    name: mapText(row, 'TenVI', 'TenEN', lang),
+    region: resolveRegionName(row.MaVung, lang, mapText(row, 'VungTenVI', 'VungTenEN', lang)),
+    subRegion: mapText(row, 'TieuVungVI', 'TieuVungEN', lang),
+    type: mapText(row, 'LoaiTinhVI', 'LoaiTinhEN', lang),
     tags: parseLocalizedJson(row, 'TagsJsonVI', 'TagsJsonEN', lang),
-    area: pickLocalized(row, 'AreaDisplayVI', 'AreaDisplayEN', lang),
-    pop: pickLocalized(row, 'PopulationDisplayVI', 'PopulationDisplayEN', lang),
+    area: mapText(row, 'AreaDisplayVI', 'AreaDisplayEN', lang),
+    pop: mapText(row, 'PopulationDisplayVI', 'PopulationDisplayEN', lang),
     imageUrl: row.AnhDaiDienUrl || null,
-    imageAlt: pickLocalized(row, 'AnhDaiDienAltVI', 'AnhDaiDienAltEN', lang),
+    imageAlt: mapText(row, 'AnhDaiDienAltVI', 'AnhDaiDienAltEN', lang),
   }
 }
 
 function mapProvince(row, lang) {
+  const provinceCard = mapProvinceCard(row, lang)
+
   return {
-    ...mapProvinceCard(row, lang),
-    subtitle: pickLocalized(row, 'TieuDePhuVI', 'TieuDePhuEN', lang),
+    ...provinceCard,
+    subtitle: mapText(row, 'TieuDePhuVI', 'TieuDePhuEN', lang),
     heroImageUrl: row.HeroImageUrl || row.AnhDaiDienUrl || null,
-    heroImageAlt: pickLocalized(row, 'HeroImageAltVI', 'HeroImageAltEN', lang) || pickLocalized(row, 'AnhDaiDienAltVI', 'AnhDaiDienAltEN', lang),
-    breadcrumbLabel: pickLocalized(row, 'TenVI', 'TenEN', lang),
+    heroImageAlt:
+      mapText(row, 'HeroImageAltVI', 'HeroImageAltEN', lang) ||
+      mapText(row, 'AnhDaiDienAltVI', 'AnhDaiDienAltEN', lang),
+    breadcrumbLabel: mapText(row, 'TenVI', 'TenEN', lang),
     metrics: {
-      weather: pickLocalized(row, 'ThoiTietMacDinhVI', 'ThoiTietMacDinhEN', lang),
-      bestTime: pickLocalized(row, 'ThoiDiemDepVI', 'ThoiDiemDepEN', lang),
-      population: pickLocalized(row, 'PopulationDisplayVI', 'PopulationDisplayEN', lang),
-      area: pickLocalized(row, 'AreaDisplayVI', 'AreaDisplayEN', lang),
+      weather: mapText(row, 'ThoiTietMacDinhVI', 'ThoiTietMacDinhEN', lang),
+      bestTime: mapText(row, 'ThoiDiemDepVI', 'ThoiDiemDepEN', lang),
+      population: mapText(row, 'PopulationDisplayVI', 'PopulationDisplayEN', lang),
+      area: mapText(row, 'AreaDisplayVI', 'AreaDisplayEN', lang),
     },
     overview: {
-      content: pickLocalized(row, 'TongQuanVI', 'TongQuanEN', lang),
+      content: mapText(row, 'TongQuanVI', 'TongQuanEN', lang),
       quickInfo: {
-        founded: pickLocalized(row, 'ThongTinThanhLapVI', 'ThongTinThanhLapEN', lang),
-        administrative: pickLocalized(row, 'ThongTinHanhChinhVI', 'ThongTinHanhChinhEN', lang),
+        founded: mapText(row, 'ThongTinThanhLapVI', 'ThongTinThanhLapEN', lang),
+        administrative: mapText(row, 'ThongTinHanhChinhVI', 'ThongTinHanhChinhEN', lang),
         timezone: row.MuiGio || 'UTC+7',
         dialCode: row.MaVungDienThoai || '',
       },
       sidebarImageUrl: row.SidebarImageUrl || row.AnhDaiDienUrl || null,
-      sidebarImageAlt: pickLocalized(row, 'SidebarImageAltVI', 'SidebarImageAltEN', lang) || pickLocalized(row, 'AnhDaiDienAltVI', 'AnhDaiDienAltEN', lang),
+      sidebarImageAlt:
+        mapText(row, 'SidebarImageAltVI', 'SidebarImageAltEN', lang) ||
+        mapText(row, 'AnhDaiDienAltVI', 'AnhDaiDienAltEN', lang),
     },
     places: parseLocalizedJson(row, 'DiaDiemJsonVI', 'DiaDiemJsonEN', lang),
     culture: parseLocalizedJson(row, 'VanHoaJsonVI', 'VanHoaJsonEN', lang),
     cuisine: parseLocalizedJson(row, 'AmThucJsonVI', 'AmThucJsonEN', lang),
     itinerary: parseLocalizedJson(row, 'LichTrinhJsonVI', 'LichTrinhJsonEN', lang),
+  }
+}
+
+function parseRegionHighlights(row) {
+  const rawValue = fixText(row?.HomepageHighlightsVI)
+  if (!rawValue) return []
+
+  try {
+    const parsed = JSON.parse(rawValue)
+    return Array.isArray(parsed) ? mapArrayText(parsed) : []
+  } catch {
+    return []
+  }
+}
+
+function getRegionKey(code) {
+  if (code === 'BAC_BO') return 'north'
+  if (code === 'TRUNG_BO') return 'central'
+  if (code === 'NAM_BO') return 'south'
+  return String(code || '').toLowerCase()
+}
+
+function mapRegion(row, lang) {
+  const name = resolveRegionName(row.MaVung, lang, mapText(row, 'TenVI', 'TenEN', lang))
+  const type = fixText(row.LoaiVung)
+  const badge = fixText(row.HomepageBadgeVI) || name
+  const title = fixText(row.HomepageTitleVI) || name
+  const description = fixText(row.HomepageDescriptionVI) || type || name
+
+  return {
+    id: row.VungID,
+    code: row.MaVung,
+    key: getRegionKey(row.MaVung),
+    name,
+    type,
+    badge,
+    title,
+    headline: title,
+    description,
+    highlights: parseRegionHighlights(row),
+    cta: fixText(row.HomepageCtaVI) || null,
+    imageUrl: row.ImageUrl || row.HomepageImageUrl || null,
+    imageAlt: mapText(row, 'HomepageImageAltVI', 'AltTextEN', lang) || name,
+    articleCount: row.ArticleCount || 0,
   }
 }
 
@@ -98,24 +192,12 @@ async function getArticle(code, lang) {
 
 async function listRegions(lang) {
   const rows = await contentRepository.getRegions()
-  return rows.map((row) => ({
-    id: row.VungID,
-    code: row.MaVung,
-    name: pickLocalized(row, 'TenVI', 'TenEN', lang),
-    type: row.LoaiVung,
-  }))
+  return rows.map((row) => mapRegion(row, lang))
 }
 
 async function getRegion(code, lang) {
   const row = await contentRepository.getRegionByCode(code)
-  if (!row) return null
-
-  return {
-    id: row.VungID,
-    code: row.MaVung,
-    name: pickLocalized(row, 'TenVI', 'TenEN', lang),
-    type: row.LoaiVung,
-  }
+  return row ? mapRegion(row, lang) : null
 }
 
 async function listProvinces(filters, lang) {
@@ -133,8 +215,8 @@ async function listEthnicities(lang) {
   return rows.map((row) => ({
     id: row.DanTocID,
     code: row.MaDanToc,
-    name: pickLocalized(row, 'TenVI', 'TenEN', lang),
-    description: pickLocalized(row, 'MoTaVI', 'MoTaEN', lang),
+    name: mapText(row, 'TenVI', 'TenEN', lang),
+    description: mapText(row, 'MoTaVI', 'MoTaEN', lang),
   }))
 }
 
@@ -145,8 +227,8 @@ async function getEthnicity(code, lang) {
   return {
     id: row.DanTocID,
     code: row.MaDanToc,
-    name: pickLocalized(row, 'TenVI', 'TenEN', lang),
-    description: pickLocalized(row, 'MoTaVI', 'MoTaEN', lang),
+    name: mapText(row, 'TenVI', 'TenEN', lang),
+    description: mapText(row, 'MoTaVI', 'MoTaEN', lang),
   }
 }
 
@@ -170,7 +252,7 @@ async function askAi({ question, lang }) {
     prompts: prompts.map((prompt) => ({
       code: prompt.MaPrompt,
       type: prompt.LoaiPrompt,
-      title: prompt.TenPrompt,
+      title: fixText(prompt.TenPrompt),
     })),
     relatedArticles: mappedArticles,
   }

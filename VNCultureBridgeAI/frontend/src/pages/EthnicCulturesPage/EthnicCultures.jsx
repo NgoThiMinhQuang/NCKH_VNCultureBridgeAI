@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./EthnicCulturesPage.css";
@@ -27,6 +28,30 @@ import congChiengImg from "../../assets/cong_chieng.png";
 import leCapSacImg from "../../assets/le-cap-sac.jpg";
 import detThoCamImg from "../../assets/det-tho-cam.jpg";
 import muaTrongImg from "../../assets/mua-trong-sadam.jpg";
+=======
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { LuSearch, LuChevronDown, LuShirt, LuStar, LuUtensils, LuBookOpen } from 'react-icons/lu';
+import './EthnicCulturesPage.css';
+import PageHeader from '../../components/layout/PageHeader/PageHeader';
+import Footer from '../../components/layout/Footer/Footer';
+import banner3 from '../../assets/banner3.jpg';
+import hmongImg from '../../assets/hmong.jpg';
+import daoImg from '../../assets/dao.jpg';
+import thaiImg from '../../assets/thai.jpg';
+import edeImg from '../../assets/ede.jpg';
+import banaImg from '../../assets/bana.jpg';
+import khmerImg from '../../assets/khmer.jpg';
+import chamImg from '../../assets/cham.jpg';
+import muongImg from '../../assets/muong.jpg';
+import ruongBacThangImg from '../../assets/ruong-bac-thang.jpg';
+import duaBoImg from '../../assets/dua-bo.jpg';
+import xoeThaiImg from '../../assets/xoe_thai.png';
+import congChiengImg from '../../assets/cong_chieng.png';
+import leCapSacImg from '../../assets/le-cap-sac.jpg';
+import detThoCamImg from '../../assets/det-tho-cam.jpg';
+import muaTrongImg from '../../assets/mua-trong-sadam.jpg';
+>>>>>>> 72cd07afe48c7c243da0dce38dfd5a47239cdb61
 function SearchIcon(props) {
   return (
     <svg

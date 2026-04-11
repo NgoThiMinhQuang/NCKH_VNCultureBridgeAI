@@ -104,22 +104,25 @@ const regionMeta = {
 
 function mergeRegionContent(listRegions, lang) {
   const meta = regionMeta[lang] || regionMeta.vi
-  const baseItems = listRegions.slice(0, 3).map((item) => ({
-    ...item,
-    title: item.name,
-    description: item.type,
-  }))
+  const regionByKey = new Map(listRegions.map((item) => [item.key, item]))
 
   return meta.map((item, index) => {
-    const region = baseItems[index] || listRegions[index] || {}
+    const region = regionByKey.get(item.key) || listRegions[index] || {}
     return {
       ...item,
       ...region,
+      key: region.key || item.key,
+      code: region.code || '',
+      badge: region.badge || item.badge,
       title: region.title || region.name || item.badge,
+      headline: region.headline || item.headline,
       description: region.description || item.description,
       imageAlt: region.imageAlt || region.title || region.name || item.badge,
-      mapLabel: item.mapLabel,
-      highlights: item.highlights,
+      mapLabel: region.mapLabel || item.mapLabel,
+      highlights: region.highlights?.length ? region.highlights : item.highlights,
+      experiences: region.experiences || item.experiences,
+      atmosphere: region.atmosphere || item.atmosphere,
+      articleCount: region.articleCount || 0,
     }
   })
 }
@@ -136,8 +139,8 @@ const overviewRegions = [
       { label: 'LỄ HỘI TIÊU BIỂU', value: 'Hội Lim, Chùa Hương, Lễ hội Đền Hùng, Tết Nguyên Đán, Hội Gióng' },
       { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Gốm Bát Tràng, lụa Vạn Phúc, tranh Đông Hồ, ca trù, quan họ Bắc Ninh' }
     ],
-    image: imgOverviewNorth, 
-    link: '/regions/bac-bo'
+    image: imgOverviewNorth,
+    link: '/regions/BAC_BO'
   },
   {
     id: 'central',
@@ -151,7 +154,7 @@ const overviewRegions = [
       { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Thêu tay Huế, mộc điêu khắc, đèn lồng Hội An, tranh cát Mộc Nghệ, nhã nhạc cung đình' }
     ],
     image: imgOverviewCentral,
-    link: '/regions/trung-bo'
+    link: '/regions/TRUNG_BO'
   },
   {
     id: 'south',
@@ -165,42 +168,18 @@ const overviewRegions = [
       { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Lụa Tân Châu, đan lát cói, gốm sứ Biên Hoà, đờn ca tài tử, hát bội Nam Bộ' }
     ],
     image: imgOverviewSouth,
-    link: '/regions/nam-bo'
+    link: '/regions/NAM_BO'
   }
-];
+]
 
 const inspirationCards = [
-  {
-    title: 'Miền núi và mây',
-    desc: 'Khám phá những cao nguyên mờ sương, bản làng dân tộc và những thửa ruộng bậc thang trải dài như tranh.',
-    image: imgHlSapa
-  },
-  {
-    title: 'Di sản và ký ức',
-    desc: 'Những cố đô hoàng triều, đền chùa nghìn năm, kiến trúc cổ kính lưu giữ linh hồn của dân tộc.',
-    image: imgHlHue
-  },
-  {
-    title: 'Sông nước và chợ quê',
-    desc: 'Nhịp sống chảy theo dòng sông, chợ nổi, lòng chài và cuộc sống gắn bó với lúa nước.',
-    image: imgHlCanTho
-  },
-  {
-    title: 'Biển xanh và làng chài',
-    desc: 'Những bãi biển hoang sơ, làng chài yên bình và cuộc sống gắn liền với biển cả.',
-    image: imgHlDaNang
-  },
-  {
-    title: 'Ẩm thực địa phương',
-    desc: 'Từ phở Hà Nội, bún bò Huế đến hủ tiếu Nam Vang - hành trình khám phá hương vị từng vùng miền.',
-    image: imgHlHanoi
-  },
-  {
-    title: 'Làng nghề và thủ công',
-    desc: 'Khám phá các làng nghề truyền thống: gốm sứ, lụa tơ tằm, tranh dân gian và tay nghề thủ công tinh xảo.',
-    image: imgHlNamBo
-  }
-];
+  { title: 'Miền núi và mây', desc: 'Khám phá những cao nguyên mờ sương, bản làng dân tộc và những thửa ruộng bậc thang trải dài như tranh.', image: imgHlSapa },
+  { title: 'Di sản và ký ức', desc: 'Những cố đô hoàng triều, đền chùa nghìn năm, kiến trúc cổ kính lưu giữ linh hồn của dân tộc.', image: imgHlHue },
+  { title: 'Sông nước và chợ quê', desc: 'Nhịp sống chảy theo dòng sông, chợ nổi, lòng chài và cuộc sống gắn bó với lúa nước.', image: imgHlCanTho },
+  { title: 'Biển xanh và làng chài', desc: 'Những bãi biển hoang sơ, làng chài yên bình và cuộc sống gắn liền với biển cả.', image: imgHlDaNang },
+  { title: 'Ẩm thực địa phương', desc: 'Từ phở Hà Nội, bún bò Huế đến hủ tiếu Nam Vang - hành trình khám phá hương vị từng vùng miền.', image: imgHlHanoi },
+  { title: 'Làng nghề và thủ công', desc: 'Khám phá các làng nghề truyền thống: gốm sứ, lụa tơ tằm, tranh dân gian và tay nghề thủ công tinh xảo.', image: imgHlNamBo }
+]
 
 const provincesData = [
   { id: 1, name: 'Hà Nội', code: 'ha-noi', desc: 'Thủ đô nghìn năm văn bản cùng phố cổ, hồ Hoàn Kiếm và nền văn hóa truyền thống đậm đà', tags: ['Phố cổ', 'Di sản', 'Ẩm thực'], region: 'Miền Bắc', image: imgHlHanoi },
@@ -209,19 +188,8 @@ const provincesData = [
   { id: 4, name: 'Sapa', code: 'sapa', desc: 'Cao nguyên mờ sương với ruộng bậc thang và văn hóa dân tộc đa dạng', tags: ['Núi rừng', 'Ruộng bậc thang', 'Dân tộc'], region: 'Miền Bắc', image: imgHlSapa },
   { id: 5, name: 'Cần Thơ', code: 'can-tho', desc: 'Thủ phụ miền Tây với chợ nổi Cái Răng và vườn trái cây miệt vườn', tags: ['Chợ nổi', 'Sông nước', 'Ẩm thực'], region: 'Miền Nam', image: imgHlCanTho },
   { id: 6, name: 'Phú Quốc', code: 'phu-quoc', desc: 'Đảo ngọc với bãi biển hoang sơ, rừng nguyên sinh và hải sản tươi ngon', tags: ['Biển đảo', 'Thiên nhiên', 'Nghỉ dưỡng'], region: 'Miền Nam', image: imgHlNamBo }
-];
+]
 
-const highlightsData = [
-  { id: 1, name: 'Phố cổ Hà Nội', desc: 'Không gian cổ kính, nhịp sống chậm rãi và chiều sâu lịch sử tạo nên sức hút rất riêng...', region: 'Miền Bắc', tag: 'Thiên nhiên', image: imgHlHanoi },
-  { id: 2, name: 'Ruộng bậc thang Sa Pa', desc: 'Vẻ đẹp thiên nhiên hùng vĩ cùng đời sống bản địa tạo nên trải nghiệm khó quên...', region: 'Miền Bắc', tag: 'Thiên nhiên', image: imgHlSapa },
-  { id: 3, name: 'Tràng An Ninh Bình', desc: 'Cảnh quan núi non hùng vĩ và dòng sông uốn lượn tạo nên bức tranh thiên nhiên tuyệt mỹ...', region: 'Miền Bắc', tag: 'Di sản', image: imgHlTrangAn },
-  { id: 4, name: 'Cố đô Huế', desc: 'Di sản, ẩm thực và cảnh sắc cùng tôn lên câu chuyện rất riêng của vùng đất này...', region: 'Miền Trung', tag: 'Cố đô', image: imgHlHue },
-  { id: 5, name: 'Phố cổ Hội An', desc: 'Ánh đèn lồng lung linh và kiến trúc cổ kính tạo nên không gian thơ mộng độc đáo...', region: 'Miền Trung', tag: 'Phố cổ', image: imgHlHoiAn },
-  { id: 6, name: 'Biển Đà Nẵng', desc: 'Bờ biển trải dài cùng không gian hiện đại mang đến trải nghiệm nghỉ dưỡng hoàn hảo...', region: 'Miền Trung', tag: 'Biển', image: imgHlDaNang },
-  { id: 7, name: 'Chợ nổi Cần Thơ', desc: 'Nhịp sống sông nước sôi động và màu sắc rực rỡ của miền Tây Nam Bộ...', region: 'Miền Nam', tag: 'Sông nước', image: imgHlCanTho },
-  { id: 8, name: 'Miệt vườn Nam Bộ', desc: 'Đời sống bình yên giữa vườn trái cây trĩu quả và dòng sông hiền hòa...', region: 'Miền Nam', tag: 'Đời sống', image: imgHlNamBo },
-  { id: 9, name: 'Phú Quốc biển đảo', desc: 'Thiên đường biển xanh cát trắng với vẻ đẹp hoang sơ quyến rũ...', region: 'Miền Nam', tag: 'Biển đảo', image: imgHlDaNang }
-];
 const seasonsData = [
   {
     id: 'spring',
@@ -271,7 +239,7 @@ const seasonsData = [
     ],
     image: imgProvHaGiang
   }
-];
+]
 
 const culturalCategories = [
   { id: 'culinary', title: 'Ẩm thực', icon: '🍴', desc: 'Từ phở Bắc, bún Huế đến hủ tiếu Nam - ẩm thực là linh hồn vùng miền' },
@@ -282,7 +250,7 @@ const culturalCategories = [
   { id: 'custom', title: 'Phong tục', icon: '🧺', desc: 'Tục lệ cưới hỏi, tang lễ, lễ nghi - giá trị truyền thống' },
   { id: 'fashion', title: 'Trang phục', icon: '👗', desc: 'Áo dài, áo tứ thân, trang phục dân tộc - bản sắc qua trang phục' },
   { id: 'community', title: 'Sinh hoạt cộng đồng', icon: '👥', desc: 'Làng xã, hội làng, tương thân tương ái - tinh thần cộng đồng' }
-];
+]
 
 const filterOptions = [
   { id: 'all', label: 'Tất cả' },
@@ -294,7 +262,43 @@ const filterOptions = [
   { id: 'mountains', label: 'Núi rừng' },
   { id: 'oldtown', label: 'Phố cổ' },
   { id: 'craft', label: 'Làng nghề' }
-];
+]
+
+function normalizeProvinceCard(province) {
+  return {
+    ...province,
+    imageUrl: province.imageUrl || province.image || null,
+    imageAlt: province.imageAlt || province.name,
+    description: province.desc || province.description || (province.type && province.subRegion ? `${province.type} thuộc ${province.subRegion}` : province.type || province.subRegion || ''),
+    tags: province.tags || [],
+  }
+}
+
+function filterProvinceCard(province, activeFilter, lang) {
+  if (activeFilter === 'all') return true
+
+  const values = [
+    province.name,
+    province.region,
+    province.subRegion,
+    province.type,
+    province.description,
+    ...(province.tags || []),
+  ].filter(Boolean).join(' ').toLowerCase()
+
+  const keywordMap = {
+    regions: lang === 'vi' ? ['miền', 'vùng'] : ['region'],
+    nature: lang === 'vi' ? ['thiên nhiên', 'cảnh quan'] : ['nature', 'landscape'],
+    heritage: lang === 'vi' ? ['di sản', 'unesco'] : ['heritage', 'unesco'],
+    food: lang === 'vi' ? ['ẩm thực', 'món ăn'] : ['cuisine', 'food'],
+    sea: lang === 'vi' ? ['biển', 'đảo'] : ['sea', 'island', 'beach'],
+    mountains: lang === 'vi' ? ['núi', 'cao nguyên'] : ['mountain', 'highland'],
+    oldtown: lang === 'vi' ? ['phố cổ', 'cổ'] : ['old town', 'ancient'],
+    craft: lang === 'vi' ? ['làng nghề', 'thủ công'] : ['craft', 'artisan'],
+  }
+
+  return (keywordMap[activeFilter] || []).some((keyword) => values.includes(keyword))
+}
 
 export default function RegionsPage() {
   const [lang, setLang] = useState('vi')
@@ -304,10 +308,6 @@ export default function RegionsPage() {
   const [activeFilter, setActiveFilter] = useState('all')
   const [provinceState, setProvinceState] = useState({ status: 'loading', data: [], error: '' })
   const copy = useMemo(() => ui[lang], [lang])
-
-  function handleSelectRegion(regionKey) {
-    setActiveKey(regionKey)
-  }
 
   useEffect(() => {
     let ignore = false
@@ -349,277 +349,287 @@ export default function RegionsPage() {
 
   const isLoading = state.status === 'loading'
   const isError = state.status === 'error'
-
   const regions = state.data?.regions || []
   const mappedRegions = mergeRegionContent(regions, lang)
-  const fallbackRegion = regionMeta[lang]?.[0] || regionMeta.vi[0]
+  const fallbackRegion = (regionMeta[lang] || regionMeta.vi)[0]
   const activeRegion = mappedRegions.find((item) => item.key === activeKey) || mappedRegions[0] || fallbackRegion
+  const localizedFilterOptions = lang === 'en'
+    ? [
+        { id: 'all', label: 'All' },
+        { id: 'regions', label: 'Regions' },
+        { id: 'nature', label: 'Nature' },
+        { id: 'heritage', label: 'Heritage' },
+        { id: 'food', label: 'Cuisine' },
+        { id: 'sea', label: 'Sea & Islands' },
+        { id: 'mountains', label: 'Mountains' },
+        { id: 'oldtown', label: 'Old Towns' },
+        { id: 'craft', label: 'Craft Villages' }
+      ]
+    : filterOptions
+  const visibleProvinces = (provinceState.data.length ? provinceState.data : provincesData)
+    .map(normalizeProvinceCard)
+    .filter((province) => !searchQuery.trim() || province.name.toLowerCase().includes(searchQuery.trim().toLowerCase()))
+    .filter((province) => filterProvinceCard(province, activeFilter, lang))
+
+  useEffect(() => {
+    if (mappedRegions.length && !mappedRegions.some((item) => item.key === activeKey)) {
+      setActiveKey(mappedRegions[0].key)
+    }
+  }, [activeKey, mappedRegions])
+
+  useEffect(() => {
+    setActiveFilter('all')
+  }, [lang])
+
+  function handleSelectRegion(regionKey) {
+    setActiveKey(regionKey)
+  }
+
+  function scrollToSelector(selector) {
+    document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const heroCategories = lang === 'vi'
+    ? ['Di sản đặc sắc', 'Ẩm thực bản địa', 'Lễ hội bốn mùa', 'Bản sắc cộng đồng']
+    : ['Unique Heritage', 'Local Cuisine', 'Four Seasons Festivals', 'Community Identity']
 
   return (
     <div className="page-shell">
       <PageHeader
         lang={lang}
         onLangChange={setLang}
-        breadcrumb={[
-          { label: lang === 'vi' ? 'Khám phá vùng miền' : 'Explore Regions' },
-        ]}
+        breadcrumb={[{ label: lang === 'vi' ? 'Khám phá vùng miền' : 'Explore Regions' }]}
       />
 
       <main className="regions-page">
         <section className="regions-hero">
-        <div className="regions-hero__bg">
-          <img src={imgHeroBg} alt="Vietnam Cultural Heritage" />
-          <div className="regions-hero__overlay"></div>
-        </div>
-        
-        <div className="regions-hero__content fade-up">
-          <div className="regions-hero__badge">
-            <span className="regions-hero__badge-icon">✨</span>
-            <span>{lang === 'vi' ? 'Hành trình qua những miền đất Việt' : 'A journey through Vietnamese lands'}</span>
+          <div className="regions-hero__bg">
+            <img src={imgHeroBg} alt="Vietnam Cultural Heritage" />
+            <div className="regions-hero__overlay"></div>
           </div>
-          
-          <h1 className="regions-hero__title">
-            {lang === 'vi' ? 'Khám phá vùng miền' : 'Discover the Regions of'}
-            <span className="regions-hero__title-accent"> {lang === 'vi' ? 'Việt Nam' : 'Vietnam'}</span>
-          </h1>
-          
-          <p className="regions-hero__desc">
-            {lang === 'vi' 
-              ? 'Mỗi vùng đất là một nịp sống, một lớp ký ức, một sắc màu văn hoá riêng đang chờ được cảm nhận.'
-              : 'Each land is a heartbeat, a layer of memory, a unique cultural color waiting to be felt.'}
-          </p>
-          
-          <div className="regions-hero__actions">
-            <button 
-              className="regions-hero__btn regions-hero__btn--primary"
-              onClick={() => document.querySelector('.regions-split-layout')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              {lang === 'vi' ? 'Khám phá ngay' : 'Explore Now'} 
-              <span className="btn-icon">→</span>
-            </button>
-            <button 
-              className="regions-hero__btn regions-hero__btn--secondary"
-              onClick={() => document.querySelector('.regions-split-layout__map')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              <span className="btn-icon">🗺️</span>
-              {lang === 'vi' ? 'Xem bản đồ vùng miền' : 'View Region Map'}
-            </button>
-          </div>
-        </div>
 
-        <div className="regions-hero__categories fade-up-delayed">
-          {[
-            { vi: 'Di sản đặc sắc', en: 'Unique Heritage' },
-            { vi: 'Ẩm thực bản địa', en: 'Local Cuisine' },
-            { vi: 'Lễ hội bốn mùa', en: 'Four Seasons Festivals' },
-            { vi: 'Bản sắc cộng đồng', en: 'Community Identity' }
-          ].map((cat, idx) => (
-            <div key={idx} className="hero-category-tag">
-              {lang === 'vi' ? cat.vi : cat.en}
+          <div className="regions-hero__content fade-up">
+            <div className="regions-hero__badge">
+              <span className="regions-hero__badge-icon">✨</span>
+              <span>{lang === 'vi' ? 'Hành trình qua những miền đất Việt' : 'A journey through Vietnamese lands'}</span>
             </div>
-          ))}
-        </div>
-      </section>
 
-      <div className="regions-page__shell">
-        <div className="regions-split-layout fade-up">
-          <div className="regions-split-layout__map">
-            {isLoading ? <div className="regions-loading-inline">{copy.loading}</div> : null}
-            {isError ? <div className="regions-loading-inline regions-loading-inline--error">{copy.error}</div> : null}
-            <h2>{lang === 'vi' ? 'Bản đồ văn hóa' : 'Cultural map'}</h2>
-            <p className="regions-split-layout__map-desc">{lang === 'vi'
-              ? 'Chạm hoặc rê chuột vào từng vùng để khám phá những nét văn hóa đặc trưng từ Bắc chí Nam.'
-              : 'Hover or tap each region to explore the cultural identity of Vietnam from north to south.'}</p>
-            <VietnamMap
-              activeKey={activeKey}
-              onSelectRegion={handleSelectRegion}
-              lang={lang}
-            />
-          </div>
+            <h1 className="regions-hero__title">
+              {lang === 'vi' ? 'Khám phá vùng miền' : 'Discover the Regions of'}
+              <span className="regions-hero__title-accent"> {lang === 'vi' ? 'Việt Nam' : 'Vietnam'}</span>
+            </h1>
 
-          <div className="regions-split-layout__content">
-            <div className="region-card-wrapper">
-              <div className="region-tabs">
-                {mappedRegions.map((item) => (
-                  <button
-                    key={item.key}
-                    type="button"
-                    className={`region-tab ${activeKey === item.key ? 'is-active' : ''}`}
-                    onClick={() => handleSelectRegion(item.key)}
-                  >
-                    {item.badge}
-                  </button>
-                ))}
-              </div>
-
-              <div className="region-card">
-                <div className="region-card__header">
-                  <span className="region-card__decorator"></span>
-                  <h2>{activeRegion.badge}</h2>
-                </div>
-
-                <p className="region-card__desc">{activeRegion.description}</p>
-
-                <div className="region-card__details">
-                  <div className="region-card__detail-item">
-                    <div className="region-card__detail-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                    </div>
-                    <div className="region-card__detail-text">
-                      <strong>{lang === 'vi' ? 'Điểm đến nổi bật' : 'Highlighted Destinations'}</strong>
-                      <span>{(activeRegion.highlights || []).join(', ')}</span>
-                    </div>
-                  </div>
-
-                  <div className="region-card__detail-item">
-                    <div className="region-card__detail-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    </div>
-                    <div className="region-card__detail-text">
-                      <strong>{lang === 'vi' ? 'Trải nghiệm đặc trưng' : 'Signature Experiences'}</strong>
-                      <span>{activeRegion.experiences}</span>
-                    </div>
-                  </div>
-
-                  <div className="region-card__detail-item">
-                    <div className="region-card__detail-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    </div>
-                    <div className="region-card__detail-text">
-                      <strong>{lang === 'vi' ? 'Không khí' : 'Atmosphere'}</strong>
-                      <span>{activeRegion.atmosphere}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="region-card__actions">
-                  <Link to={`/regions/${activeRegion.code || ''}`} className="region-card__btn">
-                    {lang === 'vi' ? 'Xem chi tiết vùng miền' : 'Explore this region'} →
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <section className="regions-overview-section">
-          <div className="regions-overview__header fade-up">
-            <h2>{lang === 'vi' ? 'Câu chuyện từng vùng đất' : 'Stories of every land'}</h2>
-            <p>{lang === 'vi' 
-              ? 'Mỗi vùng miền là một bản giao hưởng văn hoá riêng, được tạo nên từ phong cảnh, ẩm thực, lễ hội và tâm hồn con người.' 
-              : 'Each region is a unique cultural symphony, created from landscape, cuisine, festivals, and human soul.'}
+            <p className="regions-hero__desc">
+              {lang === 'vi'
+                ? 'Mỗi vùng đất là một nhịp sống, một lớp ký ức, một sắc màu văn hoá riêng đang chờ được cảm nhận.'
+                : 'Each land is a heartbeat, a layer of memory, a unique cultural color waiting to be felt.'}
             </p>
+
+            <div className="regions-hero__actions">
+              <button className="regions-hero__btn regions-hero__btn--primary" onClick={() => scrollToSelector('.regions-split-layout')}>
+                {lang === 'vi' ? 'Khám phá ngay' : 'Explore Now'}
+                <span className="btn-icon">→</span>
+              </button>
+              <button className="regions-hero__btn regions-hero__btn--secondary" onClick={() => scrollToSelector('.regions-split-layout__map')}>
+                <span className="btn-icon">🗺️</span>
+                {lang === 'vi' ? 'Xem bản đồ vùng miền' : 'View Region Map'}
+              </button>
+            </div>
           </div>
-          <div className="regions-overview__container fade-up">
-            {overviewRegions.map((region, idx) => {
-              const isReversed = idx % 2 !== 0;
-              return (
-                <div key={region.id} className={`regions-overview__card ${isReversed ? 'is-reversed' : ''}`}>
-                  <div className="regions-overview__image-col">
-                    <div className="regions-overview__image">
-                      {region.image ? (
-                        <img src={region.image} alt={region.title} />
-                      ) : (
-                        <div className="placeholder-image">Ảnh {region.badge}</div>
-                      )}
-                    </div>
+
+          <div className="regions-hero__categories fade-up-delayed">
+            {heroCategories.map((label, idx) => (
+              <div key={`${label}-${idx}`} className="hero-category-tag">{label}</div>
+            ))}
+          </div>
+        </section>
+
+        <div className="regions-page__shell">
+          <div className="regions-split-layout fade-up">
+            <div className="regions-split-layout__map">
+              {isLoading ? <div className="regions-loading-inline">{copy.loading}</div> : null}
+              {isError ? <div className="regions-loading-inline regions-loading-inline--error">{copy.error}</div> : null}
+              <h2>{lang === 'vi' ? 'Bản đồ văn hóa' : 'Cultural map'}</h2>
+              <p className="regions-split-layout__map-desc">
+                {lang === 'vi'
+                  ? 'Chạm hoặc rê chuột vào từng vùng để khám phá những nét văn hóa đặc trưng từ Bắc chí Nam.'
+                  : 'Hover or tap each region to explore the cultural identity of Vietnam from north to south.'}
+              </p>
+              <VietnamMap activeKey={activeKey} onSelectRegion={handleSelectRegion} lang={lang} />
+            </div>
+
+            <div className="regions-split-layout__content">
+              <div className="region-card-wrapper">
+                <div className="region-tabs">
+                  {mappedRegions.map((item) => (
+                    <button
+                      key={item.key || item.code || item.id}
+                      type="button"
+                      className={`region-tab ${activeKey === item.key ? 'is-active' : ''}`}
+                      onClick={() => handleSelectRegion(item.key)}
+                    >
+                      {item.badge}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="region-card">
+                  <div className="region-card__header">
+                    <span className="region-card__decorator"></span>
+                    <h2>{activeRegion.badge}</h2>
                   </div>
-                  <div className="regions-overview__content-col">
-                    <span className="regions-overview__badge">{region.badge}</span>
-                    <h3 className="regions-overview__title">{region.title}</h3>
-                    <p className="regions-overview__desc">{region.desc}</p>
-                    
-                    <div className="regions-overview__details">
-                      {(region.details || []).map((detail, dIdx) => (
-                        <div key={dIdx} className="regions-overview__detail-row">
-                          <span className="regions-overview__detail-label">{detail.label}</span>
-                          <span className="regions-overview__detail-value">{detail.value}</span>
-                        </div>
-                      ))}
+
+                  <p className="region-card__desc">{activeRegion.description}</p>
+
+                  <div className="region-card__details">
+                    <div className="region-card__detail-item">
+                      <div className="region-card__detail-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                      </div>
+                      <div className="region-card__detail-text">
+                        <strong>{lang === 'vi' ? 'Điểm đến nổi bật' : 'Highlighted Destinations'}</strong>
+                        <span>{(activeRegion.highlights || []).join(', ')}</span>
+                      </div>
                     </div>
 
-                    <Link to={region.link || "/provinces"} className="regions-overview__cta-btn">
-                      {lang === 'vi' ? 'Xem sâu hơn' : 'View more'} <span aria-hidden="true">→</span>
+                    <div className="region-card__detail-item">
+                      <div className="region-card__detail-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                      </div>
+                      <div className="region-card__detail-text">
+                        <strong>{lang === 'vi' ? 'Trải nghiệm đặc trưng' : 'Signature Experiences'}</strong>
+                        <span>{activeRegion.experiences}</span>
+                      </div>
+                    </div>
+
+                    <div className="region-card__detail-item">
+                      <div className="region-card__detail-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                      </div>
+                      <div className="region-card__detail-text">
+                        <strong>{lang === 'vi' ? 'Không khí' : 'Atmosphere'}</strong>
+                        <span>{activeRegion.atmosphere}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="region-card__actions">
+                    <Link to={activeRegion.code ? `/regions/${activeRegion.code}` : '/regions'} className="region-card__btn">
+                      {lang === 'vi' ? 'Xem chi tiết vùng miền' : 'Explore this region'} →
                     </Link>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            </div>
           </div>
-          <div className="section-view-all">
-            <Link to="/regions" className="provinces__button view-all-btn">Xem tất cả vùng miền →</Link>
-          </div>
-        </section>
 
-        {/* Section 2: Inspiration Section */}
-        <section className="inspiration-section">
-          <div className="inspiration__container fade-up">
-            <div className="inspiration__header">
-              <h2>{lang === 'vi' ? 'Khám phá theo cảm hứng' : 'Explore by Inspiration'}</h2>
-              <p>{lang === 'vi' 
-                ? 'Hãy để trái tim dẫn lối - chọn những chủ đề để gợi cảm xúc và khám phá vùng đất phù hợp với tâm trạng của bạn.'
-                : 'Let your heart lead the way - choose themes to evoke emotions and discover land that fits your mood.'}
+          <section className="regions-overview-section">
+            <div className="regions-overview__header fade-up">
+              <h2>{lang === 'vi' ? 'Câu chuyện từng vùng đất' : 'Stories of every land'}</h2>
+              <p>{lang === 'vi'
+                ? 'Mỗi vùng miền là một bản giao hưởng văn hoá riêng, được tạo nên từ phong cảnh, ẩm thực, lễ hội và tâm hồn con người.'
+                : 'Each region is a unique cultural symphony, created from landscape, cuisine, festivals, and human soul.'}
               </p>
             </div>
-            
-            <div className="inspiration__grid">
-              {inspirationCards.map((card, idx) => (
-                <div key={idx} className="inspiration-card">
-                  <div className="inspiration-card__bg">
-                    <img src={card.image} alt={card.title} />
-                    <div className="inspiration-card__overlay"></div>
+            <div className="regions-overview__container fade-up">
+              {overviewRegions.map((region, idx) => {
+                const isReversed = idx % 2 !== 0
+                return (
+                  <div key={region.id} className={`regions-overview__card ${isReversed ? 'is-reversed' : ''}`}>
+                    <div className="regions-overview__image-col">
+                      <div className="regions-overview__image">
+                        {region.image ? <img src={region.image} alt={region.title} /> : <div className="placeholder-image">Ảnh {region.badge}</div>}
+                      </div>
+                    </div>
+                    <div className="regions-overview__content-col">
+                      <span className="regions-overview__badge">{region.badge}</span>
+                      <h3 className="regions-overview__title">{region.title}</h3>
+                      <p className="regions-overview__desc">{region.desc}</p>
+                      <div className="regions-overview__details">
+                        {(region.details || []).map((detail, dIdx) => (
+                          <div key={dIdx} className="regions-overview__detail-row">
+                            <span className="regions-overview__detail-label">{detail.label}</span>
+                            <span className="regions-overview__detail-value">{detail.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <Link to={region.link || '/provinces'} className="regions-overview__cta-btn">
+                        {lang === 'vi' ? 'Xem sâu hơn' : 'View more'} <span aria-hidden="true">→</span>
+                      </Link>
+                    </div>
                   </div>
-                  <div className="inspiration-card__content">
-                    <h3>{card.title}</h3>
-                    <p>{card.desc}</p>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
-          </div>
-        </section>
-
-        {/* Section: Searchable Provinces */}
-        <section className="provinces-search-section">
-          <div className="provinces-search__container fade-up">
-            <div className="provinces-search__header">
-              <h2>Từ vùng miền đến từng tỉnh thành</h2>
-              <p>Khám phá chi tiết từng điểm đến, lên kế hoạch hành trình riêng của bạn.</p>
+            <div className="section-view-all">
+              <Link to="/regions" className="provinces__button view-all-btn">{lang === 'vi' ? 'Xem tất cả vùng miền →' : 'View all regions →'}</Link>
             </div>
+          </section>
 
-            <div className="provinces-search__controls">
-              <div className="search-bar-wrapper">
-                <span className="search-icon">🔍</span>
-                <input 
-                  type="text" 
-                  placeholder="Tìm tỉnh, thành phố..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
+          <section className="inspiration-section">
+            <div className="inspiration__container fade-up">
+              <div className="inspiration__header">
+                <h2>{lang === 'vi' ? 'Khám phá theo cảm hứng' : 'Explore by Inspiration'}</h2>
+                <p>{lang === 'vi'
+                  ? 'Hãy để trái tim dẫn lối - chọn những chủ đề để gợi cảm xúc và khám phá vùng đất phù hợp với tâm trạng của bạn.'
+                  : 'Let your heart lead the way - choose themes to evoke emotions and discover land that fits your mood.'}
+                </p>
               </div>
-
-              <div className="filter-chips">
-                <span className="filter-label">📍 Lọc theo:</span>
-                {filterOptions.map(filter => (
-                  <button 
-                    key={filter.id}
-                    className={`filter-chip ${activeFilter === filter.id ? 'is-active' : ''}`}
-                    onClick={() => setActiveFilter(filter.id)}
-                  >
-                    {filter.label}
-                  </button>
+              <div className="inspiration__grid">
+                {inspirationCards.map((card, idx) => (
+                  <div key={`${card.title}-${idx}`} className="inspiration-card">
+                    <div className="inspiration-card__bg">
+                      <img src={card.image} alt={card.title} />
+                      <div className="inspiration-card__overlay"></div>
+                    </div>
+                    <div className="inspiration-card__content">
+                      <h3>{card.title}</h3>
+                      <p>{card.desc}</p>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
+          </section>
 
-            <div className="provinces-search__grid">
-              {(provinceState.data.length ? provinceState.data : provincesData)
-                .filter((p) => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
-                .map((prov) => (
-                  <div key={prov.id} className="province-item-card">
+          <section className="provinces-search-section">
+            <div className="provinces-search__container fade-up">
+              <div className="provinces-search__header">
+                <h2>{lang === 'vi' ? 'Từ vùng miền đến từng tỉnh thành' : 'From regions to individual provinces'}</h2>
+                <p>{lang === 'vi' ? 'Khám phá chi tiết từng điểm đến, lên kế hoạch hành trình riêng của bạn.' : 'Explore each destination in detail and shape your own itinerary.'}</p>
+              </div>
+
+              <div className="provinces-search__controls">
+                <div className="search-bar-wrapper">
+                  <span className="search-icon">🔍</span>
+                  <input
+                    type="text"
+                    placeholder={lang === 'vi' ? 'Tìm tỉnh, thành phố...' : 'Search province or city...'}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+
+                <div className="filter-chips">
+                  <span className="filter-label">{lang === 'vi' ? '📍 Lọc theo:' : '📍 Filter by:'}</span>
+                  {localizedFilterOptions.map((filter) => (
+                    <button
+                      key={filter.id}
+                      className={`filter-chip ${activeFilter === filter.id ? 'is-active' : ''}`}
+                      onClick={() => setActiveFilter(filter.id)}
+                    >
+                      {filter.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="provinces-search__grid">
+                {visibleProvinces.map((prov) => (
+                  <div key={prov.id || prov.code || prov.name} className="province-item-card">
                     <div className="province-item__image">
-                      {prov.imageUrl || prov.image ? (
-                        <img src={prov.imageUrl || prov.image} alt={prov.name} />
+                      {prov.imageUrl ? (
+                        <img src={prov.imageUrl} alt={prov.imageAlt || prov.name} />
                       ) : (
                         <div className="province-item__placeholder">Ảnh {prov.name}</div>
                       )}
@@ -630,84 +640,83 @@ export default function RegionsPage() {
                         <h3>{prov.name}</h3>
                         <span className="location-icon">📍</span>
                       </div>
-                      <p className="province-item__desc">{prov.desc || `${prov.type} thuộc ${prov.subRegion}`}</p>
+                      <p className="province-item__desc">{prov.description}</p>
                       <div className="province-item__tags">
-                        {(prov.tags || []).map((tag) => (
-                          <span key={tag} className="province-item__tag">{tag}</span>
+                        {(prov.tags || []).map((tag, index) => (
+                          <span key={`${tag}-${index}`} className="province-item__tag">{tag}</span>
                         ))}
                       </div>
-                      <Link to={`/provinces/${prov.code}`} className="province-item__cta">Xem chi tiết <span aria-hidden="true">→</span></Link>
+                      <Link to={prov.code ? `/provinces/${prov.code}` : '/provinces'} className="province-item__cta">
+                        {lang === 'vi' ? 'Xem chi tiết' : 'View details'} <span aria-hidden="true">→</span>
+                      </Link>
                     </div>
                   </div>
                 ))}
-            </div>
+              </div>
 
-            <div className="provinces-search__footer">
-              <Link to="/provinces" className="view-all-provinces-btn">Xem thêm tỉnh thành</Link>
-            </div>
-          </div>
-        </section>
+              {!visibleProvinces.length ? <div className="provinces-search__empty">{lang === 'vi' ? 'Không tìm thấy tỉnh thành phù hợp.' : 'No matching provinces found.'}</div> : null}
 
-        {/* Section: Seasons Showcase */}
-        <section className="seasons-section">
-          <div className="seasons__container fade-up">
-            <div className="seasons__header">
-              <h2>Vẻ đẹp theo mùa</h2>
-              <p>Mỗi mùa mang một sắc thái riêng, khám phá vùng miền Việt Nam qua bốn mùa thay đổi.</p>
+              <div className="provinces-search__footer">
+                <Link to="/provinces" className="view-all-provinces-btn">{lang === 'vi' ? 'Xem thêm tỉnh thành' : 'View more provinces'}</Link>
+              </div>
             </div>
-            
-            <div className="seasons__grid">
-              {seasonsData.map(season => (
-                <div key={season.id} className="season-card">
-                  <div className="season-card__bg">
-                    <img src={season.image} alt={season.title} />
-                    <div className="season-card__overlay"></div>
-                  </div>
-                  <div className="season-card__content">
-                    <div className="season-card__top">
-                      <h3>{season.title}</h3>
-                      <span className="season-card__months">{season.months}</span>
+          </section>
+
+          <section className="seasons-section">
+            <div className="seasons__container fade-up">
+              <div className="seasons__header">
+                <h2>{lang === 'vi' ? 'Vẻ đẹp theo mùa' : 'Beauty by Season'}</h2>
+                <p>{lang === 'vi' ? 'Mỗi mùa mang một sắc thái riêng, khám phá vùng miền Việt Nam qua bốn mùa thay đổi.' : 'Each season brings its own tone, revealing Vietnam through four changing moments.'}</p>
+              </div>
+              <div className="seasons__grid">
+                {seasonsData.map((season) => (
+                  <div key={season.id} className="season-card">
+                    <div className="season-card__bg">
+                      <img src={season.image} alt={season.title} />
+                      <div className="season-card__overlay"></div>
                     </div>
-                    <p className="season-card__desc">{season.desc}</p>
-                    <div className="season-card__details">
-                      {season.details.map((d, i) => (
-                        <div key={i} className="season-card__detail-item">
-                          <strong>{d.region}:</strong> {d.text}
-                        </div>
-                      ))}
+                    <div className="season-card__content">
+                      <div className="season-card__top">
+                        <h3>{season.title}</h3>
+                        <span className="season-card__months">{season.months}</span>
+                      </div>
+                      <p className="season-card__desc">{season.desc}</p>
+                      <div className="season-card__details">
+                        {season.details.map((d, i) => (
+                          <div key={i} className="season-card__detail-item"><strong>{d.region}:</strong> {d.text}</div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Section: Cultural Layers */}
-        <section className="cultural-layers-section">
-          <div className="cultural-layers__container fade-up">
-            <div className="cultural-layers__header">
-              <h2>Những lớp văn hoá tạo nên một vùng đất</h2>
-              <p>Văn hoá không phải một khối đơn thuần mà là sự giao thoa của nhiều chiều kích - từ ẩm thực, lễ hội, kiến trúc đến nghệ thuật và phong tục.</p>
-            </div>
+          <section className="cultural-layers-section">
+            <div className="cultural-layers__container fade-up">
+              <div className="cultural-layers__header">
+                <h2>{lang === 'vi' ? 'Những lớp văn hoá tạo nên một vùng đất' : 'Cultural layers that shape a land'}</h2>
+                <p>{lang === 'vi' ? 'Văn hoá không phải một khối đơn thuần mà là sự giao thoa của nhiều chiều kích - từ ẩm thực, lễ hội, kiến trúc đến nghệ thuật và phong tục.' : 'Culture is not a single block but an intersection of many dimensions—from cuisine and festivals to architecture, arts, and customs.'}</p>
+              </div>
 
-            <div className="cultural-layers__grid">
-              {culturalCategories.map(cat => (
-                <div key={cat.id} className="culture-layer-card">
-                  <div className="culture-layer__icon-box">{cat.icon}</div>
-                  <h3>{cat.title}</h3>
-                  <p>{cat.desc}</p>
-                </div>
-              ))}
-            </div>
+              <div className="cultural-layers__grid">
+                {culturalCategories.map((cat) => (
+                  <div key={cat.id} className="culture-layer-card">
+                    <div className="culture-layer__icon-box">{cat.icon}</div>
+                    <h3>{cat.title}</h3>
+                    <p>{cat.desc}</p>
+                  </div>
+                ))}
+              </div>
 
-            <div className="cultural-layers__summary">
-              <p>"Mỗi vùng đất là một bản giao hưởng văn hoá"</p>
-              <span>Khám phá chi tiết từng chiều kích văn hoá để hiểu sâu hơn về tinh thần và bản sắc của từng vùng miền Việt Nam.</span>
+              <div className="cultural-layers__summary">
+                <p>{lang === 'vi' ? '"Mỗi vùng đất là một bản giao hưởng văn hoá"' : '"Each land is a cultural symphony"'}</p>
+                <span>{lang === 'vi' ? 'Khám phá chi tiết từng chiều kích văn hoá để hiểu sâu hơn về tinh thần và bản sắc của từng vùng miền Việt Nam.' : 'Explore each cultural dimension in detail to better understand the spirit and identity of Vietnam’s regions.'}</span>
+              </div>
             </div>
-          </div>
-        </section>
-      </div>
+          </section>
+        </div>
       </main>
 
       <Footer lang={lang} />

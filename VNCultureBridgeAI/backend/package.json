@@ -16,7 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^5.2.1",
-    "mssql": "^11.0.1",
-    "msnodesqlv8": "^4.3.2"
+    "msnodesqlv8": "^5.1.9",
+    "mssql": "^11.0.1"
   }
 }

@@ -37,7 +37,13 @@
       "Bash(git:*)",
       "Bash(powershell:*)",
       "Bash(taskkill:*)",
-      "Bash(printf '\\\\n---\\\\n')"
+      "Bash(printf '\\\\n---\\\\n')",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3001)",
+      "Bash(taskkill.exe:*)",
+      "Bash(findstr :5174)",
+      "WebSearch",
+      "Bash(tasklist:*)"
     ]
   }
 }
