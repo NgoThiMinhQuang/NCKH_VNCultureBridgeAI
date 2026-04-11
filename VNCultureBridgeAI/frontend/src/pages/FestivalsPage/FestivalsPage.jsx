@@ -10,6 +10,8 @@ import banner3Img from "../../assets/banner3.jpg";
 import anhtet1 from "../../assets/anhtet1.PNG";
 import giotohungvuong from "../../assets/giotohungvuong1.PNG";
 import festivel_hue from "../../assets/festival_hue.png";
+import hmongFestival from "../../assets/hmong_festival_gau_tao_1775575986843.png";
+import hatQuanHo from "../../assets/hat-quan-ho.png";
 import "./FestivalsPage.css";
 import "../../App.css";
 
@@ -309,17 +311,63 @@ export default function FestivalsPage() {
               </div>
             </div>
 
-            {/* RIGHT: Image */}
+            {/* RIGHT: Fan Card Stack — 5 cards in true fan/arc layout */}
             <div className="festivals-hero__right">
-              <div className="festivals-hero__img-frame">
-                <img src={bannerImg} alt="Vietnamese Festival" className="festivals-hero__img-main" />
-                {/* Floating badge */}
-                <div className="festivals-hero__img-badge">
-                  <span className="festivals-hero__img-badge-icon">🎏</span>
-                  <span>{lang === 'vi' ? 'Lễ hội truyền thống Việt Nam' : 'Vietnamese Traditional Festivals'}</span>
+              <div className="festivals-fan">
+
+                {/* Rendered back → front so center sits on top */}
+
+                {/* Card FL – far left (−20°) — deepest back */}
+                <div className="festivals-fan__card festivals-fan__card--fl">
+                  <img src={banner3Img} alt="Lim Festival" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Hội Lim' : 'Lim Festival'}
+                  </div>
                 </div>
-                {/* Decorative ring */}
-                <div className="festivals-hero__img-ring"></div>
+
+                {/* Card FR – far right (+20°) — second deepest */}
+                <div className="festivals-fan__card festivals-fan__card--fr">
+                  <img src={banner2Img} alt="Hoi An Lanterns" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Lễ hội đèn lồng Hội An' : 'Hoi An Lantern Festival'}
+                  </div>
+                </div>
+
+                {/* Card L – left (−10°) */}
+                <div className="festivals-fan__card festivals-fan__card--l">
+                  <img src={hatQuanHo} alt="Quan Ho Folk Songs" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Dân ca Quan Họ' : 'Quan Ho Folk Songs'}
+                  </div>
+                </div>
+
+                {/* Card R – right (+10°) */}
+                <div className="festivals-fan__card festivals-fan__card--r">
+                  <img src={hmongFestival} alt="Hmong Festival" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Lễ hội Gầu Tào' : 'Gau Tao Festival'}
+                  </div>
+                </div>
+
+                {/* Card C – CENTER (0°) — painted last = highest z-order */}
+                <div className="festivals-fan__card festivals-fan__card--c">
+                  <img src={bannerImg} alt="Vietnamese Festival" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Lễ hội truyền thống Việt Nam' : 'Vietnamese Traditional Festivals'}
+                  </div>
+                </div>
+
+                {/* Floating badge */}
+                <div className="festivals-fan__badge">
+                  <span>🎏</span>
+                  <span>8.000+ Festivals</span>
+                </div>
+
               </div>
             </div>
 
@@ -952,9 +1000,9 @@ export default function FestivalsPage() {
                 </p>
               </div>
 
-              <button className="festivals-btn festivals-btn--primary festivals-meaning__btn">
+              <Link to="/articles" className="festivals-btn festivals-btn--primary festivals-meaning__btn">
                 Learn More About Our Culture
-              </button>
+              </Link>
             </div>
           </div>
         </section>
