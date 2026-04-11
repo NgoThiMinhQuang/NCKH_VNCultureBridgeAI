@@ -227,6 +227,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;  /* anchor to bottom so pivots align */
+    transform: translateY(-40px);
 }
 
 /*
