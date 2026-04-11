@@ -10,6 +10,8 @@ import banner3Img from "../../assets/banner3.jpg";
 import anhtet1 from "../../assets/anhtet1.PNG";
 import giotohungvuong from "../../assets/giotohungvuong1.PNG";
 import festivel_hue from "../../assets/festival_hue.png";
+import hmongFestival from "../../assets/hmong_festival_gau_tao_1775575986843.png";
+import hatQuanHo from "../../assets/hat-quan-ho.png";
 import "./FestivalsPage.css";
 import "../../App.css";
 
@@ -237,36 +239,143 @@ export default function FestivalsPage() {
 
       <main className="festivals-main">
         {/* festival hero */}
-        <section
-          className="festivals-hero"
-          style={{ backgroundImage: `url(${bannerImg})` }}
-        >
+        <section className="festivals-hero">
+          {/* Background image */}
+          <div className="festivals-hero__bg" style={{ backgroundImage: `url(${bannerImg})` }}></div>
+          {/* Overlay */}
           <div className="festivals-hero__overlay"></div>
-          <div className="festivals-hero__content">
-            <h1 className="festivals-hero__title">
-              Vietnamese
-              <br />
-              Festivals
-            </h1>
-            <p className="festivals-hero__subtitle">
-              Experience the vibrant traditions of Vietnam through
-              <br />
-              celebrations that have endured for centuries
-            </p>
-            <div className="festivals-hero__actions">
-              <a
-                href="#explore"
-                className="festivals-btn festivals-btn--primary"
-              >
-                Explore Festivals
-              </a>
-              <Link
-                to="/ai-guide"
-                className="festivals-btn festivals-btn--secondary"
-              >
-                Ask AI Guide
-              </Link>
+
+          {/* Ornamental corners */}
+          <div className="festivals-hero__ornament festivals-hero__ornament--tl"></div>
+          <div className="festivals-hero__ornament festivals-hero__ornament--br"></div>
+
+          {/* Split layout */}
+          <div className="festivals-hero__inner">
+
+            {/* LEFT: Text */}
+            <div className="festivals-hero__left">
+              {/* Badge */}
+              <div className="festivals-hero__badge">
+                <span className="festivals-hero__badge-dot"></span>
+                {lang === 'vi' ? 'Lễ hội · Văn hóa · Truyền thống' : 'Festivals · Culture · Traditions'}
+              </div>
+
+              {/* Heading */}
+              <h1 className="festivals-hero__title">
+                {lang === 'vi' ? (
+                  <>
+                    <span className="festivals-hero__title-line">Tinh Hoa</span>
+                    <span className="festivals-hero__title-accent">Lễ Hội</span>
+                    <span className="festivals-hero__title-line">Việt Nam</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="festivals-hero__title-line">Vietnamese</span>
+                    <span className="festivals-hero__title-accent">Festivals</span>
+                    <span className="festivals-hero__title-line">&amp; Traditions</span>
+                  </>
+                )}
+              </h1>
+
+              {/* Ornamental divider */}
+              <div className="festivals-hero__divider-row">
+                <span className="festivals-hero__divider-line"></span>
+                <span className="festivals-hero__divider-diamond">◆</span>
+                <span className="festivals-hero__divider-line"></span>
+              </div>
+
+              {/* Subtitle */}
+              <p className="festivals-hero__subtitle">
+                {lang === 'vi'
+                  ? 'Hàng nghìn năm truyền thống hội tụ trong từng lễ hội — nơi sắc màu, âm thanh và tâm hồn Việt hòa quyện thành một.'
+                  : 'Thousands of years of tradition converge in every festival — where colors, sounds, and the Vietnamese spirit unite as one.'
+                }
+              </p>
+
+              {/* Stats */}
+              <div className="festivals-hero__stats">
+                <div className="festivals-hero__stat">
+                  <strong>8.000+</strong>
+                  <span>{lang === 'vi' ? 'Lễ hội hàng năm' : 'Annual festivals'}</span>
+                </div>
+                <div className="festivals-hero__stat-sep">|</div>
+                <div className="festivals-hero__stat">
+                  <strong>54</strong>
+                  <span>{lang === 'vi' ? 'Dân tộc anh em' : 'Ethnic groups'}</span>
+                </div>
+                <div className="festivals-hero__stat-sep">|</div>
+                <div className="festivals-hero__stat">
+                  <strong>63</strong>
+                  <span>{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</span>
+                </div>
+              </div>
             </div>
+
+            {/* RIGHT: Fan Card Stack — 5 cards in true fan/arc layout */}
+            <div className="festivals-hero__right">
+              <div className="festivals-fan">
+
+                {/* Rendered back → front so center sits on top */}
+
+                {/* Card FL – far left (−20°) — deepest back */}
+                <div className="festivals-fan__card festivals-fan__card--fl">
+                  <img src={banner3Img} alt="Lim Festival" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Hội Lim' : 'Lim Festival'}
+                  </div>
+                </div>
+
+                {/* Card FR – far right (+20°) — second deepest */}
+                <div className="festivals-fan__card festivals-fan__card--fr">
+                  <img src={banner2Img} alt="Hoi An Lanterns" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Lễ hội đèn lồng Hội An' : 'Hoi An Lantern Festival'}
+                  </div>
+                </div>
+
+                {/* Card L – left (−10°) */}
+                <div className="festivals-fan__card festivals-fan__card--l">
+                  <img src={hatQuanHo} alt="Quan Ho Folk Songs" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Dân ca Quan Họ' : 'Quan Ho Folk Songs'}
+                  </div>
+                </div>
+
+                {/* Card R – right (+10°) */}
+                <div className="festivals-fan__card festivals-fan__card--r">
+                  <img src={hmongFestival} alt="Hmong Festival" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Lễ hội Gầu Tào' : 'Gau Tao Festival'}
+                  </div>
+                </div>
+
+                {/* Card C – CENTER (0°) — painted last = highest z-order */}
+                <div className="festivals-fan__card festivals-fan__card--c">
+                  <img src={bannerImg} alt="Vietnamese Festival" />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {lang === 'vi' ? 'Lễ hội truyền thống Việt Nam' : 'Vietnamese Traditional Festivals'}
+                  </div>
+                </div>
+
+                {/* Floating badge */}
+                <div className="festivals-fan__badge">
+                  <span>🎏</span>
+                  <span>8.000+ Festivals</span>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="festivals-hero__scroll">
+            <div className="festivals-mouse-icon"></div>
           </div>
         </section>
 
@@ -891,9 +1000,9 @@ export default function FestivalsPage() {
                 </p>
               </div>
 
-              <button className="festivals-btn festivals-btn--primary festivals-meaning__btn">
+              <Link to="/articles" className="festivals-btn festivals-btn--primary festivals-meaning__btn">
                 Learn More About Our Culture
-              </button>
+              </Link>
             </div>
           </div>
         </section>

@@ -1,8 +1,25 @@
-const mssql = isWindowsAuth()
-  ? require('mssql/msnodesqlv8')
-  : require('mssql')
-
+let mssql
 let poolPromise
+
+function getMssqlDriver() {
+  if (mssql) return mssql
+
+  try {
+    mssql = isWindowsAuth()
+      ? require('mssql/msnodesqlv8')
+      : require('mssql')
+
+    return mssql
+  } catch (error) {
+    if (isWindowsAuth() && error.code === 'ERR_DLOPEN_FAILED') {
+      throw new Error(
+        'Windows Authentication hiện đang dùng msnodesqlv8 nhưng package này không tương thích với Node.js hiện tại. Hãy dùng Node 20 LTS hoặc chuyển DB_WINDOWS_AUTH=false để dùng SQL account.'
+      )
+    }
+
+    throw error
+  }
+}
 
 function isWindowsAuth() {
   return String(process.env.DB_WINDOWS_AUTH || 'false') === 'true'
@@ -57,7 +74,12 @@ function getMssqlConfig() {
 
 function getPool() {
   if (!poolPromise) {
-    poolPromise = mssql.connect(getMssqlConfig())
+    const driver = getMssqlDriver()
+    poolPromise = driver.connect(getMssqlConfig())
+      .catch((error) => {
+        poolPromise = undefined
+        throw error
+      })
   }
 
   return poolPromise
