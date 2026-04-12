@@ -306,6 +306,7 @@ function mapArticleCard(row, lang) {
     imageUrl: row.ImageUrl || null,
     imageAlt: mapText(row, 'AltTextVI', 'AltTextEN', lang),
     publishedAt: row.NgayXuatBan || null,
+    category: mapText(row, 'CategoryTenVI', 'CategoryTenEN', lang) || null,
   }
 }
 
@@ -596,6 +597,7 @@ function mapRegion(row, lang) {
   const badge = fixText(row.HomepageBadgeVI) || name
   const title = fixText(row.HomepageTitleVI) || name
   const description = fixText(row.HomepageDescriptionVI) || type || name
+  const overviewDetails = parseLocalizedJson(row, 'OverviewDetailsJsonVI', 'OverviewDetailsJsonEN', lang, [])
 
   return {
     id: row.VungID,
@@ -612,6 +614,9 @@ function mapRegion(row, lang) {
     imageUrl: row.ImageUrl || row.HomepageImageUrl || null,
     imageAlt: mapText(row, 'HomepageImageAltVI', 'AltTextEN', lang) || name,
     articleCount: row.ArticleCount || 0,
+    overviewTitle: mapText(row, 'OverviewTitleVI', 'OverviewTitleEN', lang) || title,
+    overviewDescription: mapText(row, 'OverviewDescriptionVI', 'OverviewDescriptionEN', lang) || description,
+    overviewDetails,
   }
 }
 
@@ -620,9 +625,185 @@ async function listArticles(filters, lang) {
   return rows.map((row) => mapArticleCard(row, lang))
 }
 
+function splitParagraphs(value) {
+  return String(value || '')
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+}
+
+function mapArticleMedia(row, lang) {
+  return {
+    id: row.MediaID,
+    code: row.MaBaiViet,
+    type: row.LoaiMedia,
+    url: row.UrlFile,
+    alt: mapText(row, 'AltTextVI', 'AltTextEN', lang),
+    caption: mapText(row, 'ChuThichVI', 'ChuThichEN', lang),
+    isMain: Boolean(row.LaAnhChinh),
+    order: row.ThuTuHienThi || 0,
+  }
+}
+
+function formatArticleDate(value, lang) {
+  if (!value) return lang === 'vi' ? 'Mới đây' : 'Recently'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  return date.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
+function estimateReadingTime(text, lang) {
+  const wordCount = String(text || '').trim().split(/\s+/).filter(Boolean).length
+  const minutes = Math.max(4, Math.round(wordCount / 180) || 4)
+  return lang === 'vi' ? `${minutes} phút đọc` : `${minutes} min read`
+}
+
+function getArticleAuthorMeta(code, lang) {
+  const authors = {
+    BV_SON_MAI: {
+      vi: { name: 'Trần Minh Khoa', role: 'Chuyên gia nghệ thuật', initials: 'TK' },
+      en: { name: 'Tran Minh Khoa', role: 'Art specialist', initials: 'TK' },
+    },
+    BV_TRANH_DONG_HO: {
+      vi: { name: 'Nguyễn Hương Lan', role: 'Nhà nghiên cứu dân gian', initials: 'NL' },
+      en: { name: 'Nguyen Huong Lan', role: 'Folk culture researcher', initials: 'NL' },
+    },
+    BV_GOM_BAT_TRANG: {
+      vi: { name: 'Phạm Đức Thành', role: 'Nhà nghiên cứu thủ công', initials: 'PT' },
+      en: { name: 'Pham Duc Thanh', role: 'Craft heritage researcher', initials: 'PT' },
+    },
+    BV_LUA_HA_DONG: {
+      vi: { name: 'Lê Thị Thu Hà', role: 'Biên tập viên văn hóa', initials: 'LH' },
+      en: { name: 'Le Thi Thu Ha', role: 'Culture editor', initials: 'LH' },
+    },
+    BV_AO_DAI: {
+      vi: { name: 'Vũ Minh Châu', role: 'Chuyên gia trang phục', initials: 'VC' },
+      en: { name: 'Vu Minh Chau', role: 'Costume specialist', initials: 'VC' },
+    },
+    BV_NHA_NHAC_CUNG_DINH: {
+      vi: { name: 'Hoàng Văn Bình', role: 'Nhà nghiên cứu âm nhạc', initials: 'HB' },
+      en: { name: 'Hoang Van Binh', role: 'Music researcher', initials: 'HB' },
+    },
+    BV_MUA_ROI_NUOC: {
+      vi: { name: 'Nguyễn Quang Hải', role: 'Nhà nghiên cứu sân khấu dân gian', initials: 'NH' },
+      en: { name: 'Nguyen Quang Hai', role: 'Folk theatre researcher', initials: 'NH' },
+    },
+    BV_KIEN_TRUC_HOI_AN: {
+      vi: { name: 'Trương Thị Mai', role: 'Nhà nghiên cứu kiến trúc', initials: 'TM' },
+      en: { name: 'Truong Thi Mai', role: 'Architecture researcher', initials: 'TM' },
+    },
+  }
+
+  const meta = authors[code]?.[lang === 'vi' ? 'vi' : 'en'] || {
+    name: lang === 'vi' ? 'Biên tập văn hoá' : 'Cultural editorial',
+    role: lang === 'vi' ? 'Bài viết được xây dựng từ dữ liệu CSDL' : 'Article built from database content',
+    initials: 'VH',
+  }
+
+  return {
+    ...meta,
+    bio: lang === 'vi'
+      ? 'Nội dung biên soạn từ dữ liệu nghệ thuật dân gian, được đồng bộ trực tiếp từ CSDL.'
+      : 'Content compiled from folk-art records synchronized directly from the database.',
+    stats: { posts: '—', followers: '—', comments: '—' },
+    email: 'content@vnculturebridge.ai',
+    website: 'vnculturebridge.ai',
+  }
+}
+
+function mapArticleDetail(row, mediaRows, relatedRows, lang) {
+  if (!row) return null
+
+  const title = mapText(row, 'TieuDeVI', 'TieuDeEN', lang)
+  const category = mapText(row, 'CategoryTenVI', 'CategoryTenEN', lang) || (lang === 'vi' ? 'Nghệ thuật dân gian' : 'Folk arts')
+  const heroMedia = mediaRows.find((item) => item.isMain) || mediaRows[0] || null
+  const bodySections = splitParagraphs(mapText(row, 'NoiDungChinhVI', 'NoiDungChinhEN', lang))
+  const intro = mapText(row, 'GioiThieuVI', 'GioiThieuEN', lang)
+  const origin = mapText(row, 'NguonGocVI', 'NguonGocEN', lang)
+  const meaning = mapText(row, 'YNghiaVanHoaVI', 'YNghiaVanHoaEN', lang)
+  const context = mapText(row, 'BoiCanhVI', 'BoiCanhEN', lang)
+  const quoteText = meaning || intro || bodySections[0] || ''
+  const sideImages = mediaRows.filter((item) => !item.isMain).map((item) => item.url)
+  const contentBody = mapText(row, 'NoiDungChinhVI', 'NoiDungChinhEN', lang)
+
+  return {
+    id: row.BaiVietID,
+    code: row.MaBaiViet,
+    title,
+    category,
+    author: getArticleAuthorMeta(row.MaBaiViet, lang),
+    publishedAt: formatArticleDate(row.NgayXuatBan, lang),
+    readingTime: estimateReadingTime(contentBody, lang),
+    heroImage: heroMedia?.url || row.ImageUrl || null,
+    heroImageAlt: heroMedia?.alt || mapText(row, 'AltTextVI', 'AltTextEN', lang) || title,
+    intro: intro || mapText(row, 'MoTaNganVI', 'MoTaNganEN', lang),
+    quote: {
+      text: quoteText,
+      author: lang === 'vi' ? 'Tư liệu văn hóa Việt Nam' : 'Vietnamese cultural archive',
+    },
+    sections: [
+      {
+        id: 'origin',
+        title: lang === 'vi' ? 'Nguồn Gốc & Lịch Sử' : 'Origin & History',
+        paragraphs: [origin].filter(Boolean),
+      },
+      {
+        id: 'meaning',
+        title: lang === 'vi' ? 'Ý Nghĩa Văn Hóa' : 'Cultural Meaning',
+        paragraphs: [meaning, context].filter(Boolean),
+      },
+      {
+        id: 'content',
+        title: lang === 'vi' ? 'Nội Dung Chính' : 'Main Content',
+        paragraphs: bodySections.filter(Boolean),
+      },
+    ].filter((section) => section.paragraphs.length > 0),
+    techniques: bodySections.slice(0, 4).map((paragraph, index) => ({
+      id: String(index + 1).padStart(2, '0'),
+      title: lang === 'vi' ? `Điểm nhấn ${index + 1}` : `Highlight ${index + 1}`,
+      desc: paragraph,
+      icon: ['🎨', '✨', '🪵', '🏺'][index % 4],
+    })),
+    sideImages,
+    conclusion: bodySections[bodySections.length - 1] || meaning || context || '',
+    tags: [category],
+    relatedArticles: relatedRows.map((item) => ({
+      title: mapText(item, 'TieuDeVI', 'TieuDeEN', lang),
+      date: formatArticleDate(item.NgayXuatBan, lang),
+      category: mapText(item, 'CategoryTenVI', 'CategoryTenEN', lang) || category,
+      image: item.ImageUrl || null,
+      code: item.MaBaiViet,
+    })),
+    media: mediaRows,
+  }
+}
+
 async function getArticle(code, lang) {
   const row = await contentRepository.getArticleByCode(code)
-  return row ? mapArticle(row, lang) : null
+  if (!row) return null
+
+  const [mediaRows, relatedRows] = await Promise.all([
+    contentRepository.getArticleMedia(code),
+    contentRepository.getArticleRelated(code, row.MaDanhMuc || null, 3),
+  ])
+
+  return mapArticleDetail(row, mediaRows.map((item) => mapArticleMedia(item, lang)), relatedRows, lang)
+}
+
+async function getArticle(code, lang) {
+  const row = await contentRepository.getArticleByCode(code)
+  if (!row) return null
+
+  const [mediaRows, relatedRows] = await Promise.all([
+    contentRepository.getArticleMedia(code),
+    contentRepository.getArticleRelated(code, row.MaDanhMuc || null, 3),
+  ])
+
+  return mapArticleDetail(row, mediaRows.map((item) => mapArticleMedia(item, lang)), relatedRows, lang)
 }
 
 async function listRegions(lang) {

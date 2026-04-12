@@ -684,6 +684,80 @@ WHERE bv.MaBaiViet = 'BV_CONG_CHIENG_TAY_NGUYEN'
         AND x.UrlFile = N'https://cdn.vnculturebridge.ai/media/cong-chieng/cong-chieng-tay-nguyen.mp4'
   );
 
+INSERT INTO dbo.NgheThuatPage (
+    MaTrang,
+    HeroBadgeVI, HeroBadgeEN,
+    HeroTitleLine1VI, HeroTitleLine1EN,
+    HeroTitleAccentVI, HeroTitleAccentEN,
+    HeroTitleLine3VI, HeroTitleLine3EN,
+    HeroSubtitleVI, HeroSubtitleEN,
+    HeroImageUrl, HeroImageAltVI, HeroImageAltEN,
+    HeroImageBadgeVI, HeroImageBadgeEN, HeroImageBadgeIcon,
+    StatsJsonVI, StatsJsonEN,
+    HeritageTitleVI, HeritageTitleEN,
+    HeritageSubtitleVI, HeritageSubtitleEN,
+    HeritageCardsJsonVI, HeritageCardsJsonEN,
+    FeaturedBadgeVI, FeaturedBadgeEN,
+    FeaturedTitleVI, FeaturedTitleEN,
+    FeaturedBodyJsonVI, FeaturedBodyJsonEN,
+    FeaturedStatsJsonVI, FeaturedStatsJsonEN,
+    FeaturedImageUrl, FeaturedImageAltVI, FeaturedImageAltEN,
+    GalleryTitleVI, GalleryTitleEN,
+    GallerySubtitleVI, GallerySubtitleEN,
+    GalleryImagesJsonVI, GalleryImagesJsonEN,
+    StoryBadgeVI, StoryBadgeEN,
+    StoryTitleVI, StoryTitleEN,
+    StoryBodyJsonVI, StoryBodyJsonEN,
+    StoryFeaturesJsonVI, StoryFeaturesJsonEN,
+    StoryImagesJsonVI, StoryImagesJsonEN,
+    HoatDong
+)
+SELECT
+    'NGHE_THUAT',
+    N'Văn hoá · Di sản · Nghệ thuật', N'Culture · Heritage · Art',
+    N'Nghệ Thuật', N'Vietnamese',
+    N'& Di Sản', N'Arts & Heritage',
+    N'Việt Nam', N'',
+    N'Nơi truyền thống cổ xưa hòa quyện cùng biểu đạt hiện đại — mang theo câu chuyện ngàn năm trong từng nét vẽ, từng điệu múa.',
+    N'Where ancient traditions weave through modern expression — carrying stories of a thousand years in every brushstroke and dance.',
+    N'https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=1600',
+    N'Ruộng bậc thang Việt Nam',
+    N'Vietnamese rice terraces',
+    N'Ruộng bậc thang Tây Bắc',
+    N'Northwestern Terraces',
+    N'🏔️',
+    N'[{"value":"4.000+","label":"Năm lịch sử"},{"value":"54","label":"Dân tộc anh em"},{"value":"8","label":"Di sản UNESCO"}]',
+    N'[{"value":"4,000+","label":"Years of history"},{"value":"54","label":"Ethnic groups"},{"value":"8","label":"UNESCO heritages"}]',
+    N'Khám Phá Di Sản', N'Explore Our Heritage',
+    N'Khám phá vẻ đẹp vượt thời gian của tinh hoa thủ công Việt Nam',
+    N'Discover the timeless beauty of Vietnamese craftsmanship',
+    N'[{"img":"https://images.unsplash.com/photo-1567689265664-3bc6e1e4b07b?w=900","titleVi":"Nghệ Thuật Lụa","titleEn":"Silk Art","subVi":"Lụa Truyền Thống","subEn":"Traditional Silk"},{"img":"https://images.unsplash.com/photo-1619164601044-90e0e1d0e87b?w=900","titleVi":"Nghệ Thuật Gốm","titleEn":"Pottery","subVi":"Gốm Bát Tràng","subEn":"Bat Trang Pottery"},{"img":"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900","titleVi":"Tranh Dân Gian","titleEn":"Traditional Painting","subVi":"Tranh Dân Gian","subEn":"Traditional Painting"},{"img":"https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=900","titleVi":"Điêu Khắc","titleEn":"Sculpture","subVi":"Điêu Khắc","subEn":"Sculpture"}]',
+    N'[{"img":"https://images.unsplash.com/photo-1567689265664-3bc6e1e4b07b?w=900","titleVi":"Nghệ Thuật Lụa","titleEn":"Silk Art","subVi":"Lụa Truyền Thống","subEn":"Traditional Silk"},{"img":"https://images.unsplash.com/photo-1619164601044-90e0e1d0e87b?w=900","titleVi":"Nghệ Thuật Gốm","titleEn":"Pottery","subVi":"Gốm Bát Tràng","subEn":"Bat Trang Pottery"},{"img":"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900","titleVi":"Tranh Dân Gian","titleEn":"Traditional Painting","subVi":"Tranh Dân Gian","subEn":"Traditional Painting"},{"img":"https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=900","titleVi":"Điêu Khắc","titleEn":"Sculpture","subVi":"Điêu Khắc","subEn":"Sculpture"}]',
+    N'TÁC PHẨM NỔI BẬT', N'FEATURED ARTWORK',
+    N'Nghệ thuật Sơn Mài', N'The Art of Sơn Mài',
+    N'["Nghệ thuật sơn mài Việt Nam là một quá trình chế tác công phu đã được hoàn thiện qua nhiều thế kỷ. Mỗi tác phẩm đòi hỏi nhiều tháng tỉ mỉ sơn từng lớp, với sự khéo léo của nghệ nhân khi phủ lên đến 12 lớp nhựa từ cây sơn.","Giữa các lớp, bề mặt được chà nhám và đánh bóng cẩn thận, tạo ra độ sâu và độ sáng rực rỡ như phát quang từ bên trong. Các sắc tố tự nhiên cùng vật liệu như vỏ trứng, vàng lá và bạc tạo ra hiệu ứng lấp lánh tinh tế khiến mỗi tác phẩm đều là độc nhất."]',
+    N'["Vietnamese lacquer art, known as Sơn Mài, is a painstaking craft that has been perfected over centuries. Each piece requires months of meticulous layering, with artisans applying up to twelve coats of resin derived from the sơn tree.","Between each layer, the surface is carefully sanded and polished, creating depth and luminosity that seems to glow from within. Natural pigments and materials like eggshell, gold leaf, and silver create the distinctive shimmer that makes each piece unique."]',
+    N'[{"value":"12+","label":"Lớp sơn mài"},{"value":"3-6","label":"Tháng hoàn thiện"},{"value":"100+","label":"Năm truyền thống"}]',
+    N'[{"value":"12+","label":"Layers of lacquer"},{"value":"3-6","label":"Months to complete"},{"value":"100+","label":"Years of tradition"}]',
+    N'https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=1200',
+    N'Sơn Mài Art',
+    N'Son Mai Art',
+    N'Thư Viện Ảnh', N'Our Gallery',
+    N'Hành trình thị giác qua di sản nghệ thuật Việt Nam',
+    N'A visual journey through Vietnam''s artistic legacy',
+    N'[{"url":"https://images.unsplash.com/photo-1567689265664-3bc6e1e4b07b?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1619164601044-90e0e1d0e87b?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1509722747041-616f39b57569?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1625944525533-473f1a3d54de?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=900","alt":"Vietnam Culture"}]',
+    N'[{"url":"https://images.unsplash.com/photo-1567689265664-3bc6e1e4b07b?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1619164601044-90e0e1d0e87b?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1509722747041-616f39b57569?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1625944525533-473f1a3d54de?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=900","alt":"Vietnam Culture"},{"url":"https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=900","alt":"Vietnam Culture"}]',
+    N'CÂU CHUYỆN CỦA CHÚNG TÔI', N'OUR STORY',
+    N'Sợi Chỉ Thời Gian, Dệt Bằng Tâm Hồn', N'Threads of Time, Woven with Soul',
+    N'["Trong hơn một thiên niên kỷ, các nghệ nhân Việt Nam đã gìn giữ và nâng tầm nghề thủ công của mình, truyền lại các kỹ thuật qua nhiều thế hệ như những di vật quý giá. Từ những dải lụa tinh xảo của Hà Đông đến vẻ đẹp mộc mạc của gốm sứ Bát Tràng, mỗi truyền thống đều mang trong mình linh hồn của đất nước.","Những bản khắc gỗ Đông Hồ rực rỡ kể những câu chuyện về sự thịnh vượng và may mắn, trong khi chiều sâu lung linh của các bức tranh sơn mài ghi lại những khoảnh khắc đóng băng trong thời gian. Những môn nghệ thuật này không chỉ đơn thuần là trang trí - chúng là chứng nhân sống động cho sự kiên cường, sáng tạo và tinh thần bền bỉ của Việt Nam."]',
+    N'["For over a millennium, Vietnamese artisans have preserved and elevated their crafts, passing down techniques through generations like precious heirlooms. From the delicate silks of Hà Đông to the earthen beauty of Bat Trang ceramics, each tradition carries the soul of the land.","The vibrant Đông Hồ woodblock prints tell stories of prosperity and luck, while the shimmering depths of lacquer paintings capture moments frozen in time. These arts are not merely decorative—they are living testimonies to resilience, creativity, and the enduring spirit of Vietnam."]',
+    N'[{"color":"#b91c1c","titleVi":"Bảo tồn di sản","titleEn":"Heritage Preservation","textVi":"Bảo vệ các kỹ thuật cổ xưa cho thế hệ tương lai","textEn":"Protecting ancient techniques for future generations"},{"color":"#f59e0b","titleVi":"Biểu đạt đương đại","titleEn":"Contemporary Expression","textVi":"Kết hợp truyền thống với tầm nhìn nghệ thuật hiện đại","textEn":"Blending tradition with modern artistic vision"},{"color":"#10b981","titleVi":"Kết nối văn hóa","titleEn":"Cultural Connection","textVi":"Chia sẻ di sản nghệ thuật của Việt Nam với thế giới","textEn":"Sharing Vietnam''s artistic legacy with the world"}]',
+    N'[{"color":"#b91c1c","titleVi":"Bảo tồn di sản","titleEn":"Heritage Preservation","textVi":"Bảo vệ các kỹ thuật cổ xưa cho thế hệ tương lai","textEn":"Protecting ancient techniques for future generations"},{"color":"#f59e0b","titleVi":"Biểu đạt đương đại","titleEn":"Contemporary Expression","textVi":"Kết hợp truyền thống với tầm nhìn nghệ thuật hiện đại","textEn":"Blending tradition with modern artistic vision"},{"color":"#10b981","titleVi":"Kết nối văn hóa","titleEn":"Cultural Connection","textVi":"Chia sẻ di sản nghệ thuật của Việt Nam với thế giới","textEn":"Sharing Vietnam''s artistic legacy with the world"}]',
+    N'[{"url":"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900","alt":"Heritage"},{"url":"https://images.unsplash.com/photo-1619164601044-90e0e1d0e87b?w=900","alt":"Heritage"},{"url":"https://images.unsplash.com/photo-1567689265664-3bc6e1e4b07b?w=900","alt":"Heritage"},{"url":"https://images.unsplash.com/photo-1625944525533-473f1a3d54de?w=900","alt":"Heritage"}]',
+    N'[{"url":"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900","alt":"Heritage"},{"url":"https://images.unsplash.com/photo-1619164601044-90e0e1d0e87b?w=900","alt":"Heritage"},{"url":"https://images.unsplash.com/photo-1567689265664-3bc6e1e4b07b?w=900","alt":"Heritage"},{"url":"https://images.unsplash.com/photo-1625944525533-473f1a3d54de?w=900","alt":"Heritage"}]',
+    1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.NgheThuatPage WHERE MaTrang = 'NGHE_THUAT');
+
 /* =========================================================
    9. NGUỒN THAM KHẢO
    ========================================================= */
@@ -2885,6 +2959,608 @@ WHERE bv.MaBaiViet = 'BV_MUA_ROI_NUOC'
       SELECT 1 FROM dbo.NguonThamKhao x
       WHERE x.BaiVietID = bv.BaiVietID
         AND x.TieuDeNguon = N'Water puppetry and village performance traditions'
+  );
+
+UPDATE dbo.BaiViet
+SET
+    TieuDeVI = N'Áo Dài: Linh Hồn Của Người Phụ Nữ Việt Nam',
+    TieuDeEN = N'Ao Dai: The Soul of Vietnamese Women',
+    MoTaNganVI = N'Tà áo dài thanh lịch không chỉ là trang phục truyền thống mà còn là biểu tượng văn hóa, sự duyên dáng và bản sắc riêng của người Việt.',
+    MoTaNganEN = N'The elegant Ao Dai is not merely traditional attire but a cultural symbol of grace and the unique identity of Vietnamese people.',
+    GioiThieuVI = N'Áo dài là biểu tượng văn hóa gắn liền với vẻ đẹp thanh lịch và tinh thần duyên dáng của người phụ nữ Việt Nam trong đời sống hiện đại lẫn truyền thống.',
+    GioiThieuEN = N'Ao Dai is a cultural symbol closely tied to elegance and the graceful spirit of Vietnamese women in both modern and traditional life.',
+    NguonGocVI = N'Áo dài hiện đại phát triển từ áo ngũ thân và nhiều dạng trang phục lịch sử, được cải biến để tôn dáng và phù hợp với nhịp sống mới.',
+    NguonGocEN = N'The modern Ao Dai evolved from the five-panel gown and other historical garments, gradually refined to flatter the silhouette and fit contemporary life.',
+    YNghiaVanHoaVI = N'Áo dài thể hiện sự kết nối giữa truyền thống và hiện đại, giữa bản sắc dân tộc và tinh thần thẩm mỹ tinh tế của người Việt.',
+    YNghiaVanHoaEN = N'The Ao Dai expresses a bridge between tradition and modernity, between national identity and the refined aesthetic spirit of Vietnamese culture.',
+    BoiCanhVI = N'Ngày nay, áo dài xuất hiện trong trường học, lễ cưới, sự kiện văn hóa, ngoại giao và thời trang, tiếp tục được tái diễn giải qua nhiều chất liệu và phong cách.',
+    BoiCanhEN = N'Today, the Ao Dai appears in schools, weddings, cultural events, diplomacy, and fashion, continually reinterpreted through different materials and styles.',
+    NoiDungChinhVI = N'Tà áo dài mềm mại đi cùng chiếc quần dài kín đáo đã trở thành hình ảnh gợi nhớ mạnh mẽ về Việt Nam. Qua từng giai đoạn, áo dài không chỉ thay đổi về phom dáng mà còn phản ánh quan niệm về vẻ đẹp, vai trò xã hội và niềm tự hào văn hóa. Chính khả năng thích ứng ấy giúp áo dài vừa trường tồn như di sản, vừa sống động trong đời sống đương đại.',
+    NoiDungChinhEN = N'The flowing tunic paired with long trousers has become one of the most recognizable images of Vietnam. Across historical periods, the Ao Dai has changed in silhouette while continuing to reflect ideals of beauty, social roles, and cultural pride. That adaptability is what allows it to endure as heritage while remaining alive in contemporary life.',
+    TomTatChoAIVI = N'Áo dài là biểu tượng trang phục Việt Nam, thể hiện sự thanh lịch, duyên dáng và khả năng dung hòa giữa truyền thống với hiện đại.',
+    TomTatChoAIEN = N'The Ao Dai is a Vietnamese costume icon that embodies elegance, grace, and the harmony between tradition and modernity.'
+WHERE MaBaiViet = 'BV_AO_DAI';
+
+UPDATE dbo.BaiViet
+SET
+    TieuDeVI = N'Múa Rối Nước: Nghệ Thuật Độc Đáo Trên Mặt Nước',
+    TieuDeEN = N'Water Puppetry: A Unique Art Form on the Water',
+    MoTaNganVI = N'Xuất phát từ đồng bằng sông Hồng, múa rối nước là hình thức biểu diễn nghệ thuật truyền thống duy nhất trên thế giới dùng mặt nước làm sân khấu.',
+    MoTaNganEN = N'Originating from the Red River Delta, water puppetry is the world''s only traditional art form using the water surface as its stage.',
+    GioiThieuVI = N'Múa rối nước là loại hình sân khấu dân gian đặc sắc của Việt Nam, nơi con rối gỗ, âm nhạc và lời kể hòa quyện trên mặt nước để tái hiện nhịp sống làng quê.',
+    GioiThieuEN = N'Water puppetry is a distinctive Vietnamese folk stage art where wooden puppets, music, and narration blend on the water to recreate village life.',
+    NguonGocVI = N'Loại hình này hình thành từ các làng quê đồng bằng Bắc Bộ, nơi ao hồ và thủy đình trở thành không gian biểu diễn gắn với sinh hoạt nông nghiệp.',
+    NguonGocEN = N'This art form emerged from villages in northern Vietnam, where ponds and water pavilions became performance spaces closely tied to agrarian life.',
+    YNghiaVanHoaVI = N'Múa rối nước phản ánh trí tưởng tượng dân gian, tinh thần cộng đồng và khả năng kể chuyện sinh động bằng hình ảnh, âm thanh và chuyển động.',
+    YNghiaVanHoaEN = N'Water puppetry reflects folk imagination, communal spirit, and the ability to tell vivid stories through image, sound, and movement.',
+    BoiCanhVI = N'Ngày nay, múa rối nước vừa là di sản biểu diễn được bảo tồn, vừa là cầu nối đưa văn hóa Việt Nam đến với bạn bè quốc tế qua các chương trình sân khấu và du lịch.',
+    BoiCanhEN = N'Today, water puppetry is both a preserved performance heritage and a bridge introducing Vietnamese culture to international audiences through theater and tourism.',
+    NoiDungChinhVI = N'Từ những tích trò như chăn trâu, cấy lúa, múa rồng đến các truyền thuyết dân gian, múa rối nước mang đến một sân khấu giàu nhạc tính và sức gợi thị giác. Người nghệ nhân đứng sau phông thủy đình điều khiển con rối bằng hệ thống sào, dây tinh vi dưới mặt nước, tạo nên cảm giác kỳ ảo mà gần gũi. Chính sự hòa quyện giữa kỹ thuật, âm nhạc và đời sống dân gian đã làm nên sức hấp dẫn bền lâu của loại hình nghệ thuật này.',
+    NoiDungChinhEN = N'From scenes of buffalo herding, rice planting, and dragon dances to folk legends, water puppetry creates a stage rich in music and visual charm. Hidden behind the water pavilion, puppeteers control the figures through sophisticated poles and strings beneath the water, producing a performance that feels both magical and familiar. This blend of technique, music, and everyday folk life is what gives the art form its lasting appeal.',
+    TomTatChoAIVI = N'Múa rối nước là nghệ thuật biểu diễn dân gian độc đáo của đồng bằng Bắc Bộ, kết hợp sân khấu mặt nước, âm nhạc và con rối gỗ.',
+    TomTatChoAIEN = N'Water puppetry is a unique folk performance tradition from northern Vietnam combining a water stage, music, and wooden puppets.'
+WHERE MaBaiViet = 'BV_MUA_ROI_NUOC';
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_SON_MAI',
+    N'Nghệ Thuật Sơn Mài: Tinh Hoa Hội Họa Việt Nam Nghìn Năm',
+    N'Lacquer Art: A Thousand-Year Pinnacle of Vietnamese Painting',
+    N'Khám phá bí mật đằng sau những lớp sơn huyền ảo, nơi vật liệu tự nhiên và bàn tay nghệ nhân tạo nên kiệt tác trường tồn theo thời gian.',
+    N'Discover the secrets behind mysterious lacquer layers, where natural materials and artisan hands create masterpieces that stand the test of time.',
+    N'Sơn mài là một trong những loại hình nghệ thuật độc đáo và tinh tế nhất của Việt Nam, bắt nguồn từ truyền thống sử dụng nhựa cây sơn để tạo ra những tác phẩm có vẻ đẹp lấp lánh, huyền bí và bền vững theo thời gian.',
+    N'Lacquer art is one of the most unique and refined art forms in Vietnam, rooted in the tradition of using lacquer resin to create works of shimmering, mysterious, and enduring beauty.',
+    N'Nghề sơn mài ở Việt Nam có lịch sử lâu đời, trải dài hơn 2.000 năm và gắn với các làng nghề truyền thống ở miền Bắc.',
+    N'Lacquer craft in Vietnam has a long history spanning more than 2,000 years and is tied to traditional craft villages in the North.',
+    N'Sơn mài thể hiện trí tuệ, sự kiên nhẫn và khả năng kết hợp thủ công với tư duy thẩm mỹ của người Việt.',
+    N'Lacquer art expresses Vietnamese ingenuity, patience, and the ability to merge craftsmanship with aesthetic thinking.',
+    N'Trong bối cảnh hiện đại, sơn mài tiếp tục được tái diễn giải qua các tác phẩm đương đại nhưng vẫn giữ được cốt lõi truyền thống.',
+    N'In the modern era, lacquer art continues to be reinterpreted in contemporary works while preserving its traditional core.',
+    N'Quy trình làm sơn mài đòi hỏi nhiều lớp phủ, mài và đánh bóng công phu. Mỗi tác phẩm là sự hòa quyện giữa kỹ thuật cổ truyền, vật liệu tự nhiên và cảm quan nghệ thuật sâu sắc.',
+    N'The lacquer-making process requires many layers of coating, sanding, and polishing. Each work blends traditional technique, natural materials, and deep artistic sensibility.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Sơn mài là nghệ thuật thủ công hội họa đặc sắc của Việt Nam, nổi bật bởi chiều sâu thị giác và kỹ thuật nhiều lớp.',
+    N'Lacquer art is a distinctive Vietnamese artistic craft known for visual depth and multilayered technique.',
+    1,
+    DATEADD(DAY, -16, SYSUTCDATETIME()),
+    DATEADD(DAY, -15, SYSUTCDATETIME()),
+    DATEADD(DAY, -14, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_SON_MAI');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_TRANH_DONG_HO',
+    N'Tranh Đông Hồ: Nét Dân Gian Trong Từng Bức Khắc',
+    N'Dong Ho Painting: Folk Art in Every Wood Block',
+    N'Từ giấy điệp óng ánh đến màu sắc thiên nhiên, tranh Đông Hồ là lời kể chuyện đời sống làng quê Việt Nam qua những bản khắc gỗ độc đáo.',
+    N'From shimmering do paper to natural colors, Dong Ho paintings narrate Vietnamese village life through unique woodblock prints.',
+    N'Tranh Đông Hồ là dòng tranh dân gian nổi tiếng của Bắc Ninh, phản ánh đời sống, tín ngưỡng và ước vọng của người Việt.',
+    N'Dong Ho painting is a famous folk painting tradition from Bac Ninh, reflecting Vietnamese life, beliefs, and aspirations.',
+    N'Dòng tranh hình thành ở làng Đông Hồ với kỹ thuật in ván gỗ và sử dụng màu sắc từ nguyên liệu tự nhiên.',
+    N'The painting tradition emerged in Dong Ho village through woodblock printing and natural pigments.',
+    N'Tranh Đông Hồ thể hiện vẻ đẹp bình dị, tính biểu tượng và tinh thần lạc quan trong văn hóa dân gian.',
+    N'Dong Ho painting expresses simplicity, symbolism, and optimism within folk culture.',
+    N'Ngày nay, tranh Đông Hồ vừa là di sản thủ công vừa là nguồn cảm hứng cho giáo dục mỹ thuật và sáng tạo đương đại.',
+    N'Today, Dong Ho painting is both a craft heritage and a source of inspiration for art education and contemporary creativity.',
+    N'Những bức tranh thường tái hiện cảnh sinh hoạt, chúc phúc, phong tục và các biểu tượng quen thuộc của làng quê Việt Nam. Kỹ thuật in chồng màu tạo nên vẻ mộc mạc nhưng giàu sức gợi.',
+    N'These paintings often depict daily life, blessings, customs, and familiar symbols of Vietnamese rural life. Layered block-printing creates a rustic yet evocative aesthetic.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Tranh Đông Hồ là dòng tranh dân gian tiêu biểu của Bắc Ninh, nổi bật bởi kỹ thuật in ván gỗ và màu sắc tự nhiên.',
+    N'Dong Ho painting is a representative folk art from Bac Ninh known for woodblock printing and natural colors.',
+    1,
+    DATEADD(DAY, -15, SYSUTCDATETIME()),
+    DATEADD(DAY, -14, SYSUTCDATETIME()),
+    DATEADD(DAY, -13, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_TRANH_DONG_HO');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_GOM_BAT_TRANG',
+    N'Gốm Bát Tràng: Di Sản 500 Năm Bên Dòng Sông Hồng',
+    N'Bat Trang Pottery: 500-Year Heritage on Red River Bank',
+    N'Làng gốm cổ nhất Việt Nam vẫn giữ nguyên bí quyết nung đất sét trắng làm nên những sản phẩm tinh xảo nổi tiếng khắp thế giới.',
+    N'Vietnam''s oldest pottery village still preserves the secret of firing white clay into exquisitely crafted products famous worldwide.',
+    N'Gốm Bát Tràng là biểu tượng của thủ công mỹ nghệ Việt Nam với lịch sử lâu đời và kỹ thuật tạo hình, nung gốm tinh xảo.',
+    N'Bat Trang pottery symbolizes Vietnamese craftsmanship through its long history and refined forming and firing techniques.',
+    N'Làng gốm phát triển bên sông Hồng, tận dụng nguồn đất sét tốt và vị trí giao thương thuận lợi để trở thành trung tâm gốm nổi bật.',
+    N'The pottery village developed along the Red River, using quality clay and favorable trade access to become a major ceramic center.',
+    N'Bát Tràng thể hiện khả năng dung hòa giữa công năng sử dụng, tính thẩm mỹ và bản sắc làng nghề truyền thống.',
+    N'Bat Trang reflects the balance between utility, beauty, and traditional craft-village identity.',
+    N'Ngày nay, gốm Bát Tràng vừa phục vụ đời sống hàng ngày vừa hiện diện trong du lịch trải nghiệm, sáng tạo quà tặng và thiết kế nội thất.',
+    N'Today, Bat Trang pottery serves daily life while also appearing in experiential tourism, gift design, and interior decoration.',
+    N'Từ đồ gia dụng đến tác phẩm trang trí, mỗi sản phẩm Bát Tràng đều mang dấu ấn của kỹ thuật vuốt, men và lò nung truyền thống. Đây là minh chứng sống động cho sức sống bền bỉ của nghề gốm Việt.',
+    N'From household utensils to decorative works, each Bat Trang product bears the mark of shaping, glazing, and traditional kiln practices. It stands as vivid proof of the enduring vitality of Vietnamese pottery.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Gốm Bát Tràng là di sản thủ công nổi tiếng bên sông Hồng, tiêu biểu cho kỹ thuật tạo hình và men gốm Việt.',
+    N'Bat Trang pottery is a renowned craft heritage on the Red River, celebrated for shaping and glazing techniques.',
+    1,
+    DATEADD(DAY, -14, SYSUTCDATETIME()),
+    DATEADD(DAY, -13, SYSUTCDATETIME()),
+    DATEADD(DAY, -12, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_GOM_BAT_TRANG');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_LUA_HA_DONG',
+    N'Lụa Hà Đông: Tinh Hoa Bền Vững Qua Nghìn Năm',
+    N'Ha Dong Silk: Enduring Craft Through A Millennium',
+    N'Những sợi lụa mỏng manh từ làng Vạn Phúc mang theo cả nghìn năm tri thức dệt lụa, tạo nên vẻ đẹp sang trọng không thể nhầm lẫn.',
+    N'Delicate silk threads from Van Phuc village carry a thousand years of weaving knowledge, creating unmistakably elegant beauty.',
+    N'Lụa Hà Đông là biểu tượng của nghề dệt tơ lụa truyền thống, gắn với sự tinh tế trong chất liệu và kỹ thuật thủ công.',
+    N'Ha Dong silk symbolizes the traditional silk-weaving craft, marked by refined materials and artisanal technique.',
+    N'Làng Vạn Phúc nổi tiếng với nghề dệt lụa lâu đời, nơi kỹ thuật thủ công được gìn giữ và truyền lại qua nhiều thế hệ.',
+    N'Van Phuc village is renowned for its long-standing silk weaving tradition, where artisanal techniques have been preserved across generations.',
+    N'Lụa Hà Đông thể hiện vẻ đẹp thanh lịch, sự bền bỉ của nghề thủ công và niềm tự hào về sản phẩm tinh xảo của Việt Nam.',
+    N'Ha Dong silk embodies elegance, the resilience of craftsmanship, and pride in Vietnamese fine products.',
+    N'Ngày nay, lụa Hà Đông vừa hiện diện trong thời trang truyền thống vừa là chất liệu cho thiết kế hiện đại và quà tặng văn hóa.',
+    N'Today, Ha Dong silk appears in both traditional fashion and contemporary design as well as cultural gifts.',
+    N'Từng khung cửi, sợi tơ và hoa văn dệt nên câu chuyện về lao động, tay nghề và gu thẩm mỹ của người Việt. Lụa Hà Đông vì thế không chỉ là vật liệu mà còn là biểu tượng văn hóa sống động.',
+    N'Each loom, silk thread, and woven motif tells a story of labor, skill, and Vietnamese aesthetic taste. Ha Dong silk is therefore not only a material but a vivid cultural symbol.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Lụa Hà Đông là tinh hoa dệt lụa truyền thống, nổi bật bởi độ mềm mại, thanh lịch và giá trị văn hóa lâu đời.',
+    N'Ha Dong silk is a traditional weaving treasure known for softness, elegance, and long-standing cultural value.',
+    1,
+    DATEADD(DAY, -13, SYSUTCDATETIME()),
+    DATEADD(DAY, -12, SYSUTCDATETIME()),
+    DATEADD(DAY, -11, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_LUA_HA_DONG');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_NHA_NHAC_CUNG_DINH',
+    N'Nhã Nhạc Cung Đình Huế: Di Sản Âm Nhạc UNESCO',
+    N'Hue Royal Court Music: UNESCO Musical Heritage',
+    N'Những giai điệu trang trọng từ cung đình Huế đã được UNESCO công nhận là di sản văn hóa phi vật thể, mang âm hưởng nghìn năm lịch sử.',
+    N'The solemn melodies from Hue Imperial Palace have been recognized by UNESCO as intangible cultural heritage, resonating with a millennium of history.',
+    N'Nhã nhạc cung đình Huế là hình thức âm nhạc lễ nghi gắn với đời sống cung đình và các nghi thức trang trọng của triều Nguyễn.',
+    N'Hue royal court music is a ceremonial musical form tied to court life and formal rituals of the Nguyen dynasty.',
+    N'Loại hình này hình thành và phát triển trong môi trường cung đình, nơi âm nhạc giữ vai trò thể hiện quyền uy, trật tự và mỹ cảm.',
+    N'This form developed within the royal court, where music expressed authority, order, and aesthetic refinement.',
+    N'Nhã nhạc thể hiện chiều sâu nghệ thuật trình diễn, tính trang nghiêm và vai trò của âm thanh trong nghi lễ truyền thống.',
+    N'Royal court music expresses performative depth, solemnity, and the role of sound in traditional ritual.',
+    N'Ngày nay, nhã nhạc được bảo tồn và trình diễn trong không gian di sản Huế, giúp công chúng tiếp cận gần hơn với nghệ thuật cung đình.',
+    N'Today, royal court music is preserved and performed in Hue heritage spaces, bringing court art closer to the public.',
+    N'Nhã nhạc không chỉ là giai điệu mà còn là tổng hòa của nghi thức, phục trang, không gian và nhịp điệu biểu đạt. Việc UNESCO ghi danh càng khẳng định giá trị của loại hình này trong kho tàng di sản Việt Nam.',
+    N'Royal court music is not merely melody but a synthesis of ritual, costume, space, and expressive rhythm. UNESCO recognition further confirms its value in Vietnam''s heritage treasury.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Nhã nhạc cung đình Huế là di sản âm nhạc cung đình tiêu biểu, được UNESCO ghi danh và gắn với nghi lễ triều Nguyễn.',
+    N'Hue royal court music is a representative ceremonial heritage recognized by UNESCO and linked to Nguyen dynasty ritual life.',
+    1,
+    DATEADD(DAY, -12, SYSUTCDATETIME()),
+    DATEADD(DAY, -11, SYSUTCDATETIME()),
+    DATEADD(DAY, -10, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_NHA_NHAC_CUNG_DINH');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_KIEN_TRUC_HOI_AN',
+    N'Kiến Trúc Hội An: Giao Thoa Văn Hóa Đông-Tây',
+    N'Hoi An Architecture: East-West Cultural Fusion',
+    N'Phố cổ Hội An là minh chứng sống động cho sự giao thoa văn hóa Việt-Hoa-Nhật-Pháp, tạo nên một di sản kiến trúc độc đáo không nơi nào có.',
+    N'Hoi An Ancient Town is a vivid testament to the cultural fusion of Vietnamese-Chinese-Japanese-French, creating a unique architectural heritage found nowhere else.',
+    N'Kiến trúc Hội An phản ánh lịch sử thương cảng và sự gặp gỡ của nhiều cộng đồng cư dân trong cùng một không gian đô thị cổ.',
+    N'Hoi An architecture reflects the history of a trading port and the encounter of many communities within one old urban space.',
+    N'Phố cổ phát triển từ hoạt động giao thương quốc tế, hấp thụ nhiều ảnh hưởng nhưng vẫn gìn giữ hồn cốt bản địa.',
+    N'The old town grew from international trade, absorbing many influences while preserving its local essence.',
+    N'Kiến trúc Hội An thể hiện khả năng dung hòa văn hóa, thẩm mỹ đô thị và ký ức lịch sử trong cùng một quần thể.',
+    N'Hoi An architecture demonstrates the ability to harmonize culture, urban aesthetics, and historical memory within one ensemble.',
+    N'Ngày nay, Hội An là điểm đến di sản nổi bật, nơi kiến trúc cổ được bảo tồn song hành với đời sống du lịch và văn hóa đương đại.',
+    N'Today, Hoi An is a prominent heritage destination where old architecture is preserved alongside tourism and contemporary cultural life.',
+    N'Từ mái nhà, con phố đến hội quán và chùa cầu, mỗi chi tiết của Hội An đều kể một câu chuyện về trao đổi thương mại, di cư và sáng tạo bản địa. Đây là một trong những không gian kiến trúc giàu bản sắc nhất Việt Nam.',
+    N'From rooftops and streets to assembly halls and the Japanese Bridge, every detail of Hoi An tells a story of trade, migration, and local creativity. It remains one of Vietnam''s most distinctive architectural environments.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Kiến trúc Hội An là di sản đô thị tiêu biểu, phản ánh sự giao thoa văn hóa và lịch sử thương cảng Việt Nam.',
+    N'Hoi An architecture is a representative urban heritage reflecting cultural exchange and the history of Vietnam''s trading ports.',
+    1,
+    DATEADD(DAY, -11, SYSUTCDATETIME()),
+    DATEADD(DAY, -10, SYSUTCDATETIME()),
+    DATEADD(DAY, -9, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_KIEN_TRUC_HOI_AN');
+
+INSERT INTO dbo.BaiViet_DanhMuc (BaiVietID, DanhMucID, LaDanhMucChinh)
+SELECT bv.BaiVietID, dm.DanhMucID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.DanhMuc dm ON dm.MaDanhMuc = 'NGHE_THUAT_DAN_GIAN'
+WHERE bv.MaBaiViet IN ('BV_SON_MAI', 'BV_TRANH_DONG_HO', 'BV_GOM_BAT_TRANG', 'BV_LUA_HA_DONG', 'BV_MUA_ROI_NUOC', 'BV_NHA_NHAC_CUNG_DINH', 'BV_KIEN_TRUC_HOI_AN')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_DanhMuc x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.DanhMucID = dm.DanhMucID
+  );
+
+INSERT INTO dbo.BaiViet_DanhMuc (BaiVietID, DanhMucID, LaDanhMucChinh)
+SELECT bv.BaiVietID, dm.DanhMucID, 0
+FROM dbo.BaiViet bv
+JOIN dbo.DanhMuc dm ON dm.MaDanhMuc = 'TRANG_PHUC'
+WHERE bv.MaBaiViet = 'BV_AO_DAI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_DanhMuc x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.DanhMucID = dm.DanhMucID
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'BAC_BO'
+WHERE bv.MaBaiViet IN ('BV_SON_MAI', 'BV_TRANH_DONG_HO', 'BV_GOM_BAT_TRANG', 'BV_LUA_HA_DONG', 'BV_MUA_ROI_NUOC')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'TRUNG_BO'
+WHERE bv.MaBaiViet IN ('BV_NHA_NHAC_CUNG_DINH', 'BV_KIEN_TRUC_HOI_AN', 'BV_HUE_FESTIVAL', 'BV_AO_DAI')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
+  );
+
+INSERT INTO dbo.BaiViet_DanToc (BaiVietID, DanTocID, LaDanTocChinh)
+SELECT bv.BaiVietID, dt.DanTocID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.DanToc dt ON dt.MaDanToc = 'KINH'
+WHERE bv.MaBaiViet IN ('BV_SON_MAI', 'BV_TRANH_DONG_HO', 'BV_GOM_BAT_TRANG', 'BV_LUA_HA_DONG', 'BV_AO_DAI', 'BV_MUA_ROI_NUOC', 'BV_NHA_NHAC_CUNG_DINH', 'BV_KIEN_TRUC_HOI_AN')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_DanToc x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.DanTocID = dt.DanTocID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_TRANH_DONG_HO'
+WHERE b1.MaBaiViet = 'BV_SON_MAI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_GOM_BAT_TRANG'
+WHERE b1.MaBaiViet = 'BV_TRANH_DONG_HO'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_LUA_HA_DONG'
+WHERE b1.MaBaiViet = 'BV_GOM_BAT_TRANG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_AO_DAI'
+WHERE b1.MaBaiViet = 'BV_LUA_HA_DONG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_NHA_NHAC_CUNG_DINH'
+WHERE b1.MaBaiViet = 'BV_AO_DAI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_KIEN_TRUC_HOI_AN'
+WHERE b1.MaBaiViet = 'BV_NHA_NHAC_CUNG_DINH'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+UPDATE dbo.Media
+SET
+    AltTextVI = N'Tác phẩm sơn mài Việt Nam',
+    AltTextEN = N'Vietnamese lacquer artwork',
+    ChuThichVI = N'Hình ảnh tác phẩm sơn mài với nhiều lớp màu và độ bóng sâu.' ,
+    ChuThichEN = N'Image of a lacquer artwork with layered color and deep shine.'
+WHERE BaiVietID = (SELECT TOP 1 BaiVietID FROM dbo.BaiViet WHERE MaBaiViet = 'BV_SON_MAI')
+  AND LaAnhChinh = 1;
+
+UPDATE dbo.Media
+SET
+    AltTextVI = N'Tranh Đông Hồ dân gian',
+    AltTextEN = N'Dong Ho folk painting',
+    ChuThichVI = N'Hình ảnh tranh Đông Hồ với màu sắc tự nhiên và ván khắc.',
+    ChuThichEN = N'Image of Dong Ho painting with natural pigments and carved woodblocks.'
+WHERE BaiVietID = (SELECT TOP 1 BaiVietID FROM dbo.BaiViet WHERE MaBaiViet = 'BV_TRANH_DONG_HO')
+  AND LaAnhChinh = 1;
+
+UPDATE dbo.Media
+SET
+    AltTextVI = N'Gốm Bát Tràng truyền thống',
+    AltTextEN = N'Bat Trang traditional pottery',
+    ChuThichVI = N'Hình ảnh sản phẩm gốm Bát Tràng với men gốm đặc trưng.',
+    ChuThichEN = N'Image of Bat Trang pottery with signature glaze.'
+WHERE BaiVietID = (SELECT TOP 1 BaiVietID FROM dbo.BaiViet WHERE MaBaiViet = 'BV_GOM_BAT_TRANG')
+  AND LaAnhChinh = 1;
+
+UPDATE dbo.Media
+SET
+    AltTextVI = N'Lụa Hà Đông truyền thống',
+    AltTextEN = N'Ha Dong traditional silk',
+    ChuThichVI = N'Hình ảnh lụa Hà Đông với sắc độ mềm mại và tinh tế.',
+    ChuThichEN = N'Image of Ha Dong silk with soft elegant tones.'
+WHERE BaiVietID = (SELECT TOP 1 BaiVietID FROM dbo.BaiViet WHERE MaBaiViet = 'BV_LUA_HA_DONG')
+  AND LaAnhChinh = 1;
+
+UPDATE dbo.Media
+SET
+    AltTextVI = N'Áo dài truyền thống Việt Nam',
+    AltTextEN = N'Traditional Vietnamese Ao Dai',
+    ChuThichVI = N'Hình ảnh áo dài với phom dáng thanh lịch và biểu tượng văn hóa Việt.',
+    ChuThichEN = N'Image of the Ao Dai with its elegant silhouette and Vietnamese cultural symbolism.'
+WHERE BaiVietID = (SELECT TOP 1 BaiVietID FROM dbo.BaiViet WHERE MaBaiViet = 'BV_AO_DAI')
+  AND LaAnhChinh = 1;
+
+UPDATE dbo.Media
+SET
+    AltTextVI = N'Nhã nhạc cung đình Huế trong biểu diễn',
+    AltTextEN = N'Hue royal court music performance',
+    ChuThichVI = N'Hình ảnh nhã nhạc cung đình Huế trong không gian biểu diễn truyền thống.',
+    ChuThichEN = N'Image of Hue royal court music in a traditional performance setting.'
+WHERE BaiVietID = (SELECT TOP 1 BaiVietID FROM dbo.BaiViet WHERE MaBaiViet = 'BV_NHA_NHAC_CUNG_DINH')
+  AND LaAnhChinh = 1;
+
+UPDATE dbo.Media
+SET
+    AltTextVI = N'Múa rối nước trên sân khấu mặt nước',
+    AltTextEN = N'Water puppetry on a water stage',
+    ChuThichVI = N'Hình ảnh trình diễn múa rối nước truyền thống.',
+    ChuThichEN = N'An image of a traditional water puppetry performance.'
+WHERE BaiVietID = (SELECT TOP 1 BaiVietID FROM dbo.BaiViet WHERE MaBaiViet = 'BV_MUA_ROI_NUOC')
+  AND LaAnhChinh = 1;
+
+UPDATE dbo.Media
+SET
+    AltTextVI = N'Không gian kiến trúc Hội An cổ',
+    AltTextEN = N'Historic architecture of Hoi An',
+    ChuThichVI = N'Hình ảnh phố cổ Hội An với kiến trúc giao thoa văn hóa.',
+    ChuThichEN = N'Image of Hoi An ancient town with cross-cultural architecture.'
+WHERE BaiVietID = (SELECT TOP 1 BaiVietID FROM dbo.BaiViet WHERE MaBaiViet = 'BV_KIEN_TRUC_HOI_AN')
+  AND LaAnhChinh = 1;
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT bv.BaiVietID, 'IMAGE', N'https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=1200', N'Tác phẩm sơn mài Việt Nam', N'Vietnamese lacquer artwork', N'Hình ảnh tác phẩm sơn mài với nhiều lớp màu và độ bóng sâu.', N'Image of a lacquer artwork with layered color and deep shine.', 1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_SON_MAI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.LaAnhChinh = 1
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT bv.BaiVietID, 'IMAGE', N'https://images.unsplash.com/photo-1567689265664-3bc6e1e4b07b?w=1200', N'Tranh Đông Hồ dân gian', N'Dong Ho folk painting', N'Hình ảnh tranh Đông Hồ với màu sắc tự nhiên và ván khắc.', N'Image of Dong Ho painting with natural pigments and carved woodblocks.', 1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_TRANH_DONG_HO'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.LaAnhChinh = 1
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT bv.BaiVietID, 'IMAGE', N'https://images.unsplash.com/photo-1619164601044-90e0e1d0e87b?w=1200', N'Gốm Bát Tràng truyền thống', N'Bat Trang traditional pottery', N'Hình ảnh sản phẩm gốm Bát Tràng với men gốm đặc trưng.', N'Image of Bat Trang pottery with signature glaze.', 1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_GOM_BAT_TRANG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.LaAnhChinh = 1
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT bv.BaiVietID, 'IMAGE', N'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=1200', N'Lụa Hà Đông truyền thống', N'Ha Dong traditional silk', N'Hình ảnh lụa Hà Đông với sắc độ mềm mại và tinh tế.', N'Image of Ha Dong silk with soft elegant tones.', 1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_LUA_HA_DONG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.LaAnhChinh = 1
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT bv.BaiVietID, 'IMAGE', N'https://cdn.vnculturebridge.ai/media/ao-dai/ao-dai-truyen-thong.jpg', N'Áo dài truyền thống Việt Nam', N'Traditional Vietnamese Ao Dai', N'Hình ảnh áo dài với phom dáng thanh lịch và biểu tượng văn hóa Việt.', N'Image of the Ao Dai with its elegant silhouette and Vietnamese cultural symbolism.', 1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_AO_DAI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.LaAnhChinh = 1
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT bv.BaiVietID, 'IMAGE', N'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1200&q=80', N'Nhã nhạc cung đình Huế trong biểu diễn', N'Hue royal court music performance', N'Hình ảnh nhã nhạc cung đình Huế trong không gian biểu diễn truyền thống.', N'Image of Hue royal court music in a traditional performance setting.', 1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_NHA_NHAC_CUNG_DINH'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.LaAnhChinh = 1
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT bv.BaiVietID, 'IMAGE', N'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1200&q=80', N'Múa rối nước trên sân khấu mặt nước', N'Water puppetry on a water stage', N'Hình ảnh trình diễn múa rối nước truyền thống.', N'An image of a traditional water puppetry performance.', 1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_MUA_ROI_NUOC'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.LaAnhChinh = 1
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT bv.BaiVietID, 'IMAGE', N'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200', N'Không gian kiến trúc Hội An cổ', N'Historic architecture of Hoi An', N'Hình ảnh phố cổ Hội An với kiến trúc giao thoa văn hóa.', N'Image of Hoi An ancient town with cross-cultural architecture.', 1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_KIEN_TRUC_HOI_AN'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.LaAnhChinh = 1
   );
 
 /* =========================================================

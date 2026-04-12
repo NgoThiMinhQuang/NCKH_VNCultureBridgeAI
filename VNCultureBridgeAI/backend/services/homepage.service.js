@@ -290,6 +290,23 @@ function mapHomepageRegion(row, lang) {
   }
 }
 
+function parseJson(value, fallback = []) {
+  if (!value) return fallback
+  try {
+    const parsed = JSON.parse(value)
+    return Array.isArray(fallback)
+      ? (Array.isArray(parsed) ? parsed : fallback)
+      : (parsed && typeof parsed === 'object' ? parsed : fallback)
+  } catch {
+    return fallback
+  }
+}
+
+function resolveLocalizedContent(row, viKey, enKey, lang) {
+  const value = pickLocalized(row, viKey, enKey, lang)
+  return fixMojibake(value)
+}
+
 async function getHomepage(lang = 'vi') {
   const now = Date.now()
   const cached = homepageCache.get(lang)
@@ -298,7 +315,7 @@ async function getHomepage(lang = 'vi') {
     return cached.data
   }
 
-  let [regions, ethnicGroups, festivals, cuisine, arts, categories, prompts, latestArticles] =
+  let [regions, ethnicGroups, festivals, cuisine, arts, categories, prompts, latestArticles, artPage] =
     await Promise.all([
       homepageRepository.getFeaturedRegions(),
       homepageRepository.getFeaturedEthnicGroups(),
@@ -308,6 +325,7 @@ async function getHomepage(lang = 'vi') {
       homepageRepository.getCategories(),
       homepageRepository.getPromptSamples(),
       homepageRepository.getLatestArticles(12),
+      homepageRepository.getArtPageContent(),
     ])
 
   regions = normalizeRows(regions, normalizeHomepageRegionRow)
@@ -321,6 +339,47 @@ async function getHomepage(lang = 'vi') {
 
   const homepageArts = mergeUniqueCards(arts, latestArticles, 6)
   const blogPosts = latestArticles.slice(0, 3)
+  const artLanding = artPage
+    ? {
+        hero: {
+          badge: resolveLocalizedContent(artPage, 'HeroBadgeVI', 'HeroBadgeEN', lang),
+          titleLine1: resolveLocalizedContent(artPage, 'HeroTitleLine1VI', 'HeroTitleLine1EN', lang),
+          titleAccent: resolveLocalizedContent(artPage, 'HeroTitleAccentVI', 'HeroTitleAccentEN', lang),
+          titleLine3: resolveLocalizedContent(artPage, 'HeroTitleLine3VI', 'HeroTitleLine3EN', lang),
+          subtitle: resolveLocalizedContent(artPage, 'HeroSubtitleVI', 'HeroSubtitleEN', lang),
+          imageUrl: artPage.HeroImageUrl || null,
+          imageAlt: resolveLocalizedContent(artPage, 'HeroImageAltVI', 'HeroImageAltEN', lang),
+          imageBadge: resolveLocalizedContent(artPage, 'HeroImageBadgeVI', 'HeroImageBadgeEN', lang),
+          imageBadgeIcon: artPage.HeroImageBadgeIcon || '🏔️',
+        },
+        stats: parseJson(resolveLocalizedContent(artPage, 'StatsJsonVI', 'StatsJsonEN', lang), []),
+        heritage: {
+          title: resolveLocalizedContent(artPage, 'HeritageTitleVI', 'HeritageTitleEN', lang),
+          subtitle: resolveLocalizedContent(artPage, 'HeritageSubtitleVI', 'HeritageSubtitleEN', lang),
+          cards: parseJson(resolveLocalizedContent(artPage, 'HeritageCardsJsonVI', 'HeritageCardsJsonEN', lang), []),
+        },
+        featuredArtwork: {
+          badge: resolveLocalizedContent(artPage, 'FeaturedBadgeVI', 'FeaturedBadgeEN', lang),
+          title: resolveLocalizedContent(artPage, 'FeaturedTitleVI', 'FeaturedTitleEN', lang),
+          body: parseJson(resolveLocalizedContent(artPage, 'FeaturedBodyJsonVI', 'FeaturedBodyJsonEN', lang), []),
+          stats: parseJson(resolveLocalizedContent(artPage, 'FeaturedStatsJsonVI', 'FeaturedStatsJsonEN', lang), []),
+          imageUrl: artPage.FeaturedImageUrl || null,
+          imageAlt: resolveLocalizedContent(artPage, 'FeaturedImageAltVI', 'FeaturedImageAltEN', lang),
+        },
+        gallery: {
+          title: resolveLocalizedContent(artPage, 'GalleryTitleVI', 'GalleryTitleEN', lang),
+          subtitle: resolveLocalizedContent(artPage, 'GallerySubtitleVI', 'GallerySubtitleEN', lang),
+          images: parseJson(resolveLocalizedContent(artPage, 'GalleryImagesJsonVI', 'GalleryImagesJsonEN', lang), []),
+        },
+        story: {
+          badge: resolveLocalizedContent(artPage, 'StoryBadgeVI', 'StoryBadgeEN', lang),
+          title: resolveLocalizedContent(artPage, 'StoryTitleVI', 'StoryTitleEN', lang),
+          body: parseJson(resolveLocalizedContent(artPage, 'StoryBodyJsonVI', 'StoryBodyJsonEN', lang), []),
+          features: parseJson(resolveLocalizedContent(artPage, 'StoryFeaturesJsonVI', 'StoryFeaturesJsonEN', lang), []),
+          images: parseJson(resolveLocalizedContent(artPage, 'StoryImagesJsonVI', 'StoryImagesJsonEN', lang), []),
+        },
+      }
+    : null
 
   const staticContent = getStaticContent(lang)
 
@@ -337,6 +396,7 @@ async function getHomepage(lang = 'vi') {
     festivals: festivals.map((row) => mapCard(row, lang)),
     cuisine: cuisine.map((row) => mapCard(row, lang)),
     arts: homepageArts.map((row) => mapCard(row, lang)),
+    artLanding,
     blogPosts: blogPosts.map((row) => mapCard(row, lang)),
     categories: categories.map((row) => mapCard(row, lang)),
     aiGuide: {

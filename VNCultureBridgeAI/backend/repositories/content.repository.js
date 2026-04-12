@@ -42,6 +42,8 @@ async function getArticles({ category, region, ethnicity, q, limit = 12 }) {
       bv.MoTaNganVI,
       bv.MoTaNganEN,
       bv.NgayXuatBan,
+      MAX(dm.TenVI) AS CategoryTenVI,
+      MAX(dm.TenEN) AS CategoryTenEN,
       MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END) AS ImageUrl,
       MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END) AS AltTextVI,
       MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextEN END) AS AltTextEN
@@ -122,18 +124,71 @@ async function getArticleByCode(code) {
       bv.TomTatChoAIVI,
       bv.TomTatChoAIEN,
       bv.NgayXuatBan,
+      dm.DanhMucID,
+      dm.MaDanhMuc,
+      dm.TenVI AS CategoryTenVI,
+      dm.TenEN AS CategoryTenEN,
       MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END) AS ImageUrl,
       MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END) AS AltTextVI,
       MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextEN END) AS AltTextEN
     FROM dbo.BaiViet bv
+    LEFT JOIN dbo.BaiViet_DanhMuc bvdm ON bvdm.BaiVietID = bv.BaiVietID AND bvdm.LaDanhMucChinh = 1
+    LEFT JOIN dbo.DanhMuc dm ON dm.DanhMucID = bvdm.DanhMucID
     LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
     WHERE bv.MaBaiViet = @code
       AND bv.TrangThaiDuyet = 'APPROVED'
       AND bv.TrangThaiXuatBan = 'PUBLISHED'
-    GROUP BY bv.BaiVietID, bv.MaBaiViet, bv.TieuDeVI, bv.TieuDeEN, bv.MoTaNganVI, bv.MoTaNganEN, bv.GioiThieuVI, bv.GioiThieuEN, bv.NguonGocVI, bv.NguonGocEN, bv.YNghiaVanHoaVI, bv.YNghiaVanHoaEN, bv.BoiCanhVI, bv.BoiCanhEN, bv.NoiDungChinhVI, bv.NoiDungChinhEN, bv.TomTatChoAIVI, bv.TomTatChoAIEN, bv.NgayXuatBan
+    GROUP BY bv.BaiVietID, bv.MaBaiViet, bv.TieuDeVI, bv.TieuDeEN, bv.MoTaNganVI, bv.MoTaNganEN, bv.GioiThieuVI, bv.GioiThieuEN, bv.NguonGocVI, bv.NguonGocEN, bv.YNghiaVanHoaVI, bv.YNghiaVanHoaEN, bv.BoiCanhVI, bv.BoiCanhEN, bv.NoiDungChinhVI, bv.NoiDungChinhEN, bv.TomTatChoAIVI, bv.TomTatChoAIEN, bv.NgayXuatBan, dm.DanhMucID, dm.MaDanhMuc, dm.TenVI, dm.TenEN
   `, { code })
 
   return rows[0] || null
+}
+
+async function getArticleMedia(code) {
+  return query(`
+    SELECT
+      m.MediaID,
+      m.BaiVietID,
+      bv.MaBaiViet,
+      m.LoaiMedia,
+      m.UrlFile,
+      m.AltTextVI,
+      m.AltTextEN,
+      m.ChuThichVI,
+      m.ChuThichEN,
+      m.LaAnhChinh,
+      m.ThuTuHienThi
+    FROM dbo.Media m
+    JOIN dbo.BaiViet bv ON bv.BaiVietID = m.BaiVietID
+    WHERE bv.MaBaiViet = @code
+    ORDER BY m.LaAnhChinh DESC, m.ThuTuHienThi ASC, m.MediaID ASC
+  `, { code })
+}
+
+async function getArticleRelated(code, categoryCode, limit = 3) {
+  return query(`
+    SELECT TOP (${Number(limit) || 3})
+      bv.BaiVietID,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN,
+      bv.MoTaNganVI,
+      bv.MoTaNganEN,
+      bv.NgayXuatBan,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END) AS ImageUrl,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END) AS AltTextVI,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextEN END) AS AltTextEN
+    FROM dbo.BaiViet bv
+    LEFT JOIN dbo.BaiViet_DanhMuc bvdm ON bvdm.BaiVietID = bv.BaiVietID
+    LEFT JOIN dbo.DanhMuc dm ON dm.DanhMucID = bvdm.DanhMucID
+    LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
+    WHERE bv.TrangThaiDuyet = 'APPROVED'
+      AND bv.TrangThaiXuatBan = 'PUBLISHED'
+      AND bv.MaBaiViet <> @code
+      AND (@categoryCode IS NULL OR dm.MaDanhMuc = @categoryCode)
+    GROUP BY bv.BaiVietID, bv.MaBaiViet, bv.TieuDeVI, bv.TieuDeEN, bv.MoTaNganVI, bv.MoTaNganEN, bv.NgayXuatBan
+    ORDER BY bv.NgayXuatBan DESC, bv.BaiVietID DESC
+  `, { code, categoryCode })
 }
 
 async function getRegions() {
@@ -151,6 +206,12 @@ async function getRegions() {
       vv.HomepageCtaVI,
       vv.HomepageImageUrl,
       vv.HomepageImageAltVI,
+      vv.OverviewTitleVI,
+      vv.OverviewTitleEN,
+      vv.OverviewDescriptionVI,
+      vv.OverviewDescriptionEN,
+      vv.OverviewDetailsJsonVI,
+      vv.OverviewDetailsJsonEN,
       COUNT(DISTINCT bv.BaiVietID) AS ArticleCount,
       COALESCE(vv.HomepageImageUrl, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END)) AS ImageUrl,
       COALESCE(vv.HomepageImageAltVI, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END)) AS AltTextVI,
@@ -175,7 +236,13 @@ async function getRegions() {
       vv.HomepageHighlightsVI,
       vv.HomepageCtaVI,
       vv.HomepageImageUrl,
-      vv.HomepageImageAltVI
+      vv.HomepageImageAltVI,
+      vv.OverviewTitleVI,
+      vv.OverviewTitleEN,
+      vv.OverviewDescriptionVI,
+      vv.OverviewDescriptionEN,
+      vv.OverviewDetailsJsonVI,
+      vv.OverviewDetailsJsonEN
     ORDER BY vv.VungID ASC
   `)
 }
@@ -195,6 +262,12 @@ async function getRegionByCode(code) {
       vv.HomepageCtaVI,
       vv.HomepageImageUrl,
       vv.HomepageImageAltVI,
+      vv.OverviewTitleVI,
+      vv.OverviewTitleEN,
+      vv.OverviewDescriptionVI,
+      vv.OverviewDescriptionEN,
+      vv.OverviewDetailsJsonVI,
+      vv.OverviewDetailsJsonEN,
       COUNT(DISTINCT bv.BaiVietID) AS ArticleCount,
       COALESCE(vv.HomepageImageUrl, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END)) AS ImageUrl,
       COALESCE(vv.HomepageImageAltVI, MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END)) AS AltTextVI,
@@ -220,7 +293,13 @@ async function getRegionByCode(code) {
       vv.HomepageHighlightsVI,
       vv.HomepageCtaVI,
       vv.HomepageImageUrl,
-      vv.HomepageImageAltVI
+      vv.HomepageImageAltVI,
+      vv.OverviewTitleVI,
+      vv.OverviewTitleEN,
+      vv.OverviewDescriptionVI,
+      vv.OverviewDescriptionEN,
+      vv.OverviewDetailsJsonVI,
+      vv.OverviewDetailsJsonEN
   `, { code })
 
   return rows[0] || null

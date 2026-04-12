@@ -133,6 +133,42 @@ BEGIN
 END
 GO
 
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewTitleVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewTitleVI NVARCHAR(300) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewTitleEN') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewTitleEN NVARCHAR(300) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewDescriptionVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewDescriptionVI NVARCHAR(MAX) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewDescriptionEN') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewDescriptionEN NVARCHAR(MAX) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewDetailsJsonVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewDetailsJsonVI NVARCHAR(MAX) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewDetailsJsonEN') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewDetailsJsonEN NVARCHAR(MAX) NULL;
+END
+GO
+
 IF NOT EXISTS (
     SELECT 1
     FROM sys.indexes
@@ -540,6 +576,66 @@ CREATE TABLE dbo.Media (
     NgayTao              DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
     CONSTRAINT CK_Media_Loai CHECK (LoaiMedia IN ('IMAGE','VIDEO','AUDIO','DOCUMENT')),
     CONSTRAINT FK_Media_BaiViet FOREIGN KEY (BaiVietID) REFERENCES dbo.BaiViet(BaiVietID) ON DELETE CASCADE
+);
+GO
+
+CREATE TABLE dbo.NgheThuatPage (
+    NgheThuatPageID         INT IDENTITY(1,1) PRIMARY KEY,
+    MaTrang                 VARCHAR(50) NOT NULL UNIQUE,
+    HeroBadgeVI             NVARCHAR(200) NULL,
+    HeroBadgeEN             NVARCHAR(200) NULL,
+    HeroTitleLine1VI        NVARCHAR(200) NULL,
+    HeroTitleLine1EN        NVARCHAR(200) NULL,
+    HeroTitleAccentVI       NVARCHAR(200) NULL,
+    HeroTitleAccentEN       NVARCHAR(200) NULL,
+    HeroTitleLine3VI        NVARCHAR(200) NULL,
+    HeroTitleLine3EN        NVARCHAR(200) NULL,
+    HeroSubtitleVI          NVARCHAR(MAX) NULL,
+    HeroSubtitleEN          NVARCHAR(MAX) NULL,
+    HeroImageUrl            NVARCHAR(1000) NULL,
+    HeroImageAltVI          NVARCHAR(500) NULL,
+    HeroImageAltEN          NVARCHAR(500) NULL,
+    HeroImageBadgeVI        NVARCHAR(200) NULL,
+    HeroImageBadgeEN        NVARCHAR(200) NULL,
+    HeroImageBadgeIcon      NVARCHAR(20) NULL,
+    StatsJsonVI             NVARCHAR(MAX) NULL,
+    StatsJsonEN             NVARCHAR(MAX) NULL,
+    HeritageTitleVI         NVARCHAR(200) NULL,
+    HeritageTitleEN         NVARCHAR(200) NULL,
+    HeritageSubtitleVI      NVARCHAR(MAX) NULL,
+    HeritageSubtitleEN      NVARCHAR(MAX) NULL,
+    HeritageCardsJsonVI     NVARCHAR(MAX) NULL,
+    HeritageCardsJsonEN     NVARCHAR(MAX) NULL,
+    FeaturedBadgeVI         NVARCHAR(200) NULL,
+    FeaturedBadgeEN         NVARCHAR(200) NULL,
+    FeaturedTitleVI         NVARCHAR(200) NULL,
+    FeaturedTitleEN         NVARCHAR(200) NULL,
+    FeaturedBodyJsonVI      NVARCHAR(MAX) NULL,
+    FeaturedBodyJsonEN      NVARCHAR(MAX) NULL,
+    FeaturedStatsJsonVI     NVARCHAR(MAX) NULL,
+    FeaturedStatsJsonEN     NVARCHAR(MAX) NULL,
+    FeaturedImageUrl        NVARCHAR(1000) NULL,
+    FeaturedImageAltVI      NVARCHAR(500) NULL,
+    FeaturedImageAltEN      NVARCHAR(500) NULL,
+    GalleryTitleVI          NVARCHAR(200) NULL,
+    GalleryTitleEN          NVARCHAR(200) NULL,
+    GallerySubtitleVI       NVARCHAR(MAX) NULL,
+    GallerySubtitleEN       NVARCHAR(MAX) NULL,
+    GalleryImagesJsonVI     NVARCHAR(MAX) NULL,
+    GalleryImagesJsonEN     NVARCHAR(MAX) NULL,
+    StoryBadgeVI            NVARCHAR(200) NULL,
+    StoryBadgeEN            NVARCHAR(200) NULL,
+    StoryTitleVI            NVARCHAR(200) NULL,
+    StoryTitleEN            NVARCHAR(200) NULL,
+    StoryBodyJsonVI         NVARCHAR(MAX) NULL,
+    StoryBodyJsonEN         NVARCHAR(MAX) NULL,
+    StoryFeaturesJsonVI     NVARCHAR(MAX) NULL,
+    StoryFeaturesJsonEN     NVARCHAR(MAX) NULL,
+    StoryImagesJsonVI       NVARCHAR(MAX) NULL,
+    StoryImagesJsonEN       NVARCHAR(MAX) NULL,
+    HoatDong                BIT NOT NULL DEFAULT 1,
+    NgayTao                 DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    NgayCapNhat             DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
 );
 GO
 

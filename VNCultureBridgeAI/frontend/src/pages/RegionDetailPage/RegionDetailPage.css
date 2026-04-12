@@ -1,0 +1,227 @@
+.north-page .north-hero__lead {
+  max-width: 760px;
+  margin: 28px auto 0;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.north-page .btn-text-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.north-page .text-center {
+  text-align: center;
+}
+
+.north-page .section-header {
+  margin-bottom: 36px;
+}
+
+.north-page .section-header p {
+  color: #6a5548;
+  max-width: 760px;
+  margin: 16px auto 0;
+  line-height: 1.8;
+}
+
+.north-page .section-divider {
+  width: 92px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 100%);
+  border-radius: 999px;
+  margin: 18px 0 22px;
+}
+
+.north-page .search-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.north-page .search-box input {
+  min-width: 280px;
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(143, 102, 82, 0.2);
+}
+
+.north-page .filter-chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.north-page .filter-chips span {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  color: #6a5548;
+  font-weight: 600;
+}
+
+.north-page .filter-chips .active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.north-page .province-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.north-page .province-mini-card {
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+}
+
+.north-page .province-mini__img {
+  position: relative;
+  height: 220px;
+}
+
+.north-page .province-mini__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.north-page .province-mini__tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(185, 28, 28, 0.88);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.north-page .province-mini__body {
+  padding: 24px;
+}
+
+.north-page .province-mini__body h3 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+}
+
+.north-page .province-mini__body p {
+  margin: 0 0 16px;
+  color: #6a5548;
+  line-height: 1.75;
+}
+
+.north-page .province-mini__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.north-page .province-mini__tags span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #fff4ec;
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.north-page .mini-cta,
+.north-page .btn-full {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  border: none;
+}
+
+.north-page .itinerary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  margin-top: 42px;
+}
+
+.north-page .itinerary-card {
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+}
+
+.north-page .itinerary-image {
+  position: relative;
+  height: 240px;
+}
+
+.north-page .itinerary-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.north-page .itinerary-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.92);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.north-page .itinerary-body {
+  padding: 24px;
+}
+
+.north-page .itinerary-body h3 {
+  margin: 0 0 14px;
+  font-size: 1.5rem;
+}
+
+.north-page .itinerary-steps {
+  margin: 0 0 20px;
+  padding-left: 18px;
+  color: #5d483d;
+  line-height: 1.8;
+}
+
+.north-page .cta-icon {
+  font-size: 2rem;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 960px) {
+  .north-page .north-map-inner,
+  .north-page .north-story__inner,
+  .north-page .province-grid,
+  .north-page .experience-grid,
+  .north-page .layers-grid,
+  .north-page .itinerary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .north-page .season-vertical-grid {
+    grid-template-columns: repeat(2, 1fr);
+    height: auto;
+  }
+}

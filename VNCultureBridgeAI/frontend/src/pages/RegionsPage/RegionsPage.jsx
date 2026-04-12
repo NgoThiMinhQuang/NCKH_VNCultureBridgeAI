@@ -382,6 +382,42 @@ export default function RegionsPage() {
     .filter((province) => !searchQuery.trim() || province.name.toLowerCase().includes(searchQuery.trim().toLowerCase()))
     .filter((province) => filterProvinceCard(province, activeFilter, lang))
 
+  const regionLabelByKey = {
+    north: 'Miền Bắc',
+    central: 'Miền Trung',
+    south: 'Miền Nam',
+  }
+
+  const previewSource = !searchQuery.trim() && activeFilter === 'all'
+    ? visibleProvinces.filter((province) => province.region === (regionLabelByKey[activeKey] || activeRegion.badge))
+    : visibleProvinces
+
+  const previewProvinces = previewSource.slice(0, 6)
+  const previewTotalCount = previewSource.length
+  const previewRegionLabel = regionLabelByKey[activeKey] || activeRegion.badge
+  const hasMoreProvinces = previewTotalCount > previewProvinces.length
+  const provincesHintText = lang === 'vi'
+    ? `Trang này đang hiển thị ${previewProvinces.length} tỉnh tiêu biểu của ${previewRegionLabel}. Nhấn nút bên dưới để xem đầy đủ ${provinceCount} tỉnh thành.`
+    : `This page is showing ${previewProvinces.length} featured provinces from ${activeRegion.badge}. Use the button below to view all ${provinceCount} provinces.`
+  const provincesCtaText = lang === 'vi'
+    ? `Xem tất cả ${provinceCount} tỉnh thành`
+    : `View all ${provinceCount} provinces`
+  const displayedProvinces = previewProvinces
+  const isProvinceSearchEmpty = visibleProvinces.length === 0
+  const shouldShowProvincesHint = !searchQuery.trim() && activeFilter === 'all' && previewProvinces.length > 0
+  const shouldShowViewAllButton = displayedProvinces.length > 0 || hasMoreProvinces
+  const provincesEmptyText = lang === 'vi'
+    ? 'Không tìm thấy tỉnh thành phù hợp.'
+    : 'No matching provinces found.'
+  const provincesPreviewList = displayedProvinces
+  const provincesButtonText = provincesCtaText
+  const provincesSupportTextFinal = provincesHintText
+  const showProvincesHintCopy = shouldShowProvincesHint
+  const showProvincesLinkCopy = shouldShowViewAllButton
+  const showProvincesEmptyCopy = isProvinceSearchEmpty
+
+  const previewProvincesLegacy = visibleProvinces.slice(0, 6)
+
   useEffect(() => {
     if (mappedRegions.length && !mappedRegions.some((item) => item.key === activeKey)) {
       setActiveKey(mappedRegions[0].key)
@@ -647,28 +683,34 @@ export default function RegionsPage() {
               </p>
             </div>
             <div className="regions-overview__container container fade-up">
-              {overviewRegions.map((region, idx) => {
-                const isReversed = idx % 2 !== 0
+              {mappedRegions.map((region, idx) => {
+                const fallbackOverview = overviewRegions[idx] || {}
+                const isReversed = idx === 1
+                const regionImage = idx === 0 ? imgOverviewNorth : idx === 1 ? imgOverviewCentral : imgOverviewSouth
+                const overviewTitle = region.overviewTitle || fallbackOverview.title || region.title
+                const overviewDescription = region.overviewDescription || fallbackOverview.desc || region.description
+                const overviewDetails = region.overviewDetails?.length ? region.overviewDetails : (fallbackOverview.details || [])
                 return (
                   <div key={region.id} className={`regions-overview__card ${isReversed ? 'is-reversed' : ''}`}>
-                    <div className="regions-overview__image-col">
+
+"                    <div className="regions-overview__image-col">
                       <div className="regions-overview__image">
-                        {region.image ? <img src={region.image} alt={region.title} /> : <div className="placeholder-image">Ảnh {region.badge}</div>}
+                        {regionImage ? <img src={regionImage} alt={region.overviewTitle || region.title} /> : <div className="placeholder-image">Ảnh {region.badge}</div>}
                       </div>
                     </div>
                     <div className="regions-overview__content-col">
-                      <span className="regions-overview__badge">{region.badge}</span>
-                      <h3 className="regions-overview__title">{region.title}</h3>
-                      <p className="regions-overview__desc">{region.desc}</p>
+                      <span className="regions-overview__badge">{region.badge || fallbackOverview.badge}</span>
+                      <h3 className="regions-overview__title">{overviewTitle}</h3>
+                      <p className="regions-overview__desc">{overviewDescription}</p>
                       <div className="regions-overview__details">
-                        {(region.details || []).map((detail, dIdx) => (
+                        {overviewDetails.map((detail, dIdx) => (
                           <div key={dIdx} className="regions-overview__detail-row">
                             <span className="regions-overview__detail-label">{detail.label}</span>
                             <span className="regions-overview__detail-value">{detail.value}</span>
                           </div>
                         ))}
                       </div>
-                      <Link to={region.link || '/provinces'} className="regions-overview__cta-btn">
+                      <Link to={region.code ? `/regions/${region.code}` : '/regions'} className="regions-overview__cta-btn">
                         {lang === 'vi' ? 'Xem sâu hơn' : 'View more'} <span aria-hidden="true">→</span>
                       </Link>
                     </div>
@@ -741,8 +783,10 @@ export default function RegionsPage() {
                 </div>
               </div>
 
+              {showProvincesHintCopy ? <div className="provinces-search__hint">{provincesSupportTextFinal}</div> : null}
+
               <div className="provinces-search__grid">
-                {visibleProvinces.map((prov) => (
+                {provincesPreviewList.map((prov) => (
                   <div key={prov.id || prov.code || prov.name} className="province-item-card">
                     <div className="province-item__image">
                       {prov.imageUrl ? (
@@ -771,11 +815,13 @@ export default function RegionsPage() {
                 ))}
               </div>
 
-              {!visibleProvinces.length ? <div className="provinces-search__empty">{lang === 'vi' ? 'Không tìm thấy tỉnh thành phù hợp.' : 'No matching provinces found.'}</div> : null}
+              {showProvincesEmptyCopy ? <div className="provinces-search__empty">{provincesEmptyText}</div> : null}
 
-              <div className="provinces-search__footer">
-                <Link to="/provinces" className="view-all-provinces-btn">{lang === 'vi' ? 'Xem thêm tỉnh thành' : 'View more provinces'}</Link>
-              </div>
+              {showProvincesLinkCopy ? (
+                <div className="provinces-search__footer">
+                  <Link to="/provinces" className="view-all-provinces-btn">{provincesButtonText}</Link>
+                </div>
+              ) : null}
             </div>
             <SectionWave position="bottom" color="#f1e4d7" />
           </section>
