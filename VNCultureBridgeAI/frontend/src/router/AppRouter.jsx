@@ -15,7 +15,14 @@ import CuisineDetailPage from "../pages/CuisineDetailPage/CuisineDetailPage";
 import BlogDetailPage from "../pages/BlogDetailPage/BlogDetailPage";
 import ProvincesPage from "../pages/ProvincesPage/ProvincesPage";
 import ProvinceDetailPage from "../pages/ProvinceDetailPage/ProvinceDetailPage";
+<<<<<<< HEAD
 import NorthRegionPage from "../pages/NorthRegionPage/NorthRegionPage";
+=======
+import LoginPage from "../pages/LoginPage/LoginPage";
+import RegisterPage from "../pages/RegisterPage/RegisterPage";
+import GlobalChatbot from "../components/common/GlobalChatbot/GlobalChatbot";
+
+>>>>>>> 7e797f2084fa5ee8f9f828478f053c9994925904
 
 
 /**
@@ -42,8 +49,14 @@ export default function AppRouter() {
         <Route path="/cuisine/:id" element={<CuisineDetailPage />} />
         <Route path="/provinces" element={<ProvincesPage />} />
         <Route path="/provinces/:code" element={<ProvinceDetailPage />} />
+<<<<<<< HEAD
         <Route path="/regions/north" element={<NorthRegionPage />} />
+=======
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+>>>>>>> 7e797f2084fa5ee8f9f828478f053c9994925904
       </Routes>
+      <GlobalChatbot />
     </BrowserRouter>
   );
 }

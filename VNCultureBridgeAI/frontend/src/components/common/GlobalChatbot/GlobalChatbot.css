@@ -1,0 +1,292 @@
+.global-chatbot-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 32px rgba(185, 28, 28, 0.4);
+  z-index: 1000;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 4px solid rgba(255, 255, 255, 0.8);
+}
+
+.global-chatbot-btn:hover {
+  transform: translateY(-6px) rotate(8deg) scale(1.1);
+  box-shadow: 0 18px 40px rgba(185, 28, 28, 0.5);
+  background: var(--dark);
+}
+
+.global-chatbot-window {
+  position: fixed;
+  bottom: 110px;
+  right: 30px;
+  width: 400px;
+  height: 600px;
+  background: #fff8f1;
+  border-radius: 28px;
+  box-shadow: 0 24px 80px rgba(43, 11, 5, 0.25);
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  overflow: hidden;
+  border: 1px solid rgba(125, 98, 87, 0.15);
+  font-family: var(--font-body);
+}
+
+.gc-header {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--dark) 100%);
+  color: white;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Lotus pattern overlay for header */
+.gc-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/img/Pattern_sen.png') center;
+  background-size: 140px auto;
+  background-repeat: repeat;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.gc-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.gc-header-avatar {
+  width: 38px;
+  height: 38px;
+  background: white;
+  color: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.gc-header-text h4 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.gc-header-text span {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  display: block;
+}
+
+.gc-close-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.gc-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Messages with Lotus Background */
+.gc-messages {
+  flex: 1;
+  padding: 24px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background-color: #fff8f1;
+  background-image:
+    linear-gradient(to bottom, rgba(255, 248, 241, 0.548), rgba(255, 248, 241, 0.39)),
+    url('/img/Pattern_sen.png');
+  background-size: 1400px auto;
+  background-repeat: repeat;
+  background-position: center;
+  background-attachment: local;
+  scroll-behavior: smooth;
+}
+
+.gc-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.gc-messages::-webkit-scrollbar-thumb {
+  background: rgba(185, 28, 28, 0.15);
+  border-radius: 10px;
+}
+
+/* Glassmorphism for Messages */
+.gc-message-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 85%;
+}
+
+.gc-message-wrapper.assistant {
+  align-self: flex-start;
+}
+
+.gc-message-wrapper.user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.gc-message {
+  padding: 14px 18px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.gc-message.assistant {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text);
+  border: 1px solid rgba(125, 98, 87, 0.1);
+  border-bottom-left-radius: 4px;
+}
+
+.gc-message.user {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--dark) 100%);
+  color: white;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 8px 20px rgba(185, 28, 28, 0.2);
+}
+
+.gc-avatar-small {
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  color: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+  border: 1px solid rgba(185, 28, 28, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.gc-message.loading {
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  box-shadow: none;
+  color: var(--accent);
+  font-weight: bold;
+  animation: typing 1.5s infinite;
+}
+
+@keyframes typing {
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+/* Input Area */
+.gc-input-area {
+  display: flex;
+  padding: 20px;
+  background: white;
+  border-top: 1px solid rgba(125, 98, 87, 0.1);
+  gap: 12px;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.gc-input-area input {
+  flex: 1;
+  padding: 14px 20px;
+  border: 1px solid rgba(125, 98, 87, 0.15);
+  border-radius: 16px;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  background: #fdfaf8;
+  transition: all 0.3s ease;
+}
+
+.gc-input-area input:focus {
+  background: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.05);
+}
+
+.gc-input-area button {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gc-input-area button:hover:not(:disabled) {
+  background: var(--dark);
+  transform: scale(1.05) rotate(5deg);
+}
+
+.gc-input-area button:disabled {
+  background: #e5e0dc;
+  color: #a89a94;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .global-chatbot-window {
+    width: calc(100vw - 40px);
+    right: 20px;
+    height: calc(100vh - 140px);
+    bottom: 100px;
+    border-radius: 24px;
+  }
+}
