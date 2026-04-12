@@ -30,6 +30,18 @@ CREATE TABLE dbo.NguoiDung (
 );
 GO
 
+CREATE TABLE dbo.KhachHang (
+    KhachHangID          INT IDENTITY(1,1) PRIMARY KEY,
+    HoTen                NVARCHAR(150) NOT NULL,
+    Email                VARCHAR(255) NOT NULL UNIQUE,
+    MatKhauHash          VARCHAR(255) NOT NULL,
+    TrangThai            VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+    NgayTao              DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    NgayCapNhat          DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT CK_KhachHang_TrangThai CHECK (TrangThai IN ('ACTIVE','LOCKED','INACTIVE'))
+);
+GO
+
 /* =========================================================
    2. DANH MỤC TRI THỨC
    Gộp song ngữ VI/EN vào cùng bảng để giảm số bảng
@@ -129,6 +141,136 @@ IF NOT EXISTS (
 )
 BEGIN
     CREATE INDEX IX_VungVanHoa_Homepage ON dbo.VungVanHoa (HomepageEnabled, HomepageDisplayOrder, HoatDong);
+END
+GO
+
+IF OBJECT_ID('dbo.LeHoi', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.LeHoi (
+        LeHoiID                   INT IDENTITY(1,1) PRIMARY KEY,
+        MaLeHoi                   VARCHAR(50) NOT NULL UNIQUE,
+        LoaiBanGhi                VARCHAR(20) NOT NULL DEFAULT 'FESTIVAL',
+        ThuTuHienThi              INT NOT NULL DEFAULT 0,
+        TieuDeVI                  NVARCHAR(300) NULL,
+        TieuDeEN                  NVARCHAR(300) NULL,
+        TieuDePhuVI               NVARCHAR(300) NULL,
+        TieuDePhuEN               NVARCHAR(300) NULL,
+        ShortTitleVI              NVARCHAR(200) NULL,
+        ShortTitleEN              NVARCHAR(200) NULL,
+        MoTaNganVI                NVARCHAR(1500) NULL,
+        MoTaNganEN                NVARCHAR(1500) NULL,
+        HeroDescVI                NVARCHAR(1500) NULL,
+        HeroDescEN                NVARCHAR(1500) NULL,
+        ViTriVI                   NVARCHAR(300) NULL,
+        ViTriEN                   NVARCHAR(300) NULL,
+        NgayLeVI                  NVARCHAR(200) NULL,
+        NgayLeEN                  NVARCHAR(200) NULL,
+        TagVI                     NVARCHAR(150) NULL,
+        TagEN                     NVARCHAR(150) NULL,
+        TagColor                  VARCHAR(20) NULL,
+        TimelineMonthVI           NVARCHAR(100) NULL,
+        TimelineMonthEN           NVARCHAR(100) NULL,
+        TimelineSeasonVI          NVARCHAR(100) NULL,
+        TimelineSeasonEN          NVARCHAR(100) NULL,
+        TimelineColor             VARCHAR(20) NULL,
+        ImageUrl                  NVARCHAR(1000) NULL,
+        ImageAltVI                NVARCHAR(500) NULL,
+        ImageAltEN                NVARCHAR(500) NULL,
+        TimelineImageUrl          NVARCHAR(1000) NULL,
+        TimelineImageAltVI        NVARCHAR(500) NULL,
+        TimelineImageAltEN        NVARCHAR(500) NULL,
+        PageBadgeVI               NVARCHAR(200) NULL,
+        PageBadgeEN               NVARCHAR(200) NULL,
+        PageTitleLine1VI          NVARCHAR(200) NULL,
+        PageTitleLine1EN          NVARCHAR(200) NULL,
+        PageTitleAccentVI         NVARCHAR(200) NULL,
+        PageTitleAccentEN         NVARCHAR(200) NULL,
+        PageTitleLine3VI          NVARCHAR(200) NULL,
+        PageTitleLine3EN          NVARCHAR(200) NULL,
+        PageSubtitleVI            NVARCHAR(1500) NULL,
+        PageSubtitleEN            NVARCHAR(1500) NULL,
+        PageStatsJsonVI           NVARCHAR(MAX) NULL,
+        PageStatsJsonEN           NVARCHAR(MAX) NULL,
+        TimelineItemsJsonVI       NVARCHAR(MAX) NULL,
+        TimelineItemsJsonEN       NVARCHAR(MAX) NULL,
+        GalleryImagesJsonVI       NVARCHAR(MAX) NULL,
+        GalleryImagesJsonEN       NVARCHAR(MAX) NULL,
+        PageHeroImageUrl          NVARCHAR(1000) NULL,
+        PageHeroImageAltVI        NVARCHAR(500) NULL,
+        PageHeroImageAltEN        NVARCHAR(500) NULL,
+        SearchPlaceholderVI       NVARCHAR(300) NULL,
+        SearchPlaceholderEN       NVARCHAR(300) NULL,
+        FilterButtonVI            NVARCHAR(200) NULL,
+        FilterButtonEN            NVARCHAR(200) NULL,
+        AllRegionsVI              NVARCHAR(100) NULL,
+        AllRegionsEN              NVARCHAR(100) NULL,
+        AllMonthsVI               NVARCHAR(100) NULL,
+        AllMonthsEN               NVARCHAR(100) NULL,
+        AllCategoriesVI           NVARCHAR(100) NULL,
+        AllCategoriesEN           NVARCHAR(100) NULL,
+        AllEthnicGroupsVI         NVARCHAR(150) NULL,
+        AllEthnicGroupsEN         NVARCHAR(150) NULL,
+        MajorBadgeVI              NVARCHAR(200) NULL,
+        MajorBadgeEN              NVARCHAR(200) NULL,
+        MajorTitleVI              NVARCHAR(300) NULL,
+        MajorTitleEN              NVARCHAR(300) NULL,
+        MajorSubtitleVI           NVARCHAR(1500) NULL,
+        MajorSubtitleEN           NVARCHAR(1500) NULL,
+        AllTitleVI                NVARCHAR(300) NULL,
+        AllTitleEN                NVARCHAR(300) NULL,
+        AllSubtitleVI             NVARCHAR(1500) NULL,
+        AllSubtitleEN             NVARCHAR(1500) NULL,
+        TimelineBadgeVI           NVARCHAR(200) NULL,
+        TimelineBadgeEN           NVARCHAR(200) NULL,
+        TimelineTitleVI           NVARCHAR(300) NULL,
+        TimelineTitleEN           NVARCHAR(300) NULL,
+        TimelineSubtitleVI        NVARCHAR(1500) NULL,
+        TimelineSubtitleEN        NVARCHAR(1500) NULL,
+        TimelineHintVI            NVARCHAR(200) NULL,
+        TimelineHintEN            NVARCHAR(200) NULL,
+        GalleryBadgeVI            NVARCHAR(200) NULL,
+        GalleryBadgeEN            NVARCHAR(200) NULL,
+        GalleryTitleVI            NVARCHAR(300) NULL,
+        GalleryTitleEN            NVARCHAR(300) NULL,
+        GallerySubtitleVI         NVARCHAR(1500) NULL,
+        GallerySubtitleEN         NVARCHAR(1500) NULL,
+        MeaningBadgeVI            NVARCHAR(200) NULL,
+        MeaningBadgeEN            NVARCHAR(200) NULL,
+        MeaningTitleVI            NVARCHAR(300) NULL,
+        MeaningTitleEN            NVARCHAR(300) NULL,
+        MeaningParagraphsJsonVI   NVARCHAR(MAX) NULL,
+        MeaningParagraphsJsonEN   NVARCHAR(MAX) NULL,
+        MeaningButtonVI           NVARCHAR(200) NULL,
+        MeaningButtonEN           NVARCHAR(200) NULL,
+        MeaningButtonHref         NVARCHAR(300) NULL,
+        QuoteTitleVI              NVARCHAR(300) NULL,
+        QuoteTitleEN              NVARCHAR(300) NULL,
+        QuoteSubtitleVI           NVARCHAR(300) NULL,
+        QuoteSubtitleEN           NVARCHAR(300) NULL,
+        QuoteDescVI               NVARCHAR(1500) NULL,
+        QuoteDescEN               NVARCHAR(1500) NULL,
+        QuoteButtonVI             NVARCHAR(200) NULL,
+        QuoteButtonEN             NVARCHAR(200) NULL,
+        QuoteBackgroundImageUrl   NVARCHAR(1000) NULL,
+        QuoteBackgroundImageAltVI NVARCHAR(500) NULL,
+        QuoteBackgroundImageAltEN NVARCHAR(500) NULL,
+        NoiDungJsonVI             NVARCHAR(MAX) NULL,
+        NoiDungJsonEN             NVARCHAR(MAX) NULL,
+        HoatDong                  BIT NOT NULL DEFAULT 1,
+        NgayTao                   DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        NgayCapNhat               DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT CK_LeHoi_LoaiBanGhi CHECK (LoaiBanGhi IN ('PAGE', 'FESTIVAL'))
+    );
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_LeHoi_LoaiBanGhi_ThuTu'
+      AND object_id = OBJECT_ID('dbo.LeHoi')
+)
+BEGIN
+    CREATE INDEX IX_LeHoi_LoaiBanGhi_ThuTu ON dbo.LeHoi (LoaiBanGhi, HoatDong, ThuTuHienThi);
 END
 GO
 
@@ -542,9 +684,16 @@ GO
    ========================================================= */
 
 INSERT INTO dbo.NguoiDung (HoTen, Email, MatKhauHash, VaiTro)
-SELECT N'Quản trị viên', 'admin@vnculturebridge.ai', '123456HASH', 'ADMIN'
+SELECT N'Quản trị viên Nguyễn Văn A', 'admin.vnculturebridge@gmail.com', '$2b$10$LMgvDe.HngByMtMZmcwjjO1FF6EU0lx0IHFkhQ1iy//LTOFV4Nwza', 'ADMIN'
 WHERE NOT EXISTS (
-    SELECT 1 FROM dbo.NguoiDung WHERE Email = 'admin@vnculturebridge.ai'
+    SELECT 1 FROM dbo.NguoiDung WHERE Email = 'admin.vnculturebridge@gmail.com'
+);
+GO
+
+INSERT INTO dbo.KhachHang (HoTen, Email, MatKhauHash, TrangThai)
+SELECT N'Nguyễn Thị Lan', 'khachhang.vnculturebridge@gmail.com', '$2b$10$fy2F2cDPNwhEQi3wli86tulJG2MtJvV/Z.W3ZUbsNJ2hu.XV/VT2i', 'ACTIVE'
+WHERE NOT EXISTS (
+    SELECT 1 FROM dbo.KhachHang WHERE Email = 'khachhang.vnculturebridge@gmail.com'
 );
 GO
 

@@ -52,6 +52,9 @@ BEGIN
         PrimaryRegionLabelEN        NVARCHAR(200) NULL,
         PopulationLabelVI           NVARCHAR(200) NULL,
         PopulationLabelEN           NVARCHAR(200) NULL,
+        ListBadgeVI                 NVARCHAR(150) NULL,
+        ListBadgeEN                 NVARCHAR(150) NULL,
+        IsNew                       BIT NOT NULL DEFAULT 0,
         DisplayOrder                INT NOT NULL DEFAULT 0,
         HoatDong                    BIT NOT NULL DEFAULT 1,
         NgayTao                     DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
@@ -59,6 +62,18 @@ BEGIN
         CONSTRAINT FK_DanTocProfile_DanToc FOREIGN KEY (DanTocID) REFERENCES dbo.DanToc(DanTocID) ON DELETE CASCADE
     );
 END
+GO
+
+IF COL_LENGTH('dbo.DanTocProfile', 'ListBadgeVI') IS NULL
+    ALTER TABLE dbo.DanTocProfile ADD ListBadgeVI NVARCHAR(150) NULL;
+GO
+
+IF COL_LENGTH('dbo.DanTocProfile', 'ListBadgeEN') IS NULL
+    ALTER TABLE dbo.DanTocProfile ADD ListBadgeEN NVARCHAR(150) NULL;
+GO
+
+IF COL_LENGTH('dbo.DanTocProfile', 'IsNew') IS NULL
+    ALTER TABLE dbo.DanTocProfile ADD IsNew BIT NOT NULL CONSTRAINT DF_DanTocProfile_IsNew DEFAULT 0;
 GO
 
 IF OBJECT_ID('dbo.DanTocSectionItem', 'U') IS NULL
@@ -223,6 +238,52 @@ USING (
          N'Không gian sống của người Ê Đê gắn với buôn làng, nhà dài và nhịp sống nông nghiệp cao nguyên. Tổ chức cộng đồng và cảnh quan tự nhiên hòa vào nhau thành một chỉnh thể văn hóa đặc trưng.',
          N'Ede living space is organized around villages, longhouses, and the agricultural rhythm of the highlands. Community organization and the natural environment form a distinctive cultural whole.',
          N'Tây Nguyên', N'Central Highlands', N'Hơn 390 nghìn người', N'Over 390 thousand people', 5),
+        ('BANA',
+         N'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80', N'Không gian Tây Nguyên gắn với người Ba Na', N'Central Highlands landscape associated with the Ba Na people',
+         N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80', N'Chân dung cộng đồng Ba Na', N'Ba Na community portrait',
+         N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80', N'Sinh hoạt văn hóa của người Ba Na', N'Ba Na cultural life portrait',
+         N'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80', N'Không gian cồng chiêng Tây Nguyên', N'Central Highlands gong culture scene',
+         N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80', N'Nghệ thuật trình diễn của người Ba Na', N'Ba Na performance culture',
+         N'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=1200&q=80', N'Nhà rông của cộng đồng Ba Na', N'Ba Na communal house',
+         N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80', N'Ảnh đại diện dân tộc Ba Na', N'Ba Na card image',
+         N'Cộng đồng Ba Na nổi bật với nhà rông, cồng chiêng và đời sống buôn làng Tây Nguyên.',
+         N'The Ba Na community is known for communal houses, gong culture, and Central Highlands village life.',
+         N'Giới thiệu về người Ba Na', N'Introduction to the Ba Na people',
+         N'Người Ba Na sinh sống chủ yếu ở Tây Nguyên, nơi cộng đồng gắn với nhà rông, sử thi và âm nhạc cồng chiêng. Những không gian này tạo nên bản sắc văn hóa mạnh mẽ và bền vững qua thời gian.',
+         N'The Ba Na live mainly in the Central Highlands, where community life is shaped by communal houses, epics, and gong music. These spaces create a strong and enduring cultural identity.',
+         N'Lịch sử & nguồn gốc', N'History & Origins',
+         N'Người Ba Na có lịch sử cư trú lâu dài ở cao nguyên, gắn với canh tác nương rẫy và đời sống cộng đồng chặt chẽ. Qua nhiều thế hệ, họ vẫn giữ được những thực hành nghi lễ và tổ chức xã hội giàu tính bản địa.',
+         N'The Ba Na have long inhabited the highlands, tied to upland farming and close-knit community life. Across generations, they have preserved rituals and social structures rooted in local traditions.',
+         N'Đặc trưng văn hóa', N'Cultural Identity',
+         N'Nhà rông, cồng chiêng, sử thi và lễ hội cộng đồng là những điểm nhấn của văn hóa Ba Na. Đây là những thực hành giúp gắn kết các thế hệ trong buôn làng.',
+         N'Communal houses, gong ensembles, epics, and community festivals are key features of Ba Na culture. These practices connect generations within the village.',
+         N'Không gian sống', N'Living Space',
+         N'Không gian sống của người Ba Na trải rộng trên các buôn làng Tây Nguyên, với nhà rông giữ vai trò trung tâm sinh hoạt. Kiến trúc và cảnh quan địa phương hòa quyện thành một chỉnh thể văn hóa độc đáo.',
+         N'Ba Na living space spans Central Highlands villages, with the communal house at the center of social life. Architecture and local landscape blend into a distinctive cultural whole.',
+         N'Tây Nguyên', N'Central Highlands', N'Hơn 300 nghìn người', N'Over 300 thousand people', 6),
+        ('MUONG',
+         N'https://images.unsplash.com/photo-1605518215584-5ea1ebda40c0?auto=format&fit=crop&w=1600&q=80', N'Không gian miền núi gắn với người Mường', N'Mountain landscape associated with the Muong people',
+         N'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80', N'Chân dung cộng đồng Mường', N'Muong community portrait',
+         N'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80', N'Sinh hoạt văn hóa của người Mường', N'Muong cultural life portrait',
+         N'https://images.unsplash.com/photo-1605518215584-5ea1ebda40c0?auto=format&fit=crop&w=1200&q=80', N'Không gian bản Mường', N'Muong village scene',
+         N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80', N'Nghệ thuật trình diễn của người Mường', N'Muong performance culture',
+         N'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=1200&q=80', N'Nhà sàn của cộng đồng Mường', N'Muong stilt house',
+         N'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80', N'Ảnh đại diện dân tộc Mường', N'Muong card image',
+         N'Cộng đồng Mường gắn với nhà sàn, sử thi và đời sống nông nghiệp miền núi phía Bắc.',
+         N'The Muong community is associated with stilt houses, epics, and mountain agricultural life in northern Vietnam.',
+         N'Giới thiệu về người Mường', N'Introduction to the Muong people',
+         N'Người Mường cư trú chủ yếu ở trung du và miền núi Bắc Bộ, nơi văn hóa bản làng, nhà sàn và hệ thống sử thi được gìn giữ qua nhiều thế hệ. Bản sắc Mường hiện rõ trong lời mo, âm nhạc và sinh hoạt cộng đồng.',
+         N'The Muong live mainly in the northern midlands and uplands, where village culture, stilt houses, and epic traditions are preserved across generations. Muong identity appears in ritual chants, music, and community life.',
+         N'Lịch sử & nguồn gốc', N'History & Origins',
+         N'Người Mường có lịch sử cư trú lâu đời ở vùng núi Bắc Bộ, gắn với canh tác ruộng nước và quan hệ cộng đồng bền chặt. Các lớp lịch sử được phản ánh qua sử thi, mo và hệ thống phong tục truyền đời.',
+         N'The Muong have long lived in northern mountain areas, tied to wet-rice farming and strong communal bonds. Historical layers are reflected in epics, ritual chants, and inherited customs.',
+         N'Đặc trưng văn hóa', N'Cultural Identity',
+         N'Nhà sàn, mo Mường, cồng chiêng và trang phục truyền thống là những nét đặc trưng của cộng đồng. Những thực hành này thể hiện mối liên hệ giữa con người, gia đình và không gian bản làng.',
+         N'Stilt houses, Muong ritual chants, gong culture, and traditional dress define the community. These practices express the relationship between people, family, and village space.',
+         N'Không gian sống', N'Living Space',
+         N'Không gian sống của người Mường gắn với thung lũng, chân núi và hệ thống ruộng nước ven suối. Cảnh quan và nếp sống cộng đồng hòa thành một bản sắc riêng biệt.',
+         N'Muong living space is shaped by valleys, mountain foothills, and rice fields along streams. Landscape and community life blend into a distinctive identity.',
+         N'Miền núi phía Bắc', N'Northern Highlands', N'Hơn 1,4 triệu người', N'Over 1.4 million people', 7),
         ('TAY',
          N'https://images.unsplash.com/photo-1605518215584-5ea1ebda40c0?auto=format&fit=crop&w=1600&q=80', N'Không gian bản làng vùng Đông Bắc gắn với người Tày', N'Northeastern village landscape associated with the Tay people',
          N'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80', N'Chân dung người Tày trong trang phục truyền thống', N'Tay portrait in traditional attire',
@@ -420,6 +481,187 @@ WHERE NOT EXISTS (
       AND existing.LoaiSection = x.LoaiSection
       AND ISNULL(existing.TieuDeVI, N'') = ISNULL(x.TieuDeVI, N'')
 );
+
+INSERT INTO dbo.DanTocProfile (
+    DanTocID,
+    HeroBackgroundImageUrl, HeroBackgroundAltVI, HeroBackgroundAltEN,
+    HeroForegroundImageUrl, HeroForegroundAltVI, HeroForegroundAltEN,
+    IntroImageUrl, IntroImageAltVI, IntroImageAltEN,
+    FeatureHighlightImageUrl, FeatureHighlightAltVI, FeatureHighlightAltEN,
+    MusicImageUrl, MusicImageAltVI, MusicImageAltEN,
+    ArchitectureImageUrl, ArchitectureImageAltVI, ArchitectureImageAltEN,
+    CardImageUrl, CardImageAltVI, CardImageAltEN,
+    HeroSubtitleVI, HeroSubtitleEN,
+    OverviewTitleVI, OverviewTitleEN, OverviewBodyVI, OverviewBodyEN,
+    HistoryTitleVI, HistoryTitleEN, HistoryBodyVI, HistoryBodyEN,
+    CultureTitleVI, CultureTitleEN, CultureBodyVI, CultureBodyEN,
+    ArchitectureTitleVI, ArchitectureTitleEN, ArchitectureBodyVI, ArchitectureBodyEN,
+    PrimaryRegionLabelVI, PrimaryRegionLabelEN, PopulationLabelVI, PopulationLabelEN,
+    DisplayOrder, HoatDong
+)
+SELECT
+    dt.DanTocID,
+    v.HeroBackgroundImageUrl, v.HeroBackgroundAltVI, v.HeroBackgroundAltEN,
+    v.HeroForegroundImageUrl, v.HeroForegroundAltVI, v.HeroForegroundAltEN,
+    v.IntroImageUrl, v.IntroImageAltVI, v.IntroImageAltEN,
+    v.FeatureHighlightImageUrl, v.FeatureHighlightAltVI, v.FeatureHighlightAltEN,
+    v.MusicImageUrl, v.MusicImageAltVI, v.MusicImageAltEN,
+    v.ArchitectureImageUrl, v.ArchitectureImageAltVI, v.ArchitectureImageAltEN,
+    v.CardImageUrl, v.CardImageAltVI, v.CardImageAltEN,
+    v.HeroSubtitleVI, v.HeroSubtitleEN,
+    v.OverviewTitleVI, v.OverviewTitleEN, v.OverviewBodyVI, v.OverviewBodyEN,
+    v.HistoryTitleVI, v.HistoryTitleEN, v.HistoryBodyVI, v.HistoryBodyEN,
+    v.CultureTitleVI, v.CultureTitleEN, v.CultureBodyVI, v.CultureBodyEN,
+    v.ArchitectureTitleVI, v.ArchitectureTitleEN, v.ArchitectureBodyVI, v.ArchitectureBodyEN,
+    v.PrimaryRegionLabelVI, v.PrimaryRegionLabelEN, v.PopulationLabelVI, v.PopulationLabelEN,
+    v.DisplayOrder, 1
+FROM dbo.DanToc dt
+JOIN (VALUES
+    ('NUNG',
+     N'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80', N'Không gian vùng núi Đông Bắc gắn với người Nùng', N'Northwestern mountain landscape associated with the Nung people',
+     N'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=900&q=80', N'Chân dung cộng đồng Nùng', N'Nung community portrait',
+     N'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=900&q=80', N'Sinh hoạt văn hóa của người Nùng', N'Nung cultural life portrait',
+     N'https://images.unsplash.com/photo-1605518215584-5ea1ebda40c0?auto=format&fit=crop&w=1200&q=80', N'Không gian chợ phiên của người Nùng', N'Nung market space',
+     N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80', N'Nghệ thuật hát sli của người Nùng', N'Nung sli singing',
+     N'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=1200&q=80', N'Nhà sàn của cộng đồng Nùng', N'Nung stilt house',
+     N'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=900&q=80', N'Ảnh đại diện dân tộc Nùng', N'Nung card image',
+     N'Cộng đồng Nùng nổi bật với chợ phiên, hát sli và nếp nhà sàn gắn bó với núi đồi Đông Bắc.',
+     N'The Nung community is known for market life, sli singing, and stilt houses tied to northeastern hills.',
+     N'Giới thiệu về người Nùng', N'Introduction to the Nung people',
+     N'Người Nùng sinh sống chủ yếu ở các tỉnh Đông Bắc, nơi văn hóa bản làng, chợ phiên và hát sli được gìn giữ qua nhiều thế hệ. Sự hiện diện của nhà sàn, ruộng bậc thang và sinh hoạt cộng đồng tạo nên bản sắc riêng cho cộng đồng.',
+     N'The Nung live mainly in northeastern provinces, where village culture, market life, and sli singing have been preserved across generations. Stilt houses, terraced fields, and communal life shape their distinct identity.',
+     N'Lịch sử & nguồn gốc', N'History & Origins',
+     N'Người Nùng có lịch sử cư trú lâu đời ở vùng núi phía Bắc và gắn với canh tác nông nghiệp trên địa hình đồi núi. Dấu ấn lịch sử ấy thể hiện trong tổ chức bản làng, trang phục và các nghi thức truyền thống.',
+     N'The Nung have long lived in northern upland areas and are tied to farming on hilly terrain. That history is visible in village organization, dress, and traditional rituals.',
+     N'Đặc trưng văn hóa', N'Cultural Identity',
+     N'Hát sli, lễ hội Lồng Tồng, trang phục chàm và nhà sàn là những dấu ấn tiêu biểu của văn hóa Nùng. Các giá trị ấy vừa mang tính cộng đồng vừa phản ánh mối quan hệ gần gũi với thiên nhiên.',
+     N'Sli singing, Long Tong festivals, indigo clothing, and stilt houses are hallmarks of Nung culture. These values are communal and closely linked to nature.',
+     N'Không gian sống', N'Living Space',
+     N'Không gian sống của người Nùng thường ở các thung lũng, chân núi và ven suối, nơi nhà sàn và ruộng nước tạo thành một chỉnh thể sinh hoạt bền chặt.',
+     N'Nung living space is often located in valleys, mountain foothills, and streamsides, where stilt houses and rice fields create a cohesive way of life.',
+     N'Miền Bắc', N'Northern Vietnam', N'Hơn 1 triệu người', N'Over 1 million people', 8),
+    ('GIAY',
+     N'https://images.unsplash.com/photo-1605518215584-5ea1ebda40c0?auto=format&fit=crop&w=1600&q=80', N'Không gian ruộng bậc thang gắn với người Giấy', N'Terraced landscape associated with the Giay people',
+     N'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80', N'Chân dung cộng đồng Giấy', N'Giay community portrait',
+     N'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80', N'Sinh hoạt văn hóa của người Giấy', N'Giay cultural life portrait',
+     N'https://images.unsplash.com/photo-1605518215584-5ea1ebda40c0?auto=format&fit=crop&w=1200&q=80', N'Không gian lễ hội cầu mùa của người Giấy', N'Giay harvest ritual space',
+     N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80', N'Dân ca và điệu múa của người Giấy', N'Giay folk song and dance',
+     N'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=1200&q=80', N'Nhà ở của cộng đồng Giấy', N'Giay dwelling space',
+     N'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80', N'Ảnh đại diện dân tộc Giấy', N'Giay card image',
+     N'Cộng đồng Giấy gắn với lễ hội cầu mùa, dân ca và nếp sống ruộng nước vùng núi phía Bắc.',
+     N'The Giay community is associated with harvest rituals, folk songs, and wet-rice life in the northern highlands.',
+     N'Giới thiệu về người Giấy', N'Introduction to the Giay people',
+     N'Người Giấy cư trú ở nhiều tỉnh vùng núi phía Bắc, nơi truyền thống nông nghiệp ruộng nước, dân ca và lễ hội cộng đồng được lưu giữ bền bỉ. Đời sống văn hóa của họ phản ánh sự gắn kết giữa canh tác, gia đình và làng bản.',
+     N'The Giay live in several northern mountain provinces, where wet-rice traditions, folk songs, and communal festivals are preserved. Their cultural life reflects a strong bond between farming, family, and village life.',
+     N'Lịch sử & nguồn gốc', N'History & Origins',
+     N'Người Giấy là một cộng đồng có lịch sử lâu dài ở vùng núi, với đời sống gắn chặt vào ruộng nước và các nghi thức nông nghiệp. Những thực hành ấy góp phần định hình bản sắc văn hóa qua nhiều thế hệ.',
+     N'The Giay have a long history in the mountains, with life closely tied to wet-rice fields and agrarian rituals. These practices have shaped their identity across generations.',
+     N'Đặc trưng văn hóa', N'Cultural Identity',
+     N'Lễ hội cầu mùa, dân ca, trang phục truyền thống và kiến trúc nhà ở là những nét đặc trưng của văn hóa Giấy. Các yếu tố ấy tạo nên một đời sống cộng đồng giàu màu sắc.',
+     N'Harvest rituals, folk songs, traditional dress, and vernacular architecture define Giay culture. These elements create a vibrant communal life.',
+     N'Không gian sống', N'Living Space',
+     N'Không gian sống của người Giấy thường là thung lũng, sườn đồi và các vùng ruộng bậc thang, nơi nếp sống cộng đồng và cảnh quan tự nhiên hòa hợp với nhau.',
+     N'Giay living space is often made up of valleys, hillsides, and terraced fields, where community life and natural landscapes blend together.',
+     N'Miền Bắc', N'Northern Vietnam', N'Hơn 0,9 triệu người', N'Over 0.9 million people', 9),
+    ('CHURU',
+     N'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80', N'Không gian Tây Nguyên và Nam Trung Bộ gắn với người Chu Ru', N'Central Highlands and south-central landscape associated with the Chu Ru people',
+     N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80', N'Chân dung cộng đồng Chu Ru', N'Chu Ru community portrait',
+     N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80', N'Sinh hoạt văn hóa của người Chu Ru', N'Chu Ru cultural life portrait',
+     N'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80', N'Không gian lễ mừng lúa mới của người Chu Ru', N'Chu Ru new rice celebration space',
+     N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80', N'Nghề dệt thổ cẩm của người Chu Ru', N'Chu Ru textile weaving',
+     N'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=1200&q=80', N'Nhà ở của cộng đồng Chu Ru', N'Chu Ru dwelling space',
+     N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80', N'Ảnh đại diện dân tộc Chu Ru', N'Chu Ru card image',
+     N'Cộng đồng Chu Ru gắn với lễ mừng lúa mới, dệt thổ cẩm và nhịp sống bản làng miền cao nguyên.',
+     N'The Chu Ru community is associated with the new rice festival, textile weaving, and highland village life.',
+     N'Giới thiệu về người Chu Ru', N'Introduction to the Chu Ru people',
+     N'Người Chu Ru sinh sống tại Lâm Đồng và Ninh Thuận, nơi văn hóa nông nghiệp, lễ hội và nghề dệt tạo nên bản sắc riêng. Nếp sống cộng đồng và tri thức bản địa vẫn được truyền nối qua nhiều thế hệ.',
+     N'The Chu Ru live in Lam Dong and Ninh Thuan, where agricultural culture, festivals, and weaving shape their identity. Community life and indigenous knowledge continue across generations.',
+     N'Lịch sử & nguồn gốc', N'History & Origins',
+     N'Người Chu Ru có lịch sử cư trú gắn với vùng cao nguyên và dải đất chuyển tiếp giữa Tây Nguyên và duyên hải miền Trung. Lịch sử cộng đồng thể hiện qua nghi lễ, canh tác và quan hệ làng bản.',
+     N'The Chu Ru have a history linked to the highlands and the transition zone between the Central Highlands and the south-central coast. Their history is expressed in rituals, farming, and village relations.',
+     N'Đặc trưng văn hóa', N'Cultural Identity',
+     N'Lễ mừng lúa mới, dệt thổ cẩm, âm nhạc dân gian và hình thức cư trú cộng đồng là những dấu ấn quan trọng của văn hóa Chu Ru.',
+     N'The new rice festival, textile weaving, folk music, and communal settlement patterns are key markers of Chu Ru culture.',
+     N'Không gian sống', N'Living Space',
+     N'Không gian sống của người Chu Ru gắn với nhà dài, ruộng nương và những thung lũng màu mỡ của miền cao nguyên.',
+     N'Chu Ru living space is associated with longhouses, upland fields, and fertile highland valleys.',
+     N'Tây Nguyên', N'Central Highlands', N'Hơn 0,25 triệu người', N'Over 0.25 million people', 10)
+) AS v(MaDanToc,
+    HeroBackgroundImageUrl, HeroBackgroundAltVI, HeroBackgroundAltEN,
+    HeroForegroundImageUrl, HeroForegroundAltVI, HeroForegroundAltEN,
+    IntroImageUrl, IntroImageAltVI, IntroImageAltEN,
+    FeatureHighlightImageUrl, FeatureHighlightAltVI, FeatureHighlightAltEN,
+    MusicImageUrl, MusicImageAltVI, MusicImageAltEN,
+    ArchitectureImageUrl, ArchitectureImageAltVI, ArchitectureImageAltEN,
+    CardImageUrl, CardImageAltVI, CardImageAltEN,
+    HeroSubtitleVI, HeroSubtitleEN,
+    OverviewTitleVI, OverviewTitleEN, OverviewBodyVI, OverviewBodyEN,
+    HistoryTitleVI, HistoryTitleEN, HistoryBodyVI, HistoryBodyEN,
+    CultureTitleVI, CultureTitleEN, CultureBodyVI, CultureBodyEN,
+    ArchitectureTitleVI, ArchitectureTitleEN, ArchitectureBodyVI, ArchitectureBodyEN,
+    PrimaryRegionLabelVI, PrimaryRegionLabelEN, PopulationLabelVI, PopulationLabelEN,
+    DisplayOrder)
+  ON v.MaDanToc = dt.MaDanToc
+WHERE NOT EXISTS (
+    SELECT 1 FROM dbo.DanTocProfile existing WHERE existing.DanTocID = dt.DanTocID
+);
+
+INSERT INTO dbo.DanTocSectionItem (DanTocID, LoaiSection, TieuDeVI, TieuDeEN, MoTaVI, MoTaEN, ImageUrl, ImageAltVI, ImageAltEN, LayoutSize, TagVI, TagEN, ThuTuHienThi, HoatDong)
+SELECT dt.DanTocID, x.LoaiSection, x.TieuDeVI, x.TieuDeEN, x.MoTaVI, x.MoTaEN, x.ImageUrl, x.ImageAltVI, x.ImageAltEN, x.LayoutSize, x.TagVI, x.TagEN, x.ThuTuHienThi, 1
+FROM dbo.DanToc dt
+JOIN (VALUES
+    ('NUNG','FEATURES',N'Hát sli và lượn',N'Sli Singing and Luon Songs',N'Hát sli và lượn là làn điệu dân gian quan trọng trong giao tiếp và sinh hoạt cộng đồng.',N'Sli and luon songs are important folk melodies in community interaction and everyday life.',N'https://images.unsplash.com/photo-1605518215584-5ea1ebda40c0?auto=format&fit=crop&w=900&q=80',N'Hát sli của người Nùng',N'Nung sli singing','small',N'Nổi bật',N'Featured',37),
+    ('NUNG','STORIES',N'Lễ hội Lồng Tồng',N'Long Tong Festival',N'Lễ hội cầu mùa, cầu phúc được tổ chức đầu năm tại nhiều bản làng.',N'A harvest and blessing festival held at the beginning of the year in many villages.',N'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=900&q=80',N'Lễ hội Lồng Tồng của người Nùng',N'Nung Long Tong festival','small',NULL,NULL,38),
+    ('NUNG','GALLERY',N'Nhà sàn người Nùng',N'Nung Stilt House',N'Không gian cư trú truyền thống gắn với núi đồi và ruộng nương.',N'Traditional dwelling space tied to hills and upland fields.',N'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=1200&q=80',N'Nhà sàn người Nùng',N'Nung stilt house','large',NULL,NULL,39),
+    ('GIAY','FEATURES',N'Pí lè và dân ca',N'Pi Le and Folk Songs',N'Âm nhạc dân gian là một phần quan trọng trong đời sống cộng đồng Giấy.',N'Folk music is an important part of Giay community life.',N'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80',N'Âm nhạc dân gian của người Giấy',N'Giay folk music','small',N'Nổi bật',N'Featured',40),
+    ('GIAY','STORIES',N'Lễ hội cầu mùa',N'Harvest Ritual',N'Lễ hội cầu mùa phản ánh niềm tin nông nghiệp và sự gắn kết cộng đồng.',N'Harvest rituals reflect agrarian beliefs and community cohesion.',N'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=900&q=80',N'Lễ hội cầu mùa của người Giấy',N'Giay harvest ritual','small',NULL,NULL,41),
+    ('GIAY','GALLERY',N'Ruộng bậc thang',N'Terraced Fields',N'Phong cảnh ruộng bậc thang gắn với nếp sống vùng cao.',N'Terraced scenery tied to upland life.',N'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',N'Ruộng bậc thang vùng cao',N'Highland terraced fields','large',NULL,NULL,42),
+    ('CHURU','FEATURES',N'Lễ mừng lúa mới',N'New Rice Festival',N'Lễ mừng lúa mới là một nghi lễ trọng đại trong đời sống tinh thần của người Chu Ru.',N'The new rice festival is a major ritual in Chu Ru spiritual life.',N'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80',N'Lễ mừng lúa mới của người Chu Ru',N'Chu Ru new rice festival','small',N'Nổi bật',N'Featured',43),
+    ('CHURU','STORIES',N'Dệt thổ cẩm Chu Ru',N'Chu Ru Textile Weaving',N'Những hoa văn thổ cẩm phản ánh ký ức và thẩm mỹ của cộng đồng.',N'Textile motifs reflect the memory and aesthetics of the community.',N'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80',N'Dệt thổ cẩm Chu Ru',N'Chu Ru textile weaving','small',NULL,NULL,44),
+    ('CHURU','GALLERY',N'Nhà dài Chu Ru',N'Chu Ru Longhouse',N'Kiến trúc nhà dài thể hiện sự kết nối giữa gia đình và cộng đồng.',N'Longhouse architecture expresses the connection between family and community.',N'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=1200&q=80',N'Nhà dài Chu Ru',N'Chu Ru longhouse','large',NULL,NULL,45)
+) AS x(MaDanToc, LoaiSection, TieuDeVI, TieuDeEN, MoTaVI, MoTaEN, ImageUrl, ImageAltVI, ImageAltEN, LayoutSize, TagVI, TagEN, ThuTuHienThi)
+  ON dt.MaDanToc = x.MaDanToc
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM dbo.DanTocSectionItem existing
+    WHERE existing.DanTocID = dt.DanTocID
+      AND existing.LoaiSection = x.LoaiSection
+      AND ISNULL(existing.TieuDeVI, N'') = ISNULL(x.TieuDeVI, N'')
+);
+
+UPDATE dp
+SET
+  ListBadgeVI = CASE
+    WHEN dt.MaDanToc IN ('HMONG', 'CHAM', 'EDE', 'TAY', 'KINH') THEN N'Nổi bật'
+    WHEN dt.MaDanToc IN ('BANA', 'MUONG', 'NUNG', 'GIAY', 'CHURU') THEN N'Mới'
+    ELSE ListBadgeVI
+  END,
+  ListBadgeEN = CASE
+    WHEN dt.MaDanToc IN ('HMONG', 'CHAM', 'EDE', 'TAY', 'KINH') THEN N'Featured'
+    WHEN dt.MaDanToc IN ('BANA', 'MUONG', 'NUNG', 'GIAY', 'CHURU') THEN N'New'
+    ELSE ListBadgeEN
+  END,
+  IsNew = CASE
+    WHEN dt.MaDanToc IN ('BANA', 'MUONG', 'NUNG', 'GIAY', 'CHURU') THEN 1
+    ELSE ISNULL(dp.IsNew, 0)
+  END,
+  DisplayOrder = CASE dt.MaDanToc
+    WHEN 'KINH' THEN 1
+    WHEN 'TAY' THEN 2
+    WHEN 'HMONG' THEN 3
+    WHEN 'EDE' THEN 4
+    WHEN 'CHAM' THEN 5
+    WHEN 'KHMER' THEN 6
+    WHEN 'DAO' THEN 7
+    WHEN 'BANA' THEN 8
+    WHEN 'MUONG' THEN 9
+    WHEN 'NUNG' THEN 10
+    WHEN 'GIAY' THEN 11
+    WHEN 'CHURU' THEN 12
+    ELSE dp.DisplayOrder
+  END
+FROM dbo.DanTocProfile dp
+JOIN dbo.DanToc dt ON dt.DanTocID = dp.DanTocID;
 
 SELECT COUNT(*) AS EthnicProfilesCount FROM dbo.DanTocProfile;
 SELECT COUNT(*) AS EthnicSectionItemsCount FROM dbo.DanTocSectionItem;

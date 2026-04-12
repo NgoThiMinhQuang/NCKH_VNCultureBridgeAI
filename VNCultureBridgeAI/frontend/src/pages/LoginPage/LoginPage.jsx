@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { post } from '../../services/http';
 import './LoginPage.css';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempt with:', { email, password });
-    localStorage.setItem('isAuthenticated', 'true');
-    navigate('/');
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    try {
+      const data = await post('/auth/login', { email, password });
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('currentUser', JSON.stringify(data.user));
+      localStorage.setItem('isAuthenticated', 'true');
+      window.dispatchEvent(new Event('auth-changed'));
+      navigate('/');
+    } catch (error) {
+      setErrorMessage(error.message || 'Đăng nhập thất bại');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -56,6 +71,8 @@ export default function LoginPage() {
               <p>Chào mừng trở lại! Điền thông tin để tiếp tục trải nghiệm.</p>
             </div>
 
+            {errorMessage && <div className="form-error-message">{errorMessage}</div>}
+
             <form className="v2-form" onSubmit={handleSubmit}>
               <div className="v2-input-group">
                 <label>Email</label>
@@ -98,8 +115,8 @@ export default function LoginPage() {
                 <Link to="/forgot-password" className="v2-forgot-link">Quên mật khẩu?</Link>
               </div>
 
-              <button type="submit" className="v2-submit-btn">
-                <span>Đăng Nhập</span>
+              <button type="submit" className="v2-submit-btn" disabled={isSubmitting}>
+                <span>{isSubmitting ? 'Đang đăng nhập...' : 'Đăng Nhập'}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>

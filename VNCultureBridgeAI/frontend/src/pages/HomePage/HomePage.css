@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Outfit:wght@400;600;700;800&display=swap');
+
 .hero-section::before {
   content: '';
   position: absolute;
@@ -304,8 +306,6 @@
   color: #ffcc73;
   font-size: 2rem;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Outfit:wght@400;600;700;800&display=swap');
 
 /* Basic setup and ivory background */
 .regions-showcase {

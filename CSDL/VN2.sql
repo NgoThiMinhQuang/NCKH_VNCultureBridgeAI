@@ -10,20 +10,25 @@ SET NOCOUNT ON;
    1. NGƯỜI DÙNG QUẢN TRỊ
    ========================================================= */
 INSERT INTO dbo.NguoiDung (HoTen, Email, MatKhauHash, VaiTro, TrangThai)
-SELECT N'Quản trị viên hệ thống', 'admin@vnculturebridge.ai', 'HASH_ADMIN_123', 'ADMIN', 'ACTIVE'
-WHERE NOT EXISTS (SELECT 1 FROM dbo.NguoiDung WHERE Email = 'admin@vnculturebridge.ai');
+SELECT N'Quản trị viên Nguyễn Văn A', 'admin.vnculturebridge@gmail.com', '$2b$10$LMgvDe.HngByMtMZmcwjjO1FF6EU0lx0IHFkhQ1iy//LTOFV4Nwza', 'ADMIN', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM dbo.NguoiDung WHERE Email = 'admin.vnculturebridge@gmail.com');
+
+INSERT INTO dbo.KhachHang (HoTen, Email, MatKhauHash, TrangThai)
+SELECT N'Nguyễn Thị Lan', 'khachhang.vnculturebridge@gmail.com', '$2b$10$fy2F2cDPNwhEQi3wli86tulJG2MtJvV/Z.W3ZUbsNJ2hu.XV/VT2i', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM dbo.KhachHang WHERE Email = 'khachhang.vnculturebridge@gmail.com');
 
 INSERT INTO dbo.NguoiDung (HoTen, Email, MatKhauHash, VaiTro, TrangThai)
-SELECT N'Trần Minh Anh', 'content@vnculturebridge.ai', 'HASH_CONTENT_123', 'CONTENT_MANAGER', 'ACTIVE'
-WHERE NOT EXISTS (SELECT 1 FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai');
+SELECT N'Trần Minh Anh', 'content.vnculturebridge@gmail.com', 'HASH_CONTENT_123', 'CONTENT_MANAGER', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM dbo.NguoiDung WHERE Email = 'content.vnculturebridge@gmail.com');
 
 INSERT INTO dbo.NguoiDung (HoTen, Email, MatKhauHash, VaiTro, TrangThai)
-SELECT N'Lê Hoàng Nam', 'reviewer@vnculturebridge.ai', 'HASH_REVIEWER_123', 'REVIEWER', 'ACTIVE'
-WHERE NOT EXISTS (SELECT 1 FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai');
+SELECT N'Lê Hoàng Nam', 'reviewer.vnculturebridge@gmail.com', 'HASH_REVIEWER_123', 'REVIEWER', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM dbo.NguoiDung WHERE Email = 'reviewer.vnculturebridge@gmail.com');
 
 INSERT INTO dbo.NguoiDung (HoTen, Email, MatKhauHash, VaiTro, TrangThai)
-SELECT N'Phạm Thu Hà', 'ai@vnculturebridge.ai', 'HASH_AI_123', 'AI_MANAGER', 'ACTIVE'
-WHERE NOT EXISTS (SELECT 1 FROM dbo.NguoiDung WHERE Email = 'ai@vnculturebridge.ai');
+SELECT N'Phạm Thu Hà', 'ai.vnculturebridge@gmail.com', 'HASH_AI_123', 'AI_MANAGER', 'ACTIVE'
+WHERE NOT EXISTS (SELECT 1 FROM dbo.NguoiDung WHERE Email = 'ai.vnculturebridge@gmail.com');
+
 
 /* =========================================================
    2. DANH MỤC TRI THỨC
@@ -164,6 +169,62 @@ SELECT 'EDE', N'Ê Đê', N'Ede',
        N'An ethnic group living mainly in the Central Highlands, associated with gong culture.',
        1
 WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'EDE');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'CHAM', N'Chăm', N'Cham',
+       N'Cộng đồng có bề dày lịch sử ở miền Trung, nổi bật với kiến trúc tháp, dệt thổ cẩm và tín ngưỡng đặc sắc.',
+       N'A long-established community in central Vietnam, known for tower architecture, weaving, and distinctive beliefs.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'CHAM');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'KHMER', N'Khmer', N'Khmer',
+       N'Cộng đồng gắn với đồng bằng sông Cửu Long, Phật giáo Nam Tông và nghệ thuật sân khấu truyền thống.',
+       N'A community associated with the Mekong Delta, Theravada Buddhism, and traditional performing arts.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'KHMER');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'DAO', N'Dao', N'Dao',
+       N'Dân tộc nổi bật với thêu tay, nghi lễ cấp sắc và tri thức dân gian vùng núi phía Bắc.',
+       N'An ethnic group known for embroidery, initiation rituals, and highland folk knowledge.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'DAO');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'BANA', N'Ba Na', N'Ba Na',
+       N'Cộng đồng tiêu biểu của Tây Nguyên với sử thi, cồng chiêng và đời sống buôn làng đặc sắc.',
+       N'An emblematic Central Highlands community with epics, gong culture, and distinctive village life.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'BANA');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'MUONG', N'Mường', N'Muong',
+       N'Cộng đồng gắn bó với núi rừng và ruộng nước miền Bắc, giàu vốn sử thi, mo và âm nhạc dân gian.',
+       N'A northern upland community tied to forests and rice fields, rich in epics, ritual chants, and folk music.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'MUONG');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'NUNG', N'Nùng', N'Nung',
+       N'Cộng đồng vùng Đông Bắc nổi bật với chợ phiên, hát sli và nếp nhà sàn gắn với núi đồi.',
+       N'An northeastern community known for market life, sli singing, and stilt houses in the hills.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'NUNG');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'GIAY', N'Giấy', N'Giay',
+       N'Cộng đồng ở vùng núi phía Bắc, lưu giữ lễ hội cầu mùa, dân ca và tri thức canh tác ruộng nước.',
+       N'A northern highland community preserving harvest rituals, folk songs, and wet-rice farming knowledge.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'GIAY');
+
+INSERT INTO dbo.DanToc (MaDanToc, TenVI, TenEN, MoTaVI, MoTaEN, HoatDong)
+SELECT 'CHURU', N'Chu Ru', N'Chu Ru',
+       N'Cộng đồng sống tại Lâm Đồng và Ninh Thuận, gắn với lễ mừng lúa mới, dệt thổ cẩm và nhà dài.',
+       N'A community in Lam Dong and Ninh Thuan associated with new rice festivals, weaving, and longhouses.',
+       1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.DanToc WHERE MaDanToc = 'CHURU');
 
 /* =========================================================
    5. TỪ KHÓA
@@ -1214,6 +1275,308 @@ WHERE NOT EXISTS (SELECT 1 FROM dbo.TuKhoa WHERE MaTuKhoa = 'BANH_MI');
 INSERT INTO dbo.TuKhoa (MaTuKhoa, GiaTriVI, GiaTriEN, HoatDong)
 SELECT 'MUA_ROI_NUOC', N'Múa rối nước', N'Water Puppetry', 1
 WHERE NOT EXISTS (SELECT 1 FROM dbo.TuKhoa WHERE MaTuKhoa = 'MUA_ROI_NUOC');
+
+/* =========================================================
+   6A. DỮ LIỆU TRANG LỄ HỘI ĐỘNG
+   ========================================================= */
+INSERT INTO dbo.LeHoi (
+    MaLeHoi, LoaiBanGhi, ThuTuHienThi,
+    PageBadgeVI, PageBadgeEN,
+    PageTitleLine1VI, PageTitleLine1EN,
+    PageTitleAccentVI, PageTitleAccentEN,
+    PageTitleLine3VI, PageTitleLine3EN,
+    PageSubtitleVI, PageSubtitleEN,
+    PageStatsJsonVI, PageStatsJsonEN,
+    TimelineItemsJsonVI, TimelineItemsJsonEN,
+    GalleryImagesJsonVI, GalleryImagesJsonEN,
+    PageHeroImageUrl, PageHeroImageAltVI, PageHeroImageAltEN,
+    SearchPlaceholderVI, SearchPlaceholderEN,
+    FilterButtonVI, FilterButtonEN,
+    AllRegionsVI, AllRegionsEN,
+    AllMonthsVI, AllMonthsEN,
+    AllCategoriesVI, AllCategoriesEN,
+    AllEthnicGroupsVI, AllEthnicGroupsEN,
+    MajorBadgeVI, MajorBadgeEN,
+    MajorTitleVI, MajorTitleEN,
+    MajorSubtitleVI, MajorSubtitleEN,
+    AllTitleVI, AllTitleEN,
+    AllSubtitleVI, AllSubtitleEN,
+    TimelineBadgeVI, TimelineBadgeEN,
+    TimelineTitleVI, TimelineTitleEN,
+    TimelineSubtitleVI, TimelineSubtitleEN,
+    TimelineHintVI, TimelineHintEN,
+    GalleryBadgeVI, GalleryBadgeEN,
+    GalleryTitleVI, GalleryTitleEN,
+    GallerySubtitleVI, GallerySubtitleEN,
+    MeaningBadgeVI, MeaningBadgeEN,
+    MeaningTitleVI, MeaningTitleEN,
+    MeaningParagraphsJsonVI, MeaningParagraphsJsonEN,
+    MeaningButtonVI, MeaningButtonEN, MeaningButtonHref,
+    QuoteTitleVI, QuoteTitleEN,
+    QuoteSubtitleVI, QuoteSubtitleEN,
+    QuoteDescVI, QuoteDescEN,
+    QuoteButtonVI, QuoteButtonEN,
+    QuoteBackgroundImageUrl, QuoteBackgroundImageAltVI, QuoteBackgroundImageAltEN,
+    HoatDong
+)
+SELECT
+    'LE_HOI_PAGE', 'PAGE', 0,
+    N'Lễ hội · Văn hóa · Truyền thống', N'Festivals · Culture · Traditions',
+    N'Tinh hoa', N'Essence of',
+    N'Lễ hội', N'Festivals',
+    N'Việt Nam', N'Vietnam',
+    N'Hàng nghìn năm truyền thống hội tụ trong từng lễ hội — nơi sắc màu, âm thanh và tâm hồn Việt hòa quyện thành một.',
+    N'Thousands of years of tradition converge in every festival — where colors, sounds, and the Vietnamese spirit unite as one.',
+    N'[{"value":"8.000+","label":"Lễ hội hàng năm"},{"value":"54","label":"Dân tộc anh em"},{"value":"63","label":"Tỉnh thành"}]',
+    N'[{"value":"8,000+","label":"Annual festivals"},{"value":"54","label":"Ethnic groups"},{"value":"63","label":"Provinces"}]',
+    N'[
+      {"id":1,"month":"Tháng 1","title":"Tết Nguyên Đán","season":"Mùa xuân","color":"#e11d48","image":"/images/banner1.jpg"},
+      {"id":2,"month":"Tháng 3","title":"Lễ hội Hoa Ban","season":"Mùa xuân","color":"#8b5cf6","image":"/images/festival_spring.png"},
+      {"id":3,"month":"Tháng 4","title":"Giỗ Tổ Hùng Vương","season":"Mùa xuân","color":"#ea580c","image":"/images/giotohungvuong1.PNG"},
+      {"id":4,"month":"Tháng 6","title":"Festival Huế","season":"Mùa hạ","color":"#10b981","image":"/images/festival_hue.png"},
+      {"id":5,"month":"Tháng 9","title":"Tết Trung Thu","season":"Mùa thu","color":"#d946ef","image":"/images/banner2.jpg"},
+      {"id":6,"month":"Tháng 10","title":"Lễ hội Katê","season":"Mùa thu","color":"#f59e0b","image":"/images/cham.jpg"},
+      {"id":7,"month":"Tháng 12","title":"Nghinh Ông","season":"Mùa đông","color":"#6366f1","image":"/images/banner3.jpg"}
+    ]',
+    N'[]',
+    N'[
+      {"imageUrl":"/images/banner2.jpg","alt":"Khoảnh khắc lễ hội truyền thống Việt Nam"},
+      {"imageUrl":"/images/banner1.jpg","alt":"Không gian lễ hội mùa xuân"},
+      {"imageUrl":"/images/festival_banner.jpg","alt":"Hoạt động cộng đồng trong lễ hội"},
+      {"imageUrl":"/images/banner3.jpg","alt":"Nghi thức truyền thống trong lễ hội"},
+      {"imageUrl":"/images/festival_hue.png","alt":"Festival Huế"},
+      {"imageUrl":"/images/giotohungvuong1.PNG","alt":"Giỗ Tổ Hùng Vương"},
+      {"imageUrl":"/images/hmong_festival_gau_tao_1775575986843.png","alt":"Lễ hội Gầu Tào"},
+      {"imageUrl":"/images/hat-quan-ho.png","alt":"Dân ca Quan họ"},
+      {"imageUrl":"/images/cham.jpg","alt":"Không gian văn hóa Chăm trong lễ hội"}
+    ]',
+    N'[]',
+    N'/images/festival_banner.jpg', N'Ảnh bìa trang lễ hội Việt Nam', N'Festival page hero image',
+    N'Tìm kiếm lễ hội, nghi lễ và truyền thống...', N'Search festivals, rituals, and traditions...',
+    N'Bộ lọc nâng cao', N'Advanced Filters',
+    N'Tất cả khu vực', N'All regions',
+    N'Tất cả tháng', N'All months',
+    N'Tất cả loại hình', N'All categories',
+    N'Tất cả nhóm trải nghiệm', N'All experience groups',
+    N'Lễ hội nổi bật', N'Featured celebrations',
+    N'Lễ hội tiêu biểu', N'Major festivals',
+    N'Khám phá những lễ hội nổi bật và có sức lan tỏa mạnh mẽ trong văn hóa Việt Nam.',
+    N'Discover Vietnam''s most important cultural celebrations.',
+    N'Khám phá các lễ hội Việt Nam', N'Explore Vietnamese festivals',
+    N'Mở từng trang để xem nội dung lễ hội tương ứng được tải động từ hệ thống.',
+    N'Open each page to view festival content loaded dynamically from the system.',
+    N'Lễ hội quanh năm', N'Year-round celebrations',
+    N'Dòng thời gian lễ hội', N'Festival timeline',
+    N'Khám phá nhịp điệu văn hóa Việt Nam qua từng mùa trong năm.',
+    N'Experience the rhythm of Vietnamese culture throughout the year.',
+    N'Cuộn ngang để xem thêm →', N'Scroll horizontally →',
+    N'Hành trình thị giác', N'Visual journey',
+    N'Khoảnh khắc lễ hội', N'Gallery of moments',
+    N'Đắm mình trong bầu không khí và cảm xúc của những mùa lễ hội Việt Nam.',
+    N'Immerse yourself in the atmosphere and emotion of Vietnamese festivals.',
+    N'Ý nghĩa văn hóa', N'Cultural meaning',
+    N'Linh hồn của lễ hội Việt', N'The soul of Vietnamese festivals',
+    N'[
+      "Lễ hội Việt Nam không chỉ là những ngày vui mà còn là nơi kết nối con người với cội nguồn, vùng đất và ký ức cộng đồng.",
+      "Mỗi nghi thức, biểu tượng và hoạt động trong lễ hội đều phản ánh chiều sâu văn hóa, niềm tin và tinh thần gắn kết của người Việt.",
+      "Khi tham gia lễ hội, chúng ta không chỉ quan sát mà còn trực tiếp cảm nhận nhịp sống văn hóa đang tiếp tục được lưu truyền qua nhiều thế hệ."
+    ]',
+    N'[]',
+    N'Tìm hiểu thêm về văn hóa Việt', N'Learn more about Vietnamese culture', N'/articles',
+    N'Uống nước nhớ nguồn', N'Remember the source',
+    N'Nhớ về cội nguồn để gìn giữ giá trị văn hóa', N'Remembering the roots to preserve cultural values',
+    N'Tinh thần biết ơn cội nguồn chính là nền tảng để các lễ hội Việt Nam tiếp tục sống động trong đời sống hôm nay.',
+    N'The spirit of gratitude toward one''s roots is the foundation that keeps Vietnamese festivals alive today.',
+    N'Khám phá văn hóa', N'Discover culture',
+    N'/images/banner1.jpg', N'Ảnh nền trích dẫn trang lễ hội', N'Festival quote background',
+    1
+WHERE NOT EXISTS (SELECT 1 FROM dbo.LeHoi WHERE MaLeHoi = 'LE_HOI_PAGE');
+
+INSERT INTO dbo.LeHoi (
+    MaLeHoi, LoaiBanGhi, ThuTuHienThi,
+    TieuDeVI, TieuDeEN, TieuDePhuVI, TieuDePhuEN,
+    ShortTitleVI, ShortTitleEN,
+    MoTaNganVI, MoTaNganEN,
+    HeroDescVI, HeroDescEN,
+    ViTriVI, ViTriEN,
+    NgayLeVI, NgayLeEN,
+    TagVI, TagEN, TagColor,
+    ImageUrl, ImageAltVI, ImageAltEN,
+    TimelineMonthVI, TimelineMonthEN,
+    TimelineSeasonVI, TimelineSeasonEN,
+    TimelineImageUrl, TimelineImageAltVI, TimelineImageAltEN,
+    TimelineColor,
+    NoiDungJsonVI, NoiDungJsonEN,
+    HoatDong
+)
+SELECT * FROM (VALUES
+(
+    'tet-nguyen-dan','FESTIVAL',1,
+    N'Tết Nguyên Đán',N'Lunar New Year',N'Tết cổ truyền Việt Nam',N'Vietnamese traditional Tet',
+    N'Tết',N'Tet',
+    N'Lễ tết quan trọng nhất trong năm của người Việt, gắn với đoàn viên gia đình và khởi đầu năm mới.',
+    N'The most important annual holiday in Vietnam, associated with family reunion and the beginning of a new year.',
+    N'Lễ hội lớn nhất trong năm, tôn vinh đoàn viên, tổ tiên và khởi đầu mới.',
+    N'The largest annual festival celebrating reunion, ancestors, and new beginnings.',
+    N'Toàn quốc',N'Nationwide',
+    N'Tháng 1 - Tháng 2',N'January - February',
+    N'Lễ hội lớn',N'Major festival','#ce112d',
+    N'/images/banner1.jpg',N'Tết Nguyên Đán',N'Tet',
+    N'Tháng 1',N'January',
+    N'Mùa xuân',N'Spring',
+    N'/images/banner1.jpg',N'Tết Nguyên Đán',N'Tet',
+    '#e11d48',
+    N'{
+      "whatIsItContext":[
+        "Tết Nguyên Đán là dịp chuyển giao giữa năm cũ và năm mới theo âm lịch, gắn với tinh thần đoàn viên, tưởng nhớ tổ tiên và khởi đầu một chu kỳ sống mới.",
+        "Trong những ngày Tết, các gia đình dọn dẹp nhà cửa, chuẩn bị mâm cỗ, trang hoàng không gian sống và dành thời gian sum họp bên nhau."
+      ],
+      "quickFacts":{"date":"Cuối tháng Chạp đến đầu tháng Giêng âm lịch","location":"Toàn quốc","participants":"Mọi gia đình và cộng đồng"},
+      "howItIsCelebrated":[
+        {"phase":"Chuẩn bị","title":"Dọn dẹp và sắm Tết","desc":["Người Việt sửa soạn nhà cửa, mua hoa, gói bánh và chuẩn bị lễ vật cúng ông bà.","Không khí Tết bắt đầu từ những ngày cuối năm khi chợ hoa, phố phường và từng gia đình đều rộn ràng chuẩn bị."],"image":"/images/anhtet1.PNG","align":"left"},
+        {"phase":"Giao thừa","title":"Khoảnh khắc chuyển năm","desc":["Đêm giao thừa là thời khắc linh thiêng để cúng tổ tiên, cầu bình an và chào đón năm mới.","Nhiều gia đình quây quần bên nhau, nghe lời chúc đầu năm và tận hưởng cảm giác mở đầu mới mẻ."],"image":"/images/banner2.jpg","align":"right"},
+        {"phase":"Đầu xuân","title":"Chúc Tết và du xuân","desc":["Mọi người thăm hỏi họ hàng, lì xì trẻ em, đi lễ chùa và tham gia các hoạt động hội xuân.","Những nghi thức đầu năm thể hiện sự gắn kết gia đình, niềm tin vào may mắn và ước vọng tốt đẹp."],"image":"/images/banner3.jpg","align":"left"}
+      ],
+      "whatTetFeelsLike":{"leftText":["Đường phố: Ngập tràn sắc đỏ, đào, mai và không khí nô nức đón xuân.","Âm thanh: Tiếng chúc Tết, tiếng cười nói, tiếng nhạc xuân và nhịp điệu hội hè vang lên khắp nơi.","Nhịp sống: Từ tất bật chuẩn bị chuyển sang khoảnh khắc sum họp, ấm áp và đầy hy vọng."],"rightText":["Mái nhà: Được trang hoàng sạch đẹp với mâm ngũ quả, câu đối và bàn thờ tổ tiên tươm tất.","Cảm xúc: Là sự hòa quyện giữa hoài niệm, biết ơn và mong ước cho một năm bình an hơn.","Trải nghiệm: Dù ở thành thị hay nông thôn, Tết luôn tạo cảm giác thuộc về và gắn kết rất sâu sắc."],"image":"/images/festival_banner.jpg"},
+      "keyTraditionsDocs":[{"image":"/images/banner2.jpg","title":"Lì xì đầu năm","desc":"Phong tục mừng tuổi mang lời chúc may mắn, sức khỏe và thành công."},{"image":"/images/banner3.jpg","title":"Bánh chưng - bánh tét","desc":"Món ăn biểu tượng của Tết, thể hiện sự biết ơn với đất trời và tổ tiên."},{"image":"/images/anhtet1.PNG","title":"Cúng gia tiên","desc":"Nghi thức quan trọng giúp kết nối các thế hệ trong gia đình."}],
+      "traditionalFoods":[{"image":"/images/banner3.jpg","title":"Bánh chưng","desc":"Món bánh truyền thống gắn với Tết miền Bắc."},{"image":"/images/banner2.jpg","title":"Thịt kho trứng","desc":"Món ăn quen thuộc trong mâm cơm Tết nhiều gia đình."},{"image":"/images/festival_banner.jpg","title":"Mứt Tết","desc":"Hương vị ngọt ngào thường dùng để tiếp khách đầu xuân."}],
+      "regionalFoods":{"north":[{"image":"/images/banner1.jpg","title":"Dưa hành","desc":"Món ăn giúp cân bằng hương vị trong mâm cỗ Tết."}],"central":[{"image":"/images/banner2.jpg","title":"Bánh tét","desc":"Hương vị đậm đà thường gặp ở miền Trung và miền Nam."}],"south":[{"image":"/images/banner3.jpg","title":"Canh khổ qua nhồi thịt","desc":"Món ăn gửi gắm mong muốn khó khăn qua đi."}]},
+      "culturalMeaningsDocs":[{"icon":"✨","title":"Khởi đầu mới","desc":"Tết tượng trưng cho sự đổi mới, tái tạo và hy vọng.","colorClass":"highlight-red"},{"icon":"👨‍👩‍👧‍👦","title":"Đoàn viên gia đình","desc":"Đây là dịp sum họp thiêng liêng nhất trong năm của người Việt.","colorClass":"highlight-orange"},{"icon":"🙏","title":"Biết ơn tổ tiên","desc":"Tinh thần uống nước nhớ nguồn được thể hiện sâu sắc trong mỗi nghi thức đầu năm.","colorClass":"highlight-yellow"}],
+      "interestingFactsDocs":[{"icon":"🧧","title":"Sắc đỏ may mắn","desc":"Màu đỏ xuất hiện dày đặc trong trang trí ngày Tết như biểu tượng của phúc lộc."},{"icon":"🎇","title":"Khoảnh khắc giao thừa","desc":"Nhiều người xem giao thừa là thời khắc quan trọng nhất để gửi gắm mong ước đầu năm."},{"icon":"🌸","title":"Hoa xuân ba miền","desc":"Miền Bắc chuộng hoa đào, miền Nam yêu hoa mai, tạo nên bản sắc xuân rất riêng."}],
+      "galleryHero":"/images/festival_banner.jpg",
+      "galleryGrid":["/images/banner1.jpg","/images/banner2.jpg","/images/banner3.jpg","/images/anhtet1.PNG","/images/banner1.jpg","/images/banner2.jpg"],
+      "inShortText":"Tết Nguyên Đán là lát cắt rõ nét nhất của văn hóa Việt Nam — nơi gia đình, ký ức tổ tiên và niềm hy vọng đầu năm giao hòa trong cùng một không khí lễ hội.",
+      "discoverMore":[{"image":"/images/banner3.jpg","title":"Món ăn ngày Tết","desc":"Tìm hiểu ý nghĩa văn hóa đằng sau các món ăn truyền thống trong dịp đầu năm."},{"image":"/images/anhtet1.PNG","title":"Phong tục đầu xuân","desc":"Khám phá những tập quán quen thuộc như lì xì, chúc Tết, xông đất và du xuân."},{"image":"/images/festival_banner.jpg","title":"Không khí đoàn viên","desc":"Cảm nhận chiều sâu cảm xúc và tinh thần gia đình trong những ngày Tết Việt."}],
+      "labels":{"whatIsItTitle":"Tết Nguyên Đán là gì?","dateLabel":"Thời gian","locationLabel":"Địa điểm","participantsLabel":"Thành phần tham gia","celebrationTitle":"Tết Nguyên Đán được tổ chức như thế nào?","feelsLikeTitle":"Trải nghiệm không khí Tết","keyTraditionsTitle":"Những nét truyền thống nổi bật","traditionalFoodsTitle":"Ẩm thực gắn với Tết Nguyên Đán","traditionalFoodsSubtitle":"Những món ăn ngày Tết không chỉ ngon mà còn mang theo nhiều lớp ý nghĩa văn hóa.","northRegionLabel":"Miền Bắc","centralRegionLabel":"Miền Trung","southRegionLabel":"Miền Nam","culturalMeaningsTitle":"Ý nghĩa văn hóa","interestingFactsTitle":"Điều thú vị về Tết Nguyên Đán","galleryTitle":"Tết Nguyên Đán qua hình ảnh","inShortTitle":"Tóm lược","discoverMoreTitle":"Khám phá thêm về Tết Nguyên Đán"}
+    }',
+    N'{}',
+    1
+),
+(
+    'tet-trung-thu','FESTIVAL',2,
+    N'Tết Trung Thu',N'Mid-Autumn Festival',N'Lễ hội trăng rằm',N'Mid-Autumn celebration',
+    N'Trung Thu',N'Mid-Autumn',
+    N'Lễ hội dành cho thiếu nhi với lồng đèn, múa lân, bánh trung thu và không khí sum họp gia đình.',
+    N'A children-centered festival filled with lanterns, lion dances, mooncakes, and family togetherness.',
+    N'Lễ hội trăng rằm gắn với ký ức tuổi thơ, lồng đèn và tinh thần đoàn viên.',
+    N'A full-moon festival tied to childhood memory, lanterns, and reunion.',
+    N'Toàn quốc',N'Nationwide',
+    N'Tháng 8 âm lịch',N'September',
+    N'Lễ hội lớn',N'Major festival','#d946ef',
+    N'/images/banner2.jpg',N'Tết Trung Thu',N'Mid-Autumn Festival',
+    N'Tháng 9',N'September',
+    N'Mùa thu',N'Autumn',
+    N'/images/banner2.jpg',N'Tết Trung Thu',N'Mid-Autumn Festival',
+    '#d946ef',
+    NULL, NULL, 1
+),
+(
+    'gio-to-hung-vuong','FESTIVAL',3,
+    N'Giỗ Tổ Hùng Vương',N'Hung Kings Commemoration',N'Lễ tưởng niệm các Vua Hùng',N'Commemoration of the Hung Kings',
+    N'Đền Hùng',N'Hung Kings Temple',
+    N'Ngày lễ lớn để tưởng nhớ các Vua Hùng, gắn với đạo lý uống nước nhớ nguồn và bản sắc dân tộc.',
+    N'A major celebration honoring the Hung Kings and Vietnamese national identity.',
+    N'Lễ hội tưởng niệm nguồn cội dân tộc với nghi thức dâng hương và sinh hoạt cộng đồng.',
+    N'A commemoration centered on ancestral memory and community rituals.',
+    N'Phú Thọ',N'Phu Tho',
+    N'Mùng 10 tháng 3 âm lịch',N'The 10th day of the 3rd lunar month',
+    N'Văn hóa',N'Cultural festival','#ea580c',
+    N'/images/giotohungvuong1.PNG',N'Giỗ Tổ Hùng Vương',N'Hung Kings Festival',
+    N'Tháng 4',N'April',
+    N'Mùa xuân',N'Spring',
+    N'/images/giotohungvuong1.PNG',N'Giỗ Tổ Hùng Vương',N'Hung Kings Festival',
+    '#ea580c',
+    NULL, NULL, 1
+),
+(
+    'festival-hue','FESTIVAL',4,
+    N'Festival Huế',N'Hue Festival',N'Lễ hội di sản cố đô',N'Imperial heritage festival',
+    N'Huế',N'Hue',
+    N'Sự kiện văn hóa quy mô lớn tái hiện vẻ đẹp cung đình, nghệ thuật trình diễn và di sản cố đô Huế.',
+    N'A large cultural event celebrating Hue''s imperial heritage and performing arts.',
+    N'Lễ hội văn hóa kết nối di sản cung đình, nghệ thuật đương đại và trải nghiệm cộng đồng.',
+    N'A cultural festival connecting imperial heritage, contemporary art, and community experiences.',
+    N'Huế',N'Hue',
+    N'Tháng 6',N'June',
+    N'Văn hóa',N'Cultural festival','#10b981',
+    N'/images/festival_hue.png',N'Festival Huế',N'Hue Festival',
+    N'Tháng 6',N'June',
+    N'Mùa hạ',N'Summer',
+    N'/images/festival_hue.png',N'Festival Huế',N'Hue Festival',
+    '#10b981',
+    NULL, NULL, 1
+),
+(
+    'gau-tao','FESTIVAL',5,
+    N'Lễ hội Gầu Tào',N'Gau Tao Festival',N'Lễ hội cầu phúc của người H''Mông',N'Hmong spring blessing festival',
+    N'Gầu Tào',N'Gau Tao',
+    N'Lễ hội mùa xuân của người H''Mông, cầu bình an, sức khỏe và mùa màng thuận lợi cho cộng đồng.',
+    N'A Hmong spring festival praying for health, peace, and good harvests.',
+    N'Lễ hội cộng đồng giàu bản sắc vùng cao, gắn với khèn, trò chơi dân gian và lời cầu chúc đầu năm.',
+    N'A vibrant highland community festival with khen music and folk games.',
+    N'Miền núi phía Bắc',N'Northern Highlands',
+    N'Tháng 1',N'January',
+    N'Dân tộc',N'Ethnic festival','#8b5cf6',
+    N'/images/hmong_festival_gau_tao_1775575986843.png',N'Lễ hội Gầu Tào',N'Gau Tao Festival',
+    N'Tháng 1',N'January',
+    N'Mùa xuân',N'Spring',
+    N'/images/hmong_festival_gau_tao_1775575986843.png',N'Lễ hội Gầu Tào',N'Gau Tao Festival',
+    '#8b5cf6',
+    NULL, NULL, 1
+),
+(
+    'kate','FESTIVAL',6,
+    N'Lễ hội Katê',N'Kate Festival',N'Lễ hội đặc sắc của người Chăm',N'Cham cultural festival',
+    N'Katê',N'Kate',
+    N'Lễ hội lớn của người Chăm nhằm tưởng nhớ tổ tiên, thần linh và tôn vinh bản sắc văn hóa cộng đồng.',
+    N'A major Cham festival honoring ancestors, deities, and cultural identity.',
+    N'Lễ hội gắn với đền tháp, âm nhạc, trang phục và nghi thức cộng đồng của người Chăm.',
+    N'A festival connected to Cham towers, music, dress, and ritual life.',
+    N'Ninh Thuận - Bình Thuận',N'Ninh Thuan - Binh Thuan',
+    N'Tháng 10',N'October',
+    N'Dân tộc',N'Ethnic festival','#f59e0b',
+    N'/images/cham.jpg',N'Lễ hội Katê',N'Kate Festival',
+    N'Tháng 10',N'October',
+    N'Mùa thu',N'Autumn',
+    N'/images/cham.jpg',N'Lễ hội Katê',N'Kate Festival',
+    '#f59e0b',
+    NULL, NULL, 1
+),
+(
+    'nghinh-ong','FESTIVAL',7,
+    N'Lễ hội Nghinh Ông',N'Nghinh Ong Festival',N'Lễ hội tín ngưỡng vùng biển',N'Coastal worship festival',
+    N'Nghinh Ông',N'Nghinh Ong',
+    N'Lễ hội của cư dân vùng biển nhằm cầu mong bình an, mưa thuận gió hòa và mùa đánh bắt thuận lợi.',
+    N'A coastal community festival praying for safety and prosperous fishing seasons.',
+    N'Lễ hội phản ánh đời sống tín ngưỡng của ngư dân và mối gắn bó giữa con người với biển cả.',
+    N'A festival reflecting fishermen''s beliefs and their deep bond with the sea.',
+    N'Nam Bộ ven biển',N'Southern coastal region',
+    N'Tháng 12',N'December',
+    N'Tín ngưỡng',N'Religious festival','#6366f1',
+    N'/images/banner3.jpg',N'Lễ hội Nghinh Ông',N'Nghinh Ong Festival',
+    N'Tháng 12',N'December',
+    N'Mùa đông',N'Winter',
+    N'/images/banner3.jpg',N'Lễ hội Nghinh Ông',N'Nghinh Ong Festival',
+    '#6366f1',
+    NULL, NULL, 1
+)
+) AS src(
+    MaLeHoi, LoaiBanGhi, ThuTuHienThi,
+    TieuDeVI, TieuDeEN, TieuDePhuVI, TieuDePhuEN,
+    ShortTitleVI, ShortTitleEN,
+    MoTaNganVI, MoTaNganEN,
+    HeroDescVI, HeroDescEN,
+    ViTriVI, ViTriEN,
+    NgayLeVI, NgayLeEN,
+    TagVI, TagEN, TagColor,
+    ImageUrl, ImageAltVI, ImageAltEN,
+    TimelineMonthVI, TimelineMonthEN,
+    TimelineSeasonVI, TimelineSeasonEN,
+    TimelineImageUrl, TimelineImageAltVI, TimelineImageAltEN,
+    TimelineColor,
+    NoiDungJsonVI, NoiDungJsonEN, HoatDong
+)
+WHERE NOT EXISTS (SELECT 1 FROM dbo.LeHoi l WHERE l.MaLeHoi = src.MaLeHoi);
 
 INSERT INTO dbo.BaiViet (
     MaBaiViet,

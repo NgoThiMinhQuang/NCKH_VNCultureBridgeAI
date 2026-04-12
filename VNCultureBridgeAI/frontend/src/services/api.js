@@ -9,5 +9,7 @@
 export { getHomepage } from './homepage.service'
 export { getArticle, searchArticles } from './content.service'
 export { getRegions, getRegion } from './region.service'
+export { getFestivals, getFestival } from './festival.service'
+export { getCuisines, getCuisine, getCuisineGallery } from './cuisine.service'
 export { getEthnicity } from './ethnicity.service'
 export { askAi } from './ai.service'

@@ -355,6 +355,9 @@ async function getEthnicities() {
       dp.HeroForegroundImageUrl,
       dp.HeroForegroundAltVI,
       dp.HeroForegroundAltEN,
+      dp.ListBadgeVI,
+      dp.ListBadgeEN,
+      dp.IsNew,
       dp.DisplayOrder,
       COUNT(DISTINCT bv.BaiVietID) AS ArticleCount
     FROM dbo.DanToc dt
@@ -385,6 +388,9 @@ async function getEthnicities() {
       dp.HeroForegroundImageUrl,
       dp.HeroForegroundAltVI,
       dp.HeroForegroundAltEN,
+      dp.ListBadgeVI,
+      dp.ListBadgeEN,
+      dp.IsNew,
       dp.DisplayOrder
     ORDER BY COALESCE(dp.DisplayOrder, 9999) ASC, ArticleCount DESC, dt.DanTocID ASC
   `)
@@ -619,6 +625,397 @@ async function getEthnicityGallery(code, limit = 7) {
   `, { code })
 }
 
+async function getFestivalPageContent() {
+  const rows = await query(`
+    SELECT TOP 1
+      lh.LeHoiID,
+      lh.MaLeHoi,
+      lh.ThuTuHienThi,
+      lh.PageBadgeVI,
+      lh.PageBadgeEN,
+      lh.PageTitleLine1VI,
+      lh.PageTitleLine1EN,
+      lh.PageTitleAccentVI,
+      lh.PageTitleAccentEN,
+      lh.PageTitleLine3VI,
+      lh.PageTitleLine3EN,
+      lh.PageSubtitleVI,
+      lh.PageSubtitleEN,
+      lh.PageStatsJsonVI,
+      lh.PageStatsJsonEN,
+      lh.TimelineItemsJsonVI,
+      lh.TimelineItemsJsonEN,
+      lh.GalleryImagesJsonVI,
+      lh.GalleryImagesJsonEN,
+      lh.PageHeroImageUrl,
+      lh.PageHeroImageAltVI,
+      lh.PageHeroImageAltEN,
+      lh.SearchPlaceholderVI,
+      lh.SearchPlaceholderEN,
+      lh.FilterButtonVI,
+      lh.FilterButtonEN,
+      lh.AllRegionsVI,
+      lh.AllRegionsEN,
+      lh.AllMonthsVI,
+      lh.AllMonthsEN,
+      lh.AllCategoriesVI,
+      lh.AllCategoriesEN,
+      lh.AllEthnicGroupsVI,
+      lh.AllEthnicGroupsEN,
+      lh.MajorBadgeVI,
+      lh.MajorBadgeEN,
+      lh.MajorTitleVI,
+      lh.MajorTitleEN,
+      lh.MajorSubtitleVI,
+      lh.MajorSubtitleEN,
+      lh.AllTitleVI,
+      lh.AllTitleEN,
+      lh.AllSubtitleVI,
+      lh.AllSubtitleEN,
+      lh.TimelineBadgeVI,
+      lh.TimelineBadgeEN,
+      lh.TimelineTitleVI,
+      lh.TimelineTitleEN,
+      lh.TimelineSubtitleVI,
+      lh.TimelineSubtitleEN,
+      lh.TimelineHintVI,
+      lh.TimelineHintEN,
+      lh.GalleryBadgeVI,
+      lh.GalleryBadgeEN,
+      lh.GalleryTitleVI,
+      lh.GalleryTitleEN,
+      lh.GallerySubtitleVI,
+      lh.GallerySubtitleEN,
+      lh.MeaningBadgeVI,
+      lh.MeaningBadgeEN,
+      lh.MeaningTitleVI,
+      lh.MeaningTitleEN,
+      lh.MeaningParagraphsJsonVI,
+      lh.MeaningParagraphsJsonEN,
+      lh.MeaningButtonVI,
+      lh.MeaningButtonEN,
+      lh.MeaningButtonHref,
+      lh.QuoteTitleVI,
+      lh.QuoteTitleEN,
+      lh.QuoteSubtitleVI,
+      lh.QuoteSubtitleEN,
+      lh.QuoteDescVI,
+      lh.QuoteDescEN,
+      lh.QuoteButtonVI,
+      lh.QuoteButtonEN,
+      lh.QuoteBackgroundImageUrl,
+      lh.QuoteBackgroundImageAltVI,
+      lh.QuoteBackgroundImageAltEN
+    FROM dbo.LeHoi lh
+    WHERE lh.HoatDong = 1 AND lh.LoaiBanGhi = 'PAGE'
+    ORDER BY lh.ThuTuHienThi ASC, lh.LeHoiID ASC
+  `)
+
+  return rows[0] || null
+}
+
+async function getFestivals() {
+  return query(`
+    SELECT
+      lh.LeHoiID,
+      lh.MaLeHoi,
+      lh.ThuTuHienThi,
+      lh.ShortTitleVI,
+      lh.ShortTitleEN,
+      lh.TieuDeVI,
+      lh.TieuDeEN,
+      lh.TieuDePhuVI,
+      lh.TieuDePhuEN,
+      lh.MoTaNganVI,
+      lh.MoTaNganEN,
+      lh.ViTriVI,
+      lh.ViTriEN,
+      lh.NgayLeVI,
+      lh.NgayLeEN,
+      lh.TagVI,
+      lh.TagEN,
+      lh.TagColor,
+      lh.ImageUrl,
+      lh.ImageAltVI,
+      lh.ImageAltEN,
+      lh.TimelineMonthVI,
+      lh.TimelineMonthEN,
+      lh.TimelineSeasonVI,
+      lh.TimelineSeasonEN,
+      lh.TimelineImageUrl,
+      lh.TimelineImageAltVI,
+      lh.TimelineImageAltEN,
+      lh.TimelineColor,
+      lh.HeroDescVI,
+      lh.HeroDescEN,
+      lh.NoiDungJsonVI,
+      lh.NoiDungJsonEN
+    FROM dbo.LeHoi lh
+    WHERE lh.HoatDong = 1 AND lh.LoaiBanGhi = 'FESTIVAL'
+    ORDER BY lh.ThuTuHienThi ASC, lh.LeHoiID ASC
+  `)
+}
+
+async function getFestivalById(id) {
+  const rows = await query(`
+    SELECT TOP 1
+      lh.LeHoiID,
+      lh.MaLeHoi,
+      lh.ThuTuHienThi,
+      lh.ShortTitleVI,
+      lh.ShortTitleEN,
+      lh.TieuDeVI,
+      lh.TieuDeEN,
+      lh.TieuDePhuVI,
+      lh.TieuDePhuEN,
+      lh.MoTaNganVI,
+      lh.MoTaNganEN,
+      lh.ViTriVI,
+      lh.ViTriEN,
+      lh.NgayLeVI,
+      lh.NgayLeEN,
+      lh.TagVI,
+      lh.TagEN,
+      lh.TagColor,
+      lh.ImageUrl,
+      lh.ImageAltVI,
+      lh.ImageAltEN,
+      lh.TimelineMonthVI,
+      lh.TimelineMonthEN,
+      lh.TimelineSeasonVI,
+      lh.TimelineSeasonEN,
+      lh.TimelineImageUrl,
+      lh.TimelineImageAltVI,
+      lh.TimelineImageAltEN,
+      lh.TimelineColor,
+      lh.HeroDescVI,
+      lh.HeroDescEN,
+      lh.NoiDungJsonVI,
+      lh.NoiDungJsonEN
+    FROM dbo.LeHoi lh
+    WHERE lh.HoatDong = 1
+      AND lh.LoaiBanGhi = 'FESTIVAL'
+      AND (CAST(lh.LeHoiID AS NVARCHAR(50)) = @id OR lh.MaLeHoi = @id)
+  `, { id })
+
+  return rows[0] || null
+}
+
+async function getCuisineArticles(limit = 50) {
+  return query(`
+    SELECT TOP (${Number(limit) || 50})
+      bv.BaiVietID,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN,
+      bv.MoTaNganVI,
+      bv.MoTaNganEN,
+      bv.GioiThieuVI,
+      bv.GioiThieuEN,
+      bv.NguonGocVI,
+      bv.NguonGocEN,
+      bv.YNghiaVanHoaVI,
+      bv.YNghiaVanHoaEN,
+      bv.BoiCanhVI,
+      bv.BoiCanhEN,
+      bv.NoiDungChinhVI,
+      bv.NoiDungChinhEN,
+      bv.TomTatChoAIVI,
+      bv.TomTatChoAIEN,
+      bv.NgayXuatBan,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END) AS ImageUrl,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END) AS AltTextVI,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextEN END) AS AltTextEN,
+      MAX(vv.MaVung) AS RegionCode,
+      MAX(vv.TenVI) AS RegionNameVI,
+      MAX(vv.TenEN) AS RegionNameEN
+    FROM dbo.BaiViet bv
+    JOIN dbo.BaiViet_DanhMuc bvdm ON bvdm.BaiVietID = bv.BaiVietID
+    JOIN dbo.DanhMuc dm ON dm.DanhMucID = bvdm.DanhMucID AND dm.MaDanhMuc = 'AM_THUC'
+    LEFT JOIN dbo.BaiViet_Vung bvv ON bvv.BaiVietID = bv.BaiVietID AND bvv.LaVungChinh = 1
+    LEFT JOIN dbo.VungVanHoa vv ON vv.VungID = bvv.VungID
+    LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
+    WHERE bv.TrangThaiDuyet = 'APPROVED'
+      AND bv.TrangThaiXuatBan = 'PUBLISHED'
+    GROUP BY
+      bv.BaiVietID,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN,
+      bv.MoTaNganVI,
+      bv.MoTaNganEN,
+      bv.GioiThieuVI,
+      bv.GioiThieuEN,
+      bv.NguonGocVI,
+      bv.NguonGocEN,
+      bv.YNghiaVanHoaVI,
+      bv.YNghiaVanHoaEN,
+      bv.BoiCanhVI,
+      bv.BoiCanhEN,
+      bv.NoiDungChinhVI,
+      bv.NoiDungChinhEN,
+      bv.TomTatChoAIVI,
+      bv.TomTatChoAIEN,
+      bv.NgayXuatBan
+    ORDER BY bv.NgayXuatBan DESC, bv.BaiVietID DESC
+  `)
+}
+
+async function getCuisineArticleByCode(code) {
+  const rows = await query(`
+    SELECT TOP 1
+      bv.BaiVietID,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN,
+      bv.MoTaNganVI,
+      bv.MoTaNganEN,
+      bv.GioiThieuVI,
+      bv.GioiThieuEN,
+      bv.NguonGocVI,
+      bv.NguonGocEN,
+      bv.YNghiaVanHoaVI,
+      bv.YNghiaVanHoaEN,
+      bv.BoiCanhVI,
+      bv.BoiCanhEN,
+      bv.NoiDungChinhVI,
+      bv.NoiDungChinhEN,
+      bv.TomTatChoAIVI,
+      bv.TomTatChoAIEN,
+      bv.NgayXuatBan,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.UrlFile END) AS ImageUrl,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextVI END) AS AltTextVI,
+      MAX(CASE WHEN m.LaAnhChinh = 1 THEN m.AltTextEN END) AS AltTextEN,
+      MAX(vv.MaVung) AS RegionCode,
+      MAX(vv.TenVI) AS RegionNameVI,
+      MAX(vv.TenEN) AS RegionNameEN
+    FROM dbo.BaiViet bv
+    JOIN dbo.BaiViet_DanhMuc bvdm ON bvdm.BaiVietID = bv.BaiVietID
+    JOIN dbo.DanhMuc dm ON dm.DanhMucID = bvdm.DanhMucID AND dm.MaDanhMuc = 'AM_THUC'
+    LEFT JOIN dbo.BaiViet_Vung bvv ON bvv.BaiVietID = bv.BaiVietID AND bvv.LaVungChinh = 1
+    LEFT JOIN dbo.VungVanHoa vv ON vv.VungID = bvv.VungID
+    LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
+    WHERE bv.TrangThaiDuyet = 'APPROVED'
+      AND bv.TrangThaiXuatBan = 'PUBLISHED'
+      AND bv.MaBaiViet = @code
+    GROUP BY
+      bv.BaiVietID,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN,
+      bv.MoTaNganVI,
+      bv.MoTaNganEN,
+      bv.GioiThieuVI,
+      bv.GioiThieuEN,
+      bv.NguonGocVI,
+      bv.NguonGocEN,
+      bv.YNghiaVanHoaVI,
+      bv.YNghiaVanHoaEN,
+      bv.BoiCanhVI,
+      bv.BoiCanhEN,
+      bv.NoiDungChinhVI,
+      bv.NoiDungChinhEN,
+      bv.TomTatChoAIVI,
+      bv.TomTatChoAIEN,
+      bv.NgayXuatBan
+  `, { code })
+
+  return rows[0] || null
+}
+
+async function getCuisineArticleMedia(code, limit = 12) {
+  return query(`
+    SELECT TOP (${Number(limit) || 12})
+      m.MediaID,
+      m.BaiVietID,
+      m.LoaiMedia,
+      m.UrlFile,
+      m.AltTextVI,
+      m.AltTextEN,
+      m.ChuThichVI,
+      m.ChuThichEN,
+      m.LaAnhChinh,
+      m.ThuTuHienThi,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN,
+      MAX(vv.MaVung) AS RegionCode,
+      MAX(vv.TenVI) AS RegionNameVI,
+      MAX(vv.TenEN) AS RegionNameEN
+    FROM dbo.BaiViet bv
+    JOIN dbo.BaiViet_DanhMuc bvdm ON bvdm.BaiVietID = bv.BaiVietID
+    JOIN dbo.DanhMuc dm ON dm.DanhMucID = bvdm.DanhMucID AND dm.MaDanhMuc = 'AM_THUC'
+    LEFT JOIN dbo.BaiViet_Vung bvv ON bvv.BaiVietID = bv.BaiVietID AND bvv.LaVungChinh = 1
+    LEFT JOIN dbo.VungVanHoa vv ON vv.VungID = bvv.VungID
+    JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
+    WHERE bv.TrangThaiDuyet = 'APPROVED'
+      AND bv.TrangThaiXuatBan = 'PUBLISHED'
+      AND bv.MaBaiViet = @code
+      AND m.LoaiMedia = 'IMAGE'
+    GROUP BY
+      m.MediaID,
+      m.BaiVietID,
+      m.LoaiMedia,
+      m.UrlFile,
+      m.AltTextVI,
+      m.AltTextEN,
+      m.ChuThichVI,
+      m.ChuThichEN,
+      m.LaAnhChinh,
+      m.ThuTuHienThi,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN
+    ORDER BY m.LaAnhChinh DESC, m.ThuTuHienThi ASC, m.MediaID ASC
+  `, { code })
+}
+
+async function getCuisineGalleryMedia(limit = 8) {
+  return query(`
+    SELECT TOP (${Number(limit) || 8})
+      m.MediaID,
+      m.BaiVietID,
+      m.LoaiMedia,
+      m.UrlFile,
+      m.AltTextVI,
+      m.AltTextEN,
+      m.ChuThichVI,
+      m.ChuThichEN,
+      m.LaAnhChinh,
+      m.ThuTuHienThi,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN,
+      MAX(vv.MaVung) AS RegionCode,
+      MAX(vv.TenVI) AS RegionNameVI,
+      MAX(vv.TenEN) AS RegionNameEN
+    FROM dbo.BaiViet bv
+    JOIN dbo.BaiViet_DanhMuc bvdm ON bvdm.BaiVietID = bv.BaiVietID
+    JOIN dbo.DanhMuc dm ON dm.DanhMucID = bvdm.DanhMucID AND dm.MaDanhMuc = 'AM_THUC'
+    LEFT JOIN dbo.BaiViet_Vung bvv ON bvv.BaiVietID = bv.BaiVietID AND bvv.LaVungChinh = 1
+    LEFT JOIN dbo.VungVanHoa vv ON vv.VungID = bvv.VungID
+    JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
+    WHERE bv.TrangThaiDuyet = 'APPROVED'
+      AND bv.TrangThaiXuatBan = 'PUBLISHED'
+      AND m.LoaiMedia = 'IMAGE'
+    GROUP BY
+      m.MediaID,
+      m.BaiVietID,
+      m.LoaiMedia,
+      m.UrlFile,
+      m.AltTextVI,
+      m.AltTextEN,
+      m.ChuThichVI,
+      m.ChuThichEN,
+      m.LaAnhChinh,
+      m.ThuTuHienThi,
+      bv.MaBaiViet,
+      bv.TieuDeVI,
+      bv.TieuDeEN
+    ORDER BY m.LaAnhChinh DESC, m.ThuTuHienThi ASC, bv.NgayXuatBan DESC, m.MediaID ASC
+  `)
+}
+
 module.exports = {
   getArticles,
   getArticleSearchMatches,
@@ -633,4 +1030,11 @@ module.exports = {
   getEthnicityStoryItems,
   getEthnicitySectionItems,
   getEthnicityGallery,
+  getFestivalPageContent,
+  getFestivals,
+  getFestivalById,
+  getCuisineArticles,
+  getCuisineArticleByCode,
+  getCuisineArticleMedia,
+  getCuisineGalleryMedia,
 }

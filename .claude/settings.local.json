@@ -44,7 +44,13 @@
       "Bash(findstr :5174)",
       "WebSearch",
       "Bash(tasklist:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(\"C:/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/SQLCMD.EXE\" -S \"DESKTOP-4AI2SO6\\\\SQLEXPRESS\" -E -d \"VNCultureBridgeAI\" -b -i \"D:/NCKH_VNCultureBridgeAI/CSDL/VN2.sql\")",
+      "Bash(\"C:/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/SQLCMD.EXE\" -S \"DESKTOP-4AI2SO6\\\\SQLEXPRESS\" -E -d \"VNCultureBridgeAI\" -b -i \"D:/NCKH_VNCultureBridgeAI/CSDL/VN_EthnicProfiles.sql\")",
+      "Bash(cmd.exe:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(wmic process:*)",
+      "Bash(D:/NCKH_VNCultureBridgeAI/VNCultureBridgeAI/frontend/node_modules/.bin/eslint:*)"
     ]
   }
 }

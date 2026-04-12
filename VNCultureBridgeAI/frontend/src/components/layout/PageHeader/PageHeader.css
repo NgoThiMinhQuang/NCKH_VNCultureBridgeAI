@@ -203,6 +203,49 @@
   transform: translateY(-1px);
 }
 
+.ph__user-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(192, 57, 43, 0.08);
+  color: #5a3e2b;
+  white-space: nowrap;
+}
+
+.ph__user-chip-label {
+  font-size: 0.72rem;
+  color: #9b6b45;
+}
+
+.ph__user-chip-name {
+  font-size: 0.9rem;
+  color: #a32020;
+  font-weight: 700;
+}
+
+.ph__btn-logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 50, 32, 0.25);
+  background: #fff7f3;
+  color: #a32020;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.ph__btn-logout:hover {
+  background: #fde9e4;
+  border-color: rgba(160, 50, 32, 0.4);
+}
+
 /* Language toggle: EN | VI */
 .ph__lang {
   display: flex;
