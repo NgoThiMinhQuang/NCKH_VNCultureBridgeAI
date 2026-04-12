@@ -1,241 +1,589 @@
 .regions-page {
-  min-height: 100vh;
-  padding: 0 0 72px;
-  background:
-    radial-gradient(circle at top left, rgba(245, 158, 11, 0.12), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(220, 38, 38, 0.12), transparent 28%),
-    linear-gradient(180deg, #fffaf4 0%, #f8efe4 100%);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #fdfaf6;
 }
 
-.regions-page__shell {
+.regions-hero {
+  position: relative;
+  min-height: 100vh;
+  background: #1a1512;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 130px;
+}
+
+.regions-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  opacity: 0.65;
+}
+
+.regions-hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.regions-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg,
+      rgba(26, 16, 12, 0.95) 0%,
+      rgba(26, 16, 12, 0.8) 40%,
+      rgba(26, 16, 12, 0.3) 70%,
+      rgba(26, 16, 12, 0.15) 100%);
+  z-index: 1;
+}
+
+.regions-hero__ornament {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.regions-hero__ornament--tl {
+  top: 140px;
+  left: 40px;
+  width: 160px;
+  height: 160px;
+  border-top: 2px solid rgba(226, 166, 40, 0.35);
+  /* Gold accent */
+  border-left: 2px solid rgba(226, 166, 40, 0.35);
+  border-radius: 4px 0 0 0;
+}
+
+.regions-hero__ornament--br {
+  bottom: 100px;
+  right: 40px;
+  width: 120px;
+  height: 120px;
+  border-bottom: 2px solid rgba(211, 58, 40, 0.3);
+  /* Red accent */
+  border-right: 2px solid rgba(211, 58, 40, 0.3);
+  border-radius: 0 0 4px 0;
+}
+
+.regions-hero__inner {
+  position: relative;
+  z-index: 3;
   width: min(1360px, calc(100% - 64px));
   margin: 0 auto;
   display: grid;
-  gap: 18px;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  padding: 60px 0 60px;
 }
 
-.regions-page,
-.regions-page * {
-  font-family: var(--font-body);
+.regions-hero__left {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-.regions-hero__title,
-.regions-split-layout__map h2,
-.regions-overview__header h2,
-.inspiration__header h2,
-.provinces-search__header h2,
-.seasons__header h2,
-.cultural-layers__header h2,
-.regions-overview__title,
-.region-card__header h2,
-.season-card__top h3,
-.culture-layer-card h3,
-.cultural-layers__summary p {
-  font-family: var(--font-heading);
-  font-weight: 700;
+.regions-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px 8px 14px;
+  background: rgba(226, 166, 40, 0.18);
+  border: 1px solid rgba(226, 166, 40, 0.45);
+  border-radius: 999px;
+  color: #f8c97a;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  width: fit-content;
+}
+
+.regions-hero__badge-dot {
+  width: 8px;
+  height: 8px;
+  background: #e2a628;
+  border-radius: 50%;
+  animation: regionsPulseDot 2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes regionsPulseDot {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(226, 166, 40, 0.7);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(226, 166, 40, 0);
+  }
 }
 
 .regions-hero__title {
-  font-size: clamp(2.8rem, 6vw, 5.4rem);
-  line-height: 0.98;
-  color: #fff9f4;
-}
-
-.regions-hero__desc,
-.regions-overview__header p,
-.inspiration__header p,
-.provinces-search__header p,
-.seasons__header p,
-.cultural-layers__header p {
-  font-size: 1.08rem;
-  line-height: 1.8;
-}
-
-.regions-hero__desc {
-  color: rgba(255, 245, 238, 0.88);
-}
-
-.regions-overview__header h2,
-.inspiration__header h2,
-.provinces-search__header h2,
-.seasons__header h2,
-.cultural-layers__header h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 28px;
   line-height: 1.08;
-  color: #27140d;
+  font-weight: 700;
 }
 
-.regions-overview__header p,
-.provinces-search__header p,
-.seasons__header p,
-.cultural-layers__header p {
-  color: #6f594d;
+.regions-hero__title-line {
+  font-size: clamp(3.2rem, 6vw, 5.8rem);
+  color: #fdf5e6;
+  letter-spacing: -0.01em;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-heading);
 }
 
-.inspiration__header p {
-  color: rgba(255, 245, 238, 0.88);
+.regions-hero__title-accent {
+  font-size: clamp(2.8rem, 5.2vw, 4.8rem);
+  color: #e2a628;
+  /* Gold accent */
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 16px rgba(226, 166, 40, 0.4);
+  font-family: var(--font-heading);
 }
 
-.regions-overview__title,
-.region-card__header h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.12;
-  color: #27140d;
+.regions-hero__divider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
-.region-card__desc,
-.region-card__detail-text span,
-.regions-overview__desc,
-.regions-overview__detail-value,
-.inspiration-card p,
-.province-item__desc,
-.season-card__desc,
-.culture-layer-card p,
-.cultural-layers__summary span {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: #6f594d;
+.regions-hero__divider-line {
+  height: 1px;
+  width: 60px;
+  background: linear-gradient(to right, transparent, rgba(226, 166, 40, 0.6));
 }
 
-.inspiration-card p,
-.season-card__desc,
-.season-card__detail-item {
-  color: rgba(255, 245, 238, 0.88);
+.regions-hero__divider-row .regions-hero__divider-line:last-child {
+  background: linear-gradient(to left, transparent, rgba(226, 166, 40, 0.6));
 }
 
-.regions-hero__badge,
-.region-tab,
-.regions-overview__badge,
-.filter-chip,
-.filter-label,
-.province-item__badge,
-.regions-overview__detail-label,
-.season-card__months {
-  letter-spacing: 0.12em;
+.regions-hero__divider-diamond {
+  color: #e2a628;
+  font-size: 0.7rem;
+  opacity: 0.8;
 }
 
-.regions-hero__badge,
-.regions-overview__badge,
-.province-item__badge,
-.regions-overview__detail-label,
-.season-card__months {
-  color: #d33a28;
+.regions-hero__subtitle {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  line-height: 1.72;
+  color: rgba(253, 235, 210, 0.85);
+  margin: 0 0 36px;
+  max-width: 520px;
+  font-weight: 400;
 }
 
-.filter-label,
-.filter-chip,
-.region-tab {
-  color: #5d4338;
+.regions-hero__stats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 34px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(226, 166, 40, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  width: fit-content;
+  margin-bottom: 40px;
 }
 
-.cultural-layers__summary p {
-  color: #27140d;
+.regions-hero__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
-.culture-layer-card h3,
-.season-card__top h3,
-.province-item__title-row h3,
-.inspiration-card__content h3 {
-  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
-  line-height: 1.18;
+.regions-hero__stat strong {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: #f8c97a;
+  line-height: 1;
 }
 
-.inspiration-card__content h3,
-.season-card__top h3 {
-  color: #fff9f4;
+.regions-hero__stat span {
+  font-size: 0.72rem;
+  color: rgba(253, 235, 210, 0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
 }
 
-.province-item__title-row h3,
-.culture-layer-card h3 {
-  color: #27140d;
+.regions-hero__stat-sep {
+  color: rgba(226, 166, 40, 0.35);
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0 4px;
 }
 
-.region-card__detail-text strong {
-  color: #2b1f1a;
+/* ─── ACTIONS ─── */
+.regions-hero__actions {
+  display: flex;
+  gap: 16px;
 }
 
-.regions-split-layout__map-desc {
-  color: #6f594d;
+.regions-hero__btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: none;
 }
 
-.regions-split-layout__map h2 {
-  color: #27140d;
+.regions-hero__btn--primary {
+  background: #e2a628;
+  color: #1a100c;
+  box-shadow: 0 8px 24px rgba(226, 166, 40, 0.3);
 }
 
-.region-showcase-card__body h3 {
-  color: #fff9f5;
+.regions-hero__btn--primary:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(226, 166, 40, 0.45);
+  background: #f8c97a;
 }
 
-.region-showcase-card__description {
-  color: rgba(255, 247, 242, 0.9);
+.regions-hero__btn--secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fdf5e6;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
 }
 
-.region-showcase-card__chips span {
-  color: #fffaf6;
+.regions-hero__btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
 }
 
-.region-showcase-card__cta {
-  color: #ffbe45;
+/* ─── FAN CARD STACK ─── */
+.regions-hero__right {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
-.region-showcase-card__badge,
-.region-showcase-card__number {
-  color: #fff9f4;
+.regions-fan {
+  position: relative;
+  width: 800px;
+  height: 640px;
+  flex-shrink: 0;
+  overflow: visible;
 }
 
-.region-showcase-card__image--placeholder {
-  color: rgba(255, 255, 255, 0.92);
+.regions-fan__card {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 320px;
+  height: 480px;
+  margin-left: -160px;
+  border-radius: 20px;
+  overflow: hidden;
+  transform-origin: bottom center;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.55),
+    0 0 0 1.5px rgba(226, 166, 40, 0.28);
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s ease,
+    opacity 0.4s ease,
+    filter 0.4s ease;
+  cursor: pointer;
 }
 
-.vietnam-map-text {
-  color: #27140d;
+.regions-fan__card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 20px;
+  pointer-events: none;
+  user-select: none;
 }
 
-.vietnam-map-text.is-active {
-  color: #d33a28;
+.regions-fan__card--fl {
+  transform: translateX(-60px) rotate(-26deg);
+  z-index: 1;
+  opacity: 0.72;
+  filter: brightness(0.78);
 }
 
-.cultural-layers__summary span {
-  color: #6f594d;
+.regions-fan__card--fr {
+  transform: translateX(60px) rotate(26deg);
+  z-index: 2;
+  opacity: 0.72;
+  filter: brightness(0.78);
 }
 
-.filter-chip:hover {
-  color: #d33a28;
+.regions-fan__card--l {
+  transform: translateX(-30px) rotate(-13deg);
+  z-index: 3;
+  opacity: 0.85;
+  filter: brightness(0.88);
 }
 
-.region-tab:hover {
-  color: #d33a28;
+.regions-fan__card--r {
+  transform: translateX(30px) rotate(13deg);
+  z-index: 4;
+  opacity: 0.85;
+  filter: brightness(0.88);
 }
 
-.province-item__cta,
-.region-card__btn,
-.regions-overview__cta-btn,
-.view-all-provinces-btn,
-.view-all-btn {
-  font-family: var(--font-body);
+.regions-fan__card--c {
+  transform: rotate(0deg);
+  z-index: 5;
+  opacity: 1;
+  filter: brightness(1);
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.65),
+    0 0 0 2px rgba(226, 166, 40, 0.50),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
-@media (max-width: 480px) {
+.regions-fan__card--c::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(to bottom, transparent 55%, rgba(26, 16, 12, 0.72) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
 
-  .regions-hero__desc,
-  .regions-overview__header p,
-  .inspiration__header p,
-  .provinces-search__header p,
-  .seasons__header p,
-  .cultural-layers__header p {
-    font-size: 1rem;
+.regions-fan__card:hover {
+  z-index: 10;
+  opacity: 1 !important;
+  filter: brightness(1) !important;
+}
+
+.regions-fan__card--fl:hover {
+  transform: translateX(-60px) rotate(-26deg) translateY(-14px) scale(1.04);
+}
+
+.regions-fan__card--fr:hover {
+  transform: translateX(60px) rotate(26deg) translateY(-14px) scale(1.04);
+}
+
+.regions-fan__card--l:hover {
+  transform: translateX(-30px) rotate(-13deg) translateY(-14px) scale(1.04);
+}
+
+.regions-fan__card--r:hover {
+  transform: translateX(30px) rotate(13deg) translateY(-14px) scale(1.04);
+}
+
+.regions-fan__card--c:hover {
+  transform: rotate(0deg) translateY(-14px) scale(1.03);
+}
+
+/* Card labels */
+.regions-fan__card-label {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  z-index: 2;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(26, 16, 12, 0.85);
+  color: #f8c97a;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 7px 16px;
+  border-radius: 99px;
+  border: 1px solid rgba(226, 166, 40, 0.38);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.regions-fan__card:hover .regions-fan__card-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.regions-fan__card-dot {
+  width: 7px;
+  height: 7px;
+  background: #e2a628;
+  border-radius: 50%;
+  animation: regionsPulseDot 2s infinite;
+  flex-shrink: 0;
+}
+
+/* Floating badge */
+.regions-fan__badge {
+  position: absolute;
+  top: 14px;
+  right: -12px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(26, 16, 12, 0.90);
+  border: 1px solid rgba(226, 166, 40, 0.5);
+  border-radius: 999px;
+  color: #f8c97a;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(226, 166, 40, 0.12);
+  animation: regionsBadgeFloat 3s ease-in-out infinite;
+}
+
+@keyframes regionsBadgeFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
   }
 
-  .region-card__desc,
-  .region-card__detail-text span,
-  .regions-overview__desc,
-  .regions-overview__detail-value,
-  .inspiration-card p,
-  .province-item__desc,
-  .season-card__desc,
-  .culture-layer-card p,
-  .cultural-layers__summary span {
-    font-size: 0.92rem;
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Scroll indicator */
+.regions-hero__scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+}
+
+.regions-mouse-icon {
+  width: 24px;
+  height: 40px;
+  border: 1.5px solid rgba(226, 166, 40, 0.6);
+  border-radius: 12px;
+  position: relative;
+}
+
+.regions-mouse-icon::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 6px;
+  background-color: rgba(226, 166, 40, 0.9);
+  border-radius: 2px;
+  animation: regionsScrollAnim 1.8s infinite cubic-bezier(0.15, 0.41, 0.69, 0.94);
+}
+
+@keyframes regionsScrollAnim {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, 14px);
+    opacity: 0;
+  }
+}
+
+/* Responsive hero */
+@media (max-width: 1024px) {
+  .regions-hero__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 40px;
+    padding-bottom: 100px;
+  }
+
+  .regions-hero__left {
+    align-items: center;
+  }
+
+  .regions-hero__subtitle {
+    max-width: 640px;
+  }
+
+  .regions-hero__ornament--br {
+    display: none;
+  }
+
+  .regions-hero__stats {
+    justify-content: center;
+  }
+
+  .regions-hero__actions {
+    justify-content: center;
+  }
+
+  .regions-fan {
+    width: 460px;
+    height: 440px;
+  }
+
+  .regions-fan__card {
+    width: 210px;
+    height: 310px;
+    margin-left: -105px;
+  }
+}
+
+@media (max-width: 640px) {
+  .regions-hero {
+    min-height: 80vh;
+  }
+
+  .regions-hero__inner {
+    width: calc(100% - 40px);
+    padding-bottom: 80px;
+  }
+
+  .regions-hero__stats {
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 15px 20px;
+  }
+
+  .regions-hero__stat-sep {
+    display: none;
+  }
+
+  .regions-fan {
+    width: 340px;
+    height: 380px;
+  }
+
+  .regions-fan__card {
+    width: 170px;
+    height: 250px;
+    margin-left: -85px;
+  }
+
+  .regions-fan__card--fl,
+  .regions-fan__card--fr {
+    display: none;
   }
 }
 
@@ -900,10 +1248,9 @@
 }
 
 .regions-split-layout {
-  display: grid;
-  grid-template-columns: minmax(300px, 1fr) minmax(360px, 480px);
-  gap: 24px;
-  align-items: start;
+  position: relative;
+  background: #faf9f6;
+  padding-bottom: 120px;
 }
 
 .regions-split-layout__map {
@@ -2379,6 +2726,201 @@
 /* --- Inspiration Section --- */
 .inspiration-section {
   background: #110e0c;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
+  z-index: 2;
+}
+
+.season-card__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 32px;
+  color: #fff;
+  z-index: 3;
+}
+
+.season-card__top {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.season-card__top h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.season-card__months {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+.season-card__desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.season-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.season-card__detail-item {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.season-card__detail-item strong {
+  color: #fff;
+  margin-right: 4px;
+}
+
+/* --- Cultural Layers Section --- */
+.cultural-layers-section {
+  padding: 120px 0;
+  background: #fffcf8;
+}
+
+.cultural-layers__container {
+  width: min(1200px, calc(100% - 64px));
+  margin: 0 auto;
+}
+
+.cultural-layers__header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.cultural-layers__header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 4vw, 3.2rem);
+  color: #1a1512;
+  margin-bottom: 20px;
+}
+
+.cultural-layers__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-bottom: 80px;
+}
+
+.culture-layer-card {
+  background: #fff;
+  padding: 40px 32px;
+  border-radius: 32px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(166, 124, 101, 0.08);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.culture-layer-card:hover {
+  transform: translateY(-8px);
+  background: #fdf5f0;
+}
+
+.culture-layer__icon-box {
+  width: 64px;
+  height: 64px;
+  background: #fff5f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 15px rgba(231, 111, 81, 0.1);
+}
+
+.culture-layer-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: #1a1512;
+  margin-bottom: 12px;
+}
+
+.culture-layer-card p {
+  color: #69564c;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.cultural-layers__summary {
+  background: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 20px 60px rgba(166, 124, 101, 0.05);
+}
+
+.cultural-layers__summary p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  color: #1a1512;
+  margin-bottom: 8px;
+}
+
+.cultural-layers__summary span {
+  color: #a67c65;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1200px) {
+  .seasons__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .season-card {
+    height: 450px;
+  }
+
+  .cultural-layers__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .provinces-search__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+
+  .seasons__grid,
+  .cultural-layers__grid,
+  .provinces-search__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-chips {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+}
+
+
+/* --- Inspiration Section --- */
+.inspiration-section {
+  background: #110e0c;
   padding: 120px 0;
   color: #fff;
   margin: 120px 0;
@@ -2386,7 +2928,9 @@
 
 .inspiration__container {
   width: min(1360px, calc(100% - 64px));
-  margin: 0 auto;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block;
 }
 
 .inspiration__header {
@@ -3166,4 +3710,75 @@
   transform: translateY(-2px);
   box-shadow: 0 14px 30px rgba(222, 179, 50, 0.4) !important;
   background: #cba22d !important;
+}
+
+/* --- Global Centering & Split Layout Fixes --- */
+.regions-page__shell,
+.regions-overview-section,
+.provinces-section,
+.highlights-section,
+.seasons-section,
+.cultural-layers-section,
+.inspiration-section {
+  width: 100%;
+  max-width: 100% !important;
+}
+
+.regions-split-container,
+.regions-overview__container,
+.provinces-search__container,
+.seasons__container,
+.cultural-layers__container,
+.inspiration__container {
+  max-width: 1360px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: calc(100% - 64px) !important;
+}
+
+.regions-split-container {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  /* Balanced split for better visual weight */
+  gap: 60px !important;
+  align-items: start;
+}
+
+.regions-split-layout {
+  position: relative;
+  background: #faf9f6;
+  padding-bottom: 120px;
+  width: 100%;
+}
+
+.regions-split-layout__map {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.regions-split-layout__map h2 {
+  margin: 0 auto 14px !important;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  color: #cd211b;
+  text-transform: uppercase;
+  font-weight: 900;
+  display: block;
+  width: fit-content;
+}
+
+.regions-split-layout__map-desc {
+  margin: 0 auto 40px !important;
+  max-width: 800px;
+  color: #4a3a31;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Fix for Hero section biasing */
+.regions-hero__inner {
+  max-width: 1360px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }

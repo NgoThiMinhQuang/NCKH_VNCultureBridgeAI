@@ -143,6 +143,120 @@ CREATE TABLE dbo.DanToc (
 );
 GO
 
+IF OBJECT_ID('dbo.DanTocProfile', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.DanTocProfile (
+        DanTocID                    INT NOT NULL PRIMARY KEY,
+        HeroBackgroundImageUrl      NVARCHAR(1000) NULL,
+        HeroBackgroundAltVI         NVARCHAR(500) NULL,
+        HeroBackgroundAltEN         NVARCHAR(500) NULL,
+        HeroForegroundImageUrl      NVARCHAR(1000) NULL,
+        HeroForegroundAltVI         NVARCHAR(500) NULL,
+        HeroForegroundAltEN         NVARCHAR(500) NULL,
+        IntroImageUrl               NVARCHAR(1000) NULL,
+        IntroImageAltVI             NVARCHAR(500) NULL,
+        IntroImageAltEN             NVARCHAR(500) NULL,
+        FeatureHighlightImageUrl    NVARCHAR(1000) NULL,
+        FeatureHighlightAltVI       NVARCHAR(500) NULL,
+        FeatureHighlightAltEN       NVARCHAR(500) NULL,
+        MusicImageUrl               NVARCHAR(1000) NULL,
+        MusicImageAltVI             NVARCHAR(500) NULL,
+        MusicImageAltEN             NVARCHAR(500) NULL,
+        ArchitectureImageUrl        NVARCHAR(1000) NULL,
+        ArchitectureImageAltVI      NVARCHAR(500) NULL,
+        ArchitectureImageAltEN      NVARCHAR(500) NULL,
+        CardImageUrl                NVARCHAR(1000) NULL,
+        CardImageAltVI              NVARCHAR(500) NULL,
+        CardImageAltEN              NVARCHAR(500) NULL,
+        HeroSubtitleVI              NVARCHAR(1000) NULL,
+        HeroSubtitleEN              NVARCHAR(1000) NULL,
+        OverviewTitleVI             NVARCHAR(300) NULL,
+        OverviewTitleEN             NVARCHAR(300) NULL,
+        OverviewBodyVI              NVARCHAR(MAX) NULL,
+        OverviewBodyEN              NVARCHAR(MAX) NULL,
+        HistoryTitleVI              NVARCHAR(300) NULL,
+        HistoryTitleEN              NVARCHAR(300) NULL,
+        HistoryBodyVI               NVARCHAR(MAX) NULL,
+        HistoryBodyEN               NVARCHAR(MAX) NULL,
+        CultureTitleVI              NVARCHAR(300) NULL,
+        CultureTitleEN              NVARCHAR(300) NULL,
+        CultureBodyVI               NVARCHAR(MAX) NULL,
+        CultureBodyEN               NVARCHAR(MAX) NULL,
+        ArchitectureTitleVI         NVARCHAR(300) NULL,
+        ArchitectureTitleEN         NVARCHAR(300) NULL,
+        ArchitectureBodyVI          NVARCHAR(MAX) NULL,
+        ArchitectureBodyEN          NVARCHAR(MAX) NULL,
+        PrimaryRegionLabelVI        NVARCHAR(200) NULL,
+        PrimaryRegionLabelEN        NVARCHAR(200) NULL,
+        PopulationLabelVI           NVARCHAR(200) NULL,
+        PopulationLabelEN           NVARCHAR(200) NULL,
+        DisplayOrder                INT NOT NULL DEFAULT 0,
+        HoatDong                    BIT NOT NULL DEFAULT 1,
+        NgayTao                     DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        NgayCapNhat                 DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT FK_DanTocProfile_DanToc FOREIGN KEY (DanTocID) REFERENCES dbo.DanToc(DanTocID) ON DELETE CASCADE
+    );
+END
+GO
+
+IF OBJECT_ID('dbo.DanTocSectionItem', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.DanTocSectionItem (
+        DanTocSectionItemID         INT IDENTITY(1,1) PRIMARY KEY,
+        DanTocID                    INT NOT NULL,
+        LoaiSection                 VARCHAR(30) NOT NULL,
+        TieuDeVI                    NVARCHAR(300) NULL,
+        TieuDeEN                    NVARCHAR(300) NULL,
+        MoTaVI                      NVARCHAR(MAX) NULL,
+        MoTaEN                      NVARCHAR(MAX) NULL,
+        ImageUrl                    NVARCHAR(1000) NULL,
+        ImageAltVI                  NVARCHAR(500) NULL,
+        ImageAltEN                  NVARCHAR(500) NULL,
+        LayoutSize                  VARCHAR(20) NULL,
+        TagVI                       NVARCHAR(150) NULL,
+        TagEN                       NVARCHAR(150) NULL,
+        LienKetBaiVietID            INT NULL,
+        ThuTuHienThi                INT NOT NULL DEFAULT 0,
+        HoatDong                    BIT NOT NULL DEFAULT 1,
+        NgayTao                     DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        NgayCapNhat                 DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT CK_DanTocSectionItem_Loai CHECK (LoaiSection IN ('TEXTILES','FESTIVALS','CUISINE','ARTS','GALLERY','FEATURES','STORIES')),
+        CONSTRAINT FK_DanTocSectionItem_DanToc FOREIGN KEY (DanTocID) REFERENCES dbo.DanToc(DanTocID) ON DELETE CASCADE,
+        CONSTRAINT FK_DanTocSectionItem_BaiViet FOREIGN KEY (LienKetBaiVietID) REFERENCES dbo.BaiViet(BaiVietID)
+    );
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_DanTocProfile_DisplayOrder'
+      AND object_id = OBJECT_ID('dbo.DanTocProfile')
+)
+BEGIN
+    CREATE INDEX IX_DanTocProfile_DisplayOrder ON dbo.DanTocProfile (DisplayOrder, HoatDong);
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_DanTocSectionItem_DanToc_Section'
+      AND object_id = OBJECT_ID('dbo.DanTocSectionItem')
+)
+BEGIN
+    CREATE INDEX IX_DanTocSectionItem_DanToc_Section ON dbo.DanTocSectionItem (DanTocID, LoaiSection, ThuTuHienThi, HoatDong);
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_DanTocSectionItem_BaiViet'
+      AND object_id = OBJECT_ID('dbo.DanTocSectionItem')
+)
+BEGIN
+    CREATE INDEX IX_DanTocSectionItem_BaiViet ON dbo.DanTocSectionItem (LienKetBaiVietID);
+END
+GO
+
 CREATE TABLE dbo.TuKhoa (
     TuKhoaID            INT IDENTITY(1,1) PRIMARY KEY,
     MaTuKhoa            VARCHAR(50) NOT NULL UNIQUE,

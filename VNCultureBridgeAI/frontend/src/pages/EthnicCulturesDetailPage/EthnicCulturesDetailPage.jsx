@@ -1,90 +1,101 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './EthnicCulturesDetailPage.css';
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import Footer from '../../components/layout/Footer/Footer';
-import { 
-  FiClock, 
-  FiMapPin, 
-  FiMusic, 
-  FiCoffee, 
-  FiHome, 
-  FiImage, 
-  FiChevronRight,
+import LoadingState from '../../components/common/LoadingState/LoadingState';
+import { getEthnicity } from '../../services/ethnicity.service';
+import { useDetailLoader } from '../../hooks/useDetailLoader';
+import {
+  FiClock,
+  FiMusic,
+  FiCoffee,
+  FiHome,
+  FiImage,
   FiGlobe,
-  FiLayers,
-  FiArrowLeft
+  FiArrowLeft,
 } from 'react-icons/fi';
 
-// Image Imports - Verified paths
-import hmongHero from '../../assets/hmong_hero_landscape_1775575827859.png';
-import hmongIntro from '../../assets/hmong_intro_portrait_1775575846120.png';
-import textile1 from '../../assets/hmong_textile_grid_1775575869410.png';
-import textile2 from '../../assets/hmong_textile_close_up_1775576097396.png';
-import textile3 from '../../assets/hmong_batik_process_1775576116027.png';
-import fest1 from '../../assets/hmong_festival_gau_tao_1775575986843.png';
-import food1 from '../../assets/hmong_cuisine_thang_co_1775576005757.png';
-import arch1 from '../../assets/hmong_architecture_house_1775576026757.png';
+function getSectionTitle(section, fallback) {
+  return section?.title || fallback;
+}
 
 export default function EthnicCulturesDetailPage() {
   const [lang, setLang] = useState('vi');
-  const { code } = useParams();
+  const { code = 'hmong' } = useParams();
+  const { status, data, error } = useDetailLoader(getEthnicity, lang, code);
 
-  const navItems = [
-    { icon: <FiClock />, label: "Lịch sử" },
-    { icon: <FiGlobe />, label: "Văn hóa" },
-    { icon: <FiMusic />, label: "Lễ hội" },
-    { icon: <FiCoffee />, label: "Ẩm thực" },
-    { icon: <FiHome />, label: "Kiến trúc" },
-    { icon: <FiImage />, label: "Thư viện" }
-  ];
+  const navItems = useMemo(() => ([
+    { icon: <FiClock />, label: lang === 'vi' ? 'Lịch sử' : 'History' },
+    { icon: <FiGlobe />, label: lang === 'vi' ? 'Văn hóa' : 'Culture' },
+    { icon: <FiMusic />, label: lang === 'vi' ? 'Lễ hội' : 'Festivals' },
+    { icon: <FiCoffee />, label: lang === 'vi' ? 'Ẩm thực' : 'Cuisine' },
+    { icon: <FiHome />, label: lang === 'vi' ? 'Kiến trúc' : 'Living Space' },
+    { icon: <FiImage />, label: lang === 'vi' ? 'Thư viện' : 'Gallery' },
+  ]), [lang]);
+
+  if (status === 'loading') {
+    return <LoadingState message={lang === 'vi' ? 'Đang tải dữ liệu dân tộc...' : 'Loading ethnic culture data...'} />;
+  }
+
+  if (status === 'error') {
+    return <LoadingState type="error" message={lang === 'vi' ? 'Không tải được dữ liệu dân tộc.' : 'Could not load ethnic culture data.'} detail={error} />;
+  }
+
+  if (!data) {
+    return <LoadingState type="error" message={lang === 'vi' ? 'Không tìm thấy dữ liệu dân tộc.' : 'Ethnic culture data not found.'} />;
+  }
+
+  const heroBackground = data.hero?.backgroundImageUrl || null;
+  const heroForeground = data.hero?.foregroundImageUrl || null;
+  const overviewImage = data.overview?.imageUrl || heroForeground || null;
+  const featureHighlightImage = data.featureHighlight?.imageUrl || null;
+  const textiles = data.sections?.textiles || [];
+  const festivals = data.sections?.festivals || [];
+  const cuisine = data.sections?.cuisine || [];
+  const gallery = data.gallery || [];
+  const relatedArticles = data.relatedArticles || [];
+  const music = data.sections?.music || null;
+  const architecture = data.sections?.architecture || null;
 
   return (
     <div className="page-shell">
       <PageHeader lang={lang} onLangChange={setLang} />
 
       <main className="ed-main">
-        {/* HERO SECTION */}
         <section className="ed-hero">
-          <div className="ed-hero__bg" style={{ backgroundImage: `url(${hmongHero})` }}></div>
+          {heroBackground ? <div className="ed-hero__bg" style={{ backgroundImage: `url(${heroBackground})` }} aria-label={data.hero?.backgroundImageAlt || data.name}></div> : null}
           <div className="ed-hero__overlay"></div>
-
-          {/* Ornamental Motif */}
           <div className="ed-hero__ornament ed-hero__ornament--tl"></div>
           <div className="ed-hero__ornament ed-hero__ornament--br"></div>
 
           <div className="ed-hero__inner">
             <div className="ed-hero__left fade-up">
-              <Link to="/ethnic-groups" className="ed-back-btn" aria-label="Quay lại" style={{position:'relative', top: 0, left: 0, display: 'inline-flex', marginBottom: '24px', width: 'fit-content'}}>
-                <FiArrowLeft /> <span>Quay lại</span>
+              <Link to="/ethnic-groups" className="ed-back-btn" aria-label="Quay lại" style={{ position: 'relative', top: 0, left: 0, display: 'inline-flex', marginBottom: '24px', width: 'fit-content' }}>
+                <FiArrowLeft /> <span>{lang === 'vi' ? 'Quay lại' : 'Back'}</span>
               </Link>
-              
+
               <div className="ed-hero__badge">
                 <span className="ed-hero__badge-dot"></span>
-                Dân tộc Việt Nam
+                {data.hero?.badge || (lang === 'vi' ? 'Dân tộc Việt Nam' : 'Ethnic Cultures of Vietnam')}
               </div>
 
-              <h1 className="ed-hero__title">
-                Dân tộc H'Mông
-              </h1>
-
-              <p className="ed-hero__subtitle">
-                Một trong những cộng đồng dân tộc lâu đời và có nền văn hóa phong phú nhất tại vùng núi cao phía Bắc Việt Nam.
-              </p>
+              <h1 className="ed-hero__title">{data.hero?.title || data.name}</h1>
+              <p className="ed-hero__subtitle">{data.hero?.subtitle || data.description}</p>
 
               <div className="ed-hero__stats">
-                <div className="ed-hero__stat">
-                  <strong>1.393.656</strong>
-                  <span>Dân số (2019)</span>
-                </div>
-                <div className="ed-hero__stat-sep"></div>
-                <div className="ed-hero__stat">
-                  <strong>Miền núi phía Bắc</strong>
-                  <span>Khu vực chính</span>
-                </div>
+                {(data.hero?.stats || []).map((item, index) => (
+                  <React.Fragment key={`${item.label}-${index}`}>
+                    <div className="ed-hero__stat">
+                      <strong>{item.value}</strong>
+                      <span>{item.label}</span>
+                    </div>
+                    {index < (data.hero?.stats?.length || 0) - 1 ? <div className="ed-hero__stat-sep"></div> : null}
+                  </React.Fragment>
+                ))}
               </div>
 
-               <nav className="ed-hero__nav-inline">
+              <nav className="ed-hero__nav-inline">
                 {navItems.map((item, idx) => (
                   <div key={idx} className="ed-nav-item">
                     <div className="ed-nav-icon">{item.icon}</div>
@@ -94,12 +105,14 @@ export default function EthnicCulturesDetailPage() {
               </nav>
             </div>
 
-            <div className="ed-hero__right fade-up delay-1">
-              <div className="ed-hero__img-frame">
-                <img src={hmongIntro} alt="Người H'Mông" className="ed-hero__img-main" />
-                <div className="ed-hero__img-ring"></div>
+            {heroForeground ? (
+              <div className="ed-hero__right fade-up delay-1">
+                <div className="ed-hero__img-frame">
+                  <img src={heroForeground} alt={data.hero?.foregroundImageAlt || data.name} className="ed-hero__img-main" />
+                  <div className="ed-hero__img-ring"></div>
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
 
           <div className="ed-section-wave">
@@ -109,173 +122,172 @@ export default function EthnicCulturesDetailPage() {
           </div>
         </section>
 
-        {/* INTRODUCTION */}
         <section className="ed-section ed-section--light ed-intro">
           <div className="ed-container">
             <div className="ed-intro__grid">
               <div className="ed-intro__text">
                 <header className="ed-intro__header fade-up" style={{ marginBottom: '32px' }}>
                   <span className="ed-section-badge" style={{ margin: 0 }}>Hành trình di sản</span>
-                  <h2 className="ed-section-title" style={{ textAlign: 'left', marginTop: '8px' }}>Giới thiệu về người H'Mông</h2>
+                  <h2 className="ed-section-title" style={{ textAlign: 'left', marginTop: '8px' }}>{data.overview?.title || data.name}</h2>
                 </header>
-                <span className="ed-drop-cap">H</span>
+                <span className="ed-drop-cap">{(data.name || 'D')[0]}</span>
                 <div className="ed-intro__body">
-                  <p>
-                    Dân tộc H'Mông (hay còn gọi là Mông) là một trong những dân tộc thiểu số có dân số đông nhất tại Việt Nam, chủ yếu cư trú ở các vùng núi cao phía Bắc từ Hà Giang đến Thanh Hóa.
-                  </p>
-                  <p style={{ marginTop: '20px' }}>
-                    Với lịch sử di cư lâu đời, người H'Mông đã tạo nên một bản sắc văn hóa độc đáo, thích nghi mạnh mẽ với điều kiện thiên nhiên khắc nghiệt của vùng cao nguyên đá.
-                  </p>
+                  <p>{data.overview?.content || data.description}</p>
                 </div>
               </div>
-              <div className="ed-intro__image">
-                <img src={hmongIntro} alt="Người H'Mông" />
+              {overviewImage ? (
+                <div className="ed-intro__image">
+                  <img src={overviewImage} alt={data.overview?.imageAlt || data.name} />
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </section>
+
+        {featureHighlightImage ? (
+          <section className="ed-section ed-section--cream ed-textiles">
+            <div className="ed-container">
+              <header className="ed-section-header">
+                <span className="ed-section-badge">Nghệ thuật đặc trưng</span>
+                <h2 className="ed-section-title">{getSectionTitle(data.sections?.culture, lang === 'vi' ? 'Đặc trưng văn hóa' : 'Cultural Identity')}</h2>
+                <p className="ed-section-subtitle">{data.sections?.culture?.content || data.description}</p>
+              </header>
+
+              {textiles.length ? (
+                <div className="ed-textiles-grid">
+                  {textiles.slice(0, 3).map((item, index) => (
+                    <img key={item.id || index} src={item.imageUrl} alt={item.imageAlt || item.title || data.name} className="ed-textile-img" />
+                  ))}
+                </div>
+              ) : (
+                <div className="ed-textiles-grid">
+                  <img src={featureHighlightImage} alt={data.featureHighlight?.imageAlt || data.name} className="ed-textile-img" />
+                </div>
+              )}
+            </div>
+          </section>
+        ) : null}
+
+        {festivals.length ? (
+          <section className="ed-section ed-section--light ed-festivals">
+            <div className="ed-container">
+              <header className="ed-section-header">
+                <span className="ed-section-badge">Di sản sống</span>
+                <h2 className="ed-section-title">{lang === 'vi' ? 'Lễ hội đặc sắc' : 'Featured Festivals'}</h2>
+              </header>
+
+              <div className="ed-festival-grid">
+                {festivals.map((item, index) => (
+                  <div className="ed-fest-card" key={item.id || item.code || index}>
+                    {item.imageUrl ? <img src={item.imageUrl} alt={item.imageAlt || item.title} className="ed-fest-img" /> : null}
+                    <div className="ed-fest-content">
+                      <span className="ed-fest-tag">{item.tag || (lang === 'vi' ? 'Lễ hội' : 'Festival')}</span>
+                      <h3 className="ed-fest-title">{item.title}</h3>
+                      <p className="ed-fest-desc">{item.description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : null}
 
-        {/* TEXTILES */}
-        <section className="ed-section ed-section--cream ed-textiles">
-          <div className="ed-container">
-            <header className="ed-section-header">
-              <span className="ed-section-badge">Nghệ thuật đặc trưng</span>
-              <h2 className="ed-section-title">Vẻ đẹp thổ cẩm & Sáp ong</h2>
-              <p className="ed-section-subtitle">Mỗi tấm vải là một tác phẩm nghệ thuật, kết tinh từ sự khéo léo và tâm hồn của người phụ nữ H'Mông.</p>
-            </header>
-            
-            <div className="ed-textiles-grid">
-              <img src={textile1} alt="T1" className="ed-textile-img" />
-              <img src={textile2} alt="T2" className="ed-textile-img" />
-              <img src={textile3} alt="T3" className="ed-textile-img" />
-            </div>
-            
-            <p className="ed-textiles-footer">
-              Kỹ thuật vẽ sáp ong và dệt lanh truyền thống đã được lưu giữ qua hàng đời, tạo nên những hoa văn cổ kính mang ý nghĩa tâm linh và lịch sử sâu sắc.
-            </p>
-          </div>
-        </section>
-
-        {/* FESTIVALS */}
-        <section className="ed-section ed-section--light ed-festivals">
-          <div className="ed-container">
-            <header className="ed-section-header">
-              <span className="ed-section-badge">Di sản sống</span>
-              <h2 className="ed-section-title">Lễ hội đặc sắc</h2>
-            </header>
-
-            <div className="ed-festival-grid">
-              <div className="ed-fest-card">
-                <img src={fest1} alt="F1" className="ed-fest-img" />
-                <div className="ed-fest-content">
-                  <span className="ed-fest-tag">Di sản</span>
-                  <h3 className="ed-fest-title">Lễ hội Gầu Tào</h3>
-                  <p className="ed-fest-desc">Lễ hội lớn nhất của người H'Mông, cầu chúc cho sức khỏe, may mắn và mùa màng tươi tốt.</p>
+        {music?.imageUrl ? (
+          <section className="ed-section ed-section--cream ed-music">
+            <div className="ed-container">
+              <div className="ed-arch__grid">
+                <div className="ed-arch-text">
+                  <span className="ed-section-badge">Âm vang núi rừng</span>
+                  <h2 className="ed-section-title">{music.title || (lang === 'vi' ? 'Âm thanh & nghệ thuật trình diễn' : 'Music & Performing Arts')}</h2>
+                  <p className="ed-intro__body">{music.content || data.description}</p>
+                </div>
+                <div className="ed-arch-image">
+                  <img src={music.imageUrl} alt={music.imageAlt || data.name} className="ed-arch-img" />
                 </div>
               </div>
-              
-              <div className="ed-fest-card">
-                <img src={hmongHero} alt="F2" className="ed-fest-img" />
-                <div className="ed-fest-content">
-                  <span className="ed-fest-tag">Văn hóa</span>
-                  <h3 className="ed-fest-title">Chợ tình Khâu Vai</h3>
-                  <p className="ed-fest-desc">Nơi hòm thư kết duyên và lưu giữ những giá trị tâm hồn cao đẹp của đồng bào vùng cao.</p>
+            </div>
+          </section>
+        ) : null}
+
+        {cuisine.length ? (
+          <section className="ed-section ed-section--light ed-cuisine">
+            <div className="ed-container">
+              <div className="ed-cuisine-grid">
+                {cuisine.slice(0, 3).map((item, index) => (
+                  <div className="ed-cuisine-item" key={item.id || item.code || index}>
+                    {item.imageUrl ? <img src={item.imageUrl} alt={item.imageAlt || item.title} className="ed-cuisine-img" /> : null}
+                    <h3 className="ed-cuisine-title">{item.title}</h3>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {architecture?.imageUrl ? (
+          <section className="ed-section ed-section--cream ed-architecture">
+            <div className="ed-container">
+              <div className="ed-arch__grid">
+                <div className="ed-arch-image">
+                  <img src={architecture.imageUrl} alt={architecture.imageAlt || data.name} className="ed-arch-img" />
+                </div>
+                <div className="ed-arch-text">
+                  <span className="ed-section-badge">Không gian sống</span>
+                  <h2 className="ed-section-title">{getSectionTitle(architecture, lang === 'vi' ? 'Không gian sống' : 'Living Space')}</h2>
+                  <p className="ed-intro__body">{architecture.content || data.description}</p>
                 </div>
               </div>
+            </div>
+          </section>
+        ) : null}
 
-              <div className="ed-fest-card">
-                <img src={hmongIntro} alt="F3" className="ed-fest-img" />
-                <div className="ed-fest-content">
-                  <span className="ed-fest-tag">Nghi lễ</span>
-                  <h3 className="ed-fest-title">Tết Nào Pênh Chà</h3>
-                  <p className="ed-fest-desc">Dịp sum họp gia đình và tạ ơn thần linh sau một năm miệt mài lao động trên nương rẫy.</p>
-                </div>
+        {gallery.length ? (
+          <section className="ed-section ed-section--light ed-gallery">
+            <div className="ed-container">
+              <header className="ed-section-header">
+                <h2 className="ed-section-title">{lang === 'vi' ? 'Thư viện hình ảnh' : 'Image Gallery'}</h2>
+                <p className="ed-section-subtitle">{lang === 'vi' ? 'Những khoảnh khắc chân thực về đời sống và văn hóa của cộng đồng này.' : 'Authentic moments from the life and culture of this community.'}</p>
+              </header>
+
+              <div className="ed-gallery-grid">
+                {gallery.map((item, index) => (
+                  <div key={item.id || index} className={`ed-gallery-item ${item.size || ''}`.trim()}>
+                    {item.imageUrl ? <img src={item.imageUrl} alt={item.imageAlt || data.name} /> : null}
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : null}
 
-        {/* MUSIC & ARTS */}
-        <section className="ed-section ed-section--cream ed-music">
-          <div className="ed-container">
-            <div className="ed-arch__grid">
-              <div className="ed-arch-text">
-                <span className="ed-section-badge">Âm vang núi rừng</span>
-                <h2 className="ed-section-title">Tiếng Khèn & Câu hát</h2>
-                <p className="ed-intro__body">
-                  Cây khèn không chỉ là một nhạc cụ, mà là linh hồn của người H'Mông. Tiếng khèn vang vọng khắp núi rừng, là lời tỏ tình của chàng trai, là tiếng lòng gửi đến tổ tiên trong các dịp lễ hội quan trọng. Bên cạnh đó, những điệu múa khèn điêu luyện cũng là một nét văn hóa độc nhất vô nhị.
-                </p>
-              </div>
-              <div className="ed-arch-image">
-                <img src={hmongHero} alt="Tiếng Khèn" className="ed-arch-img" />
+        {relatedArticles.length ? (
+          <section className="ed-section ed-section--light">
+            <div className="ed-container">
+              <header className="ed-section-header">
+                <h2 className="ed-section-title">{lang === 'vi' ? 'Bài viết liên quan' : 'Related Articles'}</h2>
+              </header>
+              <div className="ec-grid ec-grid--3cols fade-up">
+                {relatedArticles.slice(0, 3).map((article, index) => (
+                  <Link to={`/articles/${article.code}`} className="ec-scard" key={article.id || article.code || index}>
+                    <div className="ec-scard__img">
+                      {article.imageUrl ? <img src={article.imageUrl} alt={article.imageAlt || article.title} loading="lazy" /> : null}
+                    </div>
+                    <div className="ec-scard__content">
+                      <h3 className="ec-scard__title">{article.title}</h3>
+                      <p className="ec-scard__desc">{article.description}</p>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : null}
 
-        {/* CUISINE */}
-        <section className="ed-section ed-section--light ed-cuisine">
-          <div className="ed-container">
-            <div className="ed-cuisine-grid">
-              <div className="ed-cuisine-item">
-                <img src={food1} alt="Food1" className="ed-cuisine-img" />
-                <h3 className="ed-cuisine-title">Thắng cố cổ truyền</h3>
-              </div>
-              <div className="ed-cuisine-item">
-                <img src={hmongHero} alt="Food2" className="ed-cuisine-img" />
-                <h3 className="ed-cuisine-title">Mèn mén</h3>
-              </div>
-              <div className="ed-cuisine-item">
-                <img src={hmongIntro} alt="Food3" className="ed-cuisine-img" />
-                <h3 className="ed-cuisine-title">Rượu ngô hạ thổ</h3>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ARCHITECTURE */}
-        <section className="ed-section ed-section--cream ed-architecture">
-          <div className="ed-container">
-            <div className="ed-arch__grid">
-              <div className="ed-arch-image">
-                <img src={arch1} alt="Arch1" className="ed-arch-img" />
-              </div>
-              <div className="ed-arch-text">
-                <span className="ed-section-badge">Không gian sống</span>
-                <h2 className="ed-section-title">Kiến trúc Nhà Trình Tường</h2>
-                <p className="ed-intro__body">
-                  Hệ thống nhà trình tường bằng đất sét của người H'Mông là minh chứng cho sự thích nghi tuyệt vời với khí hậu giá lạnh. Những bức tường dày không chỉ giữ ấm mùa đông mà còn giúp ngôi nhà mát mẻ giữa mùa hè vùng cao.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* GALLERY */}
-        <section className="ed-section ed-section--light ed-gallery">
-          <div className="ed-container">
-            <header className="ed-section-header">
-              <h2 className="ed-section-title">Thư viện hình ảnh</h2>
-              <p className="ed-section-subtitle">Những khoảnh khắc chân thực về cuộc sống và con người H'Mông.</p>
-            </header>
-            
-            <div className="ed-gallery-grid">
-              <div className="ed-gallery-item large"><img src={hmongIntro} alt="G1" /></div>
-              <div className="ed-gallery-item"><img src={textile2} alt="G2" /></div>
-              <div className="ed-gallery-item tall"><img src={hmongHero} alt="G3" /></div>
-              <div className="ed-gallery-item"><img src={textile1} alt="G4" /></div>
-              <div className="ed-gallery-item wide"><img src={arch1} alt="G5" /></div>
-              <div className="ed-gallery-item"><img src={food1} alt="G6" /></div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA BANNER */}
         <section className="ed-cta-banner">
           <div className="ed-container">
-            <h2 className="ed-cta-title">Khám phá thêm các dân tộc khác</h2>
+            <h2 className="ed-cta-title">{lang === 'vi' ? 'Khám phá thêm các dân tộc khác' : 'Explore More Ethnic Groups'}</h2>
             <Link to="/ethnic-groups" className="primary-button" style={{ marginTop: '20px', display: 'inline-flex' }}>
-              Trở lại thư viện dân tộc
+              {lang === 'vi' ? 'Trở lại thư viện dân tộc' : 'Back to ethnic library'}
             </Link>
           </div>
         </section>

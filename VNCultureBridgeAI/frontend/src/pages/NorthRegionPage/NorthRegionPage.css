@@ -1,0 +1,421 @@
+/* NorthRegionPage.css - Premium Region Detail Styles */
+
+.north-page {
+    --accent: #b91c1c;
+    --accent-dark: #7f1d1d;
+    --gold: #f59e0b;
+    --gold-light: #fef3c7;
+    --text-main: #3d271e;
+    --bg-light: #fffcf8;
+    --bg-alt: #f1e4d7;
+    --section-padding: 100px 0;
+}
+
+/* --- Hero Section --- */
+.north-hero {
+    position: relative;
+    height: 90vh;
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+}
+
+.north-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+}
+
+.north-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.north-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%);
+}
+
+.north-hero__content {
+    max-width: 900px;
+    padding: 0 20px;
+    z-index: 10;
+    animation: fadeUp 1s ease both;
+}
+
+.north-hero__badge {
+    display: inline-block;
+    padding: 10px 24px;
+    background: rgba(185, 28, 28, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 24px;
+}
+
+.north-hero__title {
+    font-family: var(--font-heading);
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    line-height: 0.9;
+    margin: 0;
+}
+
+.north-hero__title-accent {
+    display: block;
+    font-size: 0.35em;
+    margin-top: 10px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    font-weight: 500;
+}
+
+.north-hero__actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 48px;
+}
+
+.north-hero__btn {
+    padding: 18px 42px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.north-hero__btn--primary {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 15px 35px rgba(185, 28, 28, 0.4);
+}
+
+.north-hero__btn--secondary {
+    background: white;
+    color: var(--text-main);
+}
+
+.north-hero__btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+}
+
+.north-hero__stats {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 80px;
+}
+
+.north-hero__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.north-hero__stat strong {
+    font-size: 2.5rem;
+    color: var(--gold);
+    font-family: var(--font-heading);
+}
+
+.north-hero__stat span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0.9;
+    letter-spacing: 0.05em;
+}
+
+/* --- Wave Dividers --- */
+.section-wave {
+    position: absolute;
+    width: 100%;
+    height: 120px;
+    left: 0;
+    z-index: 5;
+}
+
+.section-wave--bottom {
+    bottom: -1px;
+}
+
+.section-wave--top {
+    top: 0;
+}
+
+.section-wave svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.section-wave--bottom path {
+    fill: var(--bg-light);
+}
+
+.section-wave--top path {
+    fill: var(--bg-alt) !important;
+}
+
+/* --- Story Section --- */
+.north-story {
+    background: var(--bg-light);
+    padding: var(--section-padding);
+}
+
+.north-story__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.north-story__image {
+    position: relative;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+}
+
+.north-story__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.north-story__content h2 {
+    font-size: 3rem;
+    margin-bottom: 24px;
+}
+
+.north-story__content p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 24px;
+}
+
+/* --- Map Section --- */
+.north-map-section {
+    background: var(--bg-alt);
+    padding: var(--section-padding);
+    position: relative;
+}
+
+.north-map-inner {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 40px;
+    margin-top: 48px;
+}
+
+.north-map__visual {
+    background: white;
+    border-radius: 32px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.map-placeholder {
+    font-family: var(--font-heading);
+    color: #ccc;
+    font-size: 1.5rem;
+    letter-spacing: 0.2em;
+}
+
+.north-map__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.map-info-card {
+    background: rgba(255,255,255,0.6);
+    padding: 24px;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.map-info-card.active {
+    background: white;
+    border-left: 6px solid var(--accent);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* --- Experiences Grid --- */
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 48px;
+}
+
+.experience-card {
+    border-radius: 24px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.experience-card:hover {
+    transform: translateY(-10px);
+}
+
+.experience-card__img {
+    height: 240px;
+}
+
+.experience-card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.experience-card__body {
+    padding: 24px;
+}
+
+/* --- Season Vertical Cards --- */
+.season-vertical-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    height: 600px;
+    margin-top: 48px;
+}
+
+.season-v-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    height: 100%;
+    transition: all 0.5s ease;
+}
+
+.season-v-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.season-v-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 30px 20px;
+    width: 100%;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 100%);
+    color: white;
+}
+
+.season-v-card:hover {
+    flex-grow: 1.5;
+}
+
+/* --- Cultural Layers --- */
+.layers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    gap: 24px;
+    margin-top: 48px;
+}
+
+.layer-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 24px;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.layer-card:hover {
+    background: var(--accent);
+    color: white;
+}
+
+.layer-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 20px;
+}
+
+/* --- CTA Section --- */
+.north-cta {
+    background: #2a1810 url('https://www.transparenttextures.com/patterns/dark-wood.png');
+    padding: 100px 0;
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.north-cta__content h2 {
+    font-size: 3.5rem;
+    font-family: var(--font-heading);
+    margin-bottom: 20px;
+}
+
+.cta-form {
+    display: flex;
+    max-width: 600px;
+    margin: 40px auto 0;
+    gap: 12px;
+}
+
+.cta-form input {
+    flex: 1;
+    padding: 18px 30px;
+    border-radius: 999px;
+    border: none;
+    font-size: 1rem;
+}
+
+.cta-form button {
+    padding: 18px 40px;
+    border-radius: 999px;
+    background: var(--gold);
+    color: white;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+}
+
+/* Utilities */
+.container {
+    width: min(1360px, calc(100% - 64px));
+    margin: 0 auto;
+}
+
+.content-section {
+    padding: var(--section-padding);
+}
+
+.alternate-bg {
+    background-color: var(--bg-alt);
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    color: #1f0b06;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}

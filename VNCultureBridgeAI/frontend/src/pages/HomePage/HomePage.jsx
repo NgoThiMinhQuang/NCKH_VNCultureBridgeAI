@@ -8,6 +8,32 @@ import { ui } from '../../i18n/messages'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
 
+// Regional Assets
+import imgRegionNorth from '../../assets/images/regions/region_overview_north.png'
+import imgRegionHoian from '../../assets/images/regions/highlight_hoian.png'
+import imgRegionSouth from '../../assets/images/regions/region_overview_south.png'
+
+// Ethnic Group Assets
+import imgEthnicHmong from '../../assets/hmong.jpg'
+import imgEthnicThai from '../../assets/thai.jpg'
+import imgEthnicDao from '../../assets/dao.jpg'
+import imgEthnicMuong from '../../assets/muong.jpg'
+import imgEthnicEde from '../../assets/ede.jpg'
+import imgEthnicKhmer from '../../assets/khmer.jpg'
+import imgEthnicTay from '../../assets/thai.jpg' // Using Thai as fallback for Tay if Tay is missing
+import imgEthnicKinh from '../../assets/anhtet1.PNG'
+
+const ethnicGroupImages = {
+  hmong: imgEthnicHmong,
+  thai: imgEthnicThai,
+  dao: imgEthnicDao,
+  muong: imgEthnicMuong,
+  ede: imgEthnicEde,
+  khmer: imgEthnicKhmer,
+  tay: imgEthnicTay,
+  kinh: imgEthnicKinh,
+}
+
 export default function HomePage() {
   const [lang, setLang] = useState('vi')
   const [homepage, setHomepage] = useState(null)
@@ -92,17 +118,88 @@ export default function HomePage() {
       searchPlaceholder: copy.heroSearchPlaceholder,
     },
     stats: copy.heroStats || [],
-    regions: [],
-    ethnicGroups: [],
-    festivals: [],
-    cuisine: [],
-    arts: [],
     blogPosts: [],
   }
 
-  const homepageRegions = safeHomepage.regions || []
+  const FALLBACK_REGIONS = [
+    {
+      id: 'north',
+      code: 'BAC_BO',
+      number: '01',
+      badge: 'Miền Bắc',
+      icon: '⛰️',
+      title: 'Miền Bắc Việt Nam',
+      highlights: ['Hà Giang', 'Sapa', 'Hà Nội', 'Hạ Long'],
+      imageUrl: imgRegionNorth
+    },
+    {
+      id: 'central',
+      code: 'TRUNG_BO',
+      number: '02',
+      badge: 'Miền Trung',
+      icon: '🏮',
+      title: 'Miền Trung Việt Nam',
+      highlights: ['Huế', 'Hội An', 'Đà Nẵng', 'Mỹ Sơn'],
+      imageUrl: imgRegionHoian
+    },
+    {
+      id: 'south',
+      code: 'NAM_BO',
+      number: '03',
+      badge: 'Miền Nam',
+      icon: '🌿',
+      title: 'Miền Nam Việt Nam',
+      highlights: ['TP. Hồ Chí Minh', 'Mekong', 'Phú Quốc', 'Cần Thơ'],
+      imageUrl: imgRegionSouth
+    }
+  ]
+
+  // Pre-process regions with local images
+  const homepageRegions = useMemo(() => {
+    const baseRegions = (safeHomepage.regions && safeHomepage.regions.length > 0) 
+      ? safeHomepage.regions 
+      : FALLBACK_REGIONS
+      
+    return baseRegions.map((region, idx) => {
+      let localImg = region.imageUrl;
+      const title = region.title || '';
+
+      if (title.toLowerCase().includes('bắc') || idx === 0) localImg = imgRegionNorth;
+      if (title.toLowerCase().includes('trung') || idx === 1) localImg = imgRegionHoian;
+      if (title.toLowerCase().includes('nam') || idx === 2) localImg = imgRegionSouth;
+
+      // Ensure icons are present for the new design
+      const icons = ['⛰️', '🏮', '🌿'];
+      
+      return {
+        ...region,
+        imageUrl: localImg || region.imageUrl,
+        icon: region.icon || icons[idx % 3]
+      }
+    })
+  }, [safeHomepage.regions])
+
+  const localizedFeaturedEthnicGroupsData = useMemo(() => {
+    const baseGroups = (safeHomepage.ethnicGroups || []).slice(0, 6)
+    return baseGroups.map((group) => {
+      const title = (group.title || '').toLowerCase()
+      let localImg = group.imageUrl
+
+      for (const [key, img] of Object.entries(ethnicGroupImages)) {
+        if (title.includes(key)) {
+          localImg = img
+          break
+        }
+      }
+
+      return {
+        ...group,
+        imageUrl: localImg,
+        imageAlt: group.imageAlt || group.title,
+      }
+    })
+  }, [safeHomepage.ethnicGroups])
   const ethnicShowcaseStats = copy.ethnicShowcaseStats || []
-  const featuredEthnicGroups = (safeHomepage.ethnicGroups || []).slice(0, 6)
   const heroTitleLines = getHeroTitleLines(safeHomepage.hero.title)
   const festivalShowcaseCards = (copy.festivalShowcaseCards || []).map((item, idx) => {
     const apiItem = (safeHomepage.festivals || [])[idx] || {}
@@ -1185,7 +1282,6 @@ export default function HomePage() {
 
   const localizedCuisineShowcaseCards = cuisineShowcaseCards.map(localizeCuisineItem)
   const localizedFestivalShowcaseCards = festivalShowcaseCards.map(localizeFestivalItem)
-  const localizedFeaturedEthnicGroups = featuredEthnicGroups.map(localizeEthnicityItem)
   const localizedFeaturedArt = featuredArt ? localizeArtItem(featuredArt) : null
   const localizedAdditionalArts = additionalArts.map(localizeArtItem)
   const localizedArtsTabs = artsShowcaseCards.slice(0, 3).map(localizeArtItem)
@@ -1257,67 +1353,74 @@ export default function HomePage() {
         <div className="page-content-shell">
           <section className="content-section regions-section regions-showcase" id="regions">
             <div className="regions-showcase__heading fade-up">
-              <span className="regions-showcase__eyebrow">
-                <span className="regions-showcase__eyebrow-star" aria-hidden="true">✦</span>
-                <span>Khám phá Việt Nam</span>
-                <span className="regions-showcase__eyebrow-star" aria-hidden="true">✦</span>
+              <span className="regions-showcase__badge-pill">
+                <span>✦ {lang === 'vi' ? 'KHÁM PHÁ VIỆT NAM' : 'EXPLORE VIETNAM'} ✦</span>
               </span>
-              <h2>Ba miền văn hóa đặc sắc</h2>
-              <p>
-                Từ miền núi phía Bắc đến dải đất miền Trung và vùng sông nước phương Nam, mỗi miền đều có bản sắc,
-                nhịp sống và vẻ đẹp riêng để bạn khám phá.
+              <h2 className="regions-showcase__magical-title">
+                Ba miền kỳ diệu <span className="gradient-text">Vùng Miền</span>
+              </h2>
+              <div className="regions-showcase__ornament">
+                <span className="ornament-line"></span>
+                <span className="ornament-center">
+                  <i className="diamond"></i>
+                  <i className="circle"></i>
+                  <i className="diamond"></i>
+                </span>
+                <span className="ornament-line"></span>
+              </div>
+              <p className="regions-showcase__subtitle">
+                {lang === 'vi'
+                  ? 'Từ những ngọn núi mờ sương phía Bắc đến vùng đồng bằng trù phú phía Nam, mỗi vùng miền đều mang trong mình linh hồn, văn hóa và những kỳ quan thiên nhiên độc đáo.'
+                  : 'From the misty mountains of the North to the fertile delta of the South, each region holds its own unique soul, culture, and natural wonders.'}
               </p>
             </div>
 
             <div className="regions-showcase__grid">
-              {homepageRegions.map((region) => (
-                <article key={region.code || region.id} className={`region-showcase-card fade-up ${region.accentClass || ''}`}>
-                  {region.imageUrl ? (
-                    <img src={region.imageUrl} alt={region.imageAlt} className="region-showcase-card__image" loading="lazy" decoding="async" />
-                  ) : (
-                    <div className="region-showcase-card__image region-showcase-card__image--placeholder">
-                      {region.title}
-                    </div>
-                  )}
-
-                  <div className="region-showcase-card__overlay" />
-
-                  <div className="region-showcase-card__content">
-                    <div className="region-showcase-card__top">
-                      <span className="region-showcase-card__badge">{region.badge}</span>
-                      <span className="region-showcase-card__number">{region.number}</span>
+              {homepageRegions.map((region, index) => (
+                <article key={region.code || region.id || index} className={`region-magical-card fade-up is-accent-${index}`}>
+                  <div className="region-magical-card__inner">
+                    <div className="region-magical-card__accent-line"></div>
+                    <span className="region-magical-card__number">{region.number}</span>
+                    
+                    <div className="region-magical-card__image-box">
+                      {region.imageUrl ? (
+                        <img src={region.imageUrl} alt={region.imageAlt || region.title} />
+                      ) : (
+                        <div className="placeholder">{region.title}</div>
+                      )}
                     </div>
 
-                    <div className="region-showcase-card__body">
-                      <h3>{region.title}</h3>
-                      <p className="region-showcase-card__description">{region.description}</p>
-
-                      <div className="region-showcase-card__chips">
-                        {region.highlights.map((item) => (
-                          <span key={item}>{item}</span>
+                    <div className="region-magical-card__content">
+                      <div className="region-magical-card__badge">
+                        <span className="badge-icon">{region.icon}</span>
+                        <span className="badge-text">{region.badge}</span>
+                      </div>
+                      
+                      <h3 className="region-magical-card__title">{region.title}</h3>
+                      
+                      <div className="region-magical-card__tags">
+                        {(region.highlights || []).map((tag, tIdx) => (
+                          <span key={tIdx} className="tag-chip">
+                            <i className="pin-icon">📍</i> {tag}
+                          </span>
                         ))}
                       </div>
-                    </div>
 
-                    <Link to={`/regions/${region.code}`} className="region-showcase-card__cta">
-                      {region.cta}
-                      <span aria-hidden="true">→</span>
-                    </Link>
+                      <Link to={`/regions/${region.code}`} className="region-magical-card__explore-link">
+                        Khám phá {region.badge.split(' ')[1] || region.badge} <span className="arrow">→</span>
+                      </Link>
+                    </div>
                   </div>
                 </article>
               ))}
             </div>
 
             <div className="regions-showcase__footer fade-up">
-              <Link to="/regions" className="regions-showcase__button">
-                <span>Xem bản đồ đầy đủ</span>
-                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-                  <path d="M12 22s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Zm0-9a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
-                </svg>
+              <Link to="/regions" className="regions-showcase__button regions-showcase__button--primary">
+                <span>{lang === 'vi' ? 'Xem bản đồ đầy đủ' : 'View full map'} 📍</span>
               </Link>
-              <Link to="/provinces" className="regions-showcase__button secondary-btn">
-                <span>{lang === 'vi' ? 'Xem tất cả tỉnh thành' : 'View all provinces'}</span>
-                <span aria-hidden="true">→</span>
+              <Link to="/provinces" className="regions-showcase__button regions-showcase__button--outline">
+                <span>{lang === 'vi' ? 'Xem tất cả tỉnh thành' : 'View all provinces'} →</span>
               </Link>
             </div>
           </section>
@@ -1346,7 +1449,7 @@ export default function HomePage() {
             </div>
 
             <div className="ethnic-showcase__grid">
-              {localizedFeaturedEthnicGroups.map((item, index) => (
+              {localizedFeaturedEthnicGroupsData.map((item, index) => (
                 <article key={item.code || item.id || index} className="ethnic-card fade-up">
                   {item.imageUrl ? (
                     <img src={item.imageUrl} alt={item.imageAlt || item.title} className="ethnic-card__image" loading="lazy" decoding="async" />

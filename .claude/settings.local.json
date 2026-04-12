@@ -43,7 +43,8 @@
       "Bash(taskkill.exe:*)",
       "Bash(findstr :5174)",
       "WebSearch",
-      "Bash(tasklist:*)"
+      "Bash(tasklist:*)",
+      "Bash(npx eslint:*)"
     ]
   }
 }

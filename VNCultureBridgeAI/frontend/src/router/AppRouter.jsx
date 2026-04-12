@@ -15,6 +15,7 @@ import CuisineDetailPage from "../pages/CuisineDetailPage/CuisineDetailPage";
 import BlogDetailPage from "../pages/BlogDetailPage/BlogDetailPage";
 import ProvincesPage from "../pages/ProvincesPage/ProvincesPage";
 import ProvinceDetailPage from "../pages/ProvinceDetailPage/ProvinceDetailPage";
+import NorthRegionPage from "../pages/NorthRegionPage/NorthRegionPage";
 
 
 /**
@@ -41,6 +42,7 @@ export default function AppRouter() {
         <Route path="/cuisine/:id" element={<CuisineDetailPage />} />
         <Route path="/provinces" element={<ProvincesPage />} />
         <Route path="/provinces/:code" element={<ProvinceDetailPage />} />
+        <Route path="/regions/north" element={<NorthRegionPage />} />
       </Routes>
     </BrowserRouter>
   );
