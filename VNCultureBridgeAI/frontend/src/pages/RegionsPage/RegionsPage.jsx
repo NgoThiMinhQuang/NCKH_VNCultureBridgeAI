@@ -343,11 +343,11 @@ export default function RegionsPage() {
         setProvinceState({ status: 'loading', data: [], error: '' })
         const provinces = await getProvinces(lang)
         if (!ignore) {
-          setProvinceState({ status: 'success', data: provinces.slice(0, 6), error: '' })
+          setProvinceState({ status: 'success', data: provinces, error: '' })
         }
       } catch (error) {
         if (!ignore) {
-          setProvinceState({ status: 'error', data: provincesData, error: error.message })
+          setProvinceState({ status: 'error', data: [], error: error.message })
         }
       }
     }
@@ -363,6 +363,7 @@ export default function RegionsPage() {
   const mappedRegions = mergeRegionContent(regions, lang)
   const fallbackRegion = (regionMeta[lang] || regionMeta.vi)[0]
   const activeRegion = mappedRegions.find((item) => item.key === activeKey) || mappedRegions[0] || fallbackRegion
+  const provinceCount = provinceState.status === 'success' ? provinceState.data.length : 34
   const localizedFilterOptions = lang === 'en'
     ? [
         { id: 'all', label: 'All' },
@@ -376,7 +377,7 @@ export default function RegionsPage() {
         { id: 'craft', label: 'Craft Villages' }
       ]
     : filterOptions
-  const visibleProvinces = (provinceState.data.length ? provinceState.data : provincesData)
+  const visibleProvinces = (provinceState.data || [])
     .map(normalizeProvinceCard)
     .filter((province) => !searchQuery.trim() || province.name.toLowerCase().includes(searchQuery.trim().toLowerCase()))
     .filter((province) => filterProvinceCard(province, activeFilter, lang))
@@ -465,12 +466,12 @@ export default function RegionsPage() {
               {/* Stats like festival page */}
               <div className="regions-hero__stats">
                 <div className="regions-hero__stat">
-                  <strong>3</strong>
+                  <strong>{mappedRegions.length || 3}</strong>
                   <span>{lang === 'vi' ? 'Miền di sản' : 'Cultural Regions'}</span>
                 </div>
                 <div className="regions-hero__stat-sep">|</div>
                 <div className="regions-hero__stat">
-                  <strong>63</strong>
+                  <strong>{provinceCount}</strong>
                   <span>{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</span>
                 </div>
                 <div className="regions-hero__stat-sep">|</div>
@@ -543,7 +544,7 @@ export default function RegionsPage() {
                 {/* Floating badge */}
                 <div className="regions-fan__badge">
                   <span>🗺️</span>
-                  <span>{lang === 'vi' ? '63 Tỉnh Thành' : '63 Provinces'}</span>
+                  <span>{lang === 'vi' ? `${provinceCount} Tỉnh Thành` : `${provinceCount} Provinces`}</span>
                 </div>
               </div>
             </div>
@@ -567,7 +568,7 @@ export default function RegionsPage() {
                   ? 'Chạm hoặc rê chuột vào từng vùng để khám phá những nét văn hóa đặc trưng từ Bắc chí Nam.'
                   : 'Hover or tap each region to explore the cultural identity of Vietnam from north to south.'}
               </p>
-              <VietnamMap activeKey={activeKey} onSelectRegion={handleSelectRegion} lang={lang} />
+              <VietnamMap activeKey={activeKey} onSelectRegion={handleSelectRegion} lang={lang} regions={mappedRegions} />
             </div>
 
             <div className="regions-split-layout__content">

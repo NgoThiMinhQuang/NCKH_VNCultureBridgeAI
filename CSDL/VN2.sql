@@ -1716,6 +1716,260 @@ SELECT
     (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
 WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_BANH_MI');
 
+UPDATE dbo.BaiViet
+SET
+    TieuDeVI = N'Phở Việt Nam',
+    MoTaNganVI = N'Món ăn biểu tượng của Việt Nam với nước dùng trong, bánh phở mềm và hương vị cân bằng.',
+    GioiThieuVI = N'Phở là một biểu tượng ẩm thực Việt Nam được yêu thích trong nước và quốc tế.',
+    NguonGocVI = N'Phở được hình thành trong bối cảnh giao thoa ẩm thực Bắc Bộ đầu thế kỷ XX và nhanh chóng lan rộng khắp cả nước.',
+    YNghiaVanHoaVI = N'Phở thể hiện tinh thần tinh tế trong cách nấu nước dùng, kết hợp thảo mộc và khả năng thích nghi theo vùng miền.',
+    BoiCanhVI = N'Ngày nay, phở xuất hiện từ gánh hàng rong đến nhà hàng hiện đại, trở thành cầu nối văn hóa trong trải nghiệm ẩm thực Việt.',
+    NoiDungChinhVI = N'Phở thường được nhắc tới như món ăn đại diện của Việt Nam. Tuy nhiên, mỗi địa phương và mỗi quán lại có cách nêm nếm, chọn thịt và bày biện riêng, tạo nên nhiều lớp bản sắc trong cùng một món ăn quen thuộc.',
+    TomTatChoAIVI = N'Phở là món nước tiêu biểu của Việt Nam, nổi bật bởi nước dùng, thảo mộc tươi và dấu ấn vùng miền.'
+WHERE MaBaiViet = 'BV_PHO_VIET_NAM';
+
+UPDATE dbo.BaiViet
+SET
+    TieuDeVI = N'Bánh mì Việt Nam',
+    MoTaNganVI = N'Món bánh mì kẹp nổi tiếng với sự giao thoa giữa baguette kiểu Pháp và nguyên liệu Việt Nam.',
+    GioiThieuVI = N'Bánh mì là ví dụ tiêu biểu cho khả năng biến đổi sáng tạo của ẩm thực Việt Nam trong bối cảnh đô thị hiện đại.',
+    NguonGocVI = N'Món ăn này phát triển từ thời kỳ thuộc địa nhưng dần mang bản sắc riêng nhờ nhân, rau thơm và nước sốt kiểu Việt.',
+    YNghiaVanHoaVI = N'Bánh mì thể hiện sự linh hoạt, nhanh gọn và khả năng kết hợp giữa địa phương với toàn cầu trong đời sống hàng ngày.',
+    BoiCanhVI = N'Từ món ăn sáng, bữa trưa đến món mang đi cho du khách, bánh mì đã trở thành biểu tượng của ẩm thực đường phố Việt.',
+    NoiDungChinhVI = N'Bánh mì Việt Nam có rất nhiều biến thể: nhân thịt, chả lụa, pate, xíu mại, trứng hoặc chay. Điều làm nên sức hấp dẫn của món ăn là cảm giác hài hòa giữa lớp vỏ giòn, nhân đậm vị và rau dưa tươi mát.',
+    TomTatChoAIVI = N'Bánh mì là món ăn đường phố nổi tiếng, thể hiện sự giao thoa ẩm thực và tinh thần sáng tạo của người Việt.'
+WHERE MaBaiViet = 'BV_BANH_MI';
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_BUN_CHA_HA_NOI',
+    N'Bún chả Hà Nội',
+    N'Hanoi Bun Cha',
+    N'Món bún chả nổi tiếng với thịt nướng thơm, nước chấm đậm vị và rau sống tươi mát.',
+    N'A beloved Hanoi dish featuring grilled pork, savory dipping sauce, and fresh herbs.',
+    N'Bún chả Hà Nội là món ăn gắn với nhịp sống phố cổ và văn hóa quán nhỏ của thủ đô.',
+    N'Hanoi bun cha is closely tied to the capital''s old-quarter rhythm and small-eatery culture.',
+    N'Món ăn hình thành từ thói quen dùng bún cùng thịt lợn nướng trên than hoa, dần trở thành đặc sản tiêu biểu của Hà Nội.',
+    N'The dish grew from the habit of pairing rice vermicelli with charcoal-grilled pork and gradually became a signature specialty of Hanoi.',
+    N'Bún chả thể hiện sự cân bằng giữa vị khói, vị ngọt thanh của nước chấm và sự tươi mát của rau sống trong bữa ăn Việt.',
+    N'Bun cha reflects the Vietnamese balance of smoky flavors, light sweetness in the broth, and freshness from herbs.',
+    N'Ngày nay, bún chả hiện diện từ quán gia truyền đến nhà hàng hiện đại, luôn gợi nhắc về không khí đời thường của Hà Nội.',
+    N'Today, bun cha appears from family-run stalls to modern restaurants, always evoking everyday Hanoi life.',
+    N'Một phần bún chả trọn vị thường gồm chả miếng, chả viên, bún tươi, rau sống và bát nước chấm pha hài hòa. Khi ăn, thực khách chấm từng gắp bún, thịt và rau vào nước chấm để cảm nhận độ nóng, thơm và cân bằng của món.',
+    N'A full serving of bun cha usually includes sliced pork, grilled patties, fresh noodles, herbs, and a well-balanced dipping sauce. Diners combine noodles, pork, and greens in the bowl to enjoy its warmth and aroma.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Bún chả Hà Nội là món ăn đường phố tiêu biểu, nổi bật bởi thịt nướng than hoa và nước chấm thanh ngọt.',
+    N'Hanoi bun cha is a signature street-food dish known for charcoal-grilled pork and a light savory dipping sauce.',
+    1,
+    DATEADD(DAY, -9, SYSUTCDATETIME()),
+    DATEADD(DAY, -8, SYSUTCDATETIME()),
+    DATEADD(DAY, -7, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_BUN_CHA_HA_NOI');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_BUN_BO_HUE',
+    N'Bún bò Huế',
+    N'Hue Beef Noodle Soup',
+    N'Món bún nước đậm đà với sắc đỏ hấp dẫn, sả thơm và chiều sâu vị giác đặc trưng của Huế.',
+    N'A bold noodle soup marked by fragrant lemongrass, a rich broth, and the distinct taste profile of Hue.',
+    N'Bún bò Huế là món ăn nổi tiếng của miền Trung, gắn với nhịp sống cố đô và gu ẩm thực đậm vị.',
+    N'Bun bo Hue is a celebrated central-Vietnamese dish tied to the imperial city and its bold palate.',
+    N'Món ăn phát triển từ truyền thống ẩm thực Huế với sự kết hợp của bún sợi tròn, thịt bò, giò heo và nước dùng nêm sả mắm ruốc.',
+    N'The dish grew from Hue culinary traditions, combining round noodles, beef, pork hock, and broth seasoned with lemongrass and fermented shrimp paste.',
+    N'Bún bò Huế thể hiện chiều sâu khẩu vị miền Trung: đậm đà, cay nhẹ, thơm mùi sả và giàu tính nghi lễ trong cách nấu nướng.',
+    N'Bun bo Hue reflects the depth of central Vietnamese taste: robust, mildly spicy, lemongrass-forward, and careful in preparation.',
+    N'Ngày nay, món ăn này đã lan rộng khắp Việt Nam nhưng vẫn giữ dấu ấn của Huế qua màu sắc, hương vị và cách bày tô.',
+    N'Today the dish is enjoyed nationwide yet still carries Hue''s identity through its color, aroma, and presentation.',
+    N'Nước dùng bún bò Huế thường được ninh kỹ từ xương, thêm sả đập dập và mắm ruốc để tạo nên mùi thơm rất riêng. Khi ăn, tô bún được điểm thêm rau sống, chanh và sa tế để tăng tầng vị và cảm giác ấm nóng.',
+    N'The broth is slowly simmered with bones, bruised lemongrass, and fermented shrimp paste to create its distinctive aroma. It is commonly finished with herbs, lime, and chili oil for extra layers of flavor and warmth.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Bún bò Huế là món bún nổi bật của miền Trung, giàu hương sả và sắc thái ẩm thực cố đô.',
+    N'Bun bo Hue is a standout central noodle soup rich in lemongrass aroma and Hue culinary character.',
+    1,
+    DATEADD(DAY, -8, SYSUTCDATETIME()),
+    DATEADD(DAY, -7, SYSUTCDATETIME()),
+    DATEADD(DAY, -6, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_BUN_BO_HUE');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_MI_QUANG',
+    N'Mì Quảng',
+    N'Mi Quang',
+    N'Món mì đặc trưng xứ Quảng với sợi mì vàng, nước dùng xâm xấp và nhiều loại rau thơm, đậu phộng.',
+    N'A signature noodle dish from Quang Nam featuring yellow noodles, a small amount of broth, herbs, and peanuts.',
+    N'Mì Quảng là món ăn tiêu biểu của miền Trung, gắn với sự mộc mạc nhưng tinh tế trong cách kết hợp nguyên liệu.',
+    N'Mi Quang is a signature central-Vietnamese dish known for rustic yet refined ingredient pairing.',
+    N'Món ăn xuất phát từ vùng Quảng Nam - Đà Nẵng, tận dụng nguyên liệu địa phương như tôm, thịt, trứng cút, bánh tráng và rau sống.',
+    N'The dish comes from the Quang Nam - Da Nang area, drawing on local ingredients such as shrimp, pork, quail eggs, sesame rice crackers, and herbs.',
+    N'Mì Quảng thể hiện nhịp sống miền Trung qua khẩu phần gọn gàng, màu sắc tươi sáng và cách ăn đề cao cảm giác giòn, bùi, thơm.',
+    N'Mi Quang reflects central Vietnamese life through compact portions, vibrant colors, and a focus on crunchy, nutty, and fragrant textures.',
+    N'Dù có nhiều biến thể với tôm thịt, gà, ếch hay chay, mì Quảng vẫn giữ tinh thần dung dị và gần gũi của bữa ăn quê nhà.',
+    N'Although it has many versions with shrimp, pork, chicken, frog, or vegetarian fillings, Mi Quang retains the simple warmth of a home-style meal.',
+    N'Một tô mì Quảng ngon thường có lượng nước dùng vừa đủ để áo sợi mì, ăn kèm rau sống, bánh tráng nướng và đậu phộng rang. Sự hài hòa giữa vị béo, vị ngọt và độ giòn tạo nên trải nghiệm rất riêng cho món ăn này.',
+    N'A good bowl of Mi Quang uses just enough broth to coat the noodles and is served with herbs, toasted rice crackers, and roasted peanuts. The balance of richness, sweetness, and crunch defines its experience.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Mì Quảng là món mì đặc trưng của xứ Quảng, nổi bật bởi nước dùng xâm xấp và sự hòa quyện của nhiều kết cấu.',
+    N'Mi Quang is a signature Quang-style noodle dish known for its light broth and layered textures.',
+    1,
+    DATEADD(DAY, -7, SYSUTCDATETIME()),
+    DATEADD(DAY, -6, SYSUTCDATETIME()),
+    DATEADD(DAY, -5, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_MI_QUANG');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_COM_TAM_SAI_GON',
+    N'Cơm tấm Sài Gòn',
+    N'Saigon Broken Rice',
+    N'Món cơm tấm nổi tiếng với sườn nướng, bì, chả và nước mắm chua ngọt đặc trưng của Sài Gòn.',
+    N'A famous Saigon dish centered on broken rice, grilled pork chop, shredded pork skin, egg loaf, and sweet-savory fish sauce.',
+    N'Cơm tấm Sài Gòn là hình ảnh thân thuộc của đô thị phương Nam, vừa nhanh gọn vừa đậm đà.',
+    N'Saigon broken rice is a familiar image of southern urban life: quick, filling, and full of flavor.',
+    N'Món ăn bắt nguồn từ việc tận dụng hạt gạo vỡ, sau đó phát triển thành đặc sản nổi tiếng nhờ cách kết hợp sườn nướng, đồ chua và mỡ hành.',
+    N'The dish began as a way to use broken rice grains and evolved into a famous specialty through its pairing with grilled pork, pickles, and scallion oil.',
+    N'Cơm tấm thể hiện tinh thần cởi mở, thực tế và phong phú của ẩm thực Nam Bộ trong đời sống hàng ngày.',
+    N'Com tam expresses the open, practical, and abundant spirit of southern cuisine in everyday life.',
+    N'Từ quán vỉa hè đến hàng ăn lâu năm, cơm tấm vẫn giữ vị trí đặc biệt trong nhịp ăn uống của người Sài Gòn.',
+    N'From sidewalk stalls to long-running eateries, com tam holds a special place in the eating rhythm of Saigon.',
+    N'Một đĩa cơm tấm đầy đặn thường gồm sườn nướng, bì, chả trứng, trứng ốp la, đồ chua và nước mắm pha. Cảm giác hấp dẫn của món nằm ở sự đối lập giữa hạt cơm mềm, miếng thịt thơm lửa và vị chua ngọt hài hòa.',
+    N'A generous plate of com tam often includes grilled pork, shredded pork skin, egg loaf, fried egg, pickles, and fish sauce. Its appeal lies in the contrast between soft rice, smoky meat, and balanced sweet-sour notes.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Cơm tấm Sài Gòn là món cơm nổi tiếng của miền Nam, mang tinh thần nhanh gọn mà đậm đà của đô thị phương Nam.',
+    N'Saigon broken rice is a famous southern rice dish that captures the brisk yet flavorful spirit of the southern city.',
+    1,
+    DATEADD(DAY, -6, SYSUTCDATETIME()),
+    DATEADD(DAY, -5, SYSUTCDATETIME()),
+    DATEADD(DAY, -4, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_COM_TAM_SAI_GON');
+
+INSERT INTO dbo.BaiViet (
+    MaBaiViet,
+    TieuDeVI, TieuDeEN,
+    MoTaNganVI, MoTaNganEN,
+    GioiThieuVI, GioiThieuEN,
+    NguonGocVI, NguonGocEN,
+    YNghiaVanHoaVI, YNghiaVanHoaEN,
+    BoiCanhVI, BoiCanhEN,
+    NoiDungChinhVI, NoiDungChinhEN,
+    TrangThaiDuyet, TrangThaiXuatBan, MucDoNhayCam,
+    TrangThaiDongBoAI, AIChoPhep, TomTatChoAIVI, TomTatChoAIEN, SanSangChoAI,
+    NgayGuiDuyet, NgayDuyet, NgayXuatBan,
+    TaoBoi, CapNhatBoi, DuyetBoi
+)
+SELECT
+    'BV_HU_TIEU_NAM_VANG',
+    N'Hủ tiếu Nam Vang',
+    N'Nam Vang Hu Tieu',
+    N'Món hủ tiếu nổi bật với nước dùng ngọt thanh, sợi dai mềm và nhiều loại topping phong phú.',
+    N'A noodle dish known for its light sweet broth, springy noodles, and plentiful toppings.',
+    N'Hủ tiếu Nam Vang là món ăn phổ biến ở Nam Bộ, phản ánh giao thoa văn hóa Việt - Hoa - Khmer trong ẩm thực đô thị.',
+    N'Nam Vang hu tieu is popular in southern Vietnam and reflects Vietnamese, Chinese, and Khmer culinary exchange.',
+    N'Món ăn phát triển mạnh ở Sài Gòn và miền Tây với các biến thể nước hoặc khô, sử dụng thịt bằm, tôm, gan và rau hẹ.',
+    N'The dish flourished in Saigon and the Mekong Delta in both soup and dry versions, using minced pork, shrimp, liver, and garlic chives.',
+    N'Hủ tiếu Nam Vang thể hiện tính linh hoạt và cởi mở của ẩm thực Nam Bộ khi tiếp nhận rồi biến đổi nhiều ảnh hưởng khác nhau.',
+    N'Nam Vang hu tieu shows the flexibility and openness of southern cuisine in absorbing and transforming multiple influences.',
+    N'Ngày nay, hủ tiếu có mặt từ quán sáng bình dân đến hàng ăn khuya, là lựa chọn quen thuộc của nhiều thế hệ thực khách.',
+    N'Today hu tieu appears from humble breakfast stalls to late-night eateries, remaining a familiar choice across generations.',
+    N'Tô hủ tiếu thường gây ấn tượng bởi nước dùng trong, sợi mì dai, topping đa dạng và mùi thơm của hành phi. Phiên bản khô còn nhấn mạnh nước sốt sánh quyện và bát nước lèo đi kèm, tạo nên trải nghiệm rất riêng.',
+    N'A bowl of hu tieu stands out for its clear broth, chewy noodles, varied toppings, and fried shallot aroma. The dry version adds a glossy sauce with a side bowl of broth, creating a distinctive experience.',
+    'APPROVED',
+    'PUBLISHED',
+    1,
+    'READY',
+    1,
+    N'Hủ tiếu Nam Vang là món hủ tiếu phổ biến của miền Nam, nổi bật bởi nước dùng thanh và topping phong phú.',
+    N'Nam Vang hu tieu is a popular southern noodle dish known for its light broth and abundant toppings.',
+    1,
+    DATEADD(DAY, -5, SYSUTCDATETIME()),
+    DATEADD(DAY, -4, SYSUTCDATETIME()),
+    DATEADD(DAY, -3, SYSUTCDATETIME()),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'content@vnculturebridge.ai'),
+    (SELECT NguoiDungID FROM dbo.NguoiDung WHERE Email = 'reviewer@vnculturebridge.ai')
+WHERE NOT EXISTS (SELECT 1 FROM dbo.BaiViet WHERE MaBaiViet = 'BV_HU_TIEU_NAM_VANG');
+
 INSERT INTO dbo.BaiViet (
     MaBaiViet,
     TieuDeVI, TieuDeEN,
@@ -1822,10 +2076,538 @@ INSERT INTO dbo.BaiViet_DanhMuc (BaiVietID, DanhMucID, LaDanhMucChinh)
 SELECT bv.BaiVietID, dm.DanhMucID, 1
 FROM dbo.BaiViet bv
 JOIN dbo.DanhMuc dm ON dm.MaDanhMuc = 'AM_THUC'
-WHERE bv.MaBaiViet IN ('BV_PHO_VIET_NAM', 'BV_BANH_MI')
+WHERE bv.MaBaiViet IN ('BV_PHO_VIET_NAM', 'BV_BANH_MI', 'BV_BUN_CHA_HA_NOI', 'BV_BUN_BO_HUE', 'BV_MI_QUANG', 'BV_COM_TAM_SAI_GON', 'BV_HU_TIEU_NAM_VANG')
   AND NOT EXISTS (
       SELECT 1 FROM dbo.BaiViet_DanhMuc x
       WHERE x.BaiVietID = bv.BaiVietID AND x.DanhMucID = dm.DanhMucID
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'BAC_BO'
+WHERE bv.MaBaiViet IN ('BV_PHO_VIET_NAM', 'BV_BUN_CHA_HA_NOI')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'NAM_BO'
+WHERE bv.MaBaiViet = 'BV_BANH_MI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'TRUNG_BO'
+WHERE bv.MaBaiViet IN ('BV_BUN_BO_HUE', 'BV_MI_QUANG')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'NAM_BO'
+WHERE bv.MaBaiViet IN ('BV_COM_TAM_SAI_GON', 'BV_HU_TIEU_NAM_VANG')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
+  );
+
+INSERT INTO dbo.BaiViet_DanToc (BaiVietID, DanTocID, LaDanTocChinh)
+SELECT bv.BaiVietID, dt.DanTocID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.DanToc dt ON dt.MaDanToc = 'KINH'
+WHERE bv.MaBaiViet IN ('BV_BUN_CHA_HA_NOI', 'BV_BUN_BO_HUE', 'BV_MI_QUANG', 'BV_COM_TAM_SAI_GON', 'BV_HU_TIEU_NAM_VANG')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_DanToc x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.DanTocID = dt.DanTocID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_BUN_CHA_HA_NOI'
+WHERE b1.MaBaiViet = 'BV_PHO_VIET_NAM'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_BUN_BO_HUE'
+WHERE b1.MaBaiViet = 'BV_PHO_VIET_NAM'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_MI_QUANG'
+WHERE b1.MaBaiViet = 'BV_BUN_BO_HUE'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_COM_TAM_SAI_GON'
+WHERE b1.MaBaiViet = 'BV_HU_TIEU_NAM_VANG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.BaiViet_LienQuan (BaiVietID, BaiVietLienQuanID, LoaiLienQuan)
+SELECT b1.BaiVietID, b2.BaiVietID, 'RELATED'
+FROM dbo.BaiViet b1
+JOIN dbo.BaiViet b2 ON b2.MaBaiViet = 'BV_HU_TIEU_NAM_VANG'
+WHERE b1.MaBaiViet = 'BV_BANH_MI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_LienQuan x
+      WHERE x.BaiVietID = b1.BaiVietID AND x.BaiVietLienQuanID = b2.BaiVietID
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1555126634-ba092c2ddf7f?auto=format&fit=crop&w=1200&q=80',
+    N'Bún chả Hà Nội với thịt nướng và bún tươi',
+    N'Hanoi bun cha with grilled pork and rice vermicelli',
+    N'Hình ảnh bún chả Hà Nội với chả nướng than hoa và rau sống.',
+    N'Image of Hanoi bun cha with charcoal-grilled pork and herbs.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_BUN_CHA_HA_NOI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1555126634-ba092c2ddf7f?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1200&q=80',
+    N'Bún bò Huế với nước dùng đỏ và rau thơm',
+    N'Hue beef noodle soup with rich broth and herbs',
+    N'Hình ảnh tô bún bò Huế đậm đà đặc trưng cố đô.',
+    N'Image of Hue beef noodle soup with its rich imperial-city character.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_BUN_BO_HUE'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80',
+    N'Mì Quảng với đậu phộng và bánh tráng nướng',
+    N'Mi Quang with peanuts and toasted rice cracker',
+    N'Hình ảnh mì Quảng với sợi mì vàng và topping đặc trưng.',
+    N'Image of Mi Quang with yellow noodles and signature toppings.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_MI_QUANG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1625944525533-473f1a3d54de?auto=format&fit=crop&w=1200&q=80',
+    N'Cơm tấm Sài Gòn với sườn nướng',
+    N'Saigon broken rice with grilled pork chop',
+    N'Hình ảnh đĩa cơm tấm với sườn nướng, bì và chả.',
+    N'Image of broken rice with grilled pork, shredded pork skin, and egg loaf.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_COM_TAM_SAI_GON'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1625944525533-473f1a3d54de?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1626242372480-164c673ba718?auto=format&fit=crop&w=1200&q=80',
+    N'Hủ tiếu Nam Vang với topping phong phú',
+    N'Nam Vang hu tieu with abundant toppings',
+    N'Hình ảnh hủ tiếu Nam Vang với nước dùng trong và topping đa dạng.',
+    N'Image of Nam Vang hu tieu with clear broth and diverse toppings.',
+    1, 1
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_HU_TIEU_NAM_VANG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1626242372480-164c673ba718?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
+    N'Phở với rau thơm và nước dùng nóng',
+    N'Pho with fresh herbs and hot broth',
+    N'Góc nhìn gần món phở Việt Nam với rau thơm tươi.',
+    N'Close-up of Vietnamese pho with fresh herbs.',
+    0, 2
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_PHO_VIET_NAM'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?auto=format&fit=crop&w=1200&q=80',
+    N'Phở bò Hà Nội trong tô lớn',
+    N'Hanoi beef pho in a large bowl',
+    N'Hình ảnh phở bò với lát thịt và hành lá.',
+    N'Image of beef pho with sliced meat and scallions.',
+    0, 3
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_PHO_VIET_NAM'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1200&q=80',
+    N'Bún chả được dọn kèm rau sống',
+    N'Bun cha served with fresh herbs',
+    N'Góc nhìn món bún chả với thịt nướng và bát nước chấm.',
+    N'View of bun cha with grilled pork and dipping sauce.',
+    0, 2
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_BUN_CHA_HA_NOI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1583096114844-06ce6a5f2171?auto=format&fit=crop&w=1200&q=80',
+    N'Bún bò Huế cận cảnh',
+    N'Close-up of bun bo Hue',
+    N'Hình ảnh cận cảnh tô bún bò Huế với sắc đỏ đặc trưng.',
+    N'Close-up image of bun bo Hue with its signature reddish broth.',
+    0, 2
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_BUN_BO_HUE'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1583096114844-06ce6a5f2171?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=1200&q=80',
+    N'Bánh mì Việt Nam cắt đôi với phần nhân đầy đặn',
+    N'Vietnamese banh mi cut open with fillings',
+    N'Hình ảnh bánh mì Việt Nam với lớp vỏ giòn và phần nhân phong phú.',
+    N'Image of Vietnamese banh mi with crispy crust and generous fillings.',
+    0, 2
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_BANH_MI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=1200&q=80',
+    N'Mì Quảng với rau sống và bánh tráng',
+    N'Mi Quang with herbs and sesame cracker',
+    N'Hình ảnh mì Quảng ăn kèm rau sống, bánh tráng và đậu phộng.',
+    N'Image of Mi Quang served with herbs, sesame cracker, and peanuts.',
+    0, 2
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_MI_QUANG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80',
+    N'Cơm tấm với sườn nướng và đồ chua',
+    N'Broken rice with grilled pork and pickles',
+    N'Góc nhìn đĩa cơm tấm với mỡ hành và nước mắm.',
+    N'View of broken rice with scallion oil and fish sauce.',
+    0, 2
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_COM_TAM_SAI_GON'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1200&q=80',
+    N'Hủ tiếu Nam Vang phiên bản khô',
+    N'Dry-style Nam Vang hu tieu',
+    N'Hình ảnh hủ tiếu Nam Vang phiên bản khô với nước dùng riêng.',
+    N'Image of dry-style Nam Vang hu tieu served with broth on the side.',
+    0, 2
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_HU_TIEU_NAM_VANG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1626242372480-164c673ba718?auto=format&fit=crop&w=1200&q=80',
+    N'Hủ tiếu Nam Vang với tôm và thịt',
+    N'Nam Vang hu tieu with shrimp and pork',
+    N'Góc nhìn tô hủ tiếu với topping tôm, thịt và rau hẹ.',
+    N'View of hu tieu topped with shrimp, pork, and garlic chives.',
+    0, 3
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_HU_TIEU_NAM_VANG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1626242372480-164c673ba718?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1625944525533-473f1a3d54de?auto=format&fit=crop&w=1200&q=80',
+    N'Cơm tấm Sài Gòn cận cảnh phần sườn nướng',
+    N'Close-up of Saigon broken rice with grilled pork chop',
+    N'Hình ảnh cận cảnh cơm tấm Sài Gòn với sườn nướng hấp dẫn.',
+    N'Close-up image of Saigon broken rice with grilled pork chop.',
+    0, 3
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_COM_TAM_SAI_GON'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1625944525533-473f1a3d54de?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80',
+    N'Mì Quảng cận cảnh sợi mì và topping',
+    N'Close-up of Mi Quang noodles and toppings',
+    N'Hình ảnh cận cảnh mì Quảng với tôm thịt và đậu phộng.',
+    N'Close-up image of Mi Quang with shrimp, pork, and peanuts.',
+    0, 3
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_MI_QUANG'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
+    N'Bún chả Hà Nội với bún tươi và rau sống',
+    N'Hanoi bun cha with vermicelli and herbs',
+    N'Hình ảnh bún chả Hà Nội với bún, rau và chả nướng.',
+    N'Image of Hanoi bun cha with noodles, herbs, and grilled pork.',
+    0, 3
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_BUN_CHA_HA_NOI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1000&q=80',
+    N'Bún bò Huế dùng kèm rau sống',
+    N'Hue beef noodle soup served with herbs',
+    N'Hình ảnh bún bò Huế cùng đĩa rau ăn kèm.',
+    N'Image of bun bo Hue served with herbs.',
+    0, 3
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_BUN_BO_HUE'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1000&q=80'
+  );
+
+INSERT INTO dbo.Media (
+    BaiVietID, LoaiMedia, UrlFile,
+    AltTextVI, AltTextEN, ChuThichVI, ChuThichEN,
+    LaAnhChinh, ThuTuHienThi
+)
+SELECT
+    bv.BaiVietID,
+    'IMAGE',
+    N'https://images.unsplash.com/photo-1604908812752-60b7c7d1d7ab?auto=format&fit=crop&w=1200&q=80',
+    N'Bánh mì Việt Nam với pate và đồ chua',
+    N'Vietnamese banh mi with pate and pickles',
+    N'Hình ảnh bánh mì với pate, rau dưa và nhân đậm đà.',
+    N'Image of banh mi with pate, pickles, and flavorful fillings.',
+    0, 3
+FROM dbo.BaiViet bv
+WHERE bv.MaBaiViet = 'BV_BANH_MI'
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.Media x
+      WHERE x.BaiVietID = bv.BaiVietID
+        AND x.UrlFile = N'https://images.unsplash.com/photo-1604908812752-60b7c7d1d7ab?auto=format&fit=crop&w=1200&q=80'
+  );
+
+INSERT INTO dbo.BaiViet_Vung (BaiVietID, VungID, LaVungChinh)
+SELECT bv.BaiVietID, vv.VungID, 1
+FROM dbo.BaiViet bv
+JOIN dbo.VungVanHoa vv ON vv.MaVung = 'BAC_BO'
+WHERE bv.MaBaiViet IN ('BV_TET_TRUNG_THU', 'BV_PHO_VIET_NAM', 'BV_MUA_ROI_NUOC')
+  AND NOT EXISTS (
+      SELECT 1 FROM dbo.BaiViet_Vung x
+      WHERE x.BaiVietID = bv.BaiVietID AND x.VungID = vv.VungID
   );
 
 INSERT INTO dbo.BaiViet_DanhMuc (BaiVietID, DanhMucID, LaDanhMucChinh)

@@ -1,10 +1,25 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
-export default function VietnamMap({ activeKey, onSelectRegion, lang }) {
+export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = [] }) {
   const isVi = lang === 'vi';
   const [hoveredKey, setHoveredKey] = useState(null);
 
   const visibleKey = hoveredKey ?? activeKey;
+  const labels = useMemo(() => {
+    const defaults = {
+      north: isVi ? 'MIỀN BẮC' : 'NORTHERN VIETNAM',
+      central: isVi ? 'MIỀN TRUNG' : 'CENTRAL VIETNAM',
+      south: isVi ? 'MIỀN NAM' : 'SOUTHERN VIETNAM',
+    }
+
+    for (const region of regions) {
+      if (region?.key && region?.badge) {
+        defaults[region.key] = String(region.badge).toUpperCase()
+      }
+    }
+
+    return defaults
+  }, [isVi, regions])
 
   return (
     <div className="regions-map-container">
@@ -31,9 +46,9 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang }) {
         <div className="vietnam-map-marker vietnam-map-marker--south">●</div>
 
         {/* Texts for regions that change color on active */}
-        <div className={`vietnam-map-text vietnam-map-text--north ${activeKey === 'north' ? 'is-active' : ''}`}>NORTHERN VIETNAM</div>
-        <div className={`vietnam-map-text vietnam-map-text--central ${activeKey === 'central' ? 'is-active' : ''}`}>CENTRAL VIETNAM</div>
-        <div className={`vietnam-map-text vietnam-map-text--south ${activeKey === 'south' ? 'is-active' : ''}`}>SOUTHERN VIETNAM</div>
+        <div className={`vietnam-map-text vietnam-map-text--north ${activeKey === 'north' ? 'is-active' : ''}`}>{labels.north}</div>
+        <div className={`vietnam-map-text vietnam-map-text--central ${activeKey === 'central' ? 'is-active' : ''}`}>{labels.central}</div>
+        <div className={`vietnam-map-text vietnam-map-text--south ${activeKey === 'south' ? 'is-active' : ''}`}>{labels.south}</div>
 
         {/* Hover interaction zones (invisible) to perfectly route mouse events */}
         <button

@@ -403,6 +403,7 @@ function mapCuisineDetail(row, mediaRows, relatedRows, lang) {
     .slice(0, 3)
     .map((item) => ({
       id: item.MaBaiViet,
+      code: item.MaBaiViet,
       title: mapText(item, 'TieuDeVI', 'TieuDeEN', lang),
       imageUrl: item.ImageUrl || null,
       imageAlt: mapText(item, 'AltTextVI', 'AltTextEN', lang) || mapText(item, 'TieuDeVI', 'TieuDeEN', lang),
@@ -669,14 +670,30 @@ async function getFestival(id, lang) {
 
 async function listCuisines(filters, lang) {
   const [rows, galleryRows] = await Promise.all([
-    contentRepository.getCuisineArticles(filters?.limit || 50),
-    contentRepository.getCuisineGalleryMedia(8),
+    contentRepository.getCuisineArticles(filters?.limit || 100),
+    contentRepository.getCuisineGalleryMedia(12),
   ])
 
   const cards = rows.map((row) => mapCuisineCard(row, lang))
   const regions = [...new Set(cards.map((item) => item.region).filter(Boolean))]
   const heroCuisines = [...new Set(cards.map((item) => item.name).filter(Boolean))]
   const heroRow = rows[0] || null
+  const heroSubtitle = mapText(heroRow, 'MoTaNganVI', 'MoTaNganEN', lang)
+  const curatedFeatures = []
+  const usedFeatureRegions = new Set()
+
+  for (const row of rows) {
+    const region = resolveRegionName(row.RegionCode, lang, mapText(row, 'RegionNameVI', 'RegionNameEN', lang)) || ''
+    const regionKey = row.RegionCode || region || row.BaiVietID
+    if (!usedFeatureRegions.has(regionKey)) {
+      usedFeatureRegions.add(regionKey)
+      curatedFeatures.push(row)
+    }
+    if (curatedFeatures.length === 3) break
+  }
+
+  const featureSource = curatedFeatures.length ? curatedFeatures : rows.slice(0, 3)
+  const storySource = rows.filter((row) => !featureSource.includes(row)).slice(0, 3)
 
   return {
     hero: {
@@ -684,11 +701,11 @@ async function listCuisines(filters, lang) {
       titleLine1: lang === 'vi' ? 'Tinh Hoa' : 'Essence',
       titleAccent: lang === 'vi' ? 'Ẩm Thực' : 'Cuisine',
       titleLine3: lang === 'vi' ? 'Việt Nam' : 'of Vietnam',
-      subtitle: mapText(heroRow, 'MoTaNganVI', 'MoTaNganEN', lang) || (lang === 'vi' ? 'Khám phá những món ăn tiêu biểu được lưu giữ và kể lại từ dữ liệu CSDL.' : 'Explore signature dishes preserved and narrated from the database.'),
+      subtitle: heroSubtitle || (lang === 'vi' ? 'Khám phá những món ăn tiêu biểu được lưu giữ và kể lại từ dữ liệu CSDL.' : 'Explore signature dishes preserved and narrated from the database.'),
       stats: [
         { value: String(regions.length || 0), label: lang === 'vi' ? 'Vùng miền' : 'Regions' },
         { value: String(cards.length || 0), label: lang === 'vi' ? 'Món ăn' : 'Dishes' },
-        { value: String(rows.reduce((sum, row) => sum + (row.TomTatChoAIVI || row.TomTatChoAIEN ? 1 : 0), 0) || cards.length || 0), label: lang === 'vi' ? 'Bài viết' : 'Articles' },
+        { value: String(rows.length || 0), label: lang === 'vi' ? 'Bài viết' : 'Articles' },
       ],
       heroImageUrl: heroRow?.ImageUrl || null,
       heroImageAlt: mapText(heroRow, 'AltTextVI', 'AltTextEN', lang) || mapText(heroRow, 'TieuDeVI', 'TieuDeEN', lang) || '',
@@ -696,21 +713,27 @@ async function listCuisines(filters, lang) {
     regions: [lang === 'vi' ? 'Tất cả vùng' : 'All regions', ...regions],
     heroCuisines: [lang === 'vi' ? 'Tất cả món' : 'All dishes', ...heroCuisines],
     cards,
-    features: rows.slice(0, 3).map((row, index) => ({
+    features: featureSource.map((row, index) => ({
       id: row.BaiVietID || index + 1,
       title: mapText(row, 'TieuDeVI', 'TieuDeEN', lang),
       imgUrl: row.ImageUrl || null,
-      tag: mapText(row, 'RegionNameVI', 'RegionNameEN', lang) || mapText(row, 'MoTaNganVI', 'MoTaNganEN', lang) || '',
+      tag: resolveRegionName(row.RegionCode, lang, mapText(row, 'RegionNameVI', 'RegionNameEN', lang)) || mapText(row, 'MoTaNganVI', 'MoTaNganEN', lang) || '',
       desc: mapText(row, 'GioiThieuVI', 'GioiThieuEN', lang) || mapText(row, 'YNghiaVanHoaVI', 'YNghiaVanHoaEN', lang) || mapText(row, 'MoTaNganVI', 'MoTaNganEN', lang) || '',
     })),
-    stories: rows.slice(3, 6).map((row, index) => ({
+    stories: storySource.map((row, index) => ({
       id: row.BaiVietID || index + 1,
       title: mapText(row, 'TieuDeVI', 'TieuDeEN', lang),
       desc: mapText(row, 'TomTatChoAIVI', 'TomTatChoAIEN', lang) || mapText(row, 'GioiThieuVI', 'GioiThieuEN', lang) || mapText(row, 'YNghiaVanHoaVI', 'YNghiaVanHoaEN', lang) || '',
       imgUrl: row.ImageUrl || null,
       code: row.MaBaiViet,
     })),
-    gallery: galleryRows.map((row, index) => mapCuisineMediaItem(row, lang, ['large', 'small', 'small', 'tall', 'small', 'wide'][index % 6] || 'small')),
+    gallery: galleryRows.map((row, index) => {
+      const item = mapCuisineMediaItem(row, lang, ['large', 'small', 'small', 'tall', 'small', 'wide'][index % 6] || 'small')
+      return {
+        ...item,
+        imgUrl: item.imageUrl,
+      }
+    }),
   }
 }
 

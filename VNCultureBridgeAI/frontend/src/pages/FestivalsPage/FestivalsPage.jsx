@@ -50,6 +50,7 @@ export default function FestivalsPage() {
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedEthnicGroup, setSelectedEthnicGroup] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [state, setState] = useState({ status: "loading", data: null, error: "" });
 
   useEffect(() => {
@@ -74,6 +75,7 @@ export default function FestivalsPage() {
       ignore = true;
     };
   }, [lang]);
+
 
   const page = state.data?.page || {};
   const rawFestivals = state.data?.festivals;
@@ -109,6 +111,31 @@ export default function FestivalsPage() {
       return matchesSearch && matchesRegion && matchesMonth && matchesCategory && matchesEthnic;
     });
   }, [festivals, searchText, selectedRegion, selectedMonth, selectedCategory, selectedEthnicGroup]);
+
+  const festivalsPerPage = 4;
+  const totalPages = Math.max(1, Math.ceil(filteredFestivals.length / festivalsPerPage));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const paginatedFestivals = useMemo(() => {
+    const startIndex = (safeCurrentPage - 1) * festivalsPerPage;
+    return filteredFestivals.slice(startIndex, startIndex + festivalsPerPage);
+  }, [filteredFestivals, safeCurrentPage]);
+
+  const goToPage = (pageNumber) => {
+    setCurrentPage(Math.min(Math.max(pageNumber, 1), totalPages));
+  };
+
+  const handleFilterChange = (setter) => (event) => {
+    setter(event.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+    setCurrentPage(1);
+  };
+
+  const canGoPrev = safeCurrentPage > 1;
+  const canGoNext = safeCurrentPage < totalPages;
 
   if (state.status === "loading") {
     return <LoadingState message="Đang tải dữ liệu lễ hội..." />;
@@ -247,7 +274,7 @@ export default function FestivalsPage() {
                   placeholder={page.searchPlaceholder || "Tìm kiếm lễ hội, nghi lễ và truyền thống..."}
                   className="festivals-search-input"
                   value={searchText}
-                  onChange={(event) => setSearchText(event.target.value)}
+                  onChange={handleSearchChange}
                 />
               </div>
               <button
@@ -277,7 +304,7 @@ export default function FestivalsPage() {
             <div className={`festivals-filters-grid ${isFiltersOpen ? "open" : ""}`}>
               <div className="festivals-filter-item">
                 <span className="festivals-filter-icon">📍</span>
-                <select className="festivals-filter-select" value={selectedRegion} onChange={(event) => setSelectedRegion(event.target.value)}>
+                <select className="festivals-filter-select" value={selectedRegion} onChange={handleFilterChange(setSelectedRegion)}>
                   {REGION_OPTIONS.map((option) => (
                     <option key={option.value || "all-regions"} value={option.value}>{option.label}</option>
                   ))}
@@ -289,7 +316,7 @@ export default function FestivalsPage() {
 
               <div className="festivals-filter-item">
                 <span className="festivals-filter-icon">🗓️</span>
-                <select className="festivals-filter-select" value={selectedMonth} onChange={(event) => setSelectedMonth(event.target.value)}>
+                <select className="festivals-filter-select" value={selectedMonth} onChange={handleFilterChange(setSelectedMonth)}>
                   {MONTH_OPTIONS.map((option) => (
                     <option key={option.value || "all-months"} value={option.value}>{option.label}</option>
                   ))}
@@ -301,7 +328,7 @@ export default function FestivalsPage() {
 
               <div className="festivals-filter-item">
                 <span className="festivals-filter-icon">🎭</span>
-                <select className="festivals-filter-select" value={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)}>
+                <select className="festivals-filter-select" value={selectedCategory} onChange={handleFilterChange(setSelectedCategory)}>
                   {CATEGORY_OPTIONS.map((option) => (
                     <option key={option.value || "all-categories"} value={option.value}>{option.label}</option>
                   ))}
@@ -313,7 +340,7 @@ export default function FestivalsPage() {
 
               <div className="festivals-filter-item">
                 <span className="festivals-filter-icon">👥</span>
-                <select className="festivals-filter-select" value={selectedEthnicGroup} onChange={(event) => setSelectedEthnicGroup(event.target.value)}>
+                <select className="festivals-filter-select" value={selectedEthnicGroup} onChange={handleFilterChange(setSelectedEthnicGroup)}>
                   {ethnicOptions.map((option) => (
                     <option key={option.value || "all-ethnic-groups"} value={option.value}>{option.label}</option>
                   ))}
@@ -400,7 +427,7 @@ export default function FestivalsPage() {
           </div>
 
           <div className="festivals-all__grid">
-            {filteredFestivals.map((fest, index) => {
+            {paginatedFestivals.map((fest, index) => {
               if (index === 0) {
                 return (
                   <article className="festival-featured-card fade-up" key={fest.id}>
@@ -449,8 +476,65 @@ export default function FestivalsPage() {
             })}
           </div>
 
-          <div className="festivals-all__actions">
-            <button className="festivals-btn festivals-btn--primary">Tổng số: {filteredFestivals.length} lễ hội</button>
+          <div className="festivals-all__actions" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "14px" }}>
+            <button
+              className="festivals-btn festivals-btn--primary"
+              onClick={() => goToPage(safeCurrentPage - 1)}
+              disabled={!canGoPrev}
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "999px",
+                padding: 0,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                opacity: canGoPrev ? 1 : 0.5,
+              }}
+            >
+              ‹
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+              <button
+                key={pageNumber}
+                className="festivals-btn festivals-btn--primary"
+                onClick={() => goToPage(pageNumber)}
+                style={{
+                  width: "52px",
+                  height: "52px",
+                  borderRadius: "999px",
+                  padding: 0,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: safeCurrentPage === pageNumber ? undefined : "transparent",
+                  color: safeCurrentPage === pageNumber ? undefined : "#4a3020",
+                  border: safeCurrentPage === pageNumber ? undefined : "2px solid rgba(122, 75, 47, 0.2)",
+                  boxShadow: safeCurrentPage === pageNumber ? undefined : "none",
+                }}
+              >
+                {pageNumber}
+              </button>
+            ))}
+
+            <button
+              className="festivals-btn festivals-btn--primary"
+              onClick={() => goToPage(safeCurrentPage + 1)}
+              disabled={!canGoNext}
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "999px",
+                padding: 0,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                opacity: canGoNext ? 1 : 0.5,
+              }}
+            >
+              ›
+            </button>
           </div>
         </section>
 

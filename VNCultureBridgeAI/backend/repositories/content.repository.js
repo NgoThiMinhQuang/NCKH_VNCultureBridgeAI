@@ -162,6 +162,7 @@ async function getRegions() {
       AND bv.TrangThaiXuatBan = 'PUBLISHED'
     LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
     WHERE vv.HoatDong = 1
+      AND vv.MaVung IN ('BAC_BO', 'TRUNG_BO', 'NAM_BO')
     GROUP BY
       vv.VungID,
       vv.MaVung,
@@ -204,7 +205,9 @@ async function getRegionByCode(code) {
       AND bv.TrangThaiDuyet = 'APPROVED'
       AND bv.TrangThaiXuatBan = 'PUBLISHED'
     LEFT JOIN dbo.Media m ON m.BaiVietID = bv.BaiVietID
-    WHERE vv.HoatDong = 1 AND vv.MaVung = @code
+    WHERE vv.HoatDong = 1
+      AND vv.MaVung IN ('BAC_BO', 'TRUNG_BO', 'NAM_BO')
+      AND vv.MaVung = @code
     GROUP BY
       vv.VungID,
       vv.MaVung,
@@ -986,6 +989,7 @@ async function getCuisineGalleryMedia(limit = 8) {
       bv.MaBaiViet,
       bv.TieuDeVI,
       bv.TieuDeEN,
+      bv.NgayXuatBan,
       MAX(vv.MaVung) AS RegionCode,
       MAX(vv.TenVI) AS RegionNameVI,
       MAX(vv.TenEN) AS RegionNameEN
@@ -1011,7 +1015,8 @@ async function getCuisineGalleryMedia(limit = 8) {
       m.ThuTuHienThi,
       bv.MaBaiViet,
       bv.TieuDeVI,
-      bv.TieuDeEN
+      bv.TieuDeEN,
+      bv.NgayXuatBan
     ORDER BY m.LaAnhChinh DESC, m.ThuTuHienThi ASC, bv.NgayXuatBan DESC, m.MediaID ASC
   `)
 }
