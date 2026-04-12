@@ -152,6 +152,18 @@ async function getPromptSamples() {
   `)
 }
 
+async function getArtPageContent() {
+  const rows = await query(`
+    SELECT TOP 1 *
+    FROM dbo.NgheThuatPage
+    WHERE MaTrang = 'NGHE_THUAT'
+      AND HoatDong = 1
+    ORDER BY NgheThuatPageID DESC
+  `)
+
+  return rows[0] || null
+}
+
 module.exports = {
   getFeaturedRegions,
   getFeaturedEthnicGroups,
@@ -159,4 +171,5 @@ module.exports = {
   getLatestArticles,
   getCategories,
   getPromptSamples,
+  getArtPageContent,
 }

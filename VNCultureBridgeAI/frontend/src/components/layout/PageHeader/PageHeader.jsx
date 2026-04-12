@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ui } from '../../../i18n/messages'
 import './PageHeader.css'
@@ -22,7 +22,28 @@ const NAV_LINKS = [
  */
 export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }) {
   const copy = useMemo(() => ui[lang], [lang])
+  const [currentUser, setCurrentUser] = useState(null)
   const location = useLocation()
+
+  useEffect(() => {
+    function readUser() {
+      try {
+        const raw = localStorage.getItem('currentUser')
+        setCurrentUser(raw ? JSON.parse(raw) : null)
+      } catch {
+        setCurrentUser(null)
+      }
+    }
+
+    readUser()
+    window.addEventListener('storage', readUser)
+    window.addEventListener('auth-changed', readUser)
+
+    return () => {
+      window.removeEventListener('storage', readUser)
+      window.removeEventListener('auth-changed', readUser)
+    }
+  }, [])
 
   function isActive(path) {
     if (path === '/') return location.pathname === '/'
@@ -34,6 +55,23 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
       e.preventDefault()
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+  }
+
+  function handleLogout() {
+    const confirmed = window.confirm(
+      lang === 'vi'
+        ? 'Bạn có chắc chắn muốn đăng xuất không?'
+        : 'Are you sure you want to log out?',
+    )
+
+    if (!confirmed) return
+
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('currentUser')
+    localStorage.removeItem('isAuthenticated')
+    setCurrentUser(null)
+    window.dispatchEvent(new Event('auth-changed'))
+    window.alert(lang === 'vi' ? 'Đăng xuất thành công.' : 'Logged out successfully.')
   }
 
   return (
@@ -86,15 +124,29 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
             <button type="button" className={lang === 'vi' ? 'is-active' : ''} onClick={() => onLangChange('vi')}>VI</button>
           </div>
 
-          {/* Đăng nhập */}
-          <Link to="/login" className="ph__btn-login">
-            {lang === 'vi' ? 'Đăng nhập' : 'Login'}
-          </Link>
+          {currentUser ? (
+            <>
+              <div className="ph__user-chip" title={currentUser.fullName}>
+                <span className="ph__user-chip-label">{lang === 'vi' ? 'Xin chào' : 'Hello'}</span>
+                <strong className="ph__user-chip-name">{currentUser.fullName}</strong>
+              </div>
+              <button type="button" className="ph__btn-logout" onClick={handleLogout}>
+                {lang === 'vi' ? 'Đăng xuất' : 'Logout'}
+              </button>
+            </>
+          ) : (
+            <>
+              {/* Đăng nhập */}
+              <Link to="/login" className="ph__btn-login">
+                {lang === 'vi' ? 'Đăng nhập' : 'Login'}
+              </Link>
 
-          {/* Đăng ký */}
-          <Link to="/register" className="ph__btn-register">
-            {lang === 'vi' ? 'Đăng ký' : 'Register'}
-          </Link>
+              {/* Đăng ký */}
+              <Link to="/register" className="ph__btn-register">
+                {lang === 'vi' ? 'Đăng ký' : 'Register'}
+              </Link>
+            </>
+          )}
         </div>
       </div>
 

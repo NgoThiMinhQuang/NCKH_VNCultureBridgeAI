@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import './CuisineDetailPage.css';
-import PageHeader from '../../components/layout/PageHeader/PageHeader';
-import Footer from '../../components/layout/Footer/Footer';
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import './CuisineDetailPage.css'
+import PageHeader from '../../components/layout/PageHeader/PageHeader'
+import Footer from '../../components/layout/Footer/Footer'
+import { getCuisine } from '../../services/cuisine.service'
 import {
   FiClock,
   FiGlobe,
@@ -10,74 +11,168 @@ import {
   FiCoffee,
   FiHome,
   FiImage,
-  FiArrowLeft
-} from 'react-icons/fi';
+  FiArrowLeft,
+} from 'react-icons/fi'
+
+function buildNavItems(lang) {
+  return [
+    { icon: <FiClock />, label: lang === 'vi' ? 'Giới thiệu' : 'Intro' },
+    { icon: <FiBookOpen />, label: lang === 'vi' ? 'Nguyên liệu' : 'Ingredients' },
+    { icon: <FiGlobe />, label: lang === 'vi' ? 'Cách làm' : 'Method' },
+    { icon: <FiCoffee />, label: lang === 'vi' ? 'Thưởng thức' : 'Enjoy' },
+    { icon: <FiHome />, label: lang === 'vi' ? 'Góc bếp' : 'Kitchen' },
+    { icon: <FiImage />, label: lang === 'vi' ? 'Thư viện' : 'Gallery' },
+  ]
+}
 
 export default function CuisineDetailPage() {
-  const [lang, setLang] = useState('vi');
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const [lang, setLang] = useState('vi')
+  const [detail, setDetail] = useState(null)
+  const [status, setStatus] = useState('loading')
+  const [error, setError] = useState('')
+  const { id } = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0, 0)
+  }, [id])
 
-  const navItems = [
-    { icon: <FiClock />, label: "Giới thiệu" },
-    { icon: <FiBookOpen />, label: "Nguyên liệu" },
-    { icon: <FiGlobe />, label: "Cách làm" },
-    { icon: <FiCoffee />, label: "Thưởng thức" },
-    { icon: <FiHome />, label: "Góc bếp" },
-    { icon: <FiImage />, label: "Thư viện" }
-  ];
+  useEffect(() => {
+    let ignore = false
+
+    async function loadCuisineDetail() {
+      try {
+        setStatus('loading')
+        setError('')
+        const data = await getCuisine(id, lang)
+        if (!ignore) {
+          setDetail(data)
+          setStatus('success')
+          document.documentElement.lang = lang
+        }
+      } catch (err) {
+        if (!ignore) {
+          setError(err.message)
+          setDetail(null)
+          setStatus('error')
+        }
+      }
+    }
+
+    if (id) {
+      loadCuisineDetail()
+    }
+
+    return () => {
+      ignore = true
+    }
+  }, [id, lang])
+
+  const navItems = useMemo(() => buildNavItems(lang), [lang])
+
+  if (status === 'error' && !detail) {
+    return (
+      <div className="page-shell">
+        <PageHeader lang={lang} onLangChange={setLang} />
+        <main className="cdp-main">
+          <section className="cdp-section cdp-section--light">
+            <div className="cdp-container" style={{ textAlign: 'center', padding: '80px 0' }}>
+              <h2 className="cdp-section-title">{lang === 'vi' ? 'Không tải được món ăn' : 'Unable to load cuisine detail'}</h2>
+              <p className="cdp-section-subtitle">{error || (lang === 'vi' ? 'Đã xảy ra lỗi khi tải dữ liệu món ăn.' : 'An error occurred while loading cuisine data.')}</p>
+              <Link to="/cuisine" className="primary-button" style={{ display: 'inline-flex', marginTop: '24px', padding: '12px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none' }}>
+                {lang === 'vi' ? 'Quay lại danh sách món ăn' : 'Back to cuisine list'}
+              </Link>
+            </div>
+          </section>
+        </main>
+        <Footer lang={lang} />
+      </div>
+    )
+  }
+
+  if (status === 'success' && !detail) {
+    return (
+      <div className="page-shell">
+        <PageHeader lang={lang} onLangChange={setLang} />
+        <main className="cdp-main">
+          <section className="cdp-section cdp-section--light">
+            <div className="cdp-container" style={{ textAlign: 'center', padding: '80px 0' }}>
+              <h2 className="cdp-section-title">{lang === 'vi' ? 'Không tìm thấy món ăn' : 'Cuisine not found'}</h2>
+              <p className="cdp-section-subtitle">{lang === 'vi' ? 'Món ăn bạn đang tìm không tồn tại hoặc chưa được xuất bản.' : 'The cuisine item you are looking for does not exist or is not published yet.'}</p>
+              <Link to="/cuisine" className="primary-button" style={{ display: 'inline-flex', marginTop: '24px', padding: '12px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none' }}>
+                {lang === 'vi' ? 'Quay lại danh sách món ăn' : 'Back to cuisine list'}
+              </Link>
+            </div>
+          </section>
+        </main>
+        <Footer lang={lang} />
+      </div>
+    )
+  }
+
+  if (!detail) {
+    return (
+      <div className="page-shell">
+        <PageHeader lang={lang} onLangChange={setLang} />
+        <main className="cdp-main">
+          <section className="cdp-section cdp-section--light">
+            <div className="cdp-container" style={{ textAlign: 'center', padding: '80px 0' }}>
+              <p className="cdp-section-subtitle">{lang === 'vi' ? 'Đang tải dữ liệu món ăn...' : 'Loading cuisine detail...'}</p>
+            </div>
+          </section>
+        </main>
+        <Footer lang={lang} />
+      </div>
+    )
+  }
+
+  const galleryItems = detail.gallery?.length
+    ? detail.gallery
+    : []
+
+  const ingredientImages = detail.ingredients?.images?.filter(Boolean)?.slice(0, 3) || []
+  const similarFoods = detail.similarFoods?.slice(0, 3) || []
 
   return (
     <div className="page-shell">
       <PageHeader lang={lang} onLangChange={setLang} />
 
       <main className="cdp-main">
-        {/* HERO SECTION */}
         <section className="cdp-hero">
-          <div className="cdp-hero__bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=2071&auto=format&fit=crop')" }}></div>
+          <div className="cdp-hero__bg" style={{ backgroundImage: `url('${detail.heroImageUrl}')` }}></div>
           <div className="cdp-hero__overlay"></div>
 
-          {/* Ornamental Motif */}
           <div className="cdp-hero__ornament cdp-hero__ornament--tl"></div>
           <div className="cdp-hero__ornament cdp-hero__ornament--br"></div>
 
           <div className="cdp-hero__inner">
             <div className="cdp-hero__left fade-up">
-              <button onClick={() => navigate(-1)} className="cdp-back-btn" aria-label="Quay lại" style={{ position: 'relative', top: 0, left: 0, display: 'inline-flex', marginBottom: '24px', width: 'fit-content', background: 'transparent', border: 'none', color: '#f8c97a', cursor: 'pointer', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
-                <FiArrowLeft /> <span>Quay lại</span>
+              <button onClick={() => navigate(-1)} className="cdp-back-btn" aria-label={lang === 'vi' ? 'Quay lại' : 'Go back'} style={{ position: 'relative', top: 0, left: 0, display: 'inline-flex', marginBottom: '24px', width: 'fit-content', background: 'transparent', border: 'none', color: '#f8c97a', cursor: 'pointer', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+                <FiArrowLeft /> <span>{lang === 'vi' ? 'Quay lại' : 'Go back'}</span>
               </button>
 
               <div className="cdp-hero__badge">
                 <span className="cdp-hero__badge-dot"></span>
-                Ẩm thực miền Bắc
+                {detail.region ? `${detail.categoryLabel} ${detail.region}` : detail.categoryLabel}
               </div>
 
-              <h1 className="cdp-hero__title">
-                Phở Bò Hà Nội
-              </h1>
-
-              <p className="cdp-hero__subtitle">
-                Món ăn linh hồn của nền ẩm thực Việt Nam, nước dùng thanh ngọt từ xương bò, bánh phở mềm mại cùng hương thơm độc đáo của hồi và quế.
-              </p>
+              <h1 className="cdp-hero__title">{detail.name}</h1>
+              <p className="cdp-hero__subtitle">{detail.subtitle}</p>
 
               <div className="cdp-hero__stats">
                 <div className="cdp-hero__stat">
-                  <strong>4 giờ</strong>
-                  <span>Thời gian chế biến</span>
+                  <strong>{detail.stats?.prepTime || (lang === 'vi' ? 'Đang cập nhật' : 'Updating')}</strong>
+                  <span>{lang === 'vi' ? 'Thời gian chế biến' : 'Prep time'}</span>
                 </div>
                 <div className="cdp-hero__stat-sep"></div>
                 <div className="cdp-hero__stat">
-                  <strong>Trung bình</strong>
-                  <span>Độ khó</span>
+                  <strong>{detail.stats?.difficulty || (lang === 'vi' ? 'Đang cập nhật' : 'Updating')}</strong>
+                  <span>{lang === 'vi' ? 'Độ khó' : 'Difficulty'}</span>
                 </div>
                 <div className="cdp-hero__stat-sep"></div>
                 <div className="cdp-hero__stat">
-                  <strong>450 kcal</strong>
-                  <span>Năng lượng</span>
+                  <strong>{detail.stats?.calories || (lang === 'vi' ? 'Đang cập nhật' : 'Updating')}</strong>
+                  <span>{lang === 'vi' ? 'Năng lượng' : 'Calories'}</span>
                 </div>
               </div>
 
@@ -93,7 +188,7 @@ export default function CuisineDetailPage() {
 
             <div className="cdp-hero__right fade-up delay-1">
               <div className="cdp-hero__img-frame">
-                <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?w=600&q=80" alt="Phở Bò" className="cdp-hero__img-main" />
+                <img src={detail.heroImageUrl} alt={detail.heroImageAlt} className="cdp-hero__img-main" />
                 <div className="cdp-hero__img-ring"></div>
               </div>
             </div>
@@ -106,180 +201,144 @@ export default function CuisineDetailPage() {
           </div>
         </section>
 
-        {/* INTRODUCTION */}
         <section className="cdp-section cdp-section--light cdp-intro">
           <div className="cdp-container">
             <div className="cdp-intro__grid">
               <div className="cdp-intro__text">
                 <header className="cdp-intro__header fade-up" style={{ marginBottom: '32px' }}>
-                  <span className="cdp-section-badge" style={{ margin: 0 }}>Hương vị truyền thống</span>
-                  <h2 className="cdp-section-title" style={{ textAlign: 'left', marginTop: '8px' }}>Giới thiệu về Phở Bò</h2>
+                  <span className="cdp-section-badge" style={{ margin: 0 }}>{detail.intro?.badge}</span>
+                  <h2 className="cdp-section-title" style={{ textAlign: 'left', marginTop: '8px' }}>{detail.intro?.title}</h2>
                 </header>
-                <span className="cdp-drop-cap">P</span>
+                <span className="cdp-drop-cap">{(detail.name || 'A').charAt(0)}</span>
                 <div className="cdp-intro__body">
-                  <p>
-                    Phở bò là món ăn linh hồn của ẩm thực Việt Nam, có nguồn gốc từ Hà Nội. Hương vị đặc trưng của phở nằm ở nước dùng được ninh từ xương bò trong nhiều giờ đồng hồ, kết hợp cùng các gia vị như hồi, quế, gừng và mộc qua.
-                  </p>
-                  <p style={{ marginTop: '20px' }}>
-                    Bánh phở mềm mại, thịt bò tươi ngon và rau thơm tạo nên một tô phở hoàn hảo. Mỗi buổi sáng sớm, hình ảnh những quán phở nghi ngút khói đã trở thành biểu tượng văn hóa bình dị mà khó phai trong tâm trí người Việt.
-                  </p>
+                  {(detail.intro?.paragraphs || []).map((paragraph, index) => (
+                    <p key={index} style={index > 0 ? { marginTop: '20px' } : undefined}>{paragraph}</p>
+                  ))}
                 </div>
               </div>
               <div className="cdp-intro__image">
-                <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=2071&auto=format&fit=crop" alt="Phở Bò Hà Nội" />
+                <img src={detail.intro?.imageUrl || detail.heroImageUrl} alt={detail.intro?.imageAlt || detail.heroImageAlt} />
               </div>
             </div>
           </div>
         </section>
 
-        {/* INGREDIENTS (Textiles Layout) */}
         <section className="cdp-section cdp-section--cream cdp-textiles">
           <div className="cdp-container">
             <header className="cdp-section-header">
-              <span className="cdp-section-badge">Nguyên liệu chọn lọc</span>
-              <h2 className="cdp-section-title">Tinh Hoa Đất Trời Trên Mâm Phở</h2>
-              <p className="cdp-section-subtitle">Chất lượng của tô phở phụ thuộc vào sự tươi ngon của nguyên liệu và tỷ lệ gia truyền hoàn hảo.</p>
+              <span className="cdp-section-badge">{detail.ingredients?.badge}</span>
+              <h2 className="cdp-section-title">{detail.ingredients?.title}</h2>
+              <p className="cdp-section-subtitle">{detail.ingredients?.subtitle}</p>
             </header>
 
             <div className="cdp-textiles-grid">
-              <img src="https://images.unsplash.com/photo-1626242372480-164c673ba718?w=600&q=80" alt="Xương bò" className="cdp-textile-img" />
-              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Gia vị" className="cdp-textile-img" />
-              <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?w=600&q=80" alt="Bánh phở tươi" className="cdp-textile-img" />
+              {ingredientImages.map((imageUrl, index) => (
+                <img key={`${imageUrl}-${index}`} src={imageUrl} alt={`${detail.name} ${index + 1}`} className="cdp-textile-img" />
+              ))}
             </div>
 
-            <p className="cdp-textiles-footer">
-              1kg xương ống bò, thịt nạm, bánh phở tươi, hành tây, gừng nướng, hoa hồi, quế, thảo quả... Tất cả hòa quyện tạo nên nước dùng thanh ngọt mặn mà khó quên.
-            </p>
+            <p className="cdp-textiles-footer">{detail.ingredients?.summary}</p>
           </div>
         </section>
 
-        {/* RECIPE STEPS (Festivals Layout) */}
         <section className="cdp-section cdp-section--light cdp-festivals">
           <div className="cdp-container">
             <header className="cdp-section-header">
-              <span className="cdp-section-badge">Các bước thực hiện</span>
-              <h2 className="cdp-section-title">Cách Chế Biến</h2>
+              <span className="cdp-section-badge">{lang === 'vi' ? 'Các bước thực hiện' : 'Steps'}</span>
+              <h2 className="cdp-section-title">{lang === 'vi' ? 'Cách Chế Biến' : 'Preparation'}</h2>
             </header>
 
             <div className="cdp-festival-grid">
-              <div className="cdp-fest-card">
-                <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?w=600&q=80" alt="Bước 1" className="cdp-fest-img" />
-                <div className="cdp-fest-content">
-                  <span className="cdp-fest-tag">Bước 1</span>
-                  <h3 className="cdp-fest-title">Sơ chế nguyên liệu</h3>
-                  <p className="cdp-fest-desc">Rửa sạch xương và thịt bò, chần qua nước sôi loại bỏ bọt bẩn. Nướng hành tây và gừng trên bếp củi đến khi thơm phức.</p>
+              {(detail.recipeSteps || []).map((step, index) => (
+                <div className="cdp-fest-card" key={`${step.stepLabel}-${index}`}>
+                  <img src={step.imageUrl || detail.heroImageUrl} alt={step.imageAlt || step.title} className="cdp-fest-img" />
+                  <div className="cdp-fest-content">
+                    <span className="cdp-fest-tag">{step.stepLabel}</span>
+                    <h3 className="cdp-fest-title">{step.title}</h3>
+                    <p className="cdp-fest-desc">{step.desc}</p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="cdp-fest-card">
-                <img src="https://images.unsplash.com/photo-1583096114844-06ce6a5f2171?w=600&q=80" alt="Bước 2" className="cdp-fest-img" />
-                <div className="cdp-fest-content">
-                  <span className="cdp-fest-tag">Bước 2</span>
-                  <h3 className="cdp-fest-title">Ninh nước dùng</h3>
-                  <p className="cdp-fest-desc">Cho xương bò vào nồi lớn, đun với lửa liu riu 3-4 giờ. Rang thơm hồi, quế, thảo quả rồi cho vào nồi cùng đường phèn, muối, nước mắm.</p>
-                </div>
-              </div>
-
-              <div className="cdp-fest-card">
-                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Bước 3" className="cdp-fest-img" />
-                <div className="cdp-fest-content">
-                  <span className="cdp-fest-tag">Bước 3</span>
-                  <h3 className="cdp-fest-title">Trình bày & Hoàn thiện</h3>
-                  <p className="cdp-fest-desc">Luộc thịt nạm chín, vớt ra để nguội. Trụng bánh phở, xếp thịt bò nạm và tái lên trên, chan nước dùng rực nóng, thêm hành ngò.</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* HOW TO ENJOY (Music/Arts Layout) */}
         <section className="cdp-section cdp-section--cream cdp-music">
           <div className="cdp-container">
             <div className="cdp-arch__grid">
               <div className="cdp-arch-text">
-                <span className="cdp-section-badge">Nghệ thuật ẩm thực</span>
-                <h2 className="cdp-section-title">Cách Thưởng Thức</h2>
-                <p className="cdp-intro__body">
-                  Ăn nóng khi nước dùng còn đang sủi tăm để phần thịt tái chín tới. Vắt một lát chanh tươi, thêm vài lát ớt chỉ thiên cay nồng và ăn kèm theo bánh quẩy giòn tan. Dùng nước mắm pha chanh ớt để chấm những miếng thịt nạm giòn mềm, ngập ngụa hương vị béo ngậy mặn mòi.
-                </p>
+                <span className="cdp-section-badge">{detail.howToEnjoy?.badge}</span>
+                <h2 className="cdp-section-title">{detail.howToEnjoy?.title}</h2>
+                <p className="cdp-intro__body">{detail.howToEnjoy?.body}</p>
               </div>
               <div className="cdp-arch-image">
-                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" alt="Thưởng thức Phở" className="cdp-arch-img" />
+                <img src={detail.howToEnjoy?.imageUrl || detail.heroImageUrl} alt={detail.howToEnjoy?.imageAlt || detail.heroImageAlt} className="cdp-arch-img" />
               </div>
             </div>
           </div>
         </section>
 
-        {/* SIMILAR FOODS (Cuisine Layout) */}
-        <section className="cdp-section cdp-section--light cdp-cuisine">
-          <div className="cdp-container">
-            <header className="cdp-section-header">
-              <span className="cdp-section-badge">Gợi ý thêm</span>
-              <h2 className="cdp-section-title">Món ăn tương tự</h2>
-            </header>
-            <div className="cdp-cuisine-grid">
-              <div className="cdp-cuisine-item" onClick={() => navigate('/cuisine/bun-bo-hue')} style={{ cursor: 'pointer' }}>
-                <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cb438?q=80&w=1964&auto=format&fit=crop" alt="Bún Bò Huế" className="cdp-cuisine-img" />
-                <h3 className="cdp-cuisine-title">Bún Bò Huế</h3>
-              </div>
-              <div className="cdp-cuisine-item" onClick={() => navigate('/cuisine/bun-cha')} style={{ cursor: 'pointer' }}>
-                <img src="https://images.unsplash.com/photo-1555126634-ba092c2ddf7f?q=80&w=2070&auto=format&fit=crop" alt="Bún Chả" className="cdp-cuisine-img" />
-                <h3 className="cdp-cuisine-title">Bún Chả Hà Nội</h3>
-              </div>
-              <div className="cdp-cuisine-item" onClick={() => navigate('/cuisine/banh-mi')} style={{ cursor: 'pointer' }}>
-                <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=2070&auto=format&fit=crop" alt="Bánh Mì" className="cdp-cuisine-img" />
-                <h3 className="cdp-cuisine-title">Bánh Mì</h3>
+        {similarFoods.length > 0 && (
+          <section className="cdp-section cdp-section--light cdp-cuisine">
+            <div className="cdp-container">
+              <header className="cdp-section-header">
+                <span className="cdp-section-badge">{lang === 'vi' ? 'Gợi ý thêm' : 'More to explore'}</span>
+                <h2 className="cdp-section-title">{lang === 'vi' ? 'Món ăn tương tự' : 'Similar dishes'}</h2>
+              </header>
+              <div className="cdp-cuisine-grid">
+                {similarFoods.map((food) => (
+                  <div className="cdp-cuisine-item" onClick={() => navigate(`/cuisine/${food.code || food.id}`)} style={{ cursor: 'pointer' }} key={food.code || food.id}>
+                    <img src={food.imageUrl || detail.heroImageUrl} alt={food.imageAlt || food.title} className="cdp-cuisine-img" />
+                    <h3 className="cdp-cuisine-title">{food.title}</h3>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
-        {/* SECRET TIP (Architecture Layout) */}
         <section className="cdp-section cdp-section--cream cdp-architecture">
           <div className="cdp-container">
             <div className="cdp-arch__grid">
               <div className="cdp-arch-image">
-                <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=2071&auto=format&fit=crop" alt="Bí quyết nấu ăn" className="cdp-arch-img" />
+                <img src={detail.secretTip?.imageUrl || detail.heroImageUrl} alt={detail.secretTip?.imageAlt || detail.heroImageAlt} className="cdp-arch-img" />
               </div>
               <div className="cdp-arch-text">
-                <span className="cdp-section-badge">Góc ẩm thực</span>
-                <h2 className="cdp-section-title">Bí Quyết Nước Dùng Vàng</h2>
-                <p className="cdp-intro__body">
-                  Để nước phở trong mà không bị đục, cốt yếu phải ngâm rửa xương sạch sẽ. Trong lúc ninh tuyệt đối không được đậy nắp kín và phớt bỏ lớp bọt nổi lên liên tục. Phần hoa hồi quế thảo quả nhớ phải rang hoặc nướng chín, và cho vào túi vải để mảnh vụn không bị lẫn vào nồi.
-                </p>
+                <span className="cdp-section-badge">{detail.secretTip?.badge}</span>
+                <h2 className="cdp-section-title">{detail.secretTip?.title}</h2>
+                <p className="cdp-intro__body">{detail.secretTip?.body}</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* GALLERY */}
-        <section className="cdp-section cdp-section--light cdp-gallery">
-          <div className="cdp-container">
-            <header className="cdp-section-header">
-              <h2 className="cdp-section-title">Thư viện hình ảnh</h2>
-              <p className="cdp-section-subtitle">Góc nhìn chân thực, tinh tế về độ ngon của phở.</p>
-            </header>
+        {galleryItems.length > 0 && (
+          <section className="cdp-section cdp-section--light cdp-gallery">
+            <div className="cdp-container">
+              <header className="cdp-section-header">
+                <h2 className="cdp-section-title">{lang === 'vi' ? 'Thư viện hình ảnh' : 'Image gallery'}</h2>
+                <p className="cdp-section-subtitle">{lang === 'vi' ? `Góc nhìn chân thực, tinh tế về ${detail.name.toLowerCase()}.` : `A vivid visual look at ${detail.name}.`}</p>
+              </header>
 
-            <div className="cdp-gallery-grid">
-              <div className="cdp-gallery-item large"><img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=2071&auto=format&fit=crop" alt="G1" /></div>
-              <div className="cdp-gallery-item"><img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?w=600&q=80" alt="G2" /></div>
-              <div className="cdp-gallery-item tall"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="G3" /></div>
-              <div className="cdp-gallery-item"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" alt="G4" /></div>
-              <div className="cdp-gallery-item wide"><img src="https://images.unsplash.com/photo-1555126634-323283e090fa?w=600&q=80" alt="G5" /></div>
-              <div className="cdp-gallery-item"><img src="https://images.unsplash.com/photo-1626242372480-164c673ba718?w=600&q=80" alt="G6" /></div>
+              <div className="cdp-gallery-grid">
+                {galleryItems.map((item, index) => (
+                  <div key={item.id || index} className={`cdp-gallery-item ${item.size || ''}`.trim()}>
+                    <img src={item.imageUrl || detail.heroImageUrl} alt={item.imageAlt || detail.heroImageAlt} />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
-        {/* CTA BANNER */}
         <section className="cdp-cta-banner">
           <div className="cdp-container" style={{ textAlign: 'center' }}>
-            <h2 className="cdp-cta-title" style={{ fontSize: '2rem', marginBottom: '24px', color: '#1a0a04' }}>Khám phá nền ẩm thực Việt</h2>
+            <h2 className="cdp-cta-title" style={{ fontSize: '2rem', marginBottom: '24px', color: '#1a0a04' }}>{lang === 'vi' ? 'Khám phá nền ẩm thực Việt' : 'Explore Vietnamese cuisine'}</h2>
             <Link to="/cuisine" className="primary-button" style={{
               display: 'inline-flex', padding: '12px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)',
               color: 'white', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none'
             }}>
-              Trở lại danh sách món ăn
+              {lang === 'vi' ? 'Trở lại danh sách món ăn' : 'Back to cuisine list'}
             </Link>
           </div>
         </section>
@@ -287,5 +346,5 @@ export default function CuisineDetailPage() {
 
       <Footer lang={lang} />
     </div>
-  );
+  )
 }

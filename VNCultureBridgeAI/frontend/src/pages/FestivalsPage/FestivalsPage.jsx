@@ -1,426 +1,290 @@
-import PageHeader from "../../components/layout/PageHeader/PageHeader";
-import Footer from "../../components/layout/Footer/Footer";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ui } from "../../i18n/messages";
-import bannerImg from "../../assets/festival_banner.jpg";
-import banner1Img from "../../assets/banner1.jpg";
-import banner2Img from "../../assets/banner2.jpg";
-import banner3Img from "../../assets/banner3.jpg";
-import anhtet1 from "../../assets/anhtet1.PNG";
-import giotohungvuong from "../../assets/giotohungvuong1.PNG";
-import festivel_hue from "../../assets/festival_hue.png";
-import hmongFestival from "../../assets/hmong_festival_gau_tao_1775575986843.png";
-import hatQuanHo from "../../assets/hat-quan-ho.png";
+import PageHeader from "../../components/layout/PageHeader/PageHeader";
+import Footer from "../../components/layout/Footer/Footer";
+import LoadingState from "../../components/common/LoadingState/LoadingState";
+import { getFestivals } from "../../services/festival.service";
 import "./FestivalsPage.css";
 import "../../App.css";
 
-const ALL_FESTIVALS = [
-  {
-    id: 1,
-    title: "Tết Nguyên Đán",
-    enTitle: "Lunar New Year",
-    desc: "The most important celebration in Vietnamese culture, marking the arrival of spring and the beginning of a new year.",
-    location: "Nationwide",
-    date: "January/February",
-    tag: "Major",
-    tagColor: "#ce112d",
-    image: banner1Img,
-  },
-  {
-    id: 2,
-    title: "Tết Trung Thu",
-    enTitle: "Mid-Autumn Festival",
-    desc: "A magical celebration for children featuring lanterns, mooncakes, and lion dances under the full harvest moon.",
-    location: "Nationwide",
-    date: "September",
-    tag: "Major",
-    tagColor: "#ce112d",
-    image: bannerImg,
-  },
-  {
-    id: 3,
-    title: "Hội An Lantern Festival",
-    enTitle: "Hoi An Lantern Festival",
-    desc: "Monthly full moon celebration where ancient town transforms into an enchanting sea of colorful lanterns.",
-    location: "Central",
-    date: "Monthly",
-    tag: "Cultural",
-    tagColor: "#ce112d",
-    image: banner1Img,
-  },
-  {
-    id: 4,
-    title: "Lễ Hội Hoa Ban",
-    enTitle: "Ban Flower Festival",
-    desc: "Northwestern highlands celebration welcoming spring with white Ban flowers blooming across the mountains.",
-    location: "North",
-    date: "March",
-    tag: "Ethnic",
-    tagColor: "#e11d48",
-    image: null,
-  },
-  {
-    id: 5,
-    title: "Kate Festival",
-    enTitle: "Kate Festival",
-    desc: "Sacred Cham festival honoring ancestors and deities with vibrant processions and traditional tower ceremonies.",
-    location: "Central",
-    date: "October",
-    tag: "Ethnic",
-    tagColor: "#e11d48",
-    image: null,
-  },
-  {
-    id: 6,
-    title: "Gầu Tào Festival",
-    enTitle: "Gau Tao Festival",
-    desc: "Hmong spiritual festival praying for good harvests and community prosperity in the highlands.",
-    location: "North",
-    date: "January",
-    tag: "Religious",
-    tagColor: "#ce112d",
-    image: null,
-  },
-  {
-    id: 7,
-    title: "Lễ Hội Đền Hùng",
-    enTitle: "Hung Kings Temple Festival",
-    desc: "National commemoration honoring legendary founders of Vietnam and celebrating national identity.",
-    location: "Nationwide",
-    date: "April",
-    tag: "Major",
-    tagColor: "#ce112d",
-    image: null,
-  },
-  {
-    id: 8,
-    title: "Lễ Hội Chùa Hương",
-    enTitle: "Perfume Pagoda Festival",
-    desc: "Buddhist pilgrimage to sacred cave temples in the Huong Tich mountains, attracting millions.",
-    location: "North",
-    date: "February",
-    tag: "Religious",
-    tagColor: "#ce112d",
-    image: null,
-  },
-  {
-    id: 9,
-    title: "Lễ Hội Cầu Ngư",
-    enTitle: "Fishermen Festival",
-    desc: "Coastal celebration where fishing communities pray for safety and bountiful catches.",
-    location: "South",
-    date: "April",
-    tag: "Cultural",
-    tagColor: "#ce112d",
-    image: null,
-  },
-  {
-    id: 10,
-    title: "Nghinh Ông Festival",
-    enTitle: "Whale Worshipping Festival",
-    desc: "Southern coastal festival honoring whales as sacred protectors of fishermen.",
-    location: "South",
-    date: "December",
-    tag: "Religious",
-    tagColor: "#ce112d",
-    image: bannerImg,
-  },
+const REGION_OPTIONS = [
+  { value: "", label: "Tất cả khu vực" },
+  { value: "north", label: "Miền Bắc" },
+  { value: "central", label: "Miền Trung" },
+  { value: "south", label: "Miền Nam" },
 ];
 
-const TIMELINE_DATA = [
-  {
-    id: 1,
-    month: "January",
-    title: "Tết Nguyên Đán",
-    season: "Spring",
-    color: "#e11d48",
-    image: banner1Img,
-  },
-  {
-    id: 2,
-    month: "February",
-    title: "Lim Festival",
-    season: "Spring",
-    color: "#eab308",
-    image: bannerImg,
-  },
-  {
-    id: 3,
-    month: "March",
-    title: "Perfume Pagoda",
-    season: "Spring",
-    color: "#8b5cf6",
-    image: banner1Img,
-  },
-  {
-    id: 4,
-    month: "April",
-    title: "Hùng Kings Temple",
-    season: "Spring",
-    color: "#ea580c",
-    image: bannerImg,
-  },
-  {
-    id: 5,
-    month: "May",
-    title: "Ba Chúa Xứ",
-    season: "Summer",
-    color: "#10b981",
-    image: banner1Img,
-  },
-  {
-    id: 6,
-    month: "June",
-    title: "Đoan Ngọ",
-    season: "Summer",
-    color: "#14b8a6",
-    image: bannerImg,
-  },
-  {
-    id: 7,
-    month: "July",
-    title: "Vu Lan",
-    season: "Autumn",
-    color: "#06b6d4",
-    image: banner1Img,
-  },
-  {
-    id: 8,
-    month: "August",
-    title: "Hội An Lantern",
-    season: "Autumn",
-    color: "#f43f5e",
-    image: bannerImg,
-  },
-  {
-    id: 9,
-    month: "September",
-    title: "Mid-Autumn",
-    season: "Autumn",
-    color: "#d946ef",
-    image: banner1Img,
-  },
-  {
-    id: 10,
-    month: "October",
-    title: "Kate Festival",
-    season: "Autumn",
-    color: "#f59e0b",
-    image: bannerImg,
-  },
-  {
-    id: 11,
-    month: "November",
-    title: "Ok Om Bok",
-    season: "Winter",
-    color: "#3b82f6",
-    image: banner1Img,
-  },
-  {
-    id: 12,
-    month: "December",
-    title: "Nghinh Ông",
-    season: "Winter",
-    color: "#6366f1",
-    image: bannerImg,
-  },
+const MONTH_OPTIONS = [
+  { value: "", label: "Tất cả tháng" },
+  { value: "1", label: "Tháng 1" },
+  { value: "2", label: "Tháng 2" },
+  { value: "3", label: "Tháng 3" },
+  { value: "4", label: "Tháng 4" },
+  { value: "5", label: "Tháng 5" },
+  { value: "6", label: "Tháng 6" },
+  { value: "7", label: "Tháng 7" },
+  { value: "8", label: "Tháng 8" },
+  { value: "9", label: "Tháng 9" },
+  { value: "10", label: "Tháng 10" },
+  { value: "11", label: "Tháng 11" },
+  { value: "12", label: "Tháng 12" },
 ];
+
+const CATEGORY_OPTIONS = [
+  { value: "", label: "Tất cả loại hình" },
+  { value: "major", label: "Lễ hội lớn" },
+  { value: "cultural", label: "Văn hóa" },
+  { value: "religious", label: "Tín ngưỡng" },
+  { value: "ethnic", label: "Dân tộc" },
+];
+
+function getImageUrl(value) {
+  return value || "https://placehold.co/1200x800/f4e4d4/7a4b2f?text=Le+hoi+Viet+Nam";
+}
 
 export default function FestivalsPage() {
   const [lang, setLang] = useState("vi");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const copy = useMemo(() => ui[lang], [lang]);
+  const [searchText, setSearchText] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedEthnicGroup, setSelectedEthnicGroup] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [state, setState] = useState({ status: "loading", data: null, error: "" });
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function load() {
+      try {
+        setState({ status: "loading", data: null, error: "" });
+        const data = await getFestivals(lang);
+        if (!ignore) {
+          setState({ status: "success", data, error: "" });
+        }
+      } catch (error) {
+        if (!ignore) {
+          setState({ status: "error", data: null, error: error.message });
+        }
+      }
+    }
+
+    load();
+    return () => {
+      ignore = true;
+    };
+  }, [lang]);
+
+
+  const page = state.data?.page || {};
+  const rawFestivals = state.data?.festivals;
+  const festivals = useMemo(() => rawFestivals || [], [rawFestivals]);
+  const rawTimeline = page.timelineItems?.length ? page.timelineItems : state.data?.timeline;
+  const timeline = useMemo(() => rawTimeline || [], [rawTimeline]);
+  const rawGalleryImages = page.galleryImages;
+  const galleryImages = useMemo(() => rawGalleryImages || [], [rawGalleryImages]);
+  const featuredCards = festivals.slice(0, 3);
+  const fanCards = festivals.slice(0, 5);
+
+  const ethnicOptions = useMemo(() => {
+    const values = [...new Set(festivals.map((item) => item.tag).filter(Boolean))];
+    return [{ value: "", label: "Tất cả nhóm trải nghiệm" }, ...values.map((value) => ({ value, label: value }))];
+  }, [festivals]);
+
+  const filteredFestivals = useMemo(() => {
+    return festivals.filter((fest) => {
+      const matchesSearch = !searchText || [fest.title, fest.enTitle, fest.desc, fest.location, fest.date]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+
+      const matchesRegion = !selectedRegion || (fest.location || "").toLowerCase().includes(
+        selectedRegion === "north" ? "bắc" : selectedRegion === "central" ? "trung" : "nam",
+      );
+
+      const matchesMonth = !selectedMonth || (fest.date || "").includes(`Tháng ${selectedMonth}`) || (fest.date || "").includes(`/${selectedMonth}`);
+      const matchesCategory = !selectedCategory || (fest.tag || "").toLowerCase().includes(selectedCategory === "major" ? "lớn" : selectedCategory === "cultural" ? "văn hóa" : selectedCategory === "religious" ? "tín ngưỡng" : "dân tộc");
+      const matchesEthnic = !selectedEthnicGroup || fest.tag === selectedEthnicGroup;
+
+      return matchesSearch && matchesRegion && matchesMonth && matchesCategory && matchesEthnic;
+    });
+  }, [festivals, searchText, selectedRegion, selectedMonth, selectedCategory, selectedEthnicGroup]);
+
+  const festivalsPerPage = 4;
+  const totalPages = Math.max(1, Math.ceil(filteredFestivals.length / festivalsPerPage));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const paginatedFestivals = useMemo(() => {
+    const startIndex = (safeCurrentPage - 1) * festivalsPerPage;
+    return filteredFestivals.slice(startIndex, startIndex + festivalsPerPage);
+  }, [filteredFestivals, safeCurrentPage]);
+
+  const goToPage = (pageNumber) => {
+    setCurrentPage(Math.min(Math.max(pageNumber, 1), totalPages));
+  };
+
+  const handleFilterChange = (setter) => (event) => {
+    setter(event.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+    setCurrentPage(1);
+  };
+
+  const canGoPrev = safeCurrentPage > 1;
+  const canGoNext = safeCurrentPage < totalPages;
+
+  if (state.status === "loading") {
+    return <LoadingState message="Đang tải dữ liệu lễ hội..." />;
+  }
+
+  if (state.status === "error") {
+    return <LoadingState type="error" message="Không tải được dữ liệu lễ hội." detail={state.error} />;
+  }
 
   return (
     <>
-      {/* Header */}
       <PageHeader lang={lang} onLangChange={setLang} />
 
       <main className="festivals-main">
-        {/* festival hero */}
         <section className="festivals-hero">
-          {/* Background image */}
-          <div className="festivals-hero__bg" style={{ backgroundImage: `url(${bannerImg})` }}></div>
-          {/* Overlay */}
+          <div className="festivals-hero__bg" style={{ backgroundImage: `url(${getImageUrl(page.heroImageUrl)})` }}></div>
           <div className="festivals-hero__overlay"></div>
-
-          {/* Ornamental corners */}
           <div className="festivals-hero__ornament festivals-hero__ornament--tl"></div>
           <div className="festivals-hero__ornament festivals-hero__ornament--br"></div>
 
-          {/* Split layout */}
           <div className="festivals-hero__inner">
-
-            {/* LEFT: Text */}
             <div className="festivals-hero__left">
-              {/* Badge */}
               <div className="festivals-hero__badge">
                 <span className="festivals-hero__badge-dot"></span>
-                {lang === 'vi' ? 'Lễ hội · Văn hóa · Truyền thống' : 'Festivals · Culture · Traditions'}
+                {page.badge || "Lễ hội · Văn hóa · Truyền thống"}
               </div>
 
-              {/* Heading */}
               <h1 className="festivals-hero__title">
-                {lang === 'vi' ? (
-                  <>
-                    <span className="festivals-hero__title-line">Tinh Hoa</span>
-                    <span className="festivals-hero__title-accent">Lễ Hội</span>
-                    <span className="festivals-hero__title-line">Việt Nam</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="festivals-hero__title-line">Vietnamese</span>
-                    <span className="festivals-hero__title-accent">Festivals</span>
-                    <span className="festivals-hero__title-line">&amp; Traditions</span>
-                  </>
-                )}
+                <span className="festivals-hero__title-line">{page.titleLine1 || "Tinh hoa"}</span>
+                <span className="festivals-hero__title-accent">{page.titleAccent || "Lễ hội"}</span>
+                <span className="festivals-hero__title-line">{page.titleLine3 || "Việt Nam"}</span>
               </h1>
 
-              {/* Ornamental divider */}
               <div className="festivals-hero__divider-row">
                 <span className="festivals-hero__divider-line"></span>
                 <span className="festivals-hero__divider-diamond">◆</span>
                 <span className="festivals-hero__divider-line"></span>
               </div>
 
-              {/* Subtitle */}
               <p className="festivals-hero__subtitle">
-                {lang === 'vi'
-                  ? 'Hàng nghìn năm truyền thống hội tụ trong từng lễ hội — nơi sắc màu, âm thanh và tâm hồn Việt hòa quyện thành một.'
-                  : 'Thousands of years of tradition converge in every festival — where colors, sounds, and the Vietnamese spirit unite as one.'
-                }
+                {page.subtitle || "Hàng nghìn năm truyền thống hội tụ trong từng lễ hội — nơi sắc màu, âm thanh và tâm hồn Việt hòa quyện thành một."}
               </p>
 
-              {/* Stats */}
               <div className="festivals-hero__stats">
-                <div className="festivals-hero__stat">
-                  <strong>8.000+</strong>
-                  <span>{lang === 'vi' ? 'Lễ hội hàng năm' : 'Annual festivals'}</span>
-                </div>
-                <div className="festivals-hero__stat-sep">|</div>
-                <div className="festivals-hero__stat">
-                  <strong>54</strong>
-                  <span>{lang === 'vi' ? 'Dân tộc anh em' : 'Ethnic groups'}</span>
-                </div>
-                <div className="festivals-hero__stat-sep">|</div>
-                <div className="festivals-hero__stat">
-                  <strong>63</strong>
-                  <span>{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</span>
-                </div>
+                {(page.stats || [
+                  { value: "8.000+", label: "Lễ hội hàng năm" },
+                  { value: "54", label: "Dân tộc anh em" },
+                  { value: "63", label: "Tỉnh thành" },
+                ]).map((item, index) => (
+                  <div key={`${item.label}-${index}`} style={{ display: "contents" }}>
+                    <div className="festivals-hero__stat">
+                      <strong>{item.value}</strong>
+                      <span>{item.label}</span>
+                    </div>
+                    {index < (page.stats || []).length - 1 ? <div className="festivals-hero__stat-sep">|</div> : null}
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* RIGHT: Fan Card Stack — 5 cards in true fan/arc layout */}
             <div className="festivals-hero__right">
               <div className="festivals-fan">
-
-                {/* Rendered back → front so center sits on top */}
-
-                {/* Card FL – far left (−20°) — deepest back */}
-                <div className="festivals-fan__card festivals-fan__card--fl">
-                  <img src={banner3Img} alt="Lim Festival" />
-                  <div className="festivals-fan__card-label">
-                    <span className="festivals-fan__card-dot"></span>
-                    {lang === 'vi' ? 'Hội Lim' : 'Lim Festival'}
+                {fanCards[0] ? (
+                  <div className="festivals-fan__card festivals-fan__card--fl">
+                    <img src={getImageUrl(fanCards[0].image)} alt={fanCards[0].title} />
+                    <div className="festivals-fan__card-label">
+                      <span className="festivals-fan__card-dot"></span>
+                      {fanCards[0].title}
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
-                {/* Card FR – far right (+20°) — second deepest */}
-                <div className="festivals-fan__card festivals-fan__card--fr">
-                  <img src={banner2Img} alt="Hoi An Lanterns" />
-                  <div className="festivals-fan__card-label">
-                    <span className="festivals-fan__card-dot"></span>
-                    {lang === 'vi' ? 'Lễ hội đèn lồng Hội An' : 'Hoi An Lantern Festival'}
+                {fanCards[1] ? (
+                  <div className="festivals-fan__card festivals-fan__card--fr">
+                    <img src={getImageUrl(fanCards[1].image)} alt={fanCards[1].title} />
+                    <div className="festivals-fan__card-label">
+                      <span className="festivals-fan__card-dot"></span>
+                      {fanCards[1].title}
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
-                {/* Card L – left (−10°) */}
-                <div className="festivals-fan__card festivals-fan__card--l">
-                  <img src={hatQuanHo} alt="Quan Ho Folk Songs" />
-                  <div className="festivals-fan__card-label">
-                    <span className="festivals-fan__card-dot"></span>
-                    {lang === 'vi' ? 'Dân ca Quan Họ' : 'Quan Ho Folk Songs'}
+                {fanCards[2] ? (
+                  <div className="festivals-fan__card festivals-fan__card--l">
+                    <img src={getImageUrl(fanCards[2].image)} alt={fanCards[2].title} />
+                    <div className="festivals-fan__card-label">
+                      <span className="festivals-fan__card-dot"></span>
+                      {fanCards[2].title}
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
-                {/* Card R – right (+10°) */}
-                <div className="festivals-fan__card festivals-fan__card--r">
-                  <img src={hmongFestival} alt="Hmong Festival" />
-                  <div className="festivals-fan__card-label">
-                    <span className="festivals-fan__card-dot"></span>
-                    {lang === 'vi' ? 'Lễ hội Gầu Tào' : 'Gau Tao Festival'}
+                {fanCards[3] ? (
+                  <div className="festivals-fan__card festivals-fan__card--r">
+                    <img src={getImageUrl(fanCards[3].image)} alt={fanCards[3].title} />
+                    <div className="festivals-fan__card-label">
+                      <span className="festivals-fan__card-dot"></span>
+                      {fanCards[3].title}
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
-                {/* Card C – CENTER (0°) — painted last = highest z-order */}
-                <div className="festivals-fan__card festivals-fan__card--c">
-                  <img src={bannerImg} alt="Vietnamese Festival" />
-                  <div className="festivals-fan__card-label">
-                    <span className="festivals-fan__card-dot"></span>
-                    {lang === 'vi' ? 'Lễ hội truyền thống Việt Nam' : 'Vietnamese Traditional Festivals'}
+                {fanCards[4] ? (
+                  <div className="festivals-fan__card festivals-fan__card--c">
+                    <img src={getImageUrl(fanCards[4].image)} alt={fanCards[4].title} />
+                    <div className="festivals-fan__card-label">
+                      <span className="festivals-fan__card-dot"></span>
+                      {fanCards[4].title}
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
-                {/* Floating badge */}
                 <div className="festivals-fan__badge">
                   <span>🎏</span>
-                  <span>8.000+ Festivals</span>
+                  <span>{page.stats?.[0]?.value || "8.000+"} lễ hội</span>
                 </div>
-
               </div>
             </div>
-
           </div>
 
-          {/* Scroll indicator */}
           <div className="festivals-hero__scroll">
             <div className="festivals-mouse-icon"></div>
           </div>
         </section>
 
-        {/* --- Search & Filter Section --- */}
         <section className="festivals-search-section">
           <div className="festivals-search-container">
             <div className="festivals-search-row">
               <div className="festivals-search-bar">
-                <svg
-                  className="search-icon"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#ce112d"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg className="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ce112d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
                 <input
                   type="text"
-                  placeholder="Discover festivals, traditions, and cultures..."
+                  placeholder={page.searchPlaceholder || "Tìm kiếm lễ hội, nghi lễ và truyền thống..."}
                   className="festivals-search-input"
+                  value={searchText}
+                  onChange={handleSearchChange}
                 />
               </div>
               <button
                 className={`festivals-filter-btn ${isFiltersOpen ? "active" : ""}`}
                 onClick={() => setIsFiltersOpen(!isFiltersOpen)}
               >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#ce112d"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ce112d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
-                <span>Advanced Filters</span>
+                <span>{page.filterButton || "Bộ lọc nâng cao"}</span>
                 <svg
                   width="18"
                   height="18"
@@ -430,115 +294,58 @@ export default function FestivalsPage() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  style={{
-                    transform: isFiltersOpen ? "rotate(180deg)" : "none",
-                    transition: "transform 0.3s ease",
-                  }}
+                  style={{ transform: isFiltersOpen ? "rotate(180deg)" : "none", transition: "transform 0.3s ease" }}
                 >
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </button>
             </div>
 
-            {/* Expandable Filters Grid */}
-            <div
-              className={`festivals-filters-grid ${isFiltersOpen ? "open" : ""}`}
-            >
-              {/* Region Filter */}
+            <div className={`festivals-filters-grid ${isFiltersOpen ? "open" : ""}`}>
               <div className="festivals-filter-item">
                 <span className="festivals-filter-icon">📍</span>
-                <select className="festivals-filter-select">
-                  <option value="">All Regions</option>
-                  <option value="north">North Vietnam</option>
-                  <option value="central">Central Vietnam</option>
-                  <option value="south">South Vietnam</option>
+                <select className="festivals-filter-select" value={selectedRegion} onChange={handleFilterChange(setSelectedRegion)}>
+                  {REGION_OPTIONS.map((option) => (
+                    <option key={option.value || "all-regions"} value={option.value}>{option.label}</option>
+                  ))}
                 </select>
-                <svg
-                  className="festivals-filter-chevron"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#ce112d"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg className="festivals-filter-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ce112d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </div>
 
-              {/* Month Filter */}
               <div className="festivals-filter-item">
                 <span className="festivals-filter-icon">🗓️</span>
-                <select className="festivals-filter-select">
-                  <option value="">All Months</option>
-                  <option value="1">January</option>
-                  <option value="2">February</option>
-                  <option value="3">March</option>
-                  <option value="4">April</option>
-                  <option value="5">May</option>
+                <select className="festivals-filter-select" value={selectedMonth} onChange={handleFilterChange(setSelectedMonth)}>
+                  {MONTH_OPTIONS.map((option) => (
+                    <option key={option.value || "all-months"} value={option.value}>{option.label}</option>
+                  ))}
                 </select>
-                <svg
-                  className="festivals-filter-chevron"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#ce112d"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg className="festivals-filter-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ce112d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </div>
 
-              {/* Category Filter */}
               <div className="festivals-filter-item">
                 <span className="festivals-filter-icon">🎭</span>
-                <select className="festivals-filter-select">
-                  <option value="">All Categories</option>
-                  <option value="traditional">Traditional</option>
-                  <option value="religious">Religious</option>
-                  <option value="historical">Historical</option>
+                <select className="festivals-filter-select" value={selectedCategory} onChange={handleFilterChange(setSelectedCategory)}>
+                  {CATEGORY_OPTIONS.map((option) => (
+                    <option key={option.value || "all-categories"} value={option.value}>{option.label}</option>
+                  ))}
                 </select>
-                <svg
-                  className="festivals-filter-chevron"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#ce112d"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg className="festivals-filter-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ce112d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </div>
 
-              {/* Ethnic Group Filter */}
               <div className="festivals-filter-item">
                 <span className="festivals-filter-icon">👥</span>
-                <select className="festivals-filter-select">
-                  <option value="">All Ethnic Groups</option>
-                  <option value="kinh">Kinh</option>
-                  <option value="tay">Tay</option>
-                  <option value="thai">Thai</option>
-                  <option value="muong">Muong</option>
+                <select className="festivals-filter-select" value={selectedEthnicGroup} onChange={handleFilterChange(setSelectedEthnicGroup)}>
+                  {ethnicOptions.map((option) => (
+                    <option key={option.value || "all-ethnic-groups"} value={option.value}>{option.label}</option>
+                  ))}
                 </select>
-                <svg
-                  className="festivals-filter-chevron"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#ce112d"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg className="festivals-filter-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ce112d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </div>
@@ -546,598 +353,100 @@ export default function FestivalsPage() {
           </div>
         </section>
 
-        {/* --- Major Festivals Section --- */}
         <section className="festivals-major" id="explore">
           <div className="festivals-major__container">
             <div className="festivals-major__header fade-up">
-              <div className="festivals-major__badge">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2l2.4 7.6 7.6 2.4-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2z" />
-                </svg>
-                FEATURED CELEBRATIONS
-              </div>
-              <h2 className="festivals-major__title">Major Festivals</h2>
-              <p className="festivals-major__subtitle">
-                Discover Vietnam's most important cultural celebrations
-              </p>
+              <div className="festivals-major__badge">{page.major?.badge || "Lễ hội nổi bật"}</div>
+              <h2 className="festivals-major__title">{page.major?.title || "Lễ hội tiêu biểu"}</h2>
+              <p className="festivals-major__subtitle">{page.major?.subtitle || "Khám phá những lễ hội nổi bật và có sức lan tỏa mạnh mẽ trong văn hóa Việt Nam"}</p>
             </div>
 
             <div className="festivals-major__grid">
-              {/* Card 1 */}
-              <article className="festivals-card fade-up">
-                {/* ảnh */}
-                <div className="festivals-card__img">
-                  <img src={anhtet1} alt="Lunar New Year" loading="lazy" />
-                  <span className="festivals-card__tag">Major</span>
-                </div>
-                {/* body */}
-                <div className="festivals-card__body">
-                  <div className="festivals-card__times">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <rect
-                        x="3"
-                        y="4"
-                        width="18"
-                        height="18"
-                        rx="2"
-                        ry="2"
-                      ></rect>
-                      <line x1="16" y1="2" x2="16" y2="6"></line>
-                      <line x1="8" y1="2" x2="8" y2="6"></line>
-                      <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                    February
+              {featuredCards.map((fest, index) => (
+                <article className="festivals-card fade-up" style={{ animationDelay: `${index * 0.1}s` }} key={fest.id}>
+                  <div className="festivals-card__img">
+                    <img src={getImageUrl(fest.image)} alt={fest.title} loading="lazy" />
+                    <span className="festivals-card__tag">{fest.tag}</span>
                   </div>
-                  {/* content */}
-                  <div className="festival-card__content">
-                    <h3 className="festivals-card__title">Lunar New Year</h3>
-                    <span className="festivals-card__en-title">
-                      Traditional Vietnamese Tet
-                    </span>
-                    <p className="festivals-card__desc">
-                      The most significant festival in Vietnam. Families reunite
-                      to honor ancestors, enjoy traditional dishes like Banh
-                      Chung, and exchange best wishes for a prosperous New Year.
-                    </p>
-                    <div className="festivals-card__meta">
-                      <div className="festivals-card__meta-item">
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                          <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        Nationwide
-                      </div>
-                      <div className="festivals-card__meta-item">
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                          <circle cx="9" cy="7" r="4"></circle>
-                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                        All Vietnamese People
+                  <div className="festivals-card__body">
+                    <div className="festivals-card__times">{fest.date}</div>
+                    <div className="festival-card__content">
+                      <h3 className="festivals-card__title">{fest.title}</h3>
+                      <span className="festivals-card__en-title">{fest.enTitle}</span>
+                      <p className="festivals-card__desc">{fest.desc}</p>
+                      <div className="festivals-card__meta">
+                        <div className="festivals-card__meta-item">{fest.location}</div>
+                        <div className="festivals-card__meta-item">{fest.tag}</div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </article>
-
-              {/* Card 2 */}
-              <article
-                className="festivals-card fade-up"
-                style={{ animationDelay: "0.1s" }}
-              >
-                {/* ảnh */}
-                <div className="festivals-card__img">
-                  <img
-                    src={giotohungvuong}
-                    alt="Mid-Autumn Festival"
-                    loading="lazy"
-                  />
-                  <span className="festivals-card__tag text-purple">
-                    Cultural
-                  </span>
-                </div>
-                {/* body */}
-                <div className="festivals-card__body">
-                  <div className="festivals-card__times">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <rect
-                        x="3"
-                        y="4"
-                        width="18"
-                        height="18"
-                        rx="2"
-                        ry="2"
-                      ></rect>
-                      <line x1="16" y1="2" x2="16" y2="6"></line>
-                      <line x1="8" y1="2" x2="8" y2="6"></line>
-                      <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                    The 10th day of the 3rd lunar month
-                  </div>
-                  {/* content */}
-                  <div className="festival-card__content">
-                    <h3 className="festivals-card__title">
-                      Hung Kings' Temple Festival
-                    </h3>
-                    <span className="festivals-card__en-title">
-                      Ancestors' Memorial Day
-                    </span>
-                    <p className="festivals-card__desc">
-                      A profound national pilgrimage honoring the Hung Kings,
-                      the legendary founding fathers of Vietnam. This sacred
-                      event unites millions in a display of solemn rituals,
-                      vibrant processions, and traditional folk games, all
-                      echoing a deep sense of gratitude and enduring national
-                      pride
-                    </p>
-                    <div className="festivals-card__meta">
-                      <div className="festivals-card__meta-item">
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                          <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        Phu Tho Province
-                      </div>
-                      <div className="festivals-card__meta-item">
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                          <circle cx="9" cy="7" r="4"></circle>
-                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                        Kinh & Others
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </article>
-
-              {/* Card 3 */}
-              <article
-                className="festivals-card fade-up"
-                style={{ animationDelay: "0.1s" }}
-              >
-                {/* ảnh */}
-                <div className="festivals-card__img">
-                  <img
-                    src={festivel_hue}
-                    alt="Mid-Autumn Festival"
-                    loading="lazy"
-                  />
-                  <span className="festivals-card__tag text-purple">
-                    Cultural
-                  </span>
-                </div>
-                {/* body */}
-                <div className="festivals-card__body">
-                  <div className="festivals-card__times">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <rect
-                        x="3"
-                        y="4"
-                        width="18"
-                        height="18"
-                        rx="2"
-                        ry="2"
-                      ></rect>
-                      <line x1="16" y1="2" x2="16" y2="6"></line>
-                      <line x1="8" y1="2" x2="8" y2="6"></line>
-                      <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                    Every 2 years, April to June
-                  </div>
-                  {/* content */}
-                  <div className="festival-card__content">
-                    <h3 className="festivals-card__title">Hue Festival</h3>
-                    <span className="festivals-card__en-title">
-                      Imperial Cultural Celebration
-                    </span>
-                    <p className="festivals-card__desc">
-                      Experience the royal grandeur of Vietnam’s former imperial
-                      capital. This world-class cultural event brings history to
-                      life through majestic re-enactments of court ceremonies,
-                      traditional arts, and vibrant street performances that
-                      celebrate the soul of Hue's heritage
-                    </p>
-                    <div className="festivals-card__meta">
-                      <div className="festivals-card__meta-item">
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                          <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        Hue City, Thua Thien Hue
-                      </div>
-                      <div className="festivals-card__meta-item">
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                          <circle cx="9" cy="7" r="4"></circle>
-                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                        All Communities
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </article>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* --- Cultural Meaning Section --- */}
         <section className="festivals-meaning">
           <div className="festivals-meaning__container">
             <div className="festivals-meaning__gallery">
               <div className="gallery-col">
-                <img
-                  src={bannerImg}
-                  alt="Lanterns"
-                  className="img-tall fade-up"
-                />
-                <img
-                  src={banner1Img}
-                  alt="Portrait"
-                  className="img-square fade-up"
-                  style={{ animationDelay: "0.1s" }}
-                />
-                <div
-                  className="gallery-placeholder img-square fade-up"
-                  style={{ animationDelay: "0.2s" }}
-                >
-                  <svg
-                    width="60"
-                    height="60"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#a1a1aa"
-                    strokeWidth="1"
-                  >
-                    <rect
-                      x="3"
-                      y="3"
-                      width="18"
-                      height="18"
-                      rx="2"
-                      ry="2"
-                    ></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <polyline points="21 15 16 10 5 21"></polyline>
-                  </svg>
-                </div>
+                <img src={getImageUrl(galleryImages[0]?.imageUrl || filteredFestivals[0]?.image)} alt={galleryImages[0]?.alt || filteredFestivals[0]?.title || "Khoảnh khắc lễ hội"} className="img-tall fade-up" />
+                <img src={getImageUrl(galleryImages[1]?.imageUrl || filteredFestivals[1]?.image)} alt={galleryImages[1]?.alt || filteredFestivals[1]?.title || "Khoảnh khắc lễ hội"} className="img-square fade-up" style={{ animationDelay: "0.1s" }} />
+                <img src={getImageUrl(galleryImages[2]?.imageUrl || filteredFestivals[2]?.image)} alt={galleryImages[2]?.alt || filteredFestivals[2]?.title || "Khoảnh khắc lễ hội"} className="img-square fade-up" style={{ animationDelay: "0.2s" }} />
               </div>
               <div className="gallery-col gallery-col--offset">
-                <div
-                  className="gallery-placeholder img-square fade-up"
-                  style={{ animationDelay: "0.3s" }}
-                >
-                  <svg
-                    width="60"
-                    height="60"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#a1a1aa"
-                    strokeWidth="1"
-                  >
-                    <rect
-                      x="3"
-                      y="3"
-                      width="18"
-                      height="18"
-                      rx="2"
-                      ry="2"
-                    ></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <polyline points="21 15 16 10 5 21"></polyline>
-                  </svg>
-                </div>
-                <div
-                  className="gallery-placeholder img-square fade-up"
-                  style={{ animationDelay: "0.4s" }}
-                >
-                  <svg
-                    width="60"
-                    height="60"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#a1a1aa"
-                    strokeWidth="1"
-                  >
-                    <rect
-                      x="3"
-                      y="3"
-                      width="18"
-                      height="18"
-                      rx="2"
-                      ry="2"
-                    ></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <polyline points="21 15 16 10 5 21"></polyline>
-                  </svg>
-                </div>
-                <img
-                  src={bannerImg}
-                  alt="Beach"
-                  className="img-landscape fade-up"
-                  style={{ animationDelay: "0.5s" }}
-                />
+                <img src={getImageUrl(galleryImages[3]?.imageUrl || filteredFestivals[3]?.image)} alt={galleryImages[3]?.alt || filteredFestivals[3]?.title || "Khoảnh khắc lễ hội"} className="img-square fade-up" style={{ animationDelay: "0.3s" }} />
+                <img src={getImageUrl(galleryImages[4]?.imageUrl || filteredFestivals[4]?.image)} alt={galleryImages[4]?.alt || filteredFestivals[4]?.title || "Khoảnh khắc lễ hội"} className="img-square fade-up" style={{ animationDelay: "0.4s" }} />
+                <img src={getImageUrl(galleryImages[5]?.imageUrl || filteredFestivals[5]?.image)} alt={galleryImages[5]?.alt || filteredFestivals[5]?.title || "Khoảnh khắc lễ hội"} className="img-landscape fade-up" style={{ animationDelay: "0.5s" }} />
               </div>
             </div>
 
             <div className="festivals-meaning__content fade-up">
-              <div className="festivals-meaning__tag">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2l2.4 7.6 7.6 2.4-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2z" />
-                </svg>
-                CULTURAL MEANING
-              </div>
-              <h2 className="festivals-meaning__title">
-                The Soul of
-                <br />
-                Vietnamese
-                <br />
-                Festivals
-              </h2>
-
+              <div className="festivals-meaning__tag">{page.meaning?.badge || "Ý nghĩa văn hóa"}</div>
+              <h2 className="festivals-meaning__title">{page.meaning?.title || "Linh hồn của lễ hội Việt"}</h2>
               <div className="festivals-meaning__desc">
-                <p>
-                  Vietnamese festivals are more than celebrations—they are
-                  living connections to our ancestors, our land, and our
-                  collective spirit. Each festival carries centuries of wisdom,
-                  tradition, and cultural identity.
-                </p>
-                <p>
-                  From the red envelopes of Tết symbolizing good fortune to the
-                  glowing lanterns of Trung Thu representing hope and reunion,
-                  every ritual holds deep meaning. These celebrations unite
-                  communities, honor heritage, and pass timeless values to
-                  future generations.
-                </p>
-                <p>
-                  Whether you're witnessing the spectacle of dragon dances,
-                  savoring traditional foods, or participating in ancient
-                  ceremonies, you're not just observing—you're experiencing the
-                  heartbeat of Vietnam.
-                </p>
+                {(page.meaning?.paragraphs || [
+                  "Lễ hội Việt Nam không chỉ là những ngày vui mà còn là nơi kết nối con người với cội nguồn, vùng đất và ký ức cộng đồng.",
+                  "Mỗi nghi thức, biểu tượng và hoạt động trong lễ hội đều phản ánh chiều sâu văn hóa, niềm tin và tinh thần gắn kết của người Việt.",
+                  "Khi tham gia lễ hội, chúng ta không chỉ quan sát mà còn trực tiếp cảm nhận nhịp sống văn hóa đang tiếp tục được lưu truyền qua nhiều thế hệ.",
+                ]).map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
               </div>
-
-              <Link to="/articles" className="festivals-btn festivals-btn--primary festivals-meaning__btn">
-                Learn More About Our Culture
+              <Link to={page.meaning?.buttonHref || "/articles"} className="festivals-btn festivals-btn--primary festivals-meaning__btn">
+                {page.meaning?.button || "Tìm hiểu thêm về văn hóa Việt"}
               </Link>
             </div>
           </div>
         </section>
 
-        {/* --- All Celebrations Section --- */}
         <section className="festivals-all" id="all-celebrations">
           <div className="festivals-all__header fade-up">
-            <h2 className="festivals-all__title">
-              Explore Vietnamese Festivals
-            </h2>
-            <p className="festivals-all__subtitle">
-              Discover unique cultural celebrations across Vietnam
-            </p>
+            <h2 className="festivals-all__title">{page.all?.title || "Khám phá các lễ hội Việt Nam"}</h2>
+            <p className="festivals-all__subtitle">{page.all?.subtitle || "Mở từng trang để xem nội dung lễ hội tương ứng được tải động từ hệ thống"}</p>
           </div>
 
           <div className="festivals-all__grid">
-            {ALL_FESTIVALS.map((fest, index) => {
+            {paginatedFestivals.map((fest, index) => {
               if (index === 0) {
                 return (
-                  <article
-                    className="festival-featured-card fade-up"
-                    key={fest.id}
-                  >
-                    <div
-                      className="festival-featured-card__bg"
-                      style={{
-                        backgroundImage: `url(${fest.image || bannerImg})`,
-                      }}
-                    ></div>
+                  <article className="festival-featured-card fade-up" key={fest.id}>
+                    <div className="festival-featured-card__bg" style={{ backgroundImage: `url(${getImageUrl(fest.image)})` }}></div>
                     <div className="festival-featured-card__overlay"></div>
-
                     <div className="festival-featured-card__content">
                       <div className="festival-tags">
-                        <span className="festival-tag festival-tag--featured">
-                          <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            stroke="none"
-                          >
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                          </svg>
-                          FEATURED
-                        </span>
-                        <span className="festival-tag festival-tag--category">
-                          {fest.tag}
-                        </span>
+                        <span className="festival-tag festival-tag--featured">Nổi bật</span>
+                        <span className="festival-tag festival-tag--category">{fest.tag}</span>
                       </div>
-
-                      <h3 className="festival-featured-card__title">
-                        {fest.title}
-                      </h3>
-                      <p className="festival-featured-card__en-title">
-                        {fest.enTitle}
-                      </p>
-
+                      <h3 className="festival-featured-card__title">{fest.title}</h3>
+                      <p className="festival-featured-card__en-title">{fest.enTitle}</p>
                       <div className="festival-meta-group">
-                        <div className="festival-meta-item">
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                          </svg>
-                          {fest.location}
-                        </div>
-                        <div className="festival-meta-item">
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <rect
-                              x="3"
-                              y="4"
-                              width="18"
-                              height="18"
-                              rx="2"
-                              ry="2"
-                            ></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                          </svg>
-                          {fest.date}
-                        </div>
+                        <div className="festival-meta-item">{fest.location}</div>
+                        <div className="festival-meta-item">{fest.date}</div>
                       </div>
-
-                      <p className="festival-featured-card__desc">
-                        {fest.desc}
-                      </p>
-
-                      <Link
-                        to={`/festivals/${fest.id}`}
-                        className="festival-btn-explore"
-                      >
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <circle cx="12" cy="12" r="10"></circle>
-                          <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                        </svg>
-                        Explore Now
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
+                      <p className="festival-featured-card__desc">{fest.desc}</p>
+                      <Link to={`/festivals/${fest.code || fest.id}`} className="festival-btn-explore">
+                        Khám phá ngay
                       </Link>
                     </div>
                   </article>
@@ -1145,125 +454,21 @@ export default function FestivalsPage() {
               }
 
               return (
-                <article
-                  className="festival-regular-card fade-up"
-                  style={{ animationDelay: `${(index % 3) * 0.1}s` }}
-                  key={fest.id}
-                >
+                <article className="festival-regular-card fade-up" style={{ animationDelay: `${(index % 3) * 0.1}s` }} key={fest.id}>
                   <div className="festival-regular-card__img-wrapper">
-                    {fest.image ? (
-                      <img src={fest.image} alt={fest.title} loading="lazy" />
-                    ) : (
-                      <div className="festival-regular-card__img-placeholder">
-                        <svg
-                          width="48"
-                          height="48"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="#4a3020"
-                          strokeWidth="1.5"
-                        >
-                          <rect
-                            x="3"
-                            y="3"
-                            width="18"
-                            height="18"
-                            rx="2"
-                            ry="2"
-                          ></rect>
-                          <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                          <polyline points="21 15 16 10 5 21"></polyline>
-                        </svg>
-                      </div>
-                    )}
-                    <span className="festival-regular-card__tag">
-                      {fest.tag}
-                    </span>
+                    <img src={getImageUrl(fest.image)} alt={fest.title} loading="lazy" />
+                    <span className="festival-regular-card__tag">{fest.tag}</span>
                   </div>
                   <div className="festival-regular-card__content">
-                    <h3 className="festival-regular-card__title">
-                      {fest.title}
-                    </h3>
-                    <p className="festival-regular-card__en-title">
-                      {fest.enTitle}
-                    </p>
-
+                    <h3 className="festival-regular-card__title">{fest.title}</h3>
+                    <p className="festival-regular-card__en-title">{fest.enTitle}</p>
                     <div className="festival-meta-group">
-                      <div className="festival-meta-item">
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                          <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        {fest.location}
-                      </div>
-                      <div className="festival-meta-item">
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <rect
-                            x="3"
-                            y="4"
-                            width="18"
-                            height="18"
-                            rx="2"
-                            ry="2"
-                          ></rect>
-                          <line x1="16" y1="2" x2="16" y2="6"></line>
-                          <line x1="8" y1="2" x2="8" y2="6"></line>
-                          <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        {fest.date}
-                      </div>
+                      <div className="festival-meta-item">{fest.location}</div>
+                      <div className="festival-meta-item">{fest.date}</div>
                     </div>
-
                     <p className="festival-regular-card__desc">{fest.desc}</p>
-
-                    <Link
-                      to={`/festivals/${fest.id}`}
-                      className="festival-btn-discover"
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                      </svg>
-                      Discover Story
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        style={{ marginLeft: "4px" }}
-                      >
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                      </svg>
+                    <Link to={`/festivals/${fest.code || fest.id}`} className="festival-btn-discover">
+                      Xem câu chuyện lễ hội
                     </Link>
                   </div>
                 </article>
@@ -1271,96 +476,93 @@ export default function FestivalsPage() {
             })}
           </div>
 
-          {/* View More Button */}
-          <div className="festivals-all__actions">
-            <button className="festivals-btn festivals-btn--primary">
-              View More
+          <div className="festivals-all__actions" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "14px" }}>
+            <button
+              className="festivals-btn festivals-btn--primary"
+              onClick={() => goToPage(safeCurrentPage - 1)}
+              disabled={!canGoPrev}
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "999px",
+                padding: 0,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                opacity: canGoPrev ? 1 : 0.5,
+              }}
+            >
+              ‹
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+              <button
+                key={pageNumber}
+                className="festivals-btn festivals-btn--primary"
+                onClick={() => goToPage(pageNumber)}
+                style={{
+                  width: "52px",
+                  height: "52px",
+                  borderRadius: "999px",
+                  padding: 0,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: safeCurrentPage === pageNumber ? undefined : "transparent",
+                  color: safeCurrentPage === pageNumber ? undefined : "#4a3020",
+                  border: safeCurrentPage === pageNumber ? undefined : "2px solid rgba(122, 75, 47, 0.2)",
+                  boxShadow: safeCurrentPage === pageNumber ? undefined : "none",
+                }}
+              >
+                {pageNumber}
+              </button>
+            ))}
+
+            <button
+              className="festivals-btn festivals-btn--primary"
+              onClick={() => goToPage(safeCurrentPage + 1)}
+              disabled={!canGoNext}
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "999px",
+                padding: 0,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                opacity: canGoNext ? 1 : 0.5,
+              }}
+            >
+              ›
             </button>
           </div>
         </section>
 
-        {/* --- Festival Timeline Section --- */}
         <section className="festivals-timeline">
           <div className="festivals-timeline__header fade-up">
-            <div className="festivals-timeline__tag">
-              YEAR-ROUND CELEBRATIONS
-            </div>
-            <h2 className="festivals-timeline__title">Festival Timeline</h2>
-            <p className="festivals-timeline__subtitle">
-              Experience the rhythm of Vietnamese culture throughout the year
-            </p>
-            <div className="festivals-timeline__scroll-hint">
-              Scroll horizontally →
-            </div>
+            <div className="festivals-timeline__tag">{page.timeline?.badge || "Lễ hội quanh năm"}</div>
+            <h2 className="festivals-timeline__title">{page.timeline?.title || "Dòng thời gian lễ hội"}</h2>
+            <p className="festivals-timeline__subtitle">{page.timeline?.subtitle || "Khám phá nhịp điệu văn hóa Việt Nam qua từng mùa trong năm"}</p>
+            <div className="festivals-timeline__scroll-hint">{page.timeline?.hint || "Cuộn ngang để xem thêm →"}</div>
           </div>
 
           <div className="festivals-timeline__track-container fade-up">
             <div className="festivals-timeline__track">
               <div className="festivals-timeline__line"></div>
-              {TIMELINE_DATA.map((item, index) => (
-                <div
-                  className="timeline-item"
-                  key={item.id}
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div
-                    className="timeline-item__top-dot"
-                    style={{
-                      backgroundColor: item.color,
-                      boxShadow: `0 0 10px ${item.color}`,
-                    }}
-                  ></div>
-                  <div
-                    className="timeline-item__circle"
-                    style={{
-                      border: `2px solid ${item.color}`,
-                      boxShadow: `0 0 30px ${item.color}40, inset 0 0 20px ${item.color}20`,
-                    }}
-                  >
-                    <svg
-                      width="28"
-                      height="28"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <rect
-                        x="3"
-                        y="4"
-                        width="18"
-                        height="18"
-                        rx="2"
-                        ry="2"
-                      ></rect>
-                      <line x1="16" y1="2" x2="16" y2="6"></line>
-                      <line x1="8" y1="2" x2="8" y2="6"></line>
-                      <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
+              {timeline.map((item, index) => (
+                <div className="timeline-item" key={item.id || index} style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="timeline-item__top-dot" style={{ backgroundColor: item.color, boxShadow: `0 0 10px ${item.color}` }}></div>
+                  <div className="timeline-item__circle" style={{ border: `2px solid ${item.color}`, boxShadow: `0 0 30px ${item.color}40, inset 0 0 20px ${item.color}20` }}>
                     <span>{item.month}</span>
                   </div>
                   <div className="timeline-card">
                     <h3 className="timeline-card__title">{item.title}</h3>
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="timeline-card__image"
-                    />
+                    <img src={getImageUrl(item.image || item.imageUrl)} alt={item.title} className="timeline-card__image" />
                     <div className="timeline-card__season">
-                      <span
-                        className="timeline-card__season-dot"
-                        style={{ backgroundColor: item.color }}
-                      ></span>
+                      <span className="timeline-card__season-dot" style={{ backgroundColor: item.color }}></span>
                       {item.season}
                     </div>
-                    <div
-                      className="timeline-card__bottom-line"
-                      style={{
-                        background: `linear-gradient(90deg, transparent, ${item.color}, transparent)`,
-                      }}
-                    ></div>
+                    <div className="timeline-card__bottom-line" style={{ background: `linear-gradient(90deg, transparent, ${item.color}, transparent)` }}></div>
                   </div>
                 </div>
               ))}
@@ -1368,145 +570,49 @@ export default function FestivalsPage() {
           </div>
         </section>
 
-        {/* --- Gallery of Moments Section --- */}
         <section className="festivals-gallery">
           <div className="festivals-gallery__header fade-up">
-            <div className="festivals-gallery__tag">VISUAL JOURNEY</div>
-            <h2 className="festivals-gallery__title">Gallery of Moments</h2>
-            <p className="festivals-gallery__subtitle">
-              Immerse yourself in the atmosphere and emotion of Vietnamese
-              festivals
-            </p>
+            <div className="festivals-gallery__tag">{page.gallery?.badge || "Hành trình thị giác"}</div>
+            <h2 className="festivals-gallery__title">{page.gallery?.title || "Khoảnh khắc lễ hội"}</h2>
+            <p className="festivals-gallery__subtitle">{page.gallery?.subtitle || "Đắm mình trong bầu không khí và cảm xúc của những mùa lễ hội Việt Nam"}</p>
           </div>
 
           <div className="festivals-gallery__grid fade-up">
-            {/* Col 1 equivalent */}
-            <img
-              src={banner2Img}
-              alt="Festival Moment"
-              className="gallery-1-1"
-            />
-            <img
-              src={banner1Img}
-              alt="Festival Moment"
-              className="gallery-1-2"
-            />
-            <img
-              src={bannerImg}
-              alt="Festival Moment"
-              className="gallery-1-3"
-            />
-
-            {/* Col 2 equivalent */}
-            <img
-              src={banner3Img}
-              alt="Festival Moment"
-              className="gallery-2-1"
-            />
-            <img
-              src={bannerImg}
-              alt="Festival Moment"
-              className="gallery-2-2"
-            />
-            <img
-              src={banner1Img}
-              alt="Festival Moment"
-              className="gallery-2-3"
-            />
-            <img
-              src={banner2Img}
-              alt="Festival Moment"
-              className="gallery-2-4"
-            />
-
-            {/* Col 3 equivalent */}
-            <img
-              src={bannerImg}
-              alt="Festival Moment"
-              className="gallery-3-1"
-            />
-            <img
-              src={banner2Img}
-              alt="Festival Moment"
-              className="gallery-3-2"
-            />
-            <img
-              src={banner3Img}
-              alt="Festival Moment"
-              className="gallery-3-3"
-            />
+            {galleryImages.slice(0, 10).map((image, index) => (
+              <img
+                key={`${image.imageUrl}-${index}`}
+                src={getImageUrl(image.imageUrl)}
+                alt={image.alt || `Khoảnh khắc lễ hội ${index + 1}`}
+                className={`gallery-${Math.floor(index / 3) + 1}-${(index % 3) + 1}`}
+              />
+            ))}
           </div>
         </section>
 
-        {/* --- Cultural Quote Section --- */}
-        <section
-          className="festivals-quote"
-          style={{ backgroundImage: `url(${banner1Img})` }}
-        >
+        <section className="festivals-quote" style={{ backgroundImage: `url(${getImageUrl(page.quote?.backgroundImageUrl)})` }}>
           <div className="festivals-quote__overlay"></div>
           <div className="festivals-quote__content fade-up">
             <div className="festivals-quote__decoration">
               <span className="quote-mark">“</span>
             </div>
-            <h2 className="festivals-quote__title">Uống nước nhớ nguồn</h2>
-            <p className="festivals-quote__subtitle">
-              "When drinking water, remember the source"
-            </p>
-
-            <div className="festivals-quote__divider">
-              <svg
-                className="festivals-quote__icon"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 2L2 12l10 10 10-10L12 2z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-            </div>
-
-            <p className="festivals-quote__desc">
-              This timeless proverb captures the profound gratitude and respect
-              Vietnamese people hold for their ancestors and heritage. It is the
-              spiritual foundation of countless festivals across the nation.
-            </p>
-
-            <button className="festivals-btn festivals-btn--primary festivals-quote__btn">
-              Discover Culture
-            </button>
+            <h2 className="festivals-quote__title">{page.quote?.title || "Uống nước nhớ nguồn"}</h2>
+            <p className="festivals-quote__subtitle">{page.quote?.subtitle || "Nhớ về cội nguồn để gìn giữ giá trị văn hóa"}</p>
+            <div className="festivals-quote__divider"></div>
+            <p className="festivals-quote__desc">{page.quote?.desc || "Tinh thần biết ơn cội nguồn chính là nền tảng để các lễ hội Việt Nam tiếp tục sống động trong đời sống hôm nay."}</p>
+            <Link to="/articles" className="festivals-btn festivals-btn--primary festivals-quote__btn">
+              {page.quote?.button || "Khám phá văn hóa"}
+            </Link>
           </div>
-
-          {/* Optional floating particles effect - simple CSS version */}
           <div className="festivals-quote__particles"></div>
         </section>
 
-        {/* Scroll to Top button */}
-        <button
-          className="festivals-scroll-top"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="Scroll to top"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+        <button className="festivals-scroll-top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Cuộn lên đầu trang">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="m18 15-6-6-6 6" />
           </svg>
         </button>
       </main>
 
-      {/* Footer */}
       <Footer />
     </>
   );

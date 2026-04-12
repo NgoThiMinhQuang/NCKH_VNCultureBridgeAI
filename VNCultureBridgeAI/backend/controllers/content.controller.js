@@ -76,6 +76,66 @@ async function getProvince(req, res, next) {
   }
 }
 
+async function listFestivals(req, res, next) {
+  try {
+    const lang = normalizeLang(req.query.lang)
+    const data = await contentService.listFestivals(lang)
+    res.json({ ok: true, data })
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function getFestival(req, res, next) {
+  try {
+    const lang = normalizeLang(req.query.lang)
+    const data = await contentService.getFestival(req.params.id, lang)
+
+    if (!data) {
+      return res.status(404).json({ ok: false, message: 'Festival not found' })
+    }
+
+    return res.json({ ok: true, data })
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function listCuisines(req, res, next) {
+  try {
+    const lang = normalizeLang(req.query.lang)
+    const data = await contentService.listCuisines(req.query, lang)
+    res.json({ ok: true, data })
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function getCuisine(req, res, next) {
+  try {
+    const lang = normalizeLang(req.query.lang)
+    const data = await contentService.getCuisineDetail(req.params.code, lang)
+
+    if (!data) {
+      return res.status(404).json({ ok: false, message: 'Cuisine not found' })
+    }
+
+    return res.json({ ok: true, data })
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function listCuisineGallery(req, res, next) {
+  try {
+    const lang = normalizeLang(req.query.lang)
+    const data = await contentService.getCuisineGallery(lang)
+    return res.json({ ok: true, data })
+  } catch (error) {
+    next(error)
+  }
+}
+
 async function listEthnicities(req, res, next) {
   try {
     const lang = normalizeLang(req.query.lang)
@@ -121,6 +181,11 @@ module.exports = {
   getRegion,
   listProvinces,
   getProvince,
+  listFestivals,
+  getFestival,
+  listCuisines,
+  getCuisine,
+  listCuisineGallery,
   listEthnicities,
   getEthnicity,
   askAi,

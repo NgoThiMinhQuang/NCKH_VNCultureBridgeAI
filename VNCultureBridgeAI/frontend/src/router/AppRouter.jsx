@@ -15,10 +15,10 @@ import CuisineDetailPage from "../pages/CuisineDetailPage/CuisineDetailPage";
 import BlogDetailPage from "../pages/BlogDetailPage/BlogDetailPage";
 import ProvincesPage from "../pages/ProvincesPage/ProvincesPage";
 import ProvinceDetailPage from "../pages/ProvinceDetailPage/ProvinceDetailPage";
+import NorthRegionPage from "../pages/NorthRegionPage/NorthRegionPage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import GlobalChatbot from "../components/common/GlobalChatbot/GlobalChatbot";
-
 
 
 /**
@@ -45,6 +45,7 @@ export default function AppRouter() {
         <Route path="/cuisine/:id" element={<CuisineDetailPage />} />
         <Route path="/provinces" element={<ProvincesPage />} />
         <Route path="/provinces/:code" element={<ProvinceDetailPage />} />
+        <Route path="/regions/north" element={<NorthRegionPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Routes>

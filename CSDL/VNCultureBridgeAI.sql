@@ -30,6 +30,18 @@ CREATE TABLE dbo.NguoiDung (
 );
 GO
 
+CREATE TABLE dbo.KhachHang (
+    KhachHangID          INT IDENTITY(1,1) PRIMARY KEY,
+    HoTen                NVARCHAR(150) NOT NULL,
+    Email                VARCHAR(255) NOT NULL UNIQUE,
+    MatKhauHash          VARCHAR(255) NOT NULL,
+    TrangThai            VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+    NgayTao              DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    NgayCapNhat          DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT CK_KhachHang_TrangThai CHECK (TrangThai IN ('ACTIVE','LOCKED','INACTIVE'))
+);
+GO
+
 /* =========================================================
    2. DANH MỤC TRI THỨC
    Gộp song ngữ VI/EN vào cùng bảng để giảm số bảng
@@ -121,6 +133,42 @@ BEGIN
 END
 GO
 
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewTitleVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewTitleVI NVARCHAR(300) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewTitleEN') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewTitleEN NVARCHAR(300) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewDescriptionVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewDescriptionVI NVARCHAR(MAX) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewDescriptionEN') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewDescriptionEN NVARCHAR(MAX) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewDetailsJsonVI') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewDetailsJsonVI NVARCHAR(MAX) NULL;
+END
+GO
+
+IF COL_LENGTH('dbo.VungVanHoa', 'OverviewDetailsJsonEN') IS NULL
+BEGIN
+    ALTER TABLE dbo.VungVanHoa ADD OverviewDetailsJsonEN NVARCHAR(MAX) NULL;
+END
+GO
+
 IF NOT EXISTS (
     SELECT 1
     FROM sys.indexes
@@ -129,6 +177,136 @@ IF NOT EXISTS (
 )
 BEGIN
     CREATE INDEX IX_VungVanHoa_Homepage ON dbo.VungVanHoa (HomepageEnabled, HomepageDisplayOrder, HoatDong);
+END
+GO
+
+IF OBJECT_ID('dbo.LeHoi', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.LeHoi (
+        LeHoiID                   INT IDENTITY(1,1) PRIMARY KEY,
+        MaLeHoi                   VARCHAR(50) NOT NULL UNIQUE,
+        LoaiBanGhi                VARCHAR(20) NOT NULL DEFAULT 'FESTIVAL',
+        ThuTuHienThi              INT NOT NULL DEFAULT 0,
+        TieuDeVI                  NVARCHAR(300) NULL,
+        TieuDeEN                  NVARCHAR(300) NULL,
+        TieuDePhuVI               NVARCHAR(300) NULL,
+        TieuDePhuEN               NVARCHAR(300) NULL,
+        ShortTitleVI              NVARCHAR(200) NULL,
+        ShortTitleEN              NVARCHAR(200) NULL,
+        MoTaNganVI                NVARCHAR(1500) NULL,
+        MoTaNganEN                NVARCHAR(1500) NULL,
+        HeroDescVI                NVARCHAR(1500) NULL,
+        HeroDescEN                NVARCHAR(1500) NULL,
+        ViTriVI                   NVARCHAR(300) NULL,
+        ViTriEN                   NVARCHAR(300) NULL,
+        NgayLeVI                  NVARCHAR(200) NULL,
+        NgayLeEN                  NVARCHAR(200) NULL,
+        TagVI                     NVARCHAR(150) NULL,
+        TagEN                     NVARCHAR(150) NULL,
+        TagColor                  VARCHAR(20) NULL,
+        TimelineMonthVI           NVARCHAR(100) NULL,
+        TimelineMonthEN           NVARCHAR(100) NULL,
+        TimelineSeasonVI          NVARCHAR(100) NULL,
+        TimelineSeasonEN          NVARCHAR(100) NULL,
+        TimelineColor             VARCHAR(20) NULL,
+        ImageUrl                  NVARCHAR(1000) NULL,
+        ImageAltVI                NVARCHAR(500) NULL,
+        ImageAltEN                NVARCHAR(500) NULL,
+        TimelineImageUrl          NVARCHAR(1000) NULL,
+        TimelineImageAltVI        NVARCHAR(500) NULL,
+        TimelineImageAltEN        NVARCHAR(500) NULL,
+        PageBadgeVI               NVARCHAR(200) NULL,
+        PageBadgeEN               NVARCHAR(200) NULL,
+        PageTitleLine1VI          NVARCHAR(200) NULL,
+        PageTitleLine1EN          NVARCHAR(200) NULL,
+        PageTitleAccentVI         NVARCHAR(200) NULL,
+        PageTitleAccentEN         NVARCHAR(200) NULL,
+        PageTitleLine3VI          NVARCHAR(200) NULL,
+        PageTitleLine3EN          NVARCHAR(200) NULL,
+        PageSubtitleVI            NVARCHAR(1500) NULL,
+        PageSubtitleEN            NVARCHAR(1500) NULL,
+        PageStatsJsonVI           NVARCHAR(MAX) NULL,
+        PageStatsJsonEN           NVARCHAR(MAX) NULL,
+        TimelineItemsJsonVI       NVARCHAR(MAX) NULL,
+        TimelineItemsJsonEN       NVARCHAR(MAX) NULL,
+        GalleryImagesJsonVI       NVARCHAR(MAX) NULL,
+        GalleryImagesJsonEN       NVARCHAR(MAX) NULL,
+        PageHeroImageUrl          NVARCHAR(1000) NULL,
+        PageHeroImageAltVI        NVARCHAR(500) NULL,
+        PageHeroImageAltEN        NVARCHAR(500) NULL,
+        SearchPlaceholderVI       NVARCHAR(300) NULL,
+        SearchPlaceholderEN       NVARCHAR(300) NULL,
+        FilterButtonVI            NVARCHAR(200) NULL,
+        FilterButtonEN            NVARCHAR(200) NULL,
+        AllRegionsVI              NVARCHAR(100) NULL,
+        AllRegionsEN              NVARCHAR(100) NULL,
+        AllMonthsVI               NVARCHAR(100) NULL,
+        AllMonthsEN               NVARCHAR(100) NULL,
+        AllCategoriesVI           NVARCHAR(100) NULL,
+        AllCategoriesEN           NVARCHAR(100) NULL,
+        AllEthnicGroupsVI         NVARCHAR(150) NULL,
+        AllEthnicGroupsEN         NVARCHAR(150) NULL,
+        MajorBadgeVI              NVARCHAR(200) NULL,
+        MajorBadgeEN              NVARCHAR(200) NULL,
+        MajorTitleVI              NVARCHAR(300) NULL,
+        MajorTitleEN              NVARCHAR(300) NULL,
+        MajorSubtitleVI           NVARCHAR(1500) NULL,
+        MajorSubtitleEN           NVARCHAR(1500) NULL,
+        AllTitleVI                NVARCHAR(300) NULL,
+        AllTitleEN                NVARCHAR(300) NULL,
+        AllSubtitleVI             NVARCHAR(1500) NULL,
+        AllSubtitleEN             NVARCHAR(1500) NULL,
+        TimelineBadgeVI           NVARCHAR(200) NULL,
+        TimelineBadgeEN           NVARCHAR(200) NULL,
+        TimelineTitleVI           NVARCHAR(300) NULL,
+        TimelineTitleEN           NVARCHAR(300) NULL,
+        TimelineSubtitleVI        NVARCHAR(1500) NULL,
+        TimelineSubtitleEN        NVARCHAR(1500) NULL,
+        TimelineHintVI            NVARCHAR(200) NULL,
+        TimelineHintEN            NVARCHAR(200) NULL,
+        GalleryBadgeVI            NVARCHAR(200) NULL,
+        GalleryBadgeEN            NVARCHAR(200) NULL,
+        GalleryTitleVI            NVARCHAR(300) NULL,
+        GalleryTitleEN            NVARCHAR(300) NULL,
+        GallerySubtitleVI         NVARCHAR(1500) NULL,
+        GallerySubtitleEN         NVARCHAR(1500) NULL,
+        MeaningBadgeVI            NVARCHAR(200) NULL,
+        MeaningBadgeEN            NVARCHAR(200) NULL,
+        MeaningTitleVI            NVARCHAR(300) NULL,
+        MeaningTitleEN            NVARCHAR(300) NULL,
+        MeaningParagraphsJsonVI   NVARCHAR(MAX) NULL,
+        MeaningParagraphsJsonEN   NVARCHAR(MAX) NULL,
+        MeaningButtonVI           NVARCHAR(200) NULL,
+        MeaningButtonEN           NVARCHAR(200) NULL,
+        MeaningButtonHref         NVARCHAR(300) NULL,
+        QuoteTitleVI              NVARCHAR(300) NULL,
+        QuoteTitleEN              NVARCHAR(300) NULL,
+        QuoteSubtitleVI           NVARCHAR(300) NULL,
+        QuoteSubtitleEN           NVARCHAR(300) NULL,
+        QuoteDescVI               NVARCHAR(1500) NULL,
+        QuoteDescEN               NVARCHAR(1500) NULL,
+        QuoteButtonVI             NVARCHAR(200) NULL,
+        QuoteButtonEN             NVARCHAR(200) NULL,
+        QuoteBackgroundImageUrl   NVARCHAR(1000) NULL,
+        QuoteBackgroundImageAltVI NVARCHAR(500) NULL,
+        QuoteBackgroundImageAltEN NVARCHAR(500) NULL,
+        NoiDungJsonVI             NVARCHAR(MAX) NULL,
+        NoiDungJsonEN             NVARCHAR(MAX) NULL,
+        HoatDong                  BIT NOT NULL DEFAULT 1,
+        NgayTao                   DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        NgayCapNhat               DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT CK_LeHoi_LoaiBanGhi CHECK (LoaiBanGhi IN ('PAGE', 'FESTIVAL'))
+    );
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_LeHoi_LoaiBanGhi_ThuTu'
+      AND object_id = OBJECT_ID('dbo.LeHoi')
+)
+BEGIN
+    CREATE INDEX IX_LeHoi_LoaiBanGhi_ThuTu ON dbo.LeHoi (LoaiBanGhi, HoatDong, ThuTuHienThi);
 END
 GO
 
@@ -141,6 +319,120 @@ CREATE TABLE dbo.DanToc (
     MoTaEN              NVARCHAR(1000) NULL,
     HoatDong            BIT NOT NULL DEFAULT 1
 );
+GO
+
+IF OBJECT_ID('dbo.DanTocProfile', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.DanTocProfile (
+        DanTocID                    INT NOT NULL PRIMARY KEY,
+        HeroBackgroundImageUrl      NVARCHAR(1000) NULL,
+        HeroBackgroundAltVI         NVARCHAR(500) NULL,
+        HeroBackgroundAltEN         NVARCHAR(500) NULL,
+        HeroForegroundImageUrl      NVARCHAR(1000) NULL,
+        HeroForegroundAltVI         NVARCHAR(500) NULL,
+        HeroForegroundAltEN         NVARCHAR(500) NULL,
+        IntroImageUrl               NVARCHAR(1000) NULL,
+        IntroImageAltVI             NVARCHAR(500) NULL,
+        IntroImageAltEN             NVARCHAR(500) NULL,
+        FeatureHighlightImageUrl    NVARCHAR(1000) NULL,
+        FeatureHighlightAltVI       NVARCHAR(500) NULL,
+        FeatureHighlightAltEN       NVARCHAR(500) NULL,
+        MusicImageUrl               NVARCHAR(1000) NULL,
+        MusicImageAltVI             NVARCHAR(500) NULL,
+        MusicImageAltEN             NVARCHAR(500) NULL,
+        ArchitectureImageUrl        NVARCHAR(1000) NULL,
+        ArchitectureImageAltVI      NVARCHAR(500) NULL,
+        ArchitectureImageAltEN      NVARCHAR(500) NULL,
+        CardImageUrl                NVARCHAR(1000) NULL,
+        CardImageAltVI              NVARCHAR(500) NULL,
+        CardImageAltEN              NVARCHAR(500) NULL,
+        HeroSubtitleVI              NVARCHAR(1000) NULL,
+        HeroSubtitleEN              NVARCHAR(1000) NULL,
+        OverviewTitleVI             NVARCHAR(300) NULL,
+        OverviewTitleEN             NVARCHAR(300) NULL,
+        OverviewBodyVI              NVARCHAR(MAX) NULL,
+        OverviewBodyEN              NVARCHAR(MAX) NULL,
+        HistoryTitleVI              NVARCHAR(300) NULL,
+        HistoryTitleEN              NVARCHAR(300) NULL,
+        HistoryBodyVI               NVARCHAR(MAX) NULL,
+        HistoryBodyEN               NVARCHAR(MAX) NULL,
+        CultureTitleVI              NVARCHAR(300) NULL,
+        CultureTitleEN              NVARCHAR(300) NULL,
+        CultureBodyVI               NVARCHAR(MAX) NULL,
+        CultureBodyEN               NVARCHAR(MAX) NULL,
+        ArchitectureTitleVI         NVARCHAR(300) NULL,
+        ArchitectureTitleEN         NVARCHAR(300) NULL,
+        ArchitectureBodyVI          NVARCHAR(MAX) NULL,
+        ArchitectureBodyEN          NVARCHAR(MAX) NULL,
+        PrimaryRegionLabelVI        NVARCHAR(200) NULL,
+        PrimaryRegionLabelEN        NVARCHAR(200) NULL,
+        PopulationLabelVI           NVARCHAR(200) NULL,
+        PopulationLabelEN           NVARCHAR(200) NULL,
+        DisplayOrder                INT NOT NULL DEFAULT 0,
+        HoatDong                    BIT NOT NULL DEFAULT 1,
+        NgayTao                     DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        NgayCapNhat                 DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT FK_DanTocProfile_DanToc FOREIGN KEY (DanTocID) REFERENCES dbo.DanToc(DanTocID) ON DELETE CASCADE
+    );
+END
+GO
+
+IF OBJECT_ID('dbo.DanTocSectionItem', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.DanTocSectionItem (
+        DanTocSectionItemID         INT IDENTITY(1,1) PRIMARY KEY,
+        DanTocID                    INT NOT NULL,
+        LoaiSection                 VARCHAR(30) NOT NULL,
+        TieuDeVI                    NVARCHAR(300) NULL,
+        TieuDeEN                    NVARCHAR(300) NULL,
+        MoTaVI                      NVARCHAR(MAX) NULL,
+        MoTaEN                      NVARCHAR(MAX) NULL,
+        ImageUrl                    NVARCHAR(1000) NULL,
+        ImageAltVI                  NVARCHAR(500) NULL,
+        ImageAltEN                  NVARCHAR(500) NULL,
+        LayoutSize                  VARCHAR(20) NULL,
+        TagVI                       NVARCHAR(150) NULL,
+        TagEN                       NVARCHAR(150) NULL,
+        LienKetBaiVietID            INT NULL,
+        ThuTuHienThi                INT NOT NULL DEFAULT 0,
+        HoatDong                    BIT NOT NULL DEFAULT 1,
+        NgayTao                     DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        NgayCapNhat                 DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT CK_DanTocSectionItem_Loai CHECK (LoaiSection IN ('TEXTILES','FESTIVALS','CUISINE','ARTS','GALLERY','FEATURES','STORIES')),
+        CONSTRAINT FK_DanTocSectionItem_DanToc FOREIGN KEY (DanTocID) REFERENCES dbo.DanToc(DanTocID) ON DELETE CASCADE,
+        CONSTRAINT FK_DanTocSectionItem_BaiViet FOREIGN KEY (LienKetBaiVietID) REFERENCES dbo.BaiViet(BaiVietID)
+    );
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_DanTocProfile_DisplayOrder'
+      AND object_id = OBJECT_ID('dbo.DanTocProfile')
+)
+BEGIN
+    CREATE INDEX IX_DanTocProfile_DisplayOrder ON dbo.DanTocProfile (DisplayOrder, HoatDong);
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_DanTocSectionItem_DanToc_Section'
+      AND object_id = OBJECT_ID('dbo.DanTocSectionItem')
+)
+BEGIN
+    CREATE INDEX IX_DanTocSectionItem_DanToc_Section ON dbo.DanTocSectionItem (DanTocID, LoaiSection, ThuTuHienThi, HoatDong);
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_DanTocSectionItem_BaiViet'
+      AND object_id = OBJECT_ID('dbo.DanTocSectionItem')
+)
+BEGIN
+    CREATE INDEX IX_DanTocSectionItem_BaiViet ON dbo.DanTocSectionItem (LienKetBaiVietID);
+END
 GO
 
 CREATE TABLE dbo.TuKhoa (
@@ -287,6 +579,66 @@ CREATE TABLE dbo.Media (
 );
 GO
 
+CREATE TABLE dbo.NgheThuatPage (
+    NgheThuatPageID         INT IDENTITY(1,1) PRIMARY KEY,
+    MaTrang                 VARCHAR(50) NOT NULL UNIQUE,
+    HeroBadgeVI             NVARCHAR(200) NULL,
+    HeroBadgeEN             NVARCHAR(200) NULL,
+    HeroTitleLine1VI        NVARCHAR(200) NULL,
+    HeroTitleLine1EN        NVARCHAR(200) NULL,
+    HeroTitleAccentVI       NVARCHAR(200) NULL,
+    HeroTitleAccentEN       NVARCHAR(200) NULL,
+    HeroTitleLine3VI        NVARCHAR(200) NULL,
+    HeroTitleLine3EN        NVARCHAR(200) NULL,
+    HeroSubtitleVI          NVARCHAR(MAX) NULL,
+    HeroSubtitleEN          NVARCHAR(MAX) NULL,
+    HeroImageUrl            NVARCHAR(1000) NULL,
+    HeroImageAltVI          NVARCHAR(500) NULL,
+    HeroImageAltEN          NVARCHAR(500) NULL,
+    HeroImageBadgeVI        NVARCHAR(200) NULL,
+    HeroImageBadgeEN        NVARCHAR(200) NULL,
+    HeroImageBadgeIcon      NVARCHAR(20) NULL,
+    StatsJsonVI             NVARCHAR(MAX) NULL,
+    StatsJsonEN             NVARCHAR(MAX) NULL,
+    HeritageTitleVI         NVARCHAR(200) NULL,
+    HeritageTitleEN         NVARCHAR(200) NULL,
+    HeritageSubtitleVI      NVARCHAR(MAX) NULL,
+    HeritageSubtitleEN      NVARCHAR(MAX) NULL,
+    HeritageCardsJsonVI     NVARCHAR(MAX) NULL,
+    HeritageCardsJsonEN     NVARCHAR(MAX) NULL,
+    FeaturedBadgeVI         NVARCHAR(200) NULL,
+    FeaturedBadgeEN         NVARCHAR(200) NULL,
+    FeaturedTitleVI         NVARCHAR(200) NULL,
+    FeaturedTitleEN         NVARCHAR(200) NULL,
+    FeaturedBodyJsonVI      NVARCHAR(MAX) NULL,
+    FeaturedBodyJsonEN      NVARCHAR(MAX) NULL,
+    FeaturedStatsJsonVI     NVARCHAR(MAX) NULL,
+    FeaturedStatsJsonEN     NVARCHAR(MAX) NULL,
+    FeaturedImageUrl        NVARCHAR(1000) NULL,
+    FeaturedImageAltVI      NVARCHAR(500) NULL,
+    FeaturedImageAltEN      NVARCHAR(500) NULL,
+    GalleryTitleVI          NVARCHAR(200) NULL,
+    GalleryTitleEN          NVARCHAR(200) NULL,
+    GallerySubtitleVI       NVARCHAR(MAX) NULL,
+    GallerySubtitleEN       NVARCHAR(MAX) NULL,
+    GalleryImagesJsonVI     NVARCHAR(MAX) NULL,
+    GalleryImagesJsonEN     NVARCHAR(MAX) NULL,
+    StoryBadgeVI            NVARCHAR(200) NULL,
+    StoryBadgeEN            NVARCHAR(200) NULL,
+    StoryTitleVI            NVARCHAR(200) NULL,
+    StoryTitleEN            NVARCHAR(200) NULL,
+    StoryBodyJsonVI         NVARCHAR(MAX) NULL,
+    StoryBodyJsonEN         NVARCHAR(MAX) NULL,
+    StoryFeaturesJsonVI     NVARCHAR(MAX) NULL,
+    StoryFeaturesJsonEN     NVARCHAR(MAX) NULL,
+    StoryImagesJsonVI       NVARCHAR(MAX) NULL,
+    StoryImagesJsonEN       NVARCHAR(MAX) NULL,
+    HoatDong                BIT NOT NULL DEFAULT 1,
+    NgayTao                 DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    NgayCapNhat             DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+);
+GO
+
 CREATE TABLE dbo.NguonThamKhao (
     NguonID              INT IDENTITY(1,1) PRIMARY KEY,
     BaiVietID            INT NOT NULL,
@@ -428,9 +780,16 @@ GO
    ========================================================= */
 
 INSERT INTO dbo.NguoiDung (HoTen, Email, MatKhauHash, VaiTro)
-SELECT N'Quản trị viên', 'admin@vnculturebridge.ai', '123456HASH', 'ADMIN'
+SELECT N'Quản trị viên Nguyễn Văn A', 'admin.vnculturebridge@gmail.com', '$2b$10$LMgvDe.HngByMtMZmcwjjO1FF6EU0lx0IHFkhQ1iy//LTOFV4Nwza', 'ADMIN'
 WHERE NOT EXISTS (
-    SELECT 1 FROM dbo.NguoiDung WHERE Email = 'admin@vnculturebridge.ai'
+    SELECT 1 FROM dbo.NguoiDung WHERE Email = 'admin.vnculturebridge@gmail.com'
+);
+GO
+
+INSERT INTO dbo.KhachHang (HoTen, Email, MatKhauHash, TrangThai)
+SELECT N'Nguyễn Thị Lan', 'khachhang.vnculturebridge@gmail.com', '$2b$10$fy2F2cDPNwhEQi3wli86tulJG2MtJvV/Z.W3ZUbsNJ2hu.XV/VT2i', 'ACTIVE'
+WHERE NOT EXISTS (
+    SELECT 1 FROM dbo.KhachHang WHERE Email = 'khachhang.vnculturebridge@gmail.com'
 );
 GO
 
