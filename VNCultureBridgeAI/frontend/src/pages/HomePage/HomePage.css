@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Outfit:wght@400;600;700;800&display=swap');
-
 .hero-section::before {
   content: '';
   position: absolute;
@@ -241,6 +239,19 @@
   font-size: clamp(2.8rem, 6vw, 5.4rem);
   line-height: 0.98;
   max-width: 16ch;
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.34);
+}
+
+.hero-content p {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}
+
+.hero-content .section-badge {
+  color: rgba(255, 248, 241, 0.96);
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .hero-title-line {
@@ -309,11 +320,11 @@
 
 /* Basic setup and ivory background */
 .regions-showcase {
-  padding: 120px 0 !important;
+  padding: 72px 0 56px !important;
   background-color: #fdf8f4 !important;
   position: relative !important;
   overflow: hidden !important;
-  min-height: 800px;
+  min-height: auto;
 }
 
 .regions-showcase__heading {
@@ -323,8 +334,8 @@
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  gap: 12px !important;
-  margin-bottom: 60px !important;
+  gap: 8px !important;
+  margin-bottom: 28px !important;
 }
 
 .regions-showcase__badge-pill {
@@ -341,7 +352,7 @@
 }
 
 .regions-showcase__magical-title {
-  font-family: 'Playfair Display', serif !important;
+  font-family: var(--font-heading) !important;
   font-size: 3.8rem !important;
   color: #1a1a1a !important;
   margin: 20px 0 !important;
@@ -398,9 +409,13 @@
 .regions-showcase__subtitle {
   max-width: 700px !important;
   color: #6d6a62 !important;
-  font-size: 1.1rem !important;
-  line-height: 1.7 !important;
-  margin: 10px auto !important;
+  font-size: 1.02rem !important;
+  line-height: 1.62 !important;
+  margin: 6px auto 0 !important;
+}
+
+.regions-showcase__heading {
+  margin-bottom: 16px !important;
 }
 
 /* Grid Layout Fix */
@@ -408,7 +423,7 @@
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 24px !important;
-  margin: 60px auto 0 !important;
+  margin: 8px auto 0 !important;
   max-width: 1240px !important;
   padding: 0 40px !important;
 }
@@ -1213,7 +1228,7 @@
 }
 
 .cuisine-card__body h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.8rem;
   margin: 0;
   color: #1f0b06;

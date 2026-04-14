@@ -3,7 +3,7 @@
     background-color: var(--bg-secondary);
     color: var(--text-muted);
     padding: 60px 0 20px;
-    font-family: var(--font-body);
+    font-family: var(--font-ui);
     overflow: hidden;
     border-top: 1px solid rgba(138, 90, 68, 0.1);
 }
@@ -55,9 +55,11 @@
 
 .vnc-brand-text {
     /* Inherits from heading explicitly mapped in App.css, but just in case */
-    font-size: 28px;
+    font-family: var(--font-brand);
+    font-size: var(--text-brand-size);
     font-weight: 800;
     color: var(--text-heading);
+    letter-spacing: 0.02em;
 }
 
 .vnc-desc {
@@ -79,8 +81,8 @@
 /* Newsletter */
 .vnc-newsletter h5,
 .vnc-social h5 {
-    font-size: 13px;
-    letter-spacing: 0.5px;
+    font-size: var(--text-overline-size);
+    letter-spacing: var(--text-brand-subtitle-spacing);
     color: var(--text-heading);
     margin-bottom: 12px;
     text-transform: uppercase;

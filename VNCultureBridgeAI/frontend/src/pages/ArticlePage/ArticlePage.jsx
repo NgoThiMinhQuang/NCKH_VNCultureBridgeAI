@@ -163,12 +163,12 @@ const DEFAULT_ART_LANDING = {
     titleAccentEn: 'Arts & Heritage',
     titleLine3En: '',
     subtitleVi: 'Nơi truyền thống cổ xưa hòa quyện cùng biểu đạt hiện đại — mang theo câu chuyện ngàn năm trong từng nét vẽ, từng điệu múa.',
-    subtitleEn: 'Where ancient traditions weave through modern expression — carrying stories of a thousand years in every brushstroke and dance.',
+    subtitleEn: 'Nơi truyền thống cổ xưa hòa quyện cùng biểu đạt hiện đại — mang theo câu chuyện ngàn năm trong từng nét vẽ, từng điệu múa.',
     imageUrl: heroBg,
     imageAltVi: 'Ruộng bậc thang Việt Nam',
-    imageAltEn: 'Vietnamese rice terraces',
+    imageAltEn: 'Ruộng bậc thang Việt Nam',
     imageBadgeVi: 'Ruộng bậc thang Tây Bắc',
-    imageBadgeEn: 'Northwestern Terraces',
+    imageBadgeEn: 'Ruộng bậc thang Tây Bắc',
     imageBadgeIcon: '🏔️',
   },
   stats: [
@@ -207,8 +207,8 @@ const DEFAULT_ART_LANDING = {
       { value: '100+', labelVi: 'Năm truyền thống', labelEn: 'Years of tradition' },
     ],
     imageUrl: img4,
-    imageAltVi: 'Sơn Mài Art',
-    imageAltEn: 'Son Mai Art',
+    imageAltVi: 'Nghệ thuật sơn mài',
+    imageAltEn: 'Nghệ thuật sơn mài',
   },
   gallery: {
     titleVi: 'Thư Viện Ảnh',
@@ -258,10 +258,10 @@ const DEFAULT_ART_LANDING = {
 }
 
 function formatPublishedDate(value, lang) {
-  if (!value) return lang === 'vi' ? 'Mới đây' : 'Recently'
+  if (!value) return 'Mới đây'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return value
-  return date.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', {
+  return date.toLocaleDateString('vi-VN', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
@@ -481,11 +481,9 @@ export default function ArticlePage() {
         <section className="ap-articles-section" ref={articlesRef}>
           <div className="section-container">
             <div className="ap-articles__header fade-up">
-              <h2 className="ap-articles__title">{lang === 'vi' ? 'Bài Viết Văn Hóa' : 'Cultural Articles'}</h2>
+              <h2 className="ap-articles__title">Bài viết văn hóa</h2>
               <p className="ap-articles__subtitle">
-                {lang === 'vi'
-                  ? 'Khám phá kho tri thức phong phú về văn hóa, nghệ thuật và di sản Việt Nam'
-                  : 'Explore a rich treasury of knowledge about Vietnamese culture, arts, and heritage'}
+                Khám phá kho tri thức phong phú về văn hóa, nghệ thuật và di sản Việt Nam
               </p>
             </div>
 
@@ -504,34 +502,34 @@ export default function ArticlePage() {
             {featured ? (
               <Link to={`/articles/${featured.code}`} className="ap-featured-card fade-up">
                 <div className="ap-featured-card__img">
-                  <img src={featured.image} alt={lang === 'vi' ? featured.titleVi : featured.titleEn} />
-                  <span className="ap-featured-card__badge">{lang === 'vi' ? '✦ Nổi Bật' : '✦ Featured'}</span>
+                  <img src={featured.image} alt={featured.titleVi} />
+                  <span className="ap-featured-card__badge">✦ Nổi bật</span>
                 </div>
                 <div className="ap-featured-card__body">
-                  <span className="ap-cat-tag">{lang === 'vi' ? featured.categoryVi : featured.categoryEn}</span>
-                  <h3 className="ap-featured-card__title">{lang === 'vi' ? featured.titleVi : featured.titleEn}</h3>
-                  <p className="ap-featured-card__desc">{lang === 'vi' ? featured.descVi : featured.descEn}</p>
+                  <span className="ap-cat-tag">{featured.categoryVi}</span>
+                  <h3 className="ap-featured-card__title">{featured.titleVi}</h3>
+                  <p className="ap-featured-card__desc">{featured.descVi}</p>
                   <div className="ap-featured-card__meta">
                     <span className="ap-meta-author">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                         <circle cx="12" cy="7" r="4" />
                       </svg>
-                      {lang === 'vi' ? featured.authorVi : featured.authorEn}
+                      {featured.authorVi}
                     </span>
                     <span className="ap-meta-dot">·</span>
-                    <span>{lang === 'vi' ? featured.dateVi : featured.dateEn}</span>
+                    <span>{featured.dateVi}</span>
                     <span className="ap-meta-dot">·</span>
                     <span>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '4px', verticalAlign: 'middle' }}>
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                       </svg>
-                      {lang === 'vi' ? featured.readVi : featured.readEn}
+                      {featured.readVi}
                     </span>
                   </div>
                   <div className="ap-featured-card__cta">
-                    {lang === 'vi' ? 'Đọc bài viết' : 'Read article'}
+                    Đọc bài viết
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
@@ -544,15 +542,15 @@ export default function ArticlePage() {
               {gridArticles.map((article) => (
                 <Link to={`/articles/${article.code}`} key={article.code} className="ap-card">
                   <div className="ap-card__img">
-                    <img src={article.image} alt={lang === 'vi' ? article.titleVi : article.titleEn} loading="lazy" />
-                    <span className="ap-cat-tag ap-cat-tag--overlay">{lang === 'vi' ? article.categoryVi : article.categoryEn}</span>
+                    <img src={article.image} alt={article.titleVi} loading="lazy" />
+                    <span className="ap-cat-tag ap-cat-tag--overlay">{article.categoryVi}</span>
                   </div>
                   <div className="ap-card__body">
-                    <h3 className="ap-card__title">{lang === 'vi' ? article.titleVi : article.titleEn}</h3>
-                    <p className="ap-card__desc">{lang === 'vi' ? article.descVi : article.descEn}</p>
+                    <h3 className="ap-card__title">{article.titleVi}</h3>
+                    <p className="ap-card__desc">{article.descVi}</p>
                     <div className="ap-card__footer">
-                      <span className="ap-card__author">{lang === 'vi' ? article.authorVi : article.authorEn}</span>
-                      <span className="ap-card__read">{lang === 'vi' ? article.readVi : article.readEn}</span>
+                      <span className="ap-card__author">{article.authorVi}</span>
+                      <span className="ap-card__read">{article.readVi}</span>
                     </div>
                   </div>
                 </Link>
@@ -568,8 +566,8 @@ export default function ArticlePage() {
         <section className="heritage-categories-section">
           <div className="section-container">
             <div className="heritage-categories__header fade-up">
-              <h2 className="heritage-categories__title">{lang === 'vi' ? landing.heritage.titleVi : landing.heritage.titleEn}</h2>
-              <p className="heritage-categories__subtitle">{lang === 'vi' ? landing.heritage.subtitleVi : landing.heritage.subtitleEn}</p>
+              <h2 className="heritage-categories__title">{landing.heritage.titleVi}</h2>
+              <p className="heritage-categories__subtitle">{landing.heritage.subtitleVi}</p>
             </div>
 
             <div className="heritage-grid fade-up" style={{ animationDelay: '0.1s' }}>
@@ -578,8 +576,8 @@ export default function ArticlePage() {
                   <div className="heritage-card__bg" style={{ backgroundImage: `url(${card.img || card.imageUrl || heroBg})` }}></div>
                   <div className="heritage-card__overlay"></div>
                   <div className="heritage-card__content">
-                    <h3>{lang === 'vi' ? (card.titleVi || card.title) : (card.titleEn || card.title)}</h3>
-                    <span>{lang === 'vi' ? (card.subVi || card.subtitle || card.sub) : (card.subEn || card.subtitle || card.sub)}</span>
+                    <h3>{card.titleVi || card.title}</h3>
+                    <span>{card.subVi || card.subtitle || card.sub}</span>
                   </div>
                 </div>
               ))}
@@ -590,15 +588,15 @@ export default function ArticlePage() {
         <section className="featured-artwork-section fade-up">
           <div className="featured-artwork__container">
             <div className="featured-artwork__image-wrapper">
-              <img src={landing.featuredArtwork.imageUrl || img4} alt={lang === 'vi' ? landing.featuredArtwork.imageAltVi : landing.featuredArtwork.imageAltEn} className="featured-artwork__image" />
+              <img src={landing.featuredArtwork.imageUrl || img4} alt={landing.featuredArtwork.imageAltVi} className="featured-artwork__image" />
             </div>
             <div className="featured-artwork__content">
-              <div className="featured-badge">{lang === 'vi' ? landing.featuredArtwork.badgeVi : landing.featuredArtwork.badgeEn}</div>
-              <h2 className="featured-artwork__title">{lang === 'vi' ? landing.featuredArtwork.titleVi : landing.featuredArtwork.titleEn}</h2>
+              <div className="featured-badge">{landing.featuredArtwork.badgeVi}</div>
+              <h2 className="featured-artwork__title">{landing.featuredArtwork.titleVi}</h2>
               <div className="featured-artwork__divider"></div>
 
               <div className="featured-artwork__body">
-                {(lang === 'vi' ? landing.featuredArtwork.bodyVi : landing.featuredArtwork.bodyEn).map((paragraph, index) => (
+                {landing.featuredArtwork.bodyVi.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
@@ -618,8 +616,8 @@ export default function ArticlePage() {
         <section className="article-gallery-section fade-up">
           <div className="section-container">
             <div className="article-gallery__header">
-              <h2 className="article-gallery__title">{lang === 'vi' ? landing.gallery.titleVi : landing.gallery.titleEn}</h2>
-              <p className="article-gallery__subtitle">{lang === 'vi' ? landing.gallery.subtitleVi : landing.gallery.subtitleEn}</p>
+              <h2 className="article-gallery__title">{landing.gallery.titleVi}</h2>
+              <p className="article-gallery__subtitle">{landing.gallery.subtitleVi}</p>
             </div>
 
             <div className="article-gallery__grid">
@@ -627,7 +625,7 @@ export default function ArticlePage() {
                 <div className="gallery-col" key={columnIndex}>
                   {column.map((image, imageIndex) => (
                     <div className="gallery-item" key={`${columnIndex}-${imageIndex}`}>
-                      <img src={image || img5} alt="Vietnam Culture" loading="lazy" />
+                      <img src={image || img5} alt="Văn hóa Việt Nam" loading="lazy" />
                     </div>
                   ))}
                 </div>
@@ -639,12 +637,12 @@ export default function ArticlePage() {
         <section className="article-story-section fade-up">
           <div className="article-story__container">
             <div className="article-story__content">
-              <div className="featured-badge">{lang === 'vi' ? landing.story.badgeVi : landing.story.badgeEn}</div>
-              <h2 className="article-story__title">{lang === 'vi' ? landing.story.titleVi : landing.story.titleEn}</h2>
+              <div className="featured-badge">{landing.story.badgeVi}</div>
+              <h2 className="article-story__title">{landing.story.titleVi}</h2>
               <div className="featured-artwork__divider"></div>
 
               <div className="article-story__body">
-                {(lang === 'vi' ? landing.story.bodyVi : landing.story.bodyEn).map((paragraph, index) => (
+                {landing.story.bodyVi.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
@@ -665,12 +663,12 @@ export default function ArticlePage() {
             <div className="article-story__images">
               <div className="story-images-grid">
                 <div className="story-img-col">
-                  <div className="story-img-item"><img src={landing.story.images[0] || img3} alt="Heritage" /></div>
-                  <div className="story-img-item"><img src={landing.story.images[1] || img6} alt="Heritage" /></div>
+                  <div className="story-img-item"><img src={landing.story.images[0] || img3} alt="Di sản văn hóa" /></div>
+                  <div className="story-img-item"><img src={landing.story.images[1] || img6} alt="Di sản văn hóa" /></div>
                 </div>
                 <div className="story-img-col">
-                  <div className="story-img-item tall"><img src={landing.story.images[2] || img2} alt="Heritage" /></div>
-                  <div className="story-img-item"><img src={landing.story.images[3] || img5} alt="Heritage" /></div>
+                  <div className="story-img-item tall"><img src={landing.story.images[2] || img2} alt="Di sản văn hóa" /></div>
+                  <div className="story-img-item"><img src={landing.story.images[3] || img5} alt="Di sản văn hóa" /></div>
                 </div>
               </div>
             </div>

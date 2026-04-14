@@ -39,7 +39,7 @@ export default function LoginPage() {
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
-        <span>Trang Chủ</span>
+        <span>Trang chủ</span>
       </button>
 
       <div className="login-v2-container">
@@ -48,8 +48,8 @@ export default function LoginPage() {
         <div className="login-v2-showcase">
           <div className="showcase-image-wrapper">
             <img 
-              src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-              alt="Vietnam Culture" 
+              src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+              alt="Không gian văn hóa Việt Nam"
               className="showcase-img"
             />
             <div className="showcase-overlay"></div>

@@ -117,7 +117,7 @@ async function getCuisine(req, res, next) {
     const data = await contentService.getCuisineDetail(req.params.code, lang)
 
     if (!data) {
-      return res.status(404).json({ ok: false, message: 'Cuisine not found' })
+      return res.status(404).json({ ok: false, message: 'Không tìm thấy món ăn' })
     }
 
     return res.json({ ok: true, data })

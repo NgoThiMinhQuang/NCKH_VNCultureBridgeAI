@@ -3,6 +3,24 @@ import { Link, useLocation } from 'react-router-dom'
 import './ProvincesPage.css'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import { getProvinces } from '../../services/province.service'
+import imgRegionNorth from '../../assets/images/regions/region_overview_north.png'
+import imgRegionCentral from '../../assets/images/regions/region_overview_central.png'
+import imgRegionSouth from '../../assets/images/regions/region_overview_south.png'
+import imgProvinceCaoBang from '../../assets/images/regions/province_caobang.png'
+import imgProvinceDienBien from '../../assets/images/regions/province_dienbien.png'
+import imgProvinceHaGiang from '../../assets/images/regions/province_hagiang.png'
+import imgProvinceLaiChau from '../../assets/images/regions/province_laichau.png'
+import imgProvinceLaoCai from '../../assets/images/regions/province_laocai.png'
+import imgProvinceSonLa from '../../assets/images/regions/province_sonla.png'
+import imgHighlightHanoi from '../../assets/images/regions/highlight_hanoi.png'
+import imgHighlightSapa from '../../assets/images/regions/highlight_sapa.png'
+import imgHighlightTrangAn from '../../assets/images/regions/highlight_trangan.png'
+import imgHighlightHue from '../../assets/images/regions/highlight_hue.png'
+import imgHighlightHoiAn from '../../assets/images/regions/highlight_hoian.png'
+import imgHighlightDaNang from '../../assets/images/regions/highlight_danang.png'
+import imgHighlightCanTho from '../../assets/images/regions/highlight_cantho.png'
+import imgHighlightNamBo from '../../assets/images/regions/highlight_nambo.png'
+import imgHeroRegions from '../../assets/images/regions/regions_hero_bg.png'
 
 const REGION_ORDER_VI = ['Miền Bắc', 'Miền Trung', 'Miền Nam', 'Tây Nguyên', 'Đồng bằng sông Cửu Long']
 const REGION_ORDER_EN = ['Northern Vietnam', 'Central Vietnam', 'Southern Vietnam', 'Central Highlands', 'Mekong Delta']
@@ -24,6 +42,87 @@ function sortRegions(regions, lang) {
     if (indexB === -1) return -1
     return indexA - indexB
   })
+}
+
+const FALLBACK_IMAGE_BY_CODE = {
+  'ha-noi': imgHighlightHanoi,
+  'quang-ninh': imgHighlightHanoi,
+  'ninh-binh': imgHighlightTrangAn,
+  'lao-cai': imgProvinceLaoCai,
+  'sapa': imgHighlightSapa,
+  'ha-giang': imgProvinceHaGiang,
+  'cao-bang': imgProvinceCaoBang,
+  'dien-bien': imgProvinceDienBien,
+  'lai-chau': imgProvinceLaiChau,
+  'son-la': imgProvinceSonLa,
+  'lang-son': imgProvinceCaoBang,
+  'bac-kan': imgProvinceHaGiang,
+  'tuyen-quang': imgProvinceHaGiang,
+  'yen-bai': imgHighlightSapa,
+  'thai-nguyen': imgHighlightHanoi,
+  'phu-tho': imgHighlightTrangAn,
+  'bac-ninh': imgHighlightHanoi,
+  'hai-duong': imgHighlightHanoi,
+  'hai-phong': imgHighlightHanoi,
+  'hung-yen': imgHighlightHanoi,
+  'nam-dinh': imgHighlightTrangAn,
+  'thai-binh': imgHighlightTrangAn,
+  'vinh-phuc': imgHighlightHanoi,
+  'ha-nam': imgHighlightTrangAn,
+  'nghe-an': imgHighlightHue,
+  'ha-tinh': imgHighlightHue,
+  'quang-binh': imgHighlightHue,
+  'quang-tri': imgHighlightHue,
+  'thua-thien-hue': imgHighlightHue,
+  'hue': imgHighlightHue,
+  'da-nang': imgHighlightDaNang,
+  'quang-nam': imgHighlightHoiAn,
+  'quang-ngai': imgHighlightDaNang,
+  'binh-dinh': imgHighlightDaNang,
+  'phu-yen': imgHighlightDaNang,
+  'khanh-hoa': imgHighlightDaNang,
+  'ninh-thuan': imgHighlightDaNang,
+  'binh-thuan': imgHighlightDaNang,
+  'kon-tum': imgRegionCentral,
+  'gia-lai': imgRegionCentral,
+  'dak-lak': imgRegionCentral,
+  'dak-nong': imgRegionCentral,
+  'lam-dong': imgRegionCentral,
+  'tp-ho-chi-minh': imgHighlightNamBo,
+  'ho-chi-minh': imgHighlightNamBo,
+  'can-tho': imgHighlightCanTho,
+  'an-giang': imgHighlightCanTho,
+  'kien-giang': imgHighlightCanTho,
+  'ca-mau': imgHighlightNamBo,
+  'bac-lieu': imgHighlightNamBo,
+  'soc-trang': imgHighlightCanTho,
+  'tra-vinh': imgHighlightCanTho,
+  'vinh-long': imgHighlightCanTho,
+  'dong-thap': imgHighlightCanTho,
+  'ben-tre': imgHighlightCanTho,
+  'tien-giang': imgHighlightCanTho,
+  'long-an': imgHighlightNamBo,
+  'tay-ninh': imgHighlightNamBo,
+  'binh-phuoc': imgHighlightNamBo,
+  'dong-nai': imgHighlightNamBo,
+  'ba-ria-vung-tau': imgHighlightNamBo,
+}
+
+const FALLBACK_IMAGE_BY_REGION = {
+  'Miền Bắc': imgRegionNorth,
+  'Northern Vietnam': imgRegionNorth,
+  'Miền Trung': imgRegionCentral,
+  'Central Vietnam': imgRegionCentral,
+  'Miền Nam': imgRegionSouth,
+  'Southern Vietnam': imgRegionSouth,
+  'Tây Nguyên': imgRegionCentral,
+  'Central Highlands': imgRegionCentral,
+  'Đồng bằng sông Cửu Long': imgRegionSouth,
+  'Mekong Delta': imgRegionSouth,
+}
+
+function getProvinceImage(province) {
+  return FALLBACK_IMAGE_BY_CODE[province.code] || FALLBACK_IMAGE_BY_REGION[province.region] || imgHeroRegions || imgRegionNorth
 }
 
 export default function ProvincesPage() {
@@ -65,7 +164,7 @@ export default function ProvincesPage() {
   }, [lang])
 
   useEffect(() => {
-    document.title = lang === 'vi' ? 'VietCultura - Tất cả tỉnh thành' : 'VietCultura - All Provinces'
+    document.title = 'VietCultura - Tất cả tỉnh thành'
     window.scrollTo(0, 0)
   }, [lang])
 
@@ -125,8 +224,8 @@ export default function ProvincesPage() {
         lang={lang}
         onLangChange={setLang}
         breadcrumb={[
-          { label: lang === 'vi' ? 'Khám phá vùng miền' : 'Explore Regions', path: '/regions' },
-          { label: lang === 'vi' ? 'Tất cả tỉnh thành' : 'All Provinces' },
+          { label: 'Khám phá vùng miền', path: '/regions' },
+          { label: 'Tất cả tỉnh thành' },
         ]}
       />
 
@@ -134,12 +233,10 @@ export default function ProvincesPage() {
         <section className="provinces-hero fade-up">
           <div className="container">
             <h1 className="provinces-hero__title">
-              {lang === 'vi' ? 'Tất cả tỉnh thành Việt Nam' : 'All Provinces of Vietnam'}
+              Tất cả tỉnh thành Việt Nam
             </h1>
             <p className="provinces-hero__subtitle">
-              {lang === 'vi'
-                ? 'Dữ liệu tỉnh thành được tải động từ hệ thống nội dung, hiển thị đúng theo từng địa phương và điều hướng thẳng đến trang chi tiết tương ứng.'
-                : 'Province data is loaded dynamically from the content system, with correct information for each locality and direct navigation to its matching detail page.'}
+              Dữ liệu tỉnh thành được tải động từ hệ thống nội dung, hiển thị đúng theo từng địa phương và điều hướng thẳng đến trang chi tiết tương ứng.
             </p>
 
             <div className="provinces-stats">
@@ -147,28 +244,28 @@ export default function ProvincesPage() {
                 <div className="provinces-stats__icon">🏙️</div>
                 <div className="provinces-stats__info">
                   <span className="provinces-stats__value">{stats.provinceCount}</span>
-                  <span className="provinces-stats__label">{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</span>
+                  <span className="provinces-stats__label">Tỉnh thành</span>
                 </div>
               </div>
               <div className="provinces-stats__card">
                 <div className="provinces-stats__icon">🗺️</div>
                 <div className="provinces-stats__info">
                   <span className="provinces-stats__value">{stats.regionCount}</span>
-                  <span className="provinces-stats__label">{lang === 'vi' ? 'Vùng hiển thị' : 'Displayed Regions'}</span>
+                  <span className="provinces-stats__label">Vùng hiển thị</span>
                 </div>
               </div>
               <div className="provinces-stats__card">
                 <div className="provinces-stats__icon">🧭</div>
                 <div className="provinces-stats__info">
                   <span className="provinces-stats__value">{stats.subRegionCount}</span>
-                  <span className="provinces-stats__label">{lang === 'vi' ? 'Tiểu vùng' : 'Sub-regions'}</span>
+                  <span className="provinces-stats__label">Tiểu vùng</span>
                 </div>
               </div>
               <div className="provinces-stats__card">
                 <div className="provinces-stats__icon">🏷️</div>
                 <div className="provinces-stats__info">
                   <span className="provinces-stats__value">{stats.tagCount}</span>
-                  <span className="provinces-stats__label">{lang === 'vi' ? 'Nhãn chủ đề' : 'Topic Tags'}</span>
+                  <span className="provinces-stats__label">Nhãn chủ đề</span>
                 </div>
               </div>
             </div>
@@ -184,15 +281,15 @@ export default function ProvincesPage() {
                 </svg>
                 <input
                   type="text"
-                  placeholder={lang === 'vi' ? 'Tìm kiếm tỉnh thành, địa danh...' : 'Search provinces, landmarks...'}
+                  placeholder="Tìm kiếm tỉnh thành, địa danh..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 {state.status === 'loading' && (
-                  <span className="provinces-search__status">{lang === 'vi' ? 'Đang tải dữ liệu động...' : 'Loading dynamic data...'}</span>
+                  <span className="provinces-search__status">Đang tải dữ liệu động...</span>
                 )}
                 {state.status === 'error' && (
-                  <span className="provinces-search__status">{lang === 'vi' ? 'Không tải được dữ liệu tỉnh thành.' : 'Could not load province data.'}</span>
+                  <span className="provinces-search__status">Không tải được dữ liệu tỉnh thành.</span>
                 )}
               </div>
 
@@ -201,22 +298,22 @@ export default function ProvincesPage() {
                   <button
                     className={`provinces-view-btn ${viewMode === 'grid' ? 'is-active' : ''}`}
                     onClick={() => setViewMode('grid')}
-                    aria-label="Grid view"
+                    aria-label="Chế độ lưới"
                   >
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
                   </button>
                   <button
                     className={`provinces-view-btn ${viewMode === 'list' ? 'is-active' : ''}`}
                     onClick={() => setViewMode('list')}
-                    aria-label="List view"
+                    aria-label="Chế độ danh sách"
                   >
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/></svg>
                   </button>
                 </div>
-                <span className="provinces-sort__label">{lang === 'vi' ? 'Sắp xếp:' : 'Sort by:'}</span>
+                <span className="provinces-sort__label">Sắp xếp:</span>
                 <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                  <option value="name">{lang === 'vi' ? 'Tên A-Z' : 'Name A-Z'}</option>
-                  <option value="area">{lang === 'vi' ? 'Diện tích' : 'Area'}</option>
+                  <option value="name">Tên A-Z</option>
+                  <option value="area">Diện tích</option>
                 </select>
               </div>
             </div>
@@ -227,7 +324,7 @@ export default function ProvincesPage() {
           <div className="container">
             <div className="provinces-region-tabs">
               <button className={activeRegion === 'all' ? 'is-active' : ''} onClick={() => setActiveRegion('all')}>
-                {lang === 'vi' ? 'Tất cả' : 'All'}
+                Tất cả
               </button>
               {regionTabs.map((region) => (
                 <button key={region} className={activeRegion === region ? 'is-active' : ''} onClick={() => setActiveRegion(region)}>
@@ -245,7 +342,7 @@ export default function ProvincesPage() {
                 <div className="provinces-region-header">
                   <h2 className="provinces-region-title">{regionName}</h2>
                   <span className="provinces-region-count">
-                    {regionProvinces.length} {lang === 'vi' ? 'tỉnh thành' : 'provinces'}
+                    {regionProvinces.length} tỉnh thành
                   </span>
                 </div>
 
@@ -253,11 +350,16 @@ export default function ProvincesPage() {
                   {regionProvinces.map((province) => (
                     <div key={province.id || province.code} className={`province-card-v2 is-${viewMode}`}>
                       <div className="province-card-v2__image">
-                        {province.imageUrl ? (
-                          <img src={province.imageUrl} alt={province.imageAlt || province.name} />
-                        ) : (
-                          <div className="province-card-v2__placeholder">{province.name}</div>
-                        )}
+                        <img
+                          src={province.imageUrl || getProvinceImage(province)}
+                          alt={province.imageAlt || province.name}
+                          onError={(event) => {
+                            const fallbackImage = getProvinceImage(province)
+                            if (event.currentTarget.src !== fallbackImage) {
+                              event.currentTarget.src = fallbackImage
+                            }
+                          }}
+                        />
                         <span className="province-card-v2__badge">{province.subRegion}</span>
                       </div>
                       <div className="province-card-v2__content">
@@ -274,12 +376,12 @@ export default function ProvincesPage() {
                         )}
                         <div className="province-card-v2__meta">
                           <div className="province-card-v2__meta-item">
-                            <span className="icon" title="Area">📐</span>
+                            <span className="icon" title="Diện tích">📐</span>
                             <span className="label">DT:</span>
                             <span className="value">{province.area}</span>
                           </div>
                           <div className="province-card-v2__meta-item">
-                            <span className="icon" title="Population">👨‍👩‍👧‍👦</span>
+                            <span className="icon" title="Dân số">👨‍👩‍👧‍👦</span>
                             <span className="label">DS:</span>
                             <span className="value">{province.pop}</span>
                           </div>
@@ -290,7 +392,7 @@ export default function ProvincesPage() {
                           </div>
                         )}
                         <Link to={`/provinces/${province.code}`} className="province-card-v2__btn">
-                          {lang === 'vi' ? 'Xem chi tiết' : 'View Detail'}
+                          Xem chi tiết
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                           </svg>
@@ -305,9 +407,9 @@ export default function ProvincesPage() {
 
           {!filteredData.length && state.status !== 'loading' && (
             <div className="provinces-empty">
-              <p>{lang === 'vi' ? 'Không tìm thấy tỉnh thành phù hợp.' : 'No provinces found match your search.'}</p>
+              <p>Không tìm thấy tỉnh thành phù hợp.</p>
               <button className="provinces-empty__reset" onClick={() => { setSearchTerm(''); setActiveRegion('all') }}>
-                {lang === 'vi' ? 'Xóa tìm kiếm' : 'Clear search'}
+                Xóa tìm kiếm
               </button>
             </div>
           )}

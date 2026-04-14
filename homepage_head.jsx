@@ -1,0 +1,1896 @@
+import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import './HomePage.css'
+import banner3 from '../../assets/banner3.jpg'
+import { getHomepage } from '../../services/homepage.service'
+import { searchArticles } from '../../services/content.service'
+import { ui } from '../../i18n/messages'
+import PageHeader from '../../components/layout/PageHeader/PageHeader'
+import Footer from '../../components/layout/Footer/Footer'
+
+// Regional Assets
+import imgRegionNorth from '../../assets/images/regions/region_overview_north.png'
+import imgRegionHoian from '../../assets/images/regions/highlight_hoian.png'
+import imgRegionSouth from '../../assets/images/regions/region_overview_south.png'
+
+// Ethnic Group Assets
+import imgEthnicHmong from '../../assets/hmong.jpg'
+import imgEthnicThai from '../../assets/thai.jpg'
+import imgEthnicDao from '../../assets/dao.jpg'
+import imgEthnicMuong from '../../assets/muong.jpg'
+import imgEthnicEde from '../../assets/ede.jpg'
+import imgEthnicKhmer from '../../assets/khmer.jpg'
+import imgEthnicTay from '../../assets/thai.jpg' // Using Thai as fallback for Tay if Tay is missing
+import imgEthnicKinh from '../../assets/anhtet1.PNG'
+
+const ethnicGroupImages = {
+  hmong: imgEthnicHmong,
+  thai: imgEthnicThai,
+  dao: imgEthnicDao,
+  muong: imgEthnicMuong,
+  ede: imgEthnicEde,
+  khmer: imgEthnicKhmer,
+  tay: imgEthnicTay,
+  kinh: imgEthnicKinh,
+}
+
+export default function HomePage() {
+  const [lang, setLang] = useState('vi')
+  const [homepage, setHomepage] = useState(null)
+  const [status, setStatus] = useState('loading')
+  const [error, setError] = useState('')
+  const [search, setSearch] = useState('')
+  const [results, setResults] = useState([])
+  const [searching, setSearching] = useState(false)
+
+  const copy = useMemo(() => ui[lang], [lang])
+
+  function getHeroTitleLines(title) {
+    if (!title) return []
+
+    if (title === 'Khám phá vẻ đẹp văn hóa Việt Nam') {
+      return ['Khám phá vẻ đẹp', 'văn hóa Việt Nam']
+    }
+
+    if (title === 'Discover the beauty of Vietnamese culture') {
+      return ['Discover the beauty', 'of Vietnamese culture']
+    }
+
+    if (title.includes(' Việt Nam')) {
+      return [title.replace(' Việt Nam', ''), 'Việt Nam']
+    }
+
+    if (title.includes(' Vietnam')) {
+      return [title.replace(' Vietnam', ''), 'Vietnam']
+    }
+
+    const words = title.trim().split(/\s+/)
+    const middle = Math.ceil(words.length / 2)
+    return [words.slice(0, middle).join(' '), words.slice(middle).join(' ')]
+  }
+
+  useEffect(() => {
+    let ignore = false
+    async function loadHomepage() {
+      try {
+        if (!homepage) {
+          setStatus('loading')
+        }
+        setError('')
+        const data = await getHomepage(lang)
+        if (!ignore) {
+          setHomepage(data)
+          setStatus('success')
+          document.documentElement.lang = lang
+          document.title = lang === 'vi' ? 'VietCultura - Khám phá Việt Nam' : 'VietCultura - Discover Vietnam'
+        }
+      } catch (err) {
+        if (!ignore) {
+          setError(err.message)
+          setStatus('error')
+        }
+      }
+    }
+    loadHomepage()
+    return () => { ignore = true }
+  }, [lang])
+
+  async function handleSearch(event) {
+    event.preventDefault()
+    try {
+      setSearching(true)
+      const data = await searchArticles({ lang, q: search, limit: 6 })
+      setResults(data)
+    } finally {
+      setSearching(false)
+    }
+  }
+
+  const isLoading = status === 'loading'
+  const isError = status === 'error'
+  const safeHomepage = homepage || {
+    hero: {
+      badge: copy.heroBadge,
+      title: copy.heroTitle,
+      subtitle: copy.heroSubtitle,
+      primaryCta: copy.heroPrimaryCta,
+      secondaryCta: copy.heroSecondaryCta,
+      searchPlaceholder: copy.heroSearchPlaceholder,
+    },
+    stats: copy.heroStats || [],
+    blogPosts: [],
+  }
+
+  const FALLBACK_REGIONS = [
+    {
+      id: 'north',
+      code: 'BAC_BO',
+      number: '01',
+      badge: 'Miền Bắc',
+      icon: '⛰️',
+      title: 'Miền Bắc Việt Nam',
+      highlights: ['Hà Giang', 'Sapa', 'Hà Nội', 'Hạ Long'],
+      imageUrl: imgRegionNorth
+    },
+    {
+      id: 'central',
+      code: 'TRUNG_BO',
+      number: '02',
+      badge: 'Miền Trung',
+      icon: '🏮',
+      title: 'Miền Trung Việt Nam',
+      highlights: ['Huế', 'Hội An', 'Đà Nẵng', 'Mỹ Sơn'],
+      imageUrl: imgRegionHoian
+    },
+    {
+      id: 'south',
+      code: 'NAM_BO',
+      number: '03',
+      badge: 'Miền Nam',
+      icon: '🌿',
+      title: 'Miền Nam Việt Nam',
+      highlights: ['TP. Hồ Chí Minh', 'Mekong', 'Phú Quốc', 'Cần Thơ'],
+      imageUrl: imgRegionSouth
+    }
+  ]
+
+  // Pre-process regions with local images
+  const homepageRegions = useMemo(() => {
+    const baseRegions = (safeHomepage.regions && safeHomepage.regions.length > 0) 
+      ? safeHomepage.regions 
+      : FALLBACK_REGIONS
+      
+    return baseRegions.map((region, idx) => {
+      let localImg = region.imageUrl;
+      const title = region.title || '';
+
+      if (title.toLowerCase().includes('bắc') || idx === 0) localImg = imgRegionNorth;
+      if (title.toLowerCase().includes('trung') || idx === 1) localImg = imgRegionHoian;
+      if (title.toLowerCase().includes('nam') || idx === 2) localImg = imgRegionSouth;
+
+      // Ensure icons are present for the new design
+      const icons = ['⛰️', '🏮', '🌿'];
+      
+      return {
+        ...region,
+        imageUrl: localImg || region.imageUrl,
+        icon: region.icon || icons[idx % 3]
+      }
+    })
+  }, [safeHomepage.regions])
+
+  const localizedFeaturedEthnicGroupsData = useMemo(() => {
+    const baseGroups = (safeHomepage.ethnicGroups || []).slice(0, 6)
+    return baseGroups.map((group) => {
+      const title = (group.title || '').toLowerCase()
+      let localImg = group.imageUrl
+
+      for (const [key, img] of Object.entries(ethnicGroupImages)) {
+        if (title.includes(key)) {
+          localImg = img
+          break
+        }
+      }
+
+      return {
+        ...group,
+        imageUrl: localImg,
+        imageAlt: group.imageAlt || group.title,
+      }
+    })
+  }, [safeHomepage.ethnicGroups])
+  const ethnicShowcaseStats = copy.ethnicShowcaseStats || []
+  const heroTitleLines = getHeroTitleLines(safeHomepage.hero.title)
+  const festivalShowcaseCards = (copy.festivalShowcaseCards || []).map((item, idx) => {
+    const apiItem = (safeHomepage.festivals || [])[idx] || {}
+    return { ...item, ...apiItem }
+  })
+  const cuisineShowcaseCards = (copy.cuisineShowcaseCards || []).map((item, idx) => {
+    const apiItem = (safeHomepage.cuisine || [])[idx] || {}
+    return { ...item, ...apiItem }
+  })
+  const artsShowcaseCards = safeHomepage.arts || []
+  const featuredArt = artsShowcaseCards[0]
+  const additionalArts = artsShowcaseCards.slice(1, 7)
+  const blogPosts = safeHomepage.blogPosts || []
+  const featuredBlogPost = blogPosts[0] || null
+  const secondaryBlogPosts = blogPosts.slice(1, 4)
+  const localizedArtsCards = artsShowcaseCards.slice(0, 6).map(localizeArtItem)
+  const blogFilterPills = lang === 'vi'
+    ? ['Tất cả', 'Du lịch', 'Văn hoá', 'Ẩm thực', 'Dân tộc', 'Nghệ thuật']
+    : ['All', 'Travel', 'Culture', 'Cuisine', 'Ethnic Cultures', 'Arts']
+
+  function formatBlogDate(value) {
+    if (!value) return lang === 'vi' ? 'Mới đây' : 'Recently'
+
+    const date = new Date(value)
+    if (Number.isNaN(date.getTime())) return value
+
+    return date.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    })
+  }
+
+  function estimateReadMinutes(item, index) {
+    const base = Math.max(5, Math.min(10, (item?.articleCount || 0) + 5))
+    return `${base + index} ${lang === 'vi' ? 'phút đọc' : 'min read'}`
+  }
+
+  function getBlogCategoryLabel(item, index) {
+    if (item?.category) return item.category
+    return blogFilterPills[Math.min(index + 1, blogFilterPills.length - 1)]
+  }
+
+  function getBlogAuthorName(item, index) {
+    if (lang === 'vi') return ['Minh Trần', 'Thu Hà', 'Quang Phạm', 'Linh Nguyễn'][index] || 'Biên tập viên'
+    return ['Minh Tran', 'Thu Ha', 'Quang Pham', 'Linh Nguyen'][index] || 'Editorial team'
+  }
+
+  function getBlogAuthorInitials(name) {
+    return name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase() || '')
+      .join('')
+  }
+
+  function getBlogAccent(index) {
+    return ['red', 'purple', 'gold', 'green'][index % 4]
+  }
+
+  function localizeArtCategory(category) {
+    if (!category) return ''
+
+    const normalized = category.trim().toLowerCase()
+    if (normalized === 'performing arts') return 'Nghệ thuật trình diễn'
+    if (normalized === 'visual arts') return 'Mỹ thuật'
+    if (normalized === 'musical heritage') return 'Di sản âm nhạc'
+    if (normalized === 'folk arts') return 'Nghệ thuật dân gian'
+    return category
+  }
+
+  function localizeArtTitle(title) {
+    if (!title) return ''
+
+    const normalized = title.trim().toLowerCase()
+    if (normalized === 'water puppetry') return 'Múa rối nước'
+    if (normalized === 'calligraphy') return 'Thư pháp'
+    if (normalized === 'dong ho painting') return 'Tranh Đông Hồ'
+    if (normalized === 'van phuc silk') return 'Lụa Vạn Phúc'
+    if (normalized === 'cheo theatre') return 'Nghệ thuật Chèo'
+    if (normalized === 'lacquerware') return 'Sơn mài'
+    if (normalized === 'bamboo crafts') return 'Thủ công tre'
+    if (normalized === 'ao dai design') return 'Thiết kế áo dài'
+    return title
+  }
+
+  function localizeArtMeta(value) {
+    if (!value) return ''
+
+    const normalized = value.trim().toLowerCase()
+    if (normalized === 'performing arts') return 'Nghệ thuật trình diễn'
+    if (normalized === 'visual arts') return 'Mỹ thuật'
+    if (normalized === 'musical heritage') return 'Di sản âm nhạc'
+    if (normalized === '1,000+ years old') return 'Hơn 1.000 năm tuổi'
+    if (normalized === 'unesco-recognized') return 'Được UNESCO ghi danh'
+    if (normalized === 'thang long theater') return 'Nhà hát Thăng Long'
+    return value
+  }
+
+  function localizeArtChip(chip) {
+    if (!chip) return ''
+
+    const normalized = chip.trim().toLowerCase()
+    if (normalized === 'featured archive') return 'Tư liệu nổi bật'
+    if (normalized === 'heritage discovery') return 'Khám phá di sản'
+    return localizeArtMeta(chip)
+  }
+
+  function localizeArtCta(title) {
+    return `Khám phá ${title}`
+  }
+
+  function getArtsSectionTitle() {
+    return lang === 'vi' ? 'Thêm nghệ thuật và thủ công truyền thống' : 'More Traditional Arts & Crafts'
+  }
+
+  function getArtTileIcon(item, index) {
+    const normalized = `${item?.title || ''} ${item?.category || ''}`.trim().toLowerCase()
+
+    if (normalized.includes('đông hồ') || normalized.includes('dong ho')) return '🎨'
+    if (normalized.includes('lụa') || normalized.includes('silk')) return '🧵'
+    if (normalized.includes('chèo') || normalized.includes('cheo')) return '🎭'
+    if (normalized.includes('sơn mài') || normalized.includes('lacquer')) return '🏺'
+    if (normalized.includes('tre') || normalized.includes('bamboo')) return '🎍'
+    if (normalized.includes('áo dài') || normalized.includes('ao dai')) return '👘'
+    if (normalized.includes('múa rối nước') || normalized.includes('water puppetry')) return '🎎'
+    if (normalized.includes('thư pháp') || normalized.includes('calligraphy')) return '✒️'
+
+    return ['🎨', '🧵', '🎭', '🏺', '🎍', '👘'][index % 6]
+  }
+
+  function getArtTileSubtitle(item) {
+    if (item?.category) return item.category
+    if (item?.description) return item.description
+    return lang === 'vi' ? 'Di sản thủ công truyền thống' : 'Traditional cultural heritage'
+  }
+
+  function localizeArtItem(item) {
+    const safeItem = withSafeImage(item)
+    const title = lang === 'vi' ? localizeArtTitle(safeItem.title) : safeItem.title
+    const category = lang === 'vi' ? localizeArtCategory(safeItem.category) : safeItem.category
+    const description = lang === 'vi' ? localizeArtDescription(safeItem.description) : safeItem.description
+
+    return {
+      ...safeItem,
+      title,
+      category,
+      description,
+      subtitle: getArtTileSubtitle({ ...safeItem, category, description }),
+    }
+  }
+
+  function localizeCuisineTitle(title) {
+    if (!title) return ''
+
+    const normalized = title.trim().toLowerCase()
+    if (normalized === 'vietnamese banh mi') return 'Bánh mì Việt Nam'
+    if (normalized === 'vietnamese pho') return 'Phở Việt Nam'
+    return title
+  }
+
+  function localizeEthnicityTitle(title) {
+    if (!title) return ''
+
+    const normalized = title.trim().toLowerCase()
+    if (normalized === 'khmer') return 'Khmer'
+    if (normalized === 'cham') return 'Chăm'
+    return title
+  }
+
+  function localizeEthnicityDescription(description) {
+    if (!description) return ''
+
+    if (description.includes('The Khmer community is concentrated in southern Vietnam')) {
+      return 'Cộng đồng Khmer tập trung chủ yếu ở Nam Bộ, nổi bật với chùa Phật giáo Nam tông, lễ hội truyền thống và nghệ thuật diễn xướng dân gian.'
+    }
+
+    return description
+  }
+
+  function localizeCuisineDescription(description) {
+    if (!description) return ''
+
+    if (description.includes('A famous sandwich born from the meeting of French baguette')) {
+      return 'Món bánh mì trứ danh kết hợp tinh hoa baguette Pháp với nguyên liệu và hương vị rất Việt Nam.'
+    }
+
+    if (description.includes('An iconic Vietnamese dish known for clear broth')) {
+      return 'Món phở biểu tượng của Việt Nam, nổi tiếng với nước dùng thanh, bánh phở mềm và hương vị hài hòa.'
+    }
+
+    return description
+  }
+
+  function localizeArtDescription(description) {
+    if (!description) return ''
+
+    if (description.includes('A distinctive performance art in which wooden puppets are controlled on water')) {
+      return 'Loại hình nghệ thuật hơn 1.000 năm tuổi của đồng bằng Bắc Bộ, nơi nghệ nhân điều khiển rối gỗ trên mặt nước để kể chuyện dân gian, đời sống lao động và truyền thuyết Việt.'
+    }
+
+    if (description.includes('Folk woodblock paintings from Bac Ninh')) {
+      return 'Dòng tranh dân gian nổi tiếng của Bắc Ninh, phản ánh đời sống, ước vọng và vẻ đẹp mộc mạc qua kỹ thuật in ván gỗ truyền thống.'
+    }
+
+    if (description.includes('1,200-year-old traditional silk weaving')) {
+      return 'Làng lụa trứ danh với kỹ thuật dệt thủ công tinh xảo, gắn liền với vẻ đẹp thanh lịch của tơ lụa Việt.'
+    }
+
+    if (description.includes('Traditional rural opera of the North')) {
+      return 'Loại hình sân khấu dân gian miền Bắc giàu tính kể chuyện, âm nhạc và chất trào lộng sâu sắc.'
+    }
+
+    if (description.includes('Ornate hand-crafted lacquer art')) {
+      return 'Nghệ thuật sơn mài đặc sắc với nhiều lớp màu, vàng son và kỹ thuật thủ công công phu.'
+    }
+
+    if (description.includes('Intricate handmade bamboo products')) {
+      return 'Những sản phẩm tre thủ công bền đẹp, kết hợp kỹ thuật đan lát và thẩm mỹ mộc mạc Việt Nam.'
+    }
+
+    if (description.includes("Vietnam's iconic national garment")) {
+      return 'Biểu tượng trang phục Việt Nam với đường nét thanh lịch, tôn dáng và giàu giá trị văn hóa.'
+    }
+
+    return description
+  }
+
+  function localizeFestivalTitle(title) {
+    if (!title) return ''
+
+    const normalized = title.trim().toLowerCase()
+    if (normalized === 'hue festival') return 'Festival Huế'
+    if (normalized === 'mid-autumn festival') return 'Tết Trung Thu'
+    return title
+  }
+
+  function localizeFestivalSubtitle(subtitle) {
+    if (!subtitle) return ''
+
+    const normalized = subtitle.trim().toLowerCase()
+    if (normalized === 'lunar new year') return 'Tết Nguyên Đán'
+    if (normalized === 'mid-autumn festival') return 'Tết Trung Thu'
+    if (normalized === 'hue festival') return 'Festival Huế'
+    return subtitle
+  }
+
+  function localizeFestivalDescription(description) {
+    if (!description) return ''
+
+    if (description.includes('A large-scale cultural event honoring Hue heritage')) {
+      return 'Sự kiện văn hóa quy mô lớn tôn vinh di sản Huế cùng các chương trình nghệ thuật đương đại đặc sắc.'
+    }
+
+    if (description.includes('A children-centered festival filled with lanterns')) {
+      return 'Lễ hội dành cho thiếu nhi với đèn lồng, múa lân, bánh trung thu và không khí sum vầy dưới trăng rằm.'
+    }
+
+    return description
+  }
+
+  function localizeFestivalMeta(value) {
+    if (!value) return ''
+
+    const normalized = value.trim().toLowerCase()
+    if (normalized === 'festival season') return 'Mùa lễ hội'
+    if (normalized === 'central vietnam') return 'Miền Trung'
+    if (normalized === 'nationwide') return 'Toàn quốc'
+    return value
+  }
+
+  function localizeFestivalTag(tag) {
+    if (!tag) return ''
+
+    const normalized = tag.trim().toLowerCase()
+    if (normalized === 'lantern parade') return 'Rước đèn'
+    if (normalized === 'lion dance') return 'Múa lân'
+    if (normalized === 'mooncakes') return 'Bánh trung thu'
+    if (normalized === 'moon gazing') return 'Ngắm trăng'
+    if (normalized === 'royal arts') return 'Nghệ thuật cung đình'
+    if (normalized === 'night shows') return 'Trình diễn đêm'
+    if (normalized === 'ao dai') return 'Áo dài'
+    if (normalized === 'heritage performances') return 'Trình diễn di sản'
+    return tag
+  }
+
+  function localizeFestivalBadge(badge) {
+    if (!badge) return ''
+
+    const normalized = badge.trim().toLowerCase()
+    if (normalized === 'most important') return 'Nổi bật nhất'
+    if (normalized === "children's festival") return 'Lễ hội thiếu nhi'
+    if (normalized === 'cultural showcase') return 'Di sản trình diễn'
+    return badge
+  }
+
+  function withSafeImage(item) {
+    if (!item) return item
+
+    return {
+      ...item,
+      imageUrl: item.imageUrl || null,
+    }
+  }
+
+  function localizeEthnicityItem(item) {
+    return {
+      ...withSafeImage(item),
+      title: localizeEthnicityTitle(item.title),
+      description: localizeEthnicityDescription(item.description),
+    }
+  }
+
+  function formatHomepageMetaPrimary(item) {
+    if (item.publishedAt) {
+      const date = new Date(item.publishedAt)
+      if (!Number.isNaN(date.getTime())) {
+        return date.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', {
+          day: '2-digit',
+          month: 'short',
+        })
+      }
+    }
+
+    if (item.articleCount) {
+      return lang === 'vi' ? `${item.articleCount}+ bài viết` : `${item.articleCount}+ articles`
+    }
+
+    return lang === 'vi' ? 'Nội dung nổi bật' : 'Featured content'
+  }
+
+  function extractDynamicTags(...values) {
+    const stopWords = new Set(['va', 'và', 'the', 'of', 'for', 'with', 'một', 'những', 'các'])
+
+    return values
+      .filter(Boolean)
+      .flatMap((value) => String(value).replace(/[^\p{L}\p{N}\s-]/gu, ' ').split(/\s+/))
+      .map((word) => word.trim())
+      .filter((word) => word.length > 2)
+      .filter((word) => !stopWords.has(word.toLowerCase()))
+      .filter((word, index, array) => array.findIndex((entry) => entry.toLowerCase() === word.toLowerCase()) === index)
+      .slice(0, 4)
+  }
+
+  function localizeCuisineItem(item) {
+    const safeItem = withSafeImage(item)
+    const title = item.title || localizeCuisineTitle(safeItem.title)
+    const subtitle = item.subtitle || safeItem.category || (lang === 'vi' ? 'Ẩm thực Việt Nam' : 'Vietnamese cuisine')
+    const tags = item.tags || extractDynamicTags(title, subtitle, safeItem.description)
+    const rating = item.footerIcon || '★'.repeat(Math.max(3, Math.min(5, safeItem.articleCount || 4)))
+
+    return {
+      ...safeItem,
+      title,
+      subtitle,
+      description: item.description || localizeCuisineDescription(safeItem.description),
+      metaPrimary: item.metaPrimary || formatHomepageMetaPrimary(safeItem),
+      metaSecondary: item.metaSecondary || safeItem.category || (lang === 'vi' ? 'Món nổi bật' : 'Featured dish'),
+      tags,
+      score: item.score || (safeItem.articleCount ? `${safeItem.articleCount}+` : 'Top'),
+      scoreLabel: lang === 'vi' ? 'Món nổi bật' : 'Featured dish',
+      cornerIcon: '🍽️',
+      footerIcon: rating,
+      spiceLevel: item.spiceLevel || Math.max(1, Math.min(5, safeItem.articleCount || 3)),
+    }
+  }
+
+  function localizeFestivalItem(item) {
+    const safeItem = withSafeImage(item)
+    const title = localizeFestivalTitle(safeItem.title)
+    const subtitle = localizeFestivalSubtitle(safeItem.subtitle || safeItem.category || '')
+    const tags = (safeItem.tags && safeItem.tags.length ? safeItem.tags : extractDynamicTags(title, subtitle, safeItem.description)).map(localizeFestivalTag)
+    const rating = '★'.repeat(Math.max(3, Math.min(5, safeItem.articleCount || 4)))
+
+    return {
+      ...safeItem,
+      title,
+      subtitle,
+      description: localizeFestivalDescription(safeItem.description),
+      metaPrimary: localizeFestivalMeta(safeItem.metaPrimary || formatHomepageMetaPrimary(safeItem)),
+      metaSecondary: localizeFestivalMeta(safeItem.metaSecondary || safeItem.category || (lang === 'vi' ? 'Lễ hội Việt Nam' : 'Vietnamese festival')),
+      badge: localizeFestivalBadge(safeItem.badge || safeItem.category || (lang === 'vi' ? 'Lễ hội' : 'Festival')),
+      badgeIcon: safeItem.badgeIcon || '✦',
+      footerIcon: safeItem.footerIcon || rating,
+      accent: safeItem.accent,
+      tags,
+    }
+  }
+
+  function formatFestivalRating(footerIcon) {
+    const count = typeof footerIcon === 'string' ? (footerIcon.match(/★/g) || []).length : 0
+    return count > 0 ? '★'.repeat(count) : ''
+  }
+
+  function getFestivalAccent(item, index) {
+    if (item.accent) return item.accent
+    return ['red', 'gold', 'purple'][index % 3]
+  }
+
+  function getFestivalBadgeIcon(item, index) {
+    if (item.badgeIcon) return item.badgeIcon
+    return ['✦', '✦', '✦'][index % 3]
+  }
+
+  function hasFestivalMeta(item) {
+    return Boolean(item.metaPrimary || item.metaSecondary)
+  }
+
+  function hasFestivalTags(item) {
+    return Array.isArray(item.tags) && item.tags.length > 0
+  }
+
+  function hasFestivalRating(item) {
+    return Boolean(formatFestivalRating(item.footerIcon))
+  }
+
+  function hasFestivalBadge(item) {
+    return Boolean(item.badge || item.category)
+  }
+
+  function hasFestivalCornerIcon(item) {
+    return Boolean(item.badgeIcon)
+  }
+
+  function isFestivalCardRich(item) {
+    return hasFestivalMeta(item) || hasFestivalTags(item) || hasFestivalRating(item) || hasFestivalBadge(item)
+  }
+
+  function getFestivalCardClass(item, index) {
+    return `festival-card fade-up is-${getFestivalAccent(item, index)}${isFestivalCardRich(item) ? ' is-rich' : ''}`
+  }
+
+  function getFestivalMetaIcon(type) {
+    return type === 'location' ? '📍' : '🗓️'
+  }
+
+  function getFestivalCornerIcon(item, index) {
+    return hasFestivalCornerIcon(item) ? item.badgeIcon : ['✦', '✦', '✦'][index % 3]
+  }
+
+  function getFestivalBadgeLabel(item) {
+    return item.badge || item.category || copy.festivalShowcaseBadge
+  }
+
+  function getFestivalRatingText(item) {
+    return formatFestivalRating(item.footerIcon)
+  }
+
+  function getFestivalTags(item) {
+    return item.tags || []
+  }
+
+  function getFestivalMetaItems(item) {
+    return [
+      item.metaPrimary ? { key: 'primary', icon: getFestivalMetaIcon('date'), value: item.metaPrimary } : null,
+      item.metaSecondary ? { key: 'secondary', icon: getFestivalMetaIcon('location'), value: item.metaSecondary } : null,
+    ].filter(Boolean)
+  }
+
+  function getFestivalDescription(item) {
+    return item.description || ''
+  }
+
+  function getFestivalSubtitle(item) {
+    return item.subtitle || ''
+  }
+
+  function getFestivalTitle(item) {
+    return item.title || ''
+  }
+
+  function getFestivalImageAlt(item) {
+    return item.imageAlt || item.title || 'Festival image'
+  }
+
+  function hasFestivalImage(item) {
+    return Boolean(item.imageUrl)
+  }
+
+  function getFestivalLink(item) {
+    return `/articles/${item.code}`
+  }
+
+  function getFestivalPlaceholder(item) {
+    return item.title || 'Lễ hội'
+  }
+
+  function shouldShowFestivalFooter(item) {
+    return Boolean(item.code)
+  }
+
+  function shouldShowFestivalSubtitle(item) {
+    return Boolean(item.subtitle)
+  }
+
+  function shouldShowFestivalDescription(item) {
+    return Boolean(item.description)
+  }
+
+  function shouldShowFestivalMeta(item) {
+    return getFestivalMetaItems(item).length > 0
+  }
+
+  function shouldShowFestivalTags(item) {
+    return getFestivalTags(item).length > 0
+  }
+
+  function shouldShowFestivalRating(item) {
+    return Boolean(getFestivalRatingText(item))
+  }
+
+  function shouldShowFestivalBadge(item) {
+    return Boolean(getFestivalBadgeLabel(item))
+  }
+
+  function shouldShowFestivalCorner(item) {
+    return hasFestivalCornerIcon(item)
+  }
+
+  function getFestivalFooterClass(item) {
+    return shouldShowFestivalRating(item) ? 'festival-card__footer' : 'festival-card__footer festival-card__footer--single'
+  }
+
+  function getFestivalMetaClass(item) {
+    return getFestivalMetaItems(item).length > 1 ? 'festival-card__meta' : 'festival-card__meta festival-card__meta--single'
+  }
+
+  function getFestivalTagsClass(item) {
+    return getFestivalTags(item).length > 0 ? 'festival-card__chips' : 'festival-card__chips festival-card__chips--empty'
+  }
+
+  function getFestivalMediaClass(item) {
+    return hasFestivalImage(item) ? 'festival-card__image' : 'festival-card__image festival-card__image--placeholder'
+  }
+
+  function getFestivalRatingAria(item) {
+    return getFestivalRatingText(item) ? `Đánh giá ${getFestivalRatingText(item)}` : ''
+  }
+
+  function getFestivalBadgeAria(item) {
+    return getFestivalBadgeLabel(item)
+  }
+
+  function getFestivalCornerAria(item, index) {
+    return getFestivalCornerIcon(item, index)
+  }
+
+  function getFestivalMetaAria(meta) {
+    return meta.value
+  }
+
+  function getFestivalTagKey(tag, index) {
+    return `${tag}-${index}`
+  }
+
+  function getFestivalCardKey(item, index) {
+    return item.code || item.id || index
+  }
+
+  function getFestivalFallbackCta() {
+    return copy.learnMore
+  }
+
+  function shouldShowFestivalLinkText() {
+    return true
+  }
+
+  function getFestivalAccentClass(item, index) {
+    return `is-${getFestivalAccent(item, index)}`
+  }
+
+  function getFestivalCardRichClass(item) {
+    return isFestivalCardRich(item) ? 'is-rich' : ''
+  }
+
+  function joinFestivalCardClasses(item, index) {
+    return ['festival-card', 'fade-up', getFestivalAccentClass(item, index), getFestivalCardRichClass(item)].filter(Boolean).join(' ')
+  }
+
+  function hasFestivalLink(item) {
+    return Boolean(item.code)
+  }
+
+  function getFestivalCtaText() {
+    return copy.learnMore
+  }
+
+  function getFestivalCtaArrow() {
+    return '→'
+  }
+
+  function getFestivalBadgeText(item) {
+    return getFestivalBadgeLabel(item)
+  }
+
+  function getFestivalBadgeIconText(item, index) {
+    return getFestivalBadgeIcon(item, index)
+  }
+
+  function getFestivalCornerText(item, index) {
+    return getFestivalCornerIcon(item, index)
+  }
+
+  function getFestivalMetaText(meta) {
+    return meta.value
+  }
+
+  function getFestivalDescriptionText(item) {
+    return getFestivalDescription(item)
+  }
+
+  function getFestivalSubtitleText(item) {
+    return getFestivalSubtitle(item)
+  }
+
+  function getFestivalTitleText(item) {
+    return getFestivalTitle(item)
+  }
+
+  function getFestivalPlaceholderText(item) {
+    return getFestivalPlaceholder(item)
+  }
+
+  function getFestivalImageSrc(item) {
+    return item.imageUrl
+  }
+
+  function getFestivalLinkHref(item) {
+    return getFestivalLink(item)
+  }
+
+  function getFestivalRatingValue(item) {
+    return getFestivalRatingText(item)
+  }
+
+  function getFestivalMetaList(item) {
+    return getFestivalMetaItems(item)
+  }
+
+  function getFestivalTagList(item) {
+    return getFestivalTags(item)
+  }
+
+  function showFestivalBadge(item) {
+    return shouldShowFestivalBadge(item)
+  }
+
+  function showFestivalCorner(item) {
+    return shouldShowFestivalCorner(item)
+  }
+
+  function showFestivalSubtitle(item) {
+    return shouldShowFestivalSubtitle(item)
+  }
+
+  function showFestivalDescription(item) {
+    return shouldShowFestivalDescription(item)
+  }
+
+  function showFestivalMeta(item) {
+    return shouldShowFestivalMeta(item)
+  }
+
+  function showFestivalTags(item) {
+    return shouldShowFestivalTags(item)
+  }
+
+  function showFestivalLink(item) {
+    return hasFestivalLink(item)
+  }
+
+  function showFestivalRating(item) {
+    return shouldShowFestivalRating(item)
+  }
+
+  function showFestivalImage(item) {
+    return hasFestivalImage(item)
+  }
+
+  function showFestivalFooter(item) {
+    return shouldShowFestivalFooter(item)
+  }
+
+  function getFestivalMetaItemClass() {
+    return 'festival-card__meta-item'
+  }
+
+  function getFestivalRatingClass(item) {
+    return showFestivalRating(item) ? 'festival-card__rating' : 'festival-card__rating is-hidden'
+  }
+
+  function getFestivalBadgeClass() {
+    return 'festival-card__badge'
+  }
+
+  function getFestivalCornerClass(item) {
+    return showFestivalCorner(item) ? 'festival-card__corner-icon' : 'festival-card__corner-icon is-hidden'
+  }
+
+  function getFestivalImageWrapperClass() {
+    return 'festival-card__media'
+  }
+
+  function getFestivalBodyClass() {
+    return 'festival-card__body'
+  }
+
+  function getFestivalTitleClass() {
+    return 'festival-card__title'
+  }
+
+  function getFestivalSubtitleClass() {
+    return 'festival-card__subtitle'
+  }
+
+  function getFestivalDescriptionClass() {
+    return 'festival-card__description'
+  }
+
+  function getFestivalLinkClass() {
+    return 'festival-card__cta'
+  }
+
+  function getFestivalPlaceholderClass() {
+    return 'festival-card__image festival-card__image--placeholder'
+  }
+
+  function getFestivalImageClass() {
+    return 'festival-card__image'
+  }
+
+  function getFestivalFooterTextClass() {
+    return 'festival-card__footer-text'
+  }
+
+  function getFestivalBadgeInnerClass() {
+    return 'festival-card__badge-text'
+  }
+
+  function getFestivalCornerInnerClass() {
+    return 'festival-card__corner-text'
+  }
+
+  function getFestivalMetaValueClass() {
+    return 'festival-card__meta-value'
+  }
+
+  function getFestivalMetaIconClass() {
+    return 'festival-card__meta-icon'
+  }
+
+  function getFestivalTagClass() {
+    return 'festival-card__tag'
+  }
+
+  function getFestivalFooterRatingClass() {
+    return 'festival-card__rating'
+  }
+
+  function getFestivalFooterLinkClass() {
+    return 'festival-card__cta'
+  }
+
+  function getFestivalFooterArrowClass() {
+    return 'festival-card__cta-arrow'
+  }
+
+  function getFestivalBadgeIconClass() {
+    return 'festival-card__badge-icon'
+  }
+
+  function getFestivalBadgeTextClass() {
+    return 'festival-card__badge-label'
+  }
+
+  function getFestivalCornerIconClass() {
+    return 'festival-card__corner-label'
+  }
+
+  function getFestivalTitleHeadingClass() {
+    return 'festival-card__heading'
+  }
+
+  function getFestivalDescriptionParagraphClass() {
+    return 'festival-card__copy'
+  }
+
+  function getFestivalMetaWrapperClass(item) {
+    return getFestivalMetaClass(item)
+  }
+
+  function getFestivalTagsWrapperClass(item) {
+    return getFestivalTagsClass(item)
+  }
+
+  function getFestivalFooterWrapperClass(item) {
+    return getFestivalFooterClass(item)
+  }
+
+  function getFestivalCardWrapperClass(item, index) {
+    return joinFestivalCardClasses(item, index)
+  }
+
+  function getFestivalRatingDisplay(item) {
+    return getFestivalRatingValue(item)
+  }
+
+  function getFestivalMetaDisplay(meta) {
+    return getFestivalMetaText(meta)
+  }
+
+  function getFestivalBadgeDisplay(item) {
+    return getFestivalBadgeText(item)
+  }
+
+  function getFestivalCornerDisplay(item, index) {
+    return getFestivalCornerText(item, index)
+  }
+
+  function getFestivalTitleDisplay(item) {
+    return getFestivalTitleText(item)
+  }
+
+  function getFestivalSubtitleDisplay(item) {
+    return getFestivalSubtitleText(item)
+  }
+
+  function getFestivalDescriptionDisplay(item) {
+    return getFestivalDescriptionText(item)
+  }
+
+  function getFestivalPlaceholderDisplay(item) {
+    return getFestivalPlaceholderText(item)
+  }
+
+  function getFestivalBadgeIconDisplay(item, index) {
+    return getFestivalBadgeIconText(item, index)
+  }
+
+  function getFestivalCtaDisplay() {
+    return getFestivalCtaText()
+  }
+
+  function getFestivalArrowDisplay() {
+    return getFestivalCtaArrow()
+  }
+
+  function getFestivalImageDisplay(item) {
+    return getFestivalImageSrc(item)
+  }
+
+  function getFestivalLinkDisplay(item) {
+    return getFestivalLinkHref(item)
+  }
+
+  function getFestivalCardDisplayKey(item, index) {
+    return getFestivalCardKey(item, index)
+  }
+
+  function getFestivalTagDisplayKey(tag, index) {
+    return getFestivalTagKey(tag, index)
+  }
+
+  function getFestivalMetaDisplayAria(meta) {
+    return getFestivalMetaAria(meta)
+  }
+
+  function getFestivalBadgeDisplayAria(item) {
+    return getFestivalBadgeAria(item)
+  }
+
+  function getFestivalCornerDisplayAria(item, index) {
+    return getFestivalCornerAria(item, index)
+  }
+
+  function getFestivalRatingDisplayAria(item) {
+    return getFestivalRatingAria(item)
+  }
+
+  function getFestivalImageDisplayAlt(item) {
+    return getFestivalImageAlt(item)
+  }
+
+  function shouldUseFestivalPlaceholder(item) {
+    return !showFestivalImage(item)
+  }
+
+  function shouldRenderFestivalMediaOverlay() {
+    return true
+  }
+
+  function shouldRenderFestivalBody() {
+    return true
+  }
+
+  function shouldRenderFestivalTitle(item) {
+    return Boolean(getFestivalTitleDisplay(item))
+  }
+
+  function shouldRenderFestivalCta() {
+    return shouldShowFestivalLinkText()
+  }
+
+  function shouldRenderFestivalArrow() {
+    return true
+  }
+
+  function shouldRenderFestivalMetaIcon() {
+    return true
+  }
+
+  function shouldRenderFestivalTag(tag) {
+    return Boolean(tag)
+  }
+
+  function shouldRenderFestivalBadgeIcon() {
+    return true
+  }
+
+  function shouldRenderFestivalCornerIcon(item) {
+    return showFestivalCorner(item)
+  }
+
+  function shouldRenderFestivalRatingValue(item) {
+    return showFestivalRating(item)
+  }
+
+  function shouldRenderFestivalMetaValue(meta) {
+    return Boolean(meta.value)
+  }
+
+  function shouldRenderFestivalLink(item) {
+    return showFestivalLink(item)
+  }
+
+  function shouldRenderFestivalFooter(item) {
+    return showFestivalFooter(item)
+  }
+
+  function shouldRenderFestivalTags(item) {
+    return showFestivalTags(item)
+  }
+
+  function shouldRenderFestivalMeta(item) {
+    return showFestivalMeta(item)
+  }
+
+  function shouldRenderFestivalDescription(item) {
+    return showFestivalDescription(item)
+  }
+
+  function shouldRenderFestivalSubtitle(item) {
+    return showFestivalSubtitle(item)
+  }
+
+  function shouldRenderFestivalBadge(item) {
+    return showFestivalBadge(item)
+  }
+
+  function shouldRenderFestivalImage(item) {
+    return showFestivalImage(item)
+  }
+
+  function shouldRenderFestivalPlaceholder(item) {
+    return shouldUseFestivalPlaceholder(item)
+  }
+
+  function shouldRenderFestivalTitleHeading(item) {
+    return shouldRenderFestivalTitle(item)
+  }
+
+  function shouldRenderFestivalCard(item) {
+    return Boolean(item)
+  }
+
+  function shouldRenderFestivalCardList(items) {
+    return Array.isArray(items) && items.length > 0
+  }
+
+  function shouldRenderFestivalSection() {
+    return true
+  }
+
+  function shouldRenderFestivalMedia() {
+    return true
+  }
+
+  function shouldRenderFestivalBodyWrapper() {
+    return true
+  }
+
+  function shouldRenderFestivalFooterWrapper(item) {
+    return shouldRenderFestivalFooter(item)
+  }
+
+  function shouldRenderFestivalMetaWrapper(item) {
+    return shouldRenderFestivalMeta(item)
+  }
+
+  function shouldRenderFestivalTagsWrapper(item) {
+    return shouldRenderFestivalTags(item)
+  }
+
+  function shouldRenderFestivalBadgeWrapper(item) {
+    return shouldRenderFestivalBadge(item)
+  }
+
+  function shouldRenderFestivalCornerWrapper(item) {
+    return shouldRenderFestivalCornerIcon(item)
+  }
+
+  function shouldRenderFestivalLinkWrapper(item) {
+    return shouldRenderFestivalLink(item)
+  }
+
+  function shouldRenderFestivalRatingWrapper(item) {
+    return shouldRenderFestivalRatingValue(item)
+  }
+
+  function shouldRenderFestivalMetaItem(meta) {
+    return shouldRenderFestivalMetaValue(meta)
+  }
+
+  function shouldRenderFestivalTagItem(tag) {
+    return shouldRenderFestivalTag(tag)
+  }
+
+  function shouldRenderFestivalBadgeText(item) {
+    return Boolean(getFestivalBadgeDisplay(item))
+  }
+
+  function shouldRenderFestivalCornerText(item, index) {
+    return Boolean(getFestivalCornerDisplay(item, index))
+  }
+
+  function shouldRenderFestivalCtaText() {
+    return true
+  }
+
+  function shouldRenderFestivalArrowText() {
+    return true
+  }
+
+  function shouldRenderFestivalImageAlt(item) {
+    return Boolean(getFestivalImageDisplayAlt(item))
+  }
+
+  function shouldRenderFestivalImageSrc(item) {
+    return Boolean(getFestivalImageDisplay(item))
+  }
+
+  function shouldRenderFestivalLinkHref(item) {
+    return Boolean(getFestivalLinkDisplay(item))
+  }
+
+  function shouldRenderFestivalCardKey(item, index) {
+    return Boolean(getFestivalCardDisplayKey(item, index))
+  }
+
+  function shouldRenderFestivalTagKey(tag, index) {
+    return Boolean(getFestivalTagDisplayKey(tag, index))
+  }
+
+  function shouldRenderFestivalAriaValue(value) {
+    return Boolean(value)
+  }
+
+  function shouldRenderFestivalClassName(value) {
+    return Boolean(value)
+  }
+
+  function shouldRenderFestivalAccent(item, index) {
+    return Boolean(getFestivalAccentClass(item, index))
+  }
+
+  function shouldRenderFestivalRich(item) {
+    return Boolean(getFestivalCardRichClass(item))
+  }
+
+  const localizedCuisineShowcaseCards = cuisineShowcaseCards.map(localizeCuisineItem)
+  const localizedFestivalShowcaseCards = festivalShowcaseCards.map(localizeFestivalItem)
+  const localizedFeaturedArt = featuredArt ? localizeArtItem(featuredArt) : null
+  const localizedAdditionalArts = additionalArts.map(localizeArtItem)
+  const localizedArtsTabs = artsShowcaseCards.slice(0, 3).map(localizeArtItem)
+
+  return (
+    <div className="page-shell">
+      <PageHeader
+        lang={lang}
+        onLangChange={setLang}
+      />
+
+      <main>
+        <section
+          className="hero-section"
+          id="hero"
+          style={{
+            backgroundImage: `linear-gradient(rgba(30, 15, 10, 0.26), rgba(30, 15, 10, 0.4)), url(${banner3})`,
+          }}
+        >
+          <div className="hero-content hero-content--animated">
+            <span className="section-badge">{safeHomepage.hero.badge || copy.heroBadge}</span>
+            <h1>
+              {heroTitleLines.map((line, index) => (
+                <span key={`${line}-${index}`} className="hero-title-line">
+                  {line}
+                </span>
+              ))}
+            </h1>
+            <p>{safeHomepage.hero.subtitle}</p>
+            <div className="hero-actions">
+              <Link to="/regions" className="primary-button nav-link-button hero-action-button">{safeHomepage.hero.primaryCta}</Link>
+              <a href="#festivals" className="secondary-button nav-link-button hero-action-button">{safeHomepage.hero.secondaryCta}</a>
+            </div>
+            <form className="ai-guide__composer search-bar glass-panel hero-search-bar" onSubmit={handleSearch}>
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={lang === 'vi' ? 'Tìm kiếm bài viết, vùng miền, món ăn...' : 'Search articles, regions, dishes...'}
+              />
+              <button
+                type="submit"
+                className="gradient-button nav-link-button hero-search-submit"
+                disabled={searching}
+                aria-label={copy.search}
+              >
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M10.5 4a6.5 6.5 0 1 0 4.03 11.6l4.43 4.43 1.06-1.06-4.43-4.43A6.5 6.5 0 0 0 10.5 4Zm0 1.5a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z" />
+                </svg>
+              </button>
+            </form>
+            {isLoading ? <div className="home-loading-inline">{copy.loading}</div> : null}
+            {isError ? <div className="home-loading-inline home-loading-inline--error">{copy.error}</div> : null}
+            {results.length ? (
+              <div className="search-results fade-up">
+                <CardGrid items={results} variant="blog-grid" actionLabel={copy.learnMore} lang={lang} basePath="/articles" />
+              </div>
+            ) : null}
+            <div className="stats-row">
+              {(safeHomepage.stats || []).map((stat) => (
+                <div key={stat.label} className="stat-card float-card">
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <div className="page-content-shell">
+          <section className="content-section regions-section regions-showcase" id="regions">
+            <div className="regions-showcase__heading fade-up">
+              <span className="regions-showcase__badge-pill">
+                <span>✦ {lang === 'vi' ? 'KHÁM PHÁ VIỆT NAM' : 'EXPLORE VIETNAM'} ✦</span>
+              </span>
+              <h2 className="regions-showcase__magical-title">
+                Ba miền kỳ diệu <span className="gradient-text">Vùng Miền</span>
+              </h2>
+              <div className="regions-showcase__ornament">
+                <span className="ornament-line"></span>
+                <span className="ornament-center">
+                  <i className="diamond"></i>
+                  <i className="circle"></i>
+                  <i className="diamond"></i>
+                </span>
+                <span className="ornament-line"></span>
+              </div>
+              <p className="regions-showcase__subtitle">
+                {lang === 'vi'
+                  ? 'Từ những ngọn núi mờ sương phía Bắc đến vùng đồng bằng trù phú phía Nam, mỗi vùng miền đều mang trong mình linh hồn, văn hóa và những kỳ quan thiên nhiên độc đáo.'
+                  : 'From the misty mountains of the North to the fertile delta of the South, each region holds its own unique soul, culture, and natural wonders.'}
+              </p>
+            </div>
+
+            <div className="regions-showcase__grid">
+              {homepageRegions.map((region, index) => (
+                <article key={region.code || region.id || index} className={`region-magical-card fade-up is-accent-${index}`}>
+                  <div className="region-magical-card__inner">
+                    <div className="region-magical-card__accent-line"></div>
+                    <span className="region-magical-card__number">{region.number}</span>
+                    
+                    <div className="region-magical-card__image-box">
+                      {region.imageUrl ? (
+                        <img src={region.imageUrl} alt={region.imageAlt || region.title} />
+                      ) : (
+                        <div className="placeholder">{region.title}</div>
+                      )}
+                    </div>
+
+                    <div className="region-magical-card__content">
+                      <div className="region-magical-card__badge">
+                        <span className="badge-icon">{region.icon}</span>
+                        <span className="badge-text">{region.badge}</span>
+                      </div>
+                      
+                      <h3 className="region-magical-card__title">{region.title}</h3>
+                      
+                      <div className="region-magical-card__tags">
+                        {(region.highlights || []).map((tag, tIdx) => (
+                          <span key={tIdx} className="tag-chip">
+                            <i className="pin-icon">📍</i> {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <Link to={`/regions/${region.code}`} className="region-magical-card__explore-link">
+                        Khám phá {region.badge.split(' ')[1] || region.badge} <span className="arrow">→</span>
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="regions-showcase__footer fade-up">
+              <Link to="/regions" className="regions-showcase__button regions-showcase__button--primary">
+                <span>{lang === 'vi' ? 'Xem bản đồ đầy đủ' : 'View full map'} 📍</span>
+              </Link>
+              <Link to="/provinces" className="regions-showcase__button regions-showcase__button--outline">
+                <span>{lang === 'vi' ? 'Xem tất cả tỉnh thành' : 'View all provinces'} →</span>
+              </Link>
+            </div>
+          </section>
+
+          <section className="content-section dark-section ethnic-showcase" id="ethnic-groups">
+            <div className="ethnic-showcase__header fade-up">
+              <span className="ethnic-showcase__eyebrow">
+                <span className="ethnic-showcase__eyebrow-star" aria-hidden="true">✦</span>
+                <span>{copy.ethnicShowcaseBadge}</span>
+                <span className="ethnic-showcase__eyebrow-star" aria-hidden="true">✦</span>
+              </span>
+              <h2>{copy.ethnicShowcaseTitle}</h2>
+              <p>{copy.ethnicShowcaseDescription}</p>
+            </div>
+
+            <div className="ethnic-showcase__stats">
+              {ethnicShowcaseStats.map((stat) => (
+                <div key={stat.label} className="ethnic-stat-card float-card">
+                  <div className="ethnic-stat-card__value">
+                    <span className="ethnic-stat-card__icon" aria-hidden="true">{stat.icon}</span>
+                    <strong>{stat.value}</strong>
+                  </div>
+                  <span className="ethnic-stat-card__label">{stat.label}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="ethnic-showcase__grid">
+              {localizedFeaturedEthnicGroupsData.map((item, index) => (
+                <article key={item.code || item.id || index} className="ethnic-card fade-up">
+                  {item.imageUrl ? (
+                    <img src={item.imageUrl} alt={item.imageAlt || item.title} className="ethnic-card__image" loading="lazy" decoding="async" />
+                  ) : (
+                    <div className="ethnic-card__image ethnic-card__image--placeholder">{item.title}</div>
+                  )}
+
+                  <div className="ethnic-card__overlay" />
+
+                  <div className="ethnic-card__content">
+                    <div className="ethnic-card__top">
+                      <span className="ethnic-card__count">{item.articleCount ? `${item.articleCount}+ ${copy.ethnicShowcaseCountLabel}` : copy.ethnicShowcaseCountLabel}</span>
+                    </div>
+
+                    <div className="ethnic-card__body">
+                      <h3>{item.title}</h3>
+                      {item.description ? <p>{item.description}</p> : null}
+                    </div>
+
+                    <Link to={`/ethnic-groups/${item.code}`} className="ethnic-card__cta">
+                      {copy.ethnicShowcaseSecondaryCta}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="ethnic-showcase__footer fade-up">
+              <Link to="/ethnic-groups" className="ethnic-showcase__button">
+                <span>{copy.ethnicShowcasePrimaryCta}</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </section>
+
+          <section className="content-section light-section festival-showcase" id="festivals">
+            <div className="festival-showcase__header fade-up">
+              <span className="festival-showcase__eyebrow">
+                <span className="festival-showcase__eyebrow-star" aria-hidden="true">✦</span>
+                <span>{copy.festivalShowcaseBadge}</span>
+                <span className="festival-showcase__eyebrow-star" aria-hidden="true">✦</span>
+              </span>
+              <h2>
+                <span>{copy.festivalShowcaseTitle}</span>{' '}
+                <span className="festival-showcase__title-accent">{copy.festivalShowcaseTitleAccent}</span>
+              </h2>
+              <div className="festival-showcase__divider" aria-hidden="true">
+                <span />
+                <i />
+                <b />
+                <span />
+              </div>
+              <p>{copy.festivalShowcaseDescription}</p>
+            </div>
+
+            <div className="festival-showcase__grid">
+              {localizedFestivalShowcaseCards.map((item, index) => {
+                const accent = getFestivalAccent(item, index)
+                const badgeIcon = getFestivalBadgeIcon(item, index)
+                const badgeLabel = item.badge || item.category || copy.festivalShowcaseBadge
+                const metaItems = [
+                  item.metaPrimary ? { key: 'primary', icon: '🗓️', value: item.metaPrimary } : null,
+                  item.metaSecondary ? { key: 'secondary', icon: '📍', value: item.metaSecondary } : null,
+                ].filter(Boolean)
+                const tags = item.tags || []
+                const rating = formatFestivalRating(item.footerIcon)
+
+                return (
+                  <article key={item.code || item.id || index} className={`festival-card fade-up is-${accent}`}>
+                    <div className="festival-card__media">
+                      {item.imageUrl ? (
+                        <img src={item.imageUrl} alt={item.imageAlt || item.title} className="festival-card__image" loading="lazy" decoding="async" />
+                      ) : (
+                        <div className="festival-card__image festival-card__image--placeholder">{item.title}</div>
+                      )}
+
+                      {badgeLabel ? (
+                        <span className="festival-card__badge" aria-label={badgeLabel}>
+                          <span aria-hidden="true">{badgeIcon}</span>
+                          <span>{badgeLabel}</span>
+                        </span>
+                      ) : null}
+
+                      {item.badgeIcon ? <span className="festival-card__corner-icon" aria-hidden="true">{item.badgeIcon}</span> : null}
+                    </div>
+
+                    <div className="festival-card__body">
+                      <h3>{item.title}</h3>
+                      {item.subtitle ? <p className="festival-card__subtitle">{item.subtitle}</p> : null}
+                      {item.description ? <p className="festival-card__description">{item.description}</p> : null}
+
+                      {metaItems.length ? (
+                        <div className="festival-card__meta">
+                          {metaItems.map((meta) => (
+                            <span key={meta.key}>
+                              <span aria-hidden="true">{meta.icon}</span>
+                              <span>{meta.value}</span>
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+
+                      {tags.length ? (
+                        <div className="festival-card__chips">
+                          {tags.map((tag, tagIndex) => (
+                            <span key={`${tag}-${tagIndex}`}>{tag}</span>
+                          ))}
+                        </div>
+                      ) : null}
+
+                      {item.code ? (
+                        <div className="festival-card__footer">
+                          <Link to={`/articles/${item.code}`} className="festival-card__cta">
+                            {copy.learnMore}
+                            <span aria-hidden="true">→</span>
+                          </Link>
+                          {rating ? <span className="festival-card__rating" aria-hidden="true">{rating}</span> : null}
+                        </div>
+                      ) : null}
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          </section>
+
+          <section className="content-section light-section cuisine-showcase" id="cuisine">
+            <div className="cuisine-showcase__header fade-up">
+              <span className="cuisine-showcase__eyebrow">
+                <span className="cuisine-showcase__eyebrow-star" aria-hidden="true">✦</span>
+                <span>{copy.cuisineShowcaseBadge}</span>
+                <span className="cuisine-showcase__eyebrow-star" aria-hidden="true">✦</span>
+              </span>
+              <h2>
+                <span>{copy.cuisineShowcaseTitle}</span>{' '}
+                <span className="cuisine-showcase__title-accent">{copy.cuisineShowcaseTitleAccent}</span>
+              </h2>
+              <div className="cuisine-showcase__divider" aria-hidden="true">
+                <span />
+                <i />
+                <b />
+                <span />
+              </div>
+              <p>{copy.cuisineShowcaseDescription}</p>
+
+              <div className="cuisine-showcase__legend fade-up">
+                <span className="cuisine-showcase__legend-label">{copy.cuisineShowcaseLegendLabel}</span>
+                <div className="cuisine-showcase__legend-items">
+                  <div className="cuisine-showcase__legend-item">
+                    <span className="spice-icon spice-icon--mild">🔥</span>
+                    <span>{copy.cuisineShowcaseLegendMild}</span>
+                  </div>
+                  <div className="cuisine-showcase__legend-item">
+                    <span className="spice-icon spice-icon--medium">🔥🔥</span>
+                    <span>{copy.cuisineShowcaseLegendMedium}</span>
+                  </div>
+                  <div className="cuisine-showcase__legend-item">
+                    <span className="spice-icon spice-icon--fiery">🔥🔥🔥</span>
+                    <span>{copy.cuisineShowcaseLegendFiery}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="cuisine-showcase__grid">
+              {localizedCuisineShowcaseCards.map((item, index) => (
+                <article key={item.code || item.id || index} className="cuisine-card fade-up">
+                  <div className="cuisine-card__media">
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl} alt={item.imageAlt || item.title} className="cuisine-card__image" loading="lazy" decoding="async" />
+                    ) : (
+                      <div className="cuisine-card__image cuisine-card__image--placeholder">{item.title}</div>
+                    )}
+
+                    <div className="cuisine-card__badges-top">
+                      <span className="cuisine-card__popularity-badge">
+                        <span className="heart-icon">❤</span> {item.score}
+                      </span>
+                      <button type="button" className="cuisine-card__favorite-btn" aria-label="Add to favorites">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div className="cuisine-card__spice-overlay">
+                      <span className="spice-flames">
+                        {'🔥'.repeat(item.spiceLevel || 1)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="cuisine-card__body">
+                    <h3>{item.title}</h3>
+                    <p className="cuisine-card__red-subtitle">{item.subtitle}</p>
+                    {item.description ? <p className="cuisine-card__description">{item.description}</p> : null}
+
+                    <div className="cuisine-card__info-row">
+                      <div className="info-item">
+                        <span className="info-icon">📍</span>
+                        <span>{item.metaPrimary}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-icon">🕒</span>
+                        <span>{item.metaSecondary}</span>
+                      </div>
+                    </div>
+
+                    <div className="cuisine-card__chips">
+                      {(item.tags || []).map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
+
+                    <div className="cuisine-card__footer">
+                      <Link to={`/articles/${item.code}`} className="cuisine-card__cta">
+                        {copy.learnMore}
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="cuisine-showcase__footer fade-up">
+              <Link to="/articles" className="cuisine-showcase__button">
+                <span>{copy.cuisineShowcaseSectionCta}</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </section>
+
+          <section className="content-section light-section arts-layout arts-showcase" id="arts">
+            {localizedFeaturedArt ? (
+              <>
+                <div className="arts-showcase__header fade-up">
+                  <span className="arts-showcase__eyebrow">
+                    <span className="arts-showcase__eyebrow-star" aria-hidden="true">✦</span>
+                    <span>{copy.artsSectionBadge}</span>
+                    <span className="arts-showcase__eyebrow-star" aria-hidden="true">✦</span>
+                  </span>
+                  <h2>
+                    <span className="arts-showcase__title-base">{copy.artsSectionTitle}</span>{' '}
+                    <span className="arts-showcase__title-accent">{copy.artsSectionTitleAccent}</span>
+                  </h2>
+                  <div className="arts-showcase__divider" aria-hidden="true">
+                    <span className="arts-showcase__divider-line" />
+                    <i className="arts-showcase__divider-dot arts-showcase__divider-dot--gold" />
+                    <b className="arts-showcase__divider-dot arts-showcase__divider-dot--rose" />
+                    <span className="arts-showcase__divider-line" />
+                  </div>
+                  <p>{copy.artsSectionDescription}</p>
+                </div>
+
+                <div className="arts-showcase__tabs fade-up">
+                  {localizedArtsTabs.map((item, index) => (
+                    <button
+                      key={item.code || item.id || index}
+                      type="button"
+                      className={`arts-showcase__tab ${index === 0 ? 'is-active' : ''}`}
+                    >
+                      <span className="arts-showcase__tab-title">{item.title}</span>
+                      {item.category ? <span className="arts-showcase__tab-category">{localizeArtCategory(item.category)}</span> : null}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="arts-showcase__hero fade-up">
+                  <div className="arts-showcase__hero-media">
+                    {localizedFeaturedArt.imageUrl ? (
+                      <img src={localizedFeaturedArt.imageUrl} alt={localizedFeaturedArt.imageAlt || localizedFeaturedArt.title} className="arts-showcase__hero-image" loading="lazy" decoding="async" />
+                    ) : (
+                      <div className="arts-showcase__hero-image arts-showcase__hero-image--placeholder">{localizedFeaturedArt.title}</div>
+                    )}
+                    {localizedFeaturedArt.category ? <span className="arts-showcase__hero-badge">{localizedFeaturedArt.category}</span> : null}
+                    <button type="button" className="arts-showcase__hero-play" aria-label="Phát video giới thiệu">
+                      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div className="arts-showcase__hero-body">
+                    {localizedFeaturedArt.category ? <span className="arts-showcase__hero-kicker">{localizedFeaturedArt.category}</span> : null}
+                    <h2>{localizedFeaturedArt.title}</h2>
+                    <span className="arts-showcase__hero-line" aria-hidden="true" />
+                    {localizedFeaturedArt.description ? <p>{localizedFeaturedArt.description}</p> : null}
+
+                    <div className="arts-showcase__hero-chips">
+                      {[
+                        localizeArtMeta('Hơn 1.000 năm tuổi'),
+                        localizeArtMeta('Được UNESCO công nhận'),
+                        localizeArtMeta('Nhà hát Thăng Long'),
+                      ].map((chip) => (
+                        <span key={chip}>{chip}</span>
+                      ))}
+                    </div>
+
+                    <Link to={`/articles/${localizedFeaturedArt.code}`} className="arts-showcase__hero-cta">
+                      {localizeArtCta(localizedFeaturedArt.title)}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {copy.moreArtsItems && copy.moreArtsItems.length ? (
+                  <div className="arts-showcase__more-shell fade-up">
+                    <div className="arts-showcase__more-container">
+                      <h3>{copy.moreArtsTitle}</h3>
+                      <div className="arts-showcase__mini-grid">
+                        {copy.moreArtsItems.map((item, index) => (
+                          <div key={index} className="arts-showcase__mini-card">
+                            <span className="arts-showcase__mini-emoji" aria-hidden="true">
+                              {item.icon}
+                            </span>
+                            <strong>{item.title}</strong>
+                            <span>{item.description}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+              </>
+            ) : null}
+          </section>
+
+          <section className="content-section light-section blog-showcase" id="blog">
+            <div className="blog-showcase__header fade-up">
+              <span className="blog-showcase__eyebrow">
+                <span aria-hidden="true">✦</span>
+                <span>{copy.blogSectionBadge}</span>
+                <span aria-hidden="true">✦</span>
+              </span>
+              <h2>
+                <span>{lang === 'vi' ? 'Từ' : 'From Our'}</span>{' '}
+                <span className="blog-showcase__title-accent">{lang === 'vi' ? 'Blog' : 'Blog'}</span>
+              </h2>
+              <div className="blog-showcase__divider" aria-hidden="true">
+                <span />
+                <i />
+                <b />
+                <span />
+              </div>
+              <p>{copy.blogSectionDescription}</p>
+              <div className="blog-showcase__filters">
+                {blogFilterPills.map((pill, index) => (
+                  <button
+                    key={pill}
+                    type="button"
+                    className={`blog-showcase__filter ${index === 0 ? 'is-active' : ''}`}
+                  >
+                    {pill}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {featuredBlogPost ? (
+              <article className="blog-showcase__featured fade-up">
+                <div className="blog-showcase__featured-media">
+                  {featuredBlogPost.imageUrl ? (
+                    <img src={featuredBlogPost.imageUrl} alt={featuredBlogPost.imageAlt || featuredBlogPost.title} className="blog-showcase__featured-image" loading="lazy" decoding="async" />
+                  ) : (
+                    <div className="blog-showcase__featured-image blog-showcase__featured-image--placeholder">{featuredBlogPost.title}</div>
+                  )}
+                  <span className="blog-showcase__featured-badge">✦ {lang === 'vi' ? 'Nổi bật' : 'Featured'}</span>
+                </div>
+                <div className="blog-showcase__featured-body">
+                  <div className="blog-showcase__featured-meta-top">
+                    <span className="blog-showcase__featured-category">{getBlogCategoryLabel(featuredBlogPost, 0)}</span>
+                    <span className="blog-showcase__featured-read">◷ {estimateReadMinutes(featuredBlogPost, 0)}</span>
+                  </div>
+                  <h3>{featuredBlogPost.title}</h3>
+                  {featuredBlogPost.description ? <p>{featuredBlogPost.description}</p> : null}
+                  <div className="blog-showcase__featured-footer">
+                    <div className="blog-showcase__author">
+                      <span className="blog-showcase__author-avatar">{getBlogAuthorInitials(getBlogAuthorName(featuredBlogPost, 3))}</span>
+                      <span>
+                        <strong>{getBlogAuthorName(featuredBlogPost, 3)}</strong>
+                        <small>{formatBlogDate(featuredBlogPost.publishedAt)}</small>
+                      </span>
+                    </div>
+                    <Link to={`/articles/${featuredBlogPost.code}`} className="blog-showcase__readmore">
+                      {lang === 'vi' ? 'Xem thêm' : 'Read More'}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            ) : null}
+
+            {secondaryBlogPosts.length ? (
+              <div className="blog-showcase__grid fade-up">
+                {secondaryBlogPosts.map((item, index) => {
+                  const authorName = getBlogAuthorName(item, index)
+                  const accent = getBlogAccent(index)
+
+                  return (
+                    <article key={item.code || item.id || index} className={`blog-card is-${accent}`}>
+                      <div className="blog-card__media">
+                        {item.imageUrl ? (
+                          <img src={item.imageUrl} alt={item.imageAlt || item.title} className="blog-card__image" loading="lazy" decoding="async" />
+                        ) : (
+                          <div className="blog-card__image blog-card__image--placeholder">{item.title}</div>
+                        )}
+                        <span className="blog-card__badge">{getBlogCategoryLabel(item, index + 1)}</span>
+                      </div>
+                      <div className="blog-card__body">
+                        <div className="blog-card__meta-top">◷ {estimateReadMinutes(item, index + 1)} · {formatBlogDate(item.publishedAt)}</div>
+                        <h3>{item.title}</h3>
+                        {item.description ? <p>{item.description}</p> : null}
+                        <div className="blog-card__footer">
+                          <div className="blog-card__author">
+                            <span className="blog-card__author-avatar">{getBlogAuthorInitials(authorName)}</span>
+                            <strong>{authorName}</strong>
+                          </div>
+                          <Link to={`/articles/${item.code}`} className="blog-card__readmore">
+                            {lang === 'vi' ? 'Đọc' : 'Read'}
+                            <span aria-hidden="true">→</span>
+                          </Link>
+                        </div>
+                      </div>
+                    </article>
+                  )
+                })}
+              </div>
+            ) : null}
+
+            <div className="blog-showcase__footer fade-up">
+              <Link to="/blog" className="blog-showcase__button">
+                <span>{copy.viewAll}</span>
+              </Link>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <Footer lang={lang} />
+    </div>
+  )
+}

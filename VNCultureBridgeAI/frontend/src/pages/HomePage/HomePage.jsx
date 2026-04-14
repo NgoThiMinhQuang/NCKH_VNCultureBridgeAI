@@ -22,6 +22,7 @@ import imgEthnicEde from '../../assets/ede.jpg'
 import imgEthnicKhmer from '../../assets/khmer.jpg'
 import imgEthnicTay from '../../assets/thai.jpg' // Using Thai as fallback for Tay if Tay is missing
 import imgEthnicKinh from '../../assets/anhtet1.PNG'
+import imgEthnicCham from '../../assets/cham.jpg'
 
 const ethnicGroupImages = {
   hmong: imgEthnicHmong,
@@ -32,6 +33,7 @@ const ethnicGroupImages = {
   khmer: imgEthnicKhmer,
   tay: imgEthnicTay,
   kinh: imgEthnicKinh,
+  cham: imgEthnicCham,
 }
 
 export default function HomePage() {
@@ -82,7 +84,7 @@ export default function HomePage() {
           setHomepage(data)
           setStatus('success')
           document.documentElement.lang = lang
-          document.title = lang === 'vi' ? 'VietCultura - Khám phá Việt Nam' : 'VietCultura - Discover Vietnam'
+          document.title = copy.pageTitle
         }
       } catch (err) {
         if (!ignore) {
@@ -182,19 +184,24 @@ export default function HomePage() {
   const localizedFeaturedEthnicGroupsData = useMemo(() => {
     const baseGroups = (safeHomepage.ethnicGroups || []).slice(0, 6)
     return baseGroups.map((group) => {
-      const title = (group.title || '').toLowerCase()
-      let localImg = group.imageUrl
+      const normalizedCode = String(group.code || '').trim().toLowerCase()
+      const normalizedTitle = String(group.title || '').trim().toLowerCase()
+      let fallbackImage = null
 
-      for (const [key, img] of Object.entries(ethnicGroupImages)) {
-        if (title.includes(key)) {
-          localImg = img
-          break
+      if (normalizedCode && ethnicGroupImages[normalizedCode]) {
+        fallbackImage = ethnicGroupImages[normalizedCode]
+      } else {
+        for (const [key, img] of Object.entries(ethnicGroupImages)) {
+          if (normalizedTitle.includes(key)) {
+            fallbackImage = img
+            break
+          }
         }
       }
 
       return {
         ...group,
-        imageUrl: localImg,
+        imageUrl: group.imageUrl || fallbackImage,
         imageAlt: group.imageAlt || group.title,
       }
     })
@@ -221,7 +228,7 @@ export default function HomePage() {
     : ['All', 'Travel', 'Culture', 'Cuisine', 'Ethnic Cultures', 'Arts']
 
   function formatBlogDate(value) {
-    if (!value) return lang === 'vi' ? 'Mới đây' : 'Recently'
+    if (!value) return copy.blogRecently
 
     const date = new Date(value)
     if (Number.isNaN(date.getTime())) return value
@@ -235,7 +242,7 @@ export default function HomePage() {
 
   function estimateReadMinutes(item, index) {
     const base = Math.max(5, Math.min(10, (item?.articleCount || 0) + 5))
-    return `${base + index} ${lang === 'vi' ? 'phút đọc' : 'min read'}`
+    return `${base + index} ${copy.blogReadMinutesSuffix}`
   }
 
   function getBlogCategoryLabel(item, index) {
@@ -314,7 +321,7 @@ export default function HomePage() {
   }
 
   function getArtsSectionTitle() {
-    return lang === 'vi' ? 'Thêm nghệ thuật và thủ công truyền thống' : 'More Traditional Arts & Crafts'
+    return copy.moreArtsTitle
   }
 
   function getArtTileIcon(item, index) {
@@ -335,7 +342,7 @@ export default function HomePage() {
   function getArtTileSubtitle(item) {
     if (item?.category) return item.category
     if (item?.description) return item.description
-    return lang === 'vi' ? 'Di sản thủ công truyền thống' : 'Traditional cultural heritage'
+    return copy.artsFallbackSubtitle || (lang === 'vi' ? 'Di sản thủ công truyền thống' : 'Traditional cultural heritage')
   }
 
   function localizeArtItem(item) {
@@ -529,7 +536,7 @@ export default function HomePage() {
       return lang === 'vi' ? `${item.articleCount}+ bài viết` : `${item.articleCount}+ articles`
     }
 
-    return lang === 'vi' ? 'Nội dung nổi bật' : 'Featured content'
+    return copy.featuredContent
   }
 
   function extractDynamicTags(...values) {
@@ -548,7 +555,7 @@ export default function HomePage() {
   function localizeCuisineItem(item) {
     const safeItem = withSafeImage(item)
     const title = item.title || localizeCuisineTitle(safeItem.title)
-    const subtitle = item.subtitle || safeItem.category || (lang === 'vi' ? 'Ẩm thực Việt Nam' : 'Vietnamese cuisine')
+    const subtitle = item.subtitle || safeItem.category || copy.cuisineShowcaseBadge
     const tags = item.tags || extractDynamicTags(title, subtitle, safeItem.description)
     const rating = item.footerIcon || '★'.repeat(Math.max(3, Math.min(5, safeItem.articleCount || 4)))
 
@@ -558,10 +565,10 @@ export default function HomePage() {
       subtitle,
       description: item.description || localizeCuisineDescription(safeItem.description),
       metaPrimary: item.metaPrimary || formatHomepageMetaPrimary(safeItem),
-      metaSecondary: item.metaSecondary || safeItem.category || (lang === 'vi' ? 'Món nổi bật' : 'Featured dish'),
+      metaSecondary: item.metaSecondary || safeItem.category || copy.featuredDish,
       tags,
       score: item.score || (safeItem.articleCount ? `${safeItem.articleCount}+` : 'Top'),
-      scoreLabel: lang === 'vi' ? 'Món nổi bật' : 'Featured dish',
+      scoreLabel: copy.featuredDish,
       cornerIcon: '🍽️',
       footerIcon: rating,
       spiceLevel: item.spiceLevel || Math.max(1, Math.min(5, safeItem.articleCount || 3)),
@@ -673,7 +680,7 @@ export default function HomePage() {
   }
 
   function getFestivalImageAlt(item) {
-    return item.imageAlt || item.title || 'Festival image'
+    return item.imageAlt || item.title || copy.festivalImageAlt
   }
 
   function hasFestivalImage(item) {
@@ -1319,7 +1326,7 @@ export default function HomePage() {
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder={lang === 'vi' ? 'Tìm kiếm bài viết, vùng miền, món ăn...' : 'Search articles, regions, dishes...'}
+                placeholder={copy.heroSearchPlaceholder}
               />
               <button
                 type="submit"
@@ -1354,10 +1361,10 @@ export default function HomePage() {
           <section className="content-section regions-section regions-showcase" id="regions">
             <div className="regions-showcase__heading fade-up">
               <span className="regions-showcase__badge-pill">
-                <span>✦ {lang === 'vi' ? 'KHÁM PHÁ VIỆT NAM' : 'EXPLORE VIETNAM'} ✦</span>
+                <span>✦ {copy.regionsShowcaseEyebrow} ✦</span>
               </span>
               <h2 className="regions-showcase__magical-title">
-                Ba miền kỳ diệu <span className="gradient-text">Vùng Miền</span>
+                {copy.regionsShowcaseTitle} <span className="gradient-text">{copy.regionsShowcaseTitleAccent}</span>
               </h2>
               <div className="regions-showcase__ornament">
                 <span className="ornament-line"></span>
@@ -1369,9 +1376,7 @@ export default function HomePage() {
                 <span className="ornament-line"></span>
               </div>
               <p className="regions-showcase__subtitle">
-                {lang === 'vi'
-                  ? 'Từ những ngọn núi mờ sương phía Bắc đến vùng đồng bằng trù phú phía Nam, mỗi vùng miền đều mang trong mình linh hồn, văn hóa và những kỳ quan thiên nhiên độc đáo.'
-                  : 'From the misty mountains of the North to the fertile delta of the South, each region holds its own unique soul, culture, and natural wonders.'}
+                {copy.regionsShowcaseSubtitle}
               </p>
             </div>
 
@@ -1407,7 +1412,7 @@ export default function HomePage() {
                       </div>
 
                       <Link to={`/regions/${region.code}`} className="region-magical-card__explore-link">
-                        Khám phá {region.badge.split(' ')[1] || region.badge} <span className="arrow">→</span>
+                        {copy.regionsShowcaseExplorePrefix} {region.badge.split(' ').slice(1).join(' ') || region.badge} <span className="arrow">→</span>
                       </Link>
                     </div>
                   </div>
@@ -1417,10 +1422,10 @@ export default function HomePage() {
 
             <div className="regions-showcase__footer fade-up">
               <Link to="/regions" className="regions-showcase__button regions-showcase__button--primary">
-                <span>{lang === 'vi' ? 'Xem bản đồ đầy đủ' : 'View full map'} 📍</span>
+                <span>{copy.regionMapCta} 📍</span>
               </Link>
               <Link to="/provinces" className="regions-showcase__button regions-showcase__button--outline">
-                <span>{lang === 'vi' ? 'Xem tất cả tỉnh thành' : 'View all provinces'} →</span>
+                <span>{copy.regionsShowcaseSecondaryCta} →</span>
               </Link>
             </div>
           </section>
@@ -1629,7 +1634,7 @@ export default function HomePage() {
                       <span className="cuisine-card__popularity-badge">
                         <span className="heart-icon">❤</span> {item.score}
                       </span>
-                      <button type="button" className="cuisine-card__favorite-btn" aria-label="Add to favorites">
+                      <button type="button" className="cuisine-card__favorite-btn" aria-label={copy.favoriteAriaLabel}>
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                         </svg>
@@ -1727,7 +1732,7 @@ export default function HomePage() {
                       <div className="arts-showcase__hero-image arts-showcase__hero-image--placeholder">{localizedFeaturedArt.title}</div>
                     )}
                     {localizedFeaturedArt.category ? <span className="arts-showcase__hero-badge">{localizedFeaturedArt.category}</span> : null}
-                    <button type="button" className="arts-showcase__hero-play" aria-label="Phát video giới thiệu">
+                    <button type="button" className="arts-showcase__hero-play" aria-label={copy.artsPlayLabel}>
                       <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                         <path d="M8 5v14l11-7z" />
                       </svg>
@@ -1787,8 +1792,8 @@ export default function HomePage() {
                 <span aria-hidden="true">✦</span>
               </span>
               <h2>
-                <span>{lang === 'vi' ? 'Từ' : 'From Our'}</span>{' '}
-                <span className="blog-showcase__title-accent">{lang === 'vi' ? 'Blog' : 'Blog'}</span>
+                <span>{copy.blogTitleLine1}</span>{' '}
+                <span className="blog-showcase__title-accent">{copy.blogTitleLine2}</span>
               </h2>
               <div className="blog-showcase__divider" aria-hidden="true">
                 <span />
@@ -1818,7 +1823,7 @@ export default function HomePage() {
                   ) : (
                     <div className="blog-showcase__featured-image blog-showcase__featured-image--placeholder">{featuredBlogPost.title}</div>
                   )}
-                  <span className="blog-showcase__featured-badge">✦ {lang === 'vi' ? 'Nổi bật' : 'Featured'}</span>
+                  <span className="blog-showcase__featured-badge">✦ {copy.blogFeaturedBadge}</span>
                 </div>
                 <div className="blog-showcase__featured-body">
                   <div className="blog-showcase__featured-meta-top">
@@ -1836,7 +1841,7 @@ export default function HomePage() {
                       </span>
                     </div>
                     <Link to={`/articles/${featuredBlogPost.code}`} className="blog-showcase__readmore">
-                      {lang === 'vi' ? 'Xem thêm' : 'Read More'}
+                      {copy.blogReadMore}
                       <span aria-hidden="true">→</span>
                     </Link>
                   </div>
@@ -1870,7 +1875,7 @@ export default function HomePage() {
                             <strong>{authorName}</strong>
                           </div>
                           <Link to={`/articles/${item.code}`} className="blog-card__readmore">
-                            {lang === 'vi' ? 'Đọc' : 'Read'}
+                            {copy.blogRead}
                             <span aria-hidden="true">→</span>
                           </Link>
                         </div>

@@ -90,7 +90,7 @@ export default function RegisterPage() {
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
-        <span>Trang Chủ</span>
+        <span>Trang chủ</span>
       </button>
 
       <div className="register-container">
@@ -99,8 +99,8 @@ export default function RegisterPage() {
         <div className="register-showcase">
           <div className="showcase-image-wrapper">
             <img 
-              src="https://images.unsplash.com/photo-1528164344705-47542687000d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-              alt="Vietnam Scenic" 
+              src="https://images.unsplash.com/photo-1528164344705-47542687000d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+              alt="Phong cảnh Việt Nam"
               className="showcase-img"
             />
             <div className="showcase-overlay"></div>

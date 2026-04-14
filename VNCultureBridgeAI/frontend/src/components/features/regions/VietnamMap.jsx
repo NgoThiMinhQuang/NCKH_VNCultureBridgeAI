@@ -1,15 +1,14 @@
 import { useMemo, useState } from 'react';
 
 export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = [] }) {
-  const isVi = lang === 'vi';
   const [hoveredKey, setHoveredKey] = useState(null);
 
   const visibleKey = hoveredKey ?? activeKey;
   const labels = useMemo(() => {
     const defaults = {
-      north: isVi ? 'MIỀN BẮC' : 'NORTHERN VIETNAM',
-      central: isVi ? 'MIỀN TRUNG' : 'CENTRAL VIETNAM',
-      south: isVi ? 'MIỀN NAM' : 'SOUTHERN VIETNAM',
+      north: 'MIỀN BẮC',
+      central: 'MIỀN TRUNG',
+      south: 'MIỀN NAM',
     }
 
     for (const region of regions) {
@@ -19,25 +18,25 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
     }
 
     return defaults
-  }, [isVi, regions])
+  }, [regions])
 
   return (
     <div className="regions-map-container">
       <div className="vietnam-map-wrapper">
         {/* Base Map */}
-        <img src="/maps/vietnam-map-base.png" alt="Vietnam map" className="vietnam-map-base" />
+        <img src="/maps/vietnam-map-base.png" alt="Bản đồ Việt Nam" className="vietnam-map-base" />
 
         {/* Overlay Images */}
         <div className={`vietnam-map-overlay vietnam-map-overlay--north ${visibleKey === 'north' ? 'is-visible' : ''} ${hoveredKey === 'north' ? 'is-hovered' : ''} ${activeKey === 'north' ? 'is-active' : ''}`}>
-          <img src="/maps/vietnam-map-north-active.png" alt="Northern Vietnam Overlay" />
+          <img src="/maps/vietnam-map-north-active.png" alt="Lớp phủ Miền Bắc" />
         </div>
 
         <div className={`vietnam-map-overlay vietnam-map-overlay--central ${visibleKey === 'central' ? 'is-visible' : ''} ${hoveredKey === 'central' ? 'is-hovered' : ''} ${activeKey === 'central' ? 'is-active' : ''}`}>
-          <img src="/maps/vietnam-map-central-active.png" alt="Central Vietnam Overlay" />
+          <img src="/maps/vietnam-map-central-active.png" alt="Lớp phủ Miền Trung" />
         </div>
 
         <div className={`vietnam-map-overlay vietnam-map-overlay--south ${visibleKey === 'south' ? 'is-visible' : ''} ${hoveredKey === 'south' ? 'is-hovered' : ''} ${activeKey === 'south' ? 'is-active' : ''}`}>
-          <img src="/maps/vietnam-map-south-active.png" alt="Southern Vietnam Overlay" />
+          <img src="/maps/vietnam-map-south-active.png" alt="Lớp phủ Miền Nam" />
         </div>
 
         {/* Markers for regions (Star for capital, Dots for others) */}
@@ -60,7 +59,7 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
           }}
           onMouseLeave={() => setHoveredKey(null)}
           onClick={() => onSelectRegion('north')}
-          aria-label={isVi ? 'Chọn Miền Bắc' : 'Select Northern Vietnam'}
+          aria-label="Chọn Miền Bắc"
         />
         <button
           type="button"
@@ -71,7 +70,7 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
           }}
           onMouseLeave={() => setHoveredKey(null)}
           onClick={() => onSelectRegion('central')}
-          aria-label={isVi ? 'Chọn Miền Trung' : 'Select Central Vietnam'}
+          aria-label="Chọn Miền Trung"
         />
         <button
           type="button"
@@ -82,7 +81,7 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
           }}
           onMouseLeave={() => setHoveredKey(null)}
           onClick={() => onSelectRegion('south')}
-          aria-label={isVi ? 'Chọn Miền Nam' : 'Select Southern Vietnam'}
+          aria-label="Chọn Miền Nam"
         />
       </div>
     </div>

@@ -256,7 +256,7 @@ export default function ArticleDetailPage() {
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '12px' }}>
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   </svg>
-                  {lang === 'vi' ? `Bình Luận (${comments.length})` : `Comments (${comments.length})`}
+                  {`Bình luận (${comments.length})`}
                 </h3>
 
                 <div className="adc__comment-list">
@@ -276,12 +276,12 @@ export default function ArticleDetailPage() {
 
                 <form className="adc__comment-form" onSubmit={handleCommentSubmit}>
                   <textarea
-                    placeholder={lang === 'vi' ? 'Chia sẻ cảm nhận của bạn về bài viết này...' : 'Share your thoughts about this article...'}
+                    placeholder="Chia sẻ cảm nhận của bạn về bài viết này..."
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                   />
                   <div className="adc__comment-actions">
-                    <button type="submit" className="adc__comment-submit">{lang === 'vi' ? 'Gửi bình luận' : 'Post Comment'}</button>
+                    <button type="submit" className="adc__comment-submit">Gửi bình luận</button>
                   </div>
                 </form>
               </div>
@@ -298,9 +298,9 @@ export default function ArticleDetailPage() {
 
                   <div className="adc-author-card__stats">
                     {[
-                      { val: article.author.stats.posts, label: lang === 'vi' ? 'Bài viết' : 'Posts' },
-                      { val: article.author.stats.followers, label: lang === 'vi' ? 'Theo dõi' : 'Followers' },
-                      { val: article.author.stats.comments, label: lang === 'vi' ? 'Bình luận' : 'Comments' },
+                      { val: article.author.stats.posts, label: 'Bài viết' },
+                      { val: article.author.stats.followers, label: 'Theo dõi' },
+                      { val: article.author.stats.comments, label: 'Bình luận' },
                     ].map((s, i) => (
                       <div className="adc-author-card__stat" key={i}>
                         <span className="adc-author-card__stat-val">{s.val}</span>
@@ -327,7 +327,7 @@ export default function ArticleDetailPage() {
                     </div>
                   </div>
 
-                  <button className="adc-author-card__follow">{lang === 'vi' ? 'Theo dõi tác giả' : 'Follow Author'}</button>
+                  <button className="adc-author-card__follow">Theo dõi tác giả</button>
                 </div>
               </div>
 

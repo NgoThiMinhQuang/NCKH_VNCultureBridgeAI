@@ -30,7 +30,7 @@ export async function get(path, options = {}) {
     .then(async (response) => {
       const payload = await response.json()
       if (!response.ok || !payload.ok) {
-        throw new Error(payload.message || 'Request failed')
+        throw new Error(payload.message || 'Yêu cầu không thành công')
       }
 
       if (cacheTtlMs > 0) {
@@ -67,7 +67,7 @@ export async function post(path, body) {
   })
   const payload = await response.json()
   if (!response.ok || !payload.ok) {
-    throw new Error(payload.message || 'Request failed')
+    throw new Error(payload.message || 'Yêu cầu không thành công')
   }
   return payload.data
 }

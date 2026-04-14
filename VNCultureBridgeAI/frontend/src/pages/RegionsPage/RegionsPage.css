@@ -1836,7 +1836,7 @@
 }
 
 .regions-overview__header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 4vw, 3rem);
   color: #19100c;
   margin-bottom: 16px;
@@ -1916,7 +1916,7 @@
 }
 
 .regions-overview__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4.5vw, 3.2rem);
   color: #1a1512;
   line-height: 1.15;
@@ -2002,7 +2002,7 @@
 }
 
 .provinces-search__header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4vw, 3.2rem);
   color: #1a1512;
   margin-bottom: 16px;
@@ -2155,7 +2155,7 @@
 }
 
 .province-item__title-row h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.6rem;
   color: #1a1512;
 }
@@ -2316,7 +2316,7 @@
 }
 
 .seasons__header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4vw, 3.2rem);
   color: #1a1512;
   margin-bottom: 16px;
@@ -2389,7 +2389,7 @@
 }
 
 .season-card__top h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.8rem;
   margin-bottom: 4px;
 }
@@ -2442,7 +2442,7 @@
 }
 
 .cultural-layers__header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4vw, 3.2rem);
   color: #1a1512;
   margin-bottom: 20px;
@@ -2483,7 +2483,7 @@
 }
 
 .seasons__header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4vw, 3.2rem);
   color: #1a1512;
   margin-bottom: 16px;
@@ -2556,7 +2556,7 @@
 }
 
 .season-card__top h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.8rem;
   margin-bottom: 4px;
 }
@@ -2609,7 +2609,7 @@
 }
 
 .cultural-layers__header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4vw, 3.2rem);
   color: #1a1512;
   margin-bottom: 20px;
@@ -2653,7 +2653,7 @@
 }
 
 .culture-layer-card h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.4rem;
   color: #1a1512;
   margin-bottom: 12px;
@@ -2676,7 +2676,7 @@
 }
 
 .cultural-layers__summary p {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.25rem;
   font-style: italic;
   color: #1a1512;
@@ -2751,7 +2751,7 @@
 }
 
 .season-card__top h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.8rem;
   margin-bottom: 4px;
 }
@@ -2804,7 +2804,7 @@
 }
 
 .cultural-layers__header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4vw, 3.2rem);
   color: #1a1512;
   margin-bottom: 20px;
@@ -2848,7 +2848,7 @@
 }
 
 .culture-layer-card h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.4rem;
   color: #1a1512;
   margin-bottom: 12px;
@@ -2871,7 +2871,7 @@
 }
 
 .cultural-layers__summary p {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.25rem;
   font-style: italic;
   color: #1a1512;
@@ -2940,7 +2940,7 @@
 }
 
 .inspiration__header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4vw, 3.4rem);
   color: #fff;
   margin-bottom: 20px;
@@ -3009,7 +3009,7 @@
 }
 
 .inspiration-card__content h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   color: #fff;
   margin-bottom: 12px;
@@ -3081,7 +3081,7 @@
 
 .provinces__header h2,
 .highlights__header h2 {
-  font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.2rem, 3.5vw, 2.6rem);
   color: #1f2937;
   margin: 0 0 16px;
@@ -3385,7 +3385,7 @@
 }
 
 .regions-hero__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: clamp(3rem, 7vw, 5.5rem);
   line-height: 1.1;
   font-weight: 900;
@@ -3395,7 +3395,7 @@
 
 .regions-hero__title-accent {
   display: block;
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-style: italic;
   color: #e2a628;
   margin-top: 10px;

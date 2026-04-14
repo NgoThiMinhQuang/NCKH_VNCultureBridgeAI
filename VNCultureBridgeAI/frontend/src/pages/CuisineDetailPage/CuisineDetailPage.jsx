@@ -4,6 +4,7 @@ import './CuisineDetailPage.css'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
 import { getCuisine } from '../../services/cuisine.service'
+import { getCuisineImageSet, getCuisineLocalImage } from '../../utils/cuisineMedia'
 import {
   FiClock,
   FiGlobe,
@@ -14,14 +15,14 @@ import {
   FiArrowLeft,
 } from 'react-icons/fi'
 
-function buildNavItems(lang) {
+function buildNavItems() {
   return [
-    { icon: <FiClock />, label: lang === 'vi' ? 'Giới thiệu' : 'Intro' },
-    { icon: <FiBookOpen />, label: lang === 'vi' ? 'Nguyên liệu' : 'Ingredients' },
-    { icon: <FiGlobe />, label: lang === 'vi' ? 'Cách làm' : 'Method' },
-    { icon: <FiCoffee />, label: lang === 'vi' ? 'Thưởng thức' : 'Enjoy' },
-    { icon: <FiHome />, label: lang === 'vi' ? 'Góc bếp' : 'Kitchen' },
-    { icon: <FiImage />, label: lang === 'vi' ? 'Thư viện' : 'Gallery' },
+    { icon: <FiClock />, label: 'Giới thiệu' },
+    { icon: <FiBookOpen />, label: 'Nguyên liệu' },
+    { icon: <FiGlobe />, label: 'Cách làm' },
+    { icon: <FiCoffee />, label: 'Thưởng thức' },
+    { icon: <FiHome />, label: 'Góc bếp' },
+    { icon: <FiImage />, label: 'Thư viện' },
   ]
 }
 
@@ -32,6 +33,7 @@ export default function CuisineDetailPage() {
   const [error, setError] = useState('')
   const { id } = useParams()
   const navigate = useNavigate()
+  const imageSet = getCuisineImageSet(detail?.code, detail?.name, id)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -68,7 +70,7 @@ export default function CuisineDetailPage() {
     }
   }, [id, lang])
 
-  const navItems = useMemo(() => buildNavItems(lang), [lang])
+  const navItems = useMemo(() => buildNavItems(), [])
 
   if (status === 'error' && !detail) {
     return (
@@ -77,10 +79,10 @@ export default function CuisineDetailPage() {
         <main className="cdp-main">
           <section className="cdp-section cdp-section--light">
             <div className="cdp-container" style={{ textAlign: 'center', padding: '80px 0' }}>
-              <h2 className="cdp-section-title">{lang === 'vi' ? 'Không tải được món ăn' : 'Unable to load cuisine detail'}</h2>
-              <p className="cdp-section-subtitle">{error || (lang === 'vi' ? 'Đã xảy ra lỗi khi tải dữ liệu món ăn.' : 'An error occurred while loading cuisine data.')}</p>
+              <h2 className="cdp-section-title">Không tải được món ăn</h2>
+              <p className="cdp-section-subtitle">{error || 'Đã xảy ra lỗi khi tải dữ liệu món ăn.'}</p>
               <Link to="/cuisine" className="primary-button" style={{ display: 'inline-flex', marginTop: '24px', padding: '12px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none' }}>
-                {lang === 'vi' ? 'Quay lại danh sách món ăn' : 'Back to cuisine list'}
+                Quay lại danh sách món ăn
               </Link>
             </div>
           </section>
@@ -97,10 +99,10 @@ export default function CuisineDetailPage() {
         <main className="cdp-main">
           <section className="cdp-section cdp-section--light">
             <div className="cdp-container" style={{ textAlign: 'center', padding: '80px 0' }}>
-              <h2 className="cdp-section-title">{lang === 'vi' ? 'Không tìm thấy món ăn' : 'Cuisine not found'}</h2>
-              <p className="cdp-section-subtitle">{lang === 'vi' ? 'Món ăn bạn đang tìm không tồn tại hoặc chưa được xuất bản.' : 'The cuisine item you are looking for does not exist or is not published yet.'}</p>
+              <h2 className="cdp-section-title">Không tìm thấy món ăn</h2>
+              <p className="cdp-section-subtitle">Món ăn bạn đang tìm không tồn tại hoặc chưa được xuất bản.</p>
               <Link to="/cuisine" className="primary-button" style={{ display: 'inline-flex', marginTop: '24px', padding: '12px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none' }}>
-                {lang === 'vi' ? 'Quay lại danh sách món ăn' : 'Back to cuisine list'}
+                Quay lại danh sách món ăn
               </Link>
             </div>
           </section>
@@ -117,7 +119,7 @@ export default function CuisineDetailPage() {
         <main className="cdp-main">
           <section className="cdp-section cdp-section--light">
             <div className="cdp-container" style={{ textAlign: 'center', padding: '80px 0' }}>
-              <p className="cdp-section-subtitle">{lang === 'vi' ? 'Đang tải dữ liệu món ăn...' : 'Loading cuisine detail...'}</p>
+              <p className="cdp-section-subtitle">Đang tải dữ liệu món ăn...</p>
             </div>
           </section>
         </main>
@@ -126,12 +128,33 @@ export default function CuisineDetailPage() {
     )
   }
 
+  const heroImage = getCuisineLocalImage(detail?.code, detail?.name, id)
   const galleryItems = detail.gallery?.length
-    ? detail.gallery
-    : []
+    ? detail.gallery.map((item) => ({
+        ...item,
+        imageUrl: getCuisineLocalImage(item.code, item.title, item.imageAlt, detail?.code, detail?.name),
+      }))
+    : imageSet.gallery.map((imageUrl, index) => ({
+        id: `gallery-${index + 1}`,
+        imageUrl,
+        imageAlt: detail.heroImageAlt,
+        size: index === 0 ? 'large' : 'small',
+      }))
 
-  const ingredientImages = detail.ingredients?.images?.filter(Boolean)?.slice(0, 3) || []
-  const similarFoods = detail.similarFoods?.slice(0, 3) || []
+  const ingredientImages = detail.ingredients?.images?.length
+    ? detail.ingredients.images.slice(0, 3).map((_, index) => imageSet.ingredients[index] || heroImage)
+    : imageSet.ingredients
+  const similarFoods = (detail.similarFoods?.slice(0, 3) || []).map((food) => ({
+    ...food,
+    imageUrl: getCuisineLocalImage(food.code, food.title, food.imageAlt),
+  }))
+  const recipeSteps = (detail.recipeSteps || []).map((step, index) => ({
+    ...step,
+    imageUrl: imageSet.steps[index] || heroImage,
+  }))
+  const introImage = imageSet.intro || heroImage
+  const howToEnjoyImage = imageSet.enjoy || heroImage
+  const secretTipImage = imageSet.tip || heroImage
 
   return (
     <div className="page-shell">
@@ -139,7 +162,7 @@ export default function CuisineDetailPage() {
 
       <main className="cdp-main">
         <section className="cdp-hero">
-          <div className="cdp-hero__bg" style={{ backgroundImage: `url('${detail.heroImageUrl}')` }}></div>
+          <div className="cdp-hero__bg" style={{ backgroundImage: `url('${heroImage}')` }}></div>
           <div className="cdp-hero__overlay"></div>
 
           <div className="cdp-hero__ornament cdp-hero__ornament--tl"></div>
@@ -147,8 +170,8 @@ export default function CuisineDetailPage() {
 
           <div className="cdp-hero__inner">
             <div className="cdp-hero__left fade-up">
-              <button onClick={() => navigate(-1)} className="cdp-back-btn" aria-label={lang === 'vi' ? 'Quay lại' : 'Go back'} style={{ position: 'relative', top: 0, left: 0, display: 'inline-flex', marginBottom: '24px', width: 'fit-content', background: 'transparent', border: 'none', color: '#f8c97a', cursor: 'pointer', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
-                <FiArrowLeft /> <span>{lang === 'vi' ? 'Quay lại' : 'Go back'}</span>
+              <button onClick={() => navigate(-1)} className="cdp-back-btn" aria-label="Quay lại" style={{ position: 'relative', top: 0, left: 0, display: 'inline-flex', marginBottom: '24px', width: 'fit-content', background: 'transparent', border: 'none', color: '#f8c97a', cursor: 'pointer', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+                <FiArrowLeft /> <span>Quay lại</span>
               </button>
 
               <div className="cdp-hero__badge">
@@ -161,18 +184,18 @@ export default function CuisineDetailPage() {
 
               <div className="cdp-hero__stats">
                 <div className="cdp-hero__stat">
-                  <strong>{detail.stats?.prepTime || (lang === 'vi' ? 'Đang cập nhật' : 'Updating')}</strong>
-                  <span>{lang === 'vi' ? 'Thời gian chế biến' : 'Prep time'}</span>
+                  <strong>{detail.stats?.prepTime || 'Đang cập nhật'}</strong>
+                  <span>Thời gian chế biến</span>
                 </div>
                 <div className="cdp-hero__stat-sep"></div>
                 <div className="cdp-hero__stat">
-                  <strong>{detail.stats?.difficulty || (lang === 'vi' ? 'Đang cập nhật' : 'Updating')}</strong>
-                  <span>{lang === 'vi' ? 'Độ khó' : 'Difficulty'}</span>
+                  <strong>{detail.stats?.difficulty || 'Đang cập nhật'}</strong>
+                  <span>Độ khó</span>
                 </div>
                 <div className="cdp-hero__stat-sep"></div>
                 <div className="cdp-hero__stat">
-                  <strong>{detail.stats?.calories || (lang === 'vi' ? 'Đang cập nhật' : 'Updating')}</strong>
-                  <span>{lang === 'vi' ? 'Năng lượng' : 'Calories'}</span>
+                  <strong>{detail.stats?.calories || 'Đang cập nhật'}</strong>
+                  <span>Năng lượng</span>
                 </div>
               </div>
 
@@ -188,7 +211,7 @@ export default function CuisineDetailPage() {
 
             <div className="cdp-hero__right fade-up delay-1">
               <div className="cdp-hero__img-frame">
-                <img src={detail.heroImageUrl} alt={detail.heroImageAlt} className="cdp-hero__img-main" />
+                <img src={heroImage} alt={detail.heroImageAlt} className="cdp-hero__img-main" />
                 <div className="cdp-hero__img-ring"></div>
               </div>
             </div>
@@ -217,7 +240,7 @@ export default function CuisineDetailPage() {
                 </div>
               </div>
               <div className="cdp-intro__image">
-                <img src={detail.intro?.imageUrl || detail.heroImageUrl} alt={detail.intro?.imageAlt || detail.heroImageAlt} />
+                <img src={introImage} alt={detail.intro?.imageAlt || detail.heroImageAlt} />
               </div>
             </div>
           </div>
@@ -244,14 +267,14 @@ export default function CuisineDetailPage() {
         <section className="cdp-section cdp-section--light cdp-festivals">
           <div className="cdp-container">
             <header className="cdp-section-header">
-              <span className="cdp-section-badge">{lang === 'vi' ? 'Các bước thực hiện' : 'Steps'}</span>
-              <h2 className="cdp-section-title">{lang === 'vi' ? 'Cách Chế Biến' : 'Preparation'}</h2>
+              <span className="cdp-section-badge">Các bước thực hiện</span>
+              <h2 className="cdp-section-title">Cách chế biến</h2>
             </header>
 
             <div className="cdp-festival-grid">
-              {(detail.recipeSteps || []).map((step, index) => (
+              {recipeSteps.map((step, index) => (
                 <div className="cdp-fest-card" key={`${step.stepLabel}-${index}`}>
-                  <img src={step.imageUrl || detail.heroImageUrl} alt={step.imageAlt || step.title} className="cdp-fest-img" />
+                  <img src={step.imageUrl || heroImage} alt={step.imageAlt || step.title} className="cdp-fest-img" />
                   <div className="cdp-fest-content">
                     <span className="cdp-fest-tag">{step.stepLabel}</span>
                     <h3 className="cdp-fest-title">{step.title}</h3>
@@ -272,7 +295,7 @@ export default function CuisineDetailPage() {
                 <p className="cdp-intro__body">{detail.howToEnjoy?.body}</p>
               </div>
               <div className="cdp-arch-image">
-                <img src={detail.howToEnjoy?.imageUrl || detail.heroImageUrl} alt={detail.howToEnjoy?.imageAlt || detail.heroImageAlt} className="cdp-arch-img" />
+                <img src={howToEnjoyImage} alt={detail.howToEnjoy?.imageAlt || detail.heroImageAlt} className="cdp-arch-img" />
               </div>
             </div>
           </div>
@@ -282,13 +305,13 @@ export default function CuisineDetailPage() {
           <section className="cdp-section cdp-section--light cdp-cuisine">
             <div className="cdp-container">
               <header className="cdp-section-header">
-                <span className="cdp-section-badge">{lang === 'vi' ? 'Gợi ý thêm' : 'More to explore'}</span>
-                <h2 className="cdp-section-title">{lang === 'vi' ? 'Món ăn tương tự' : 'Similar dishes'}</h2>
+                <span className="cdp-section-badge">Gợi ý thêm</span>
+                <h2 className="cdp-section-title">Món ăn tương tự</h2>
               </header>
               <div className="cdp-cuisine-grid">
                 {similarFoods.map((food) => (
                   <div className="cdp-cuisine-item" onClick={() => navigate(`/cuisine/${food.code || food.id}`)} style={{ cursor: 'pointer' }} key={food.code || food.id}>
-                    <img src={food.imageUrl || detail.heroImageUrl} alt={food.imageAlt || food.title} className="cdp-cuisine-img" />
+                    <img src={food.imageUrl || imageSet.similar || heroImage} alt={food.imageAlt || food.title} className="cdp-cuisine-img" />
                     <h3 className="cdp-cuisine-title">{food.title}</h3>
                   </div>
                 ))}
@@ -301,7 +324,7 @@ export default function CuisineDetailPage() {
           <div className="cdp-container">
             <div className="cdp-arch__grid">
               <div className="cdp-arch-image">
-                <img src={detail.secretTip?.imageUrl || detail.heroImageUrl} alt={detail.secretTip?.imageAlt || detail.heroImageAlt} className="cdp-arch-img" />
+                <img src={secretTipImage} alt={detail.secretTip?.imageAlt || detail.heroImageAlt} className="cdp-arch-img" />
               </div>
               <div className="cdp-arch-text">
                 <span className="cdp-section-badge">{detail.secretTip?.badge}</span>
@@ -316,14 +339,14 @@ export default function CuisineDetailPage() {
           <section className="cdp-section cdp-section--light cdp-gallery">
             <div className="cdp-container">
               <header className="cdp-section-header">
-                <h2 className="cdp-section-title">{lang === 'vi' ? 'Thư viện hình ảnh' : 'Image gallery'}</h2>
-                <p className="cdp-section-subtitle">{lang === 'vi' ? `Góc nhìn chân thực, tinh tế về ${detail.name.toLowerCase()}.` : `A vivid visual look at ${detail.name}.`}</p>
+                <h2 className="cdp-section-title">Thư viện hình ảnh</h2>
+                <p className="cdp-section-subtitle">{`Góc nhìn chân thực, tinh tế về ${detail.name.toLowerCase()}.`}</p>
               </header>
 
               <div className="cdp-gallery-grid">
                 {galleryItems.map((item, index) => (
                   <div key={item.id || index} className={`cdp-gallery-item ${item.size || ''}`.trim()}>
-                    <img src={item.imageUrl || detail.heroImageUrl} alt={item.imageAlt || detail.heroImageAlt} />
+                    <img src={item.imageUrl || heroImage} alt={item.imageAlt || detail.heroImageAlt} />
                   </div>
                 ))}
               </div>
@@ -333,12 +356,12 @@ export default function CuisineDetailPage() {
 
         <section className="cdp-cta-banner">
           <div className="cdp-container" style={{ textAlign: 'center' }}>
-            <h2 className="cdp-cta-title" style={{ fontSize: '2rem', marginBottom: '24px', color: '#1a0a04' }}>{lang === 'vi' ? 'Khám phá nền ẩm thực Việt' : 'Explore Vietnamese cuisine'}</h2>
+            <h2 className="cdp-cta-title" style={{ fontSize: '2rem', marginBottom: '24px', color: '#1a0a04' }}>Khám phá nền ẩm thực Việt</h2>
             <Link to="/cuisine" className="primary-button" style={{
               display: 'inline-flex', padding: '12px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)',
               color: 'white', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none'
             }}>
-              {lang === 'vi' ? 'Trở lại danh sách món ăn' : 'Back to cuisine list'}
+              Trở lại danh sách món ăn
             </Link>
           </div>
         </section>

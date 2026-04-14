@@ -121,20 +121,28 @@
   flex-shrink: 0;
 }
 
+.province-card-v2__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
 .province-card-v2__placeholder {
   width: 100%;
   height: 100%;
   background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  font-weight: 700;
+  color: #475569;
 }
 
-.province-card-v2__placeholder img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.province-card-v2:hover .province-card-v2__placeholder img {
+.province-card-v2:hover .province-card-v2__image img {
   transform: scale(1.1);
 }
 

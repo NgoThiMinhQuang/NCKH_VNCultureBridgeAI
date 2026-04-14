@@ -160,8 +160,8 @@ function resolveCardTitle(row, lang, value) {
   }
 
   return lang === 'vi'
-    ? fixMojibake(row.TieuDeEN || row.TenEN || fixedValue)
-    : fixMojibake(row.TieuDeVI || row.TenVI || fixedValue)
+    ? fixMojibake(row.TieuDeVI || row.TenVI || row.TieuDeEN || row.TenEN || fixedValue)
+    : fixMojibake(row.TieuDeEN || row.TenEN || row.TieuDeVI || row.TenVI || fixedValue)
 }
 
 function resolveCardDescription(row, lang, value) {
@@ -172,8 +172,8 @@ function resolveCardDescription(row, lang, value) {
   }
 
   return lang === 'vi'
-    ? fixMojibake(row.MoTaNganEN || row.MoTaEN || fixedValue)
-    : fixMojibake(row.MoTaNganVI || row.MoTaVI || fixedValue)
+    ? fixMojibake(row.MoTaNganVI || row.MoTaVI || row.MoTaNganEN || row.MoTaEN || fixedValue)
+    : fixMojibake(row.MoTaNganEN || row.MoTaEN || row.MoTaNganVI || row.MoTaVI || fixedValue)
 }
 
 function resolveImageAlt(row, lang, value, title) {
@@ -184,8 +184,8 @@ function resolveImageAlt(row, lang, value, title) {
   }
 
   return lang === 'vi'
-    ? fixMojibake(row.AltTextEN || title)
-    : fixMojibake(row.AltTextVI || title)
+    ? fixMojibake(row.AltTextVI || row.AltTextEN || title)
+    : fixMojibake(row.AltTextEN || row.AltTextVI || title)
 }
 
 function resolvePublishedAt(row) {
@@ -244,6 +244,104 @@ function mapCard(row, lang) {
     articleCount: getFallbackArticleCount(row),
     publishedAt: resolvePublishedAt(row),
     category,
+  }
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value))
+}
+
+function buildMetaPrimary(card, lang) {
+  if (card.publishedAt) {
+    const date = new Date(card.publishedAt)
+    if (!Number.isNaN(date.getTime())) {
+      return date.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', {
+        day: '2-digit',
+        month: 'short',
+      })
+    }
+  }
+
+  if (card.articleCount) {
+    return lang === 'vi' ? `${card.articleCount}+ bài viết` : `${card.articleCount}+ articles`
+  }
+
+  return lang === 'vi' ? 'Nội dung nổi bật' : 'Featured content'
+}
+
+function extractTags(...values) {
+  const stopWords = new Set(['va', 'và', 'the', 'of', 'for', 'with', 'một', 'những', 'các'])
+
+  return values
+    .filter(Boolean)
+    .flatMap((value) => String(value).replace(/[^\p{L}\p{N}\s-]/gu, ' ').split(/\s+/))
+    .map((word) => word.trim())
+    .filter((word) => word.length > 2)
+    .filter((word) => !stopWords.has(word.toLowerCase()))
+    .filter((word, index, array) => array.findIndex((entry) => entry.toLowerCase() === word.toLowerCase()) === index)
+    .slice(0, 4)
+}
+
+function buildFestivalCard(row, lang, index) {
+  const card = mapCard(row, lang)
+
+  return {
+    ...card,
+    subtitle: card.category || (lang === 'vi' ? 'Lễ hội Việt Nam' : 'Vietnamese festival'),
+    metaPrimary: buildMetaPrimary(card, lang),
+    metaSecondary: card.category || (lang === 'vi' ? 'Di sản văn hóa' : 'Cultural heritage'),
+    badge: index === 0
+      ? (lang === 'vi' ? 'Nổi bật nhất' : 'Featured')
+      : (card.category || (lang === 'vi' ? 'Lễ hội' : 'Festival')),
+    badgeIcon: '✦',
+    footerIcon: '★'.repeat(clamp(card.articleCount || 4, 3, 5)),
+    accent: ['red', 'gold', 'purple'][index % 3],
+    tags: extractTags(card.title, card.category, card.description),
+  }
+}
+
+function buildCuisineCard(row, lang) {
+  const card = mapCard(row, lang)
+
+  return {
+    ...card,
+    subtitle: card.category || (lang === 'vi' ? 'Ẩm thực Việt Nam' : 'Vietnamese cuisine'),
+    metaPrimary: buildMetaPrimary(card, lang),
+    metaSecondary: card.category || (lang === 'vi' ? 'Món nổi bật' : 'Featured dish'),
+    tags: extractTags(card.title, card.category, card.description),
+    score: card.articleCount ? `${card.articleCount}+` : 'Top',
+    scoreLabel: lang === 'vi' ? 'Món nổi bật' : 'Featured dish',
+    cornerIcon: '🍽️',
+    footerIcon: '★'.repeat(clamp(card.articleCount || 4, 3, 5)),
+    spiceLevel: clamp(card.articleCount || 3, 1, 5),
+  }
+}
+
+function buildArtCard(row, lang) {
+  const card = mapCard(row, lang)
+
+  return {
+    ...card,
+    subtitle: card.category || card.description || (lang === 'vi' ? 'Di sản thủ công truyền thống' : 'Traditional cultural heritage'),
+  }
+}
+
+function buildEthnicGroupCard(row, lang) {
+  const card = mapCard(row, lang)
+
+  return {
+    ...card,
+    imageAlt: card.imageAlt || card.title,
+  }
+}
+
+function buildBlogPostCard(row, lang) {
+  const card = mapCard(row, lang)
+
+  return {
+    ...card,
+    metaPrimary: buildMetaPrimary(card, lang),
+    metaSecondary: card.category || (lang === 'vi' ? 'Khám phá văn hoá' : 'Culture discovery'),
   }
 }
 
@@ -392,12 +490,12 @@ async function getHomepage(lang = 'vi') {
     intro: staticContent.intro,
     stats: staticContent.stats,
     regions: regions.map((row) => mapHomepageRegion(row, lang)),
-    ethnicGroups: ethnicGroups.map((row) => mapCard(row, lang)),
-    festivals: festivals.map((row) => mapCard(row, lang)),
-    cuisine: cuisine.map((row) => mapCard(row, lang)),
-    arts: homepageArts.map((row) => mapCard(row, lang)),
+    ethnicGroups: ethnicGroups.map((row) => buildEthnicGroupCard(row, lang)),
+    festivals: festivals.map((row, index) => buildFestivalCard(row, lang, index)),
+    cuisine: cuisine.map((row) => buildCuisineCard(row, lang)),
+    arts: homepageArts.map((row) => buildArtCard(row, lang)),
     artLanding,
-    blogPosts: blogPosts.map((row) => mapCard(row, lang)),
+    blogPosts: blogPosts.map((row) => buildBlogPostCard(row, lang)),
     categories: categories.map((row) => mapCard(row, lang)),
     aiGuide: {
       ...staticContent.aiGuide,

@@ -1,7 +1,23 @@
 :root {
   /* Typography */
   --font-body: 'Inter', system-ui, sans-serif;
-  --font-heading: "Roboto", sans-serif;
+  --font-heading: "Roboto", system-ui, sans-serif;
+  --font-ui: var(--font-body);
+  --font-brand: var(--font-heading);
+
+  --text-brand-size: 1.35rem;
+  --text-brand-subtitle-size: 0.68rem;
+  --text-brand-subtitle-spacing: 0.12em;
+  --text-nav-size: 0.9rem;
+  --text-nav-weight: 500;
+  --text-action-size: 0.875rem;
+  --text-action-weight: 500;
+  --text-chip-size: 0.78rem;
+  --text-chip-weight: 700;
+  --text-overline-size: 0.74rem;
+  --text-overline-weight: 800;
+  --text-title-xl: clamp(2.1rem, 4vw, 3.6rem);
+  --text-hero-xl: clamp(2.8rem, 6vw, 5.4rem);
 
   /* Global Colors */
   --bg: #f7efe5;
@@ -11,9 +27,7 @@
   /* Text & Contrast */
   --text: #3d271e;
   --text-heading: #311b11;
-  /* Dành riêng cho tiêu đề nổi bật */
   --text-muted: #5c3a21;
-  /* Dành cho text mô tả, footer */
   --muted: #7d6257;
 
   /* Branding */
@@ -37,7 +51,9 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.6;
   color: var(--text);
   background: linear-gradient(180deg, #fff8f1 0%, #f6eee3 100%);
 }
@@ -233,14 +249,18 @@ body {
 
 body {
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.6;
   color: var(--text);
   background: linear-gradient(180deg, #fff8f1 0%, #f6eee3 100%);
 }
 
 button,
 a,
-input {
+input,
+textarea,
+select {
   font: inherit;
 }
 
@@ -266,8 +286,282 @@ h4,
 h5,
 h6,
 .brand-mark strong,
-.vnc-brand-text {
-  font-family: var(--font-heading);
+.vnc-brand-text,
+.form-header h1,
+.showcase-title,
+.gc-header-text h4,
+.vnc-links-col h4,
+.vnc-contact-col h4 {
+  font-family: var(--font-brand);
+  color: var(--text-heading);
+}
+
+button,
+input,
+textarea,
+select,
+label,
+p,
+span,
+a,
+li {
+  font-family: var(--font-ui);
+}
+
+.text-overline,
+.showcase-badge,
+.gc-header-text span,
+.vnc-newsletter h5,
+.vnc-social h5 {
+  font-size: var(--text-overline-size);
+  font-weight: var(--text-overline-weight);
+  letter-spacing: var(--text-brand-subtitle-spacing);
+  text-transform: uppercase;
+}
+
+.primary-button,
+.secondary-button,
+.outline-button,
+.ghost-button,
+.gradient-button,
+.text-link,
+.v2-submit-btn,
+.register-submit-btn,
+.back-to-home-btn,
+.v2-forgot-link,
+.v2-form-footer a,
+.register-form-footer a,
+.vnc-links-group a,
+.vnc-legal a,
+.vnc-form button {
+  font-size: var(--text-action-size);
+  font-weight: var(--text-action-weight);
+}
+
+.v2-submit-btn,
+.register-submit-btn {
+  font-family: var(--font-ui);
+  font-weight: 600;
+}
+
+.form-header p,
+.showcase-desc,
+.vnc-desc,
+.vnc-quote,
+.gc-message,
+.gc-input-area input {
+  font-family: var(--font-ui);
+}
+
+.back-to-home-btn,
+.v2-input-group label,
+.register-input-group label,
+.v2-checkbox-label,
+.register-checkbox-label,
+.ph__crumb-link,
+.ph__crumb-current {
+  font-family: var(--font-ui);
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-family: var(--font-ui);
+}
+
+body {
+  background-attachment: fixed;
+}
+
+main {
+  overflow: hidden;
+}
+
+main section {
+  scroll-margin-top: 130px;
+}
+
+.ph+main+.site-footer,
+.page-shell>.site-footer {
+  width: min(1360px, calc(100% - 64px));
+  margin: 0 auto 28px;
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  overflow: hidden;
+}
+
+.site-header,
+.brand-mark,
+.brand-logo,
+.site-nav,
+.site-actions {
+  font-family: var(--font-ui);
+}
+
+.site-nav a {
+  font-size: var(--text-nav-size);
+  font-weight: var(--text-nav-weight);
+}
+
+.site-actions .ghost-button,
+.site-actions .outline-button,
+.site-actions .gradient-button,
+.site-actions .nav-link-button,
+.lang-toggle button {
+  font-size: var(--text-action-size);
+}
+
+.site-header {
+  position: sticky;
+}
+
+.site-header>* {
+  min-width: 0;
+}
+
+.site-header> :nth-child(2) {
+  justify-self: center;
+}
+
+.site-header> :last-child {
+  justify-self: end;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #dc2626, #f59e0b);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.brand-mark strong,
+.footer-brand strong {
+  display: block;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.brand-mark span {
+  display: block;
+  margin-top: 4px;
+  color: var(--accent-2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: nowrap;
+}
+
+.site-nav a {
+  white-space: nowrap;
+  color: #2f455a;
+}
+
+.site-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.ghost-button,
+.outline-button,
+.gradient-button,
+.primary-button,
+.secondary-button,
+.lang-toggle button,
+.nav-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.ghost-button:hover,
+.outline-button:hover,
+.gradient-button:hover,
+.primary-button:hover,
+.secondary-button:hover,
+.lang-toggle button:hover,
+.nav-link-button:hover,
+.text-link:hover {
+  transform: translateY(-1px);
+}
+
+.site-actions .ghost-button,
+.site-actions .outline-button,
+.site-actions .gradient-button,
+.site-actions .nav-link-button,
+.lang-toggle button {
+  padding: 8px 14px;
+}
+
+.site-actions .gradient-button,
+.site-actions .outline-button {
+  min-height: 46px;
+}
+
+.ghost-button {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--text);
+}
+
+.ghost-button.small {
+  padding: 10px 18px;
+}
+
+.outline-button {
+  border: 1px solid rgba(185, 28, 28, 0.18);
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.72);
+  padding: 14px 22px;
+}
+
+.gradient-button,
+.primary-button {
+  background: linear-gradient(135deg, #dc2626, #f59e0b);
+  color: white;
+  box-shadow: 0 18px 32px rgba(185, 28, 28, 0.18);
+}
+
+.secondary-button {
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--text);
+}
+
+.text-link {
+  color: var(--accent);
+}
+
+
+.section-badge,
+.cuisine-showcase__eyebrow,
+.festival-showcase__eyebrow,
+.ethnic-showcase__eyebrow,
+.regions-showcase__badge-pill,
+.regions-overview__badge {
+  font-size: var(--text-overline-size);
+  font-weight: var(--text-overline-weight);
+  letter-spacing: var(--text-brand-subtitle-spacing);
+  text-transform: uppercase;
 }
 
 .page-shell {

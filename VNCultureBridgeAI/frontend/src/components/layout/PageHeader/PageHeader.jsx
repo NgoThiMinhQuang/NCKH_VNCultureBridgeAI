@@ -58,11 +58,7 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
   }
 
   function handleLogout() {
-    const confirmed = window.confirm(
-      lang === 'vi'
-        ? 'Bạn có chắc chắn muốn đăng xuất không?'
-        : 'Are you sure you want to log out?',
-    )
+    const confirmed = window.confirm('Bạn có chắc chắn muốn đăng xuất không?')
 
     if (!confirmed) return
 
@@ -71,7 +67,7 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
     localStorage.removeItem('isAuthenticated')
     setCurrentUser(null)
     window.dispatchEvent(new Event('auth-changed'))
-    window.alert(lang === 'vi' ? 'Đăng xuất thành công.' : 'Logged out successfully.')
+    window.alert('Đăng xuất thành công.')
   }
 
   return (
@@ -82,18 +78,18 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
         <Link to="/" className="ph__brand">
           <img
             src="/img/Logo.png"
-            alt="VNCulture logo"
+            alt="Biểu trưng VNCulture"
             className="ph__logo-img"
           />
           <div className="ph__brand-text">
             <strong>VNCulture</strong>
-            <span>{lang === 'vi' ? 'Di sản & Văn hoá' : 'Heritage & Culture'}</span>
+            <span>Di sản & Văn hoá</span>
           </div>
         </Link>
 
         {/* ── Navigation ── */}
         {renderNav ? renderNav() : (
-          <nav className="ph__nav" aria-label="Main navigation">
+          <nav className="ph__nav" aria-label="Điều hướng chính">
             {NAV_LINKS.map(({ labelKey, path }) => (
               <Link
                 key={path + labelKey}
@@ -110,7 +106,7 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
         {/* ── Actions ── */}
         <div className="ph__actions">
           {/* Search */}
-          <button type="button" className="ph__icon-btn" aria-label={lang === 'vi' ? 'Tìm kiếm' : 'Search'}>
+          <button type="button" className="ph__icon-btn" aria-label="Tìm kiếm">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -118,32 +114,30 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
           </button>
 
           {/* Language toggle */}
-          <div className="ph__lang" aria-label={copy.language}>
-            <button type="button" className={lang === 'en' ? 'is-active' : ''} onClick={() => onLangChange('en')}>EN</button>
-            <span aria-hidden="true">|</span>
-            <button type="button" className={lang === 'vi' ? 'is-active' : ''} onClick={() => onLangChange('vi')}>VI</button>
+          <div className="ph__lang" aria-label="Ngôn ngữ hiện tại">
+            <button type="button" className="is-active" onClick={() => onLangChange('vi')}>VI</button>
           </div>
 
           {currentUser ? (
             <>
               <div className="ph__user-chip" title={currentUser.fullName}>
-                <span className="ph__user-chip-label">{lang === 'vi' ? 'Xin chào' : 'Hello'}</span>
+                <span className="ph__user-chip-label">Xin chào</span>
                 <strong className="ph__user-chip-name">{currentUser.fullName}</strong>
               </div>
               <button type="button" className="ph__btn-logout" onClick={handleLogout}>
-                {lang === 'vi' ? 'Đăng xuất' : 'Logout'}
+                Đăng xuất
               </button>
             </>
           ) : (
             <>
               {/* Đăng nhập */}
               <Link to="/login" className="ph__btn-login">
-                {lang === 'vi' ? 'Đăng nhập' : 'Login'}
+                Đăng nhập
               </Link>
 
               {/* Đăng ký */}
               <Link to="/register" className="ph__btn-register">
-                {lang === 'vi' ? 'Đăng ký' : 'Register'}
+                Đăng ký
               </Link>
             </>
           )}
@@ -154,7 +148,7 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
       {breadcrumb && breadcrumb.length > 0 && (
         <div className="ph__crumb">
           <div className="ph__crumb-inner">
-            <Link to="/" className="ph__crumb-link">{lang === 'vi' ? 'Trang chủ' : 'Home'}</Link>
+            <Link to="/" className="ph__crumb-link">Trang chủ</Link>
             {breadcrumb.map((item, i) => (
               <span key={i} className="ph__crumb-item">
                 <span className="ph__crumb-sep" aria-hidden="true">›</span>

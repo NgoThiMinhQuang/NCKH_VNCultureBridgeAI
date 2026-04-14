@@ -52,17 +52,17 @@
 }
 
 .ph__brand-text strong {
-  font-family: var(--font-heading);
-  font-size: 1.35rem;
+  font-family: var(--font-brand);
+  font-size: var(--text-brand-size);
   color: #a32020;
   letter-spacing: 0.02em;
 }
 
 .ph__brand-text span {
   margin-top: 2px;
-  font-size: 0.68rem;
+  font-size: var(--text-brand-subtitle-size);
   color: #9b6b45;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--text-brand-subtitle-spacing);
   text-transform: uppercase;
 }
 
@@ -79,8 +79,9 @@
 .ph__nav-link {
   position: relative;
   padding: 6px 12px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-family: var(--font-ui);
+  font-size: var(--text-nav-size);
+  font-weight: var(--text-nav-weight);
   color: #5a3e2b;
   text-decoration: none;
   white-space: nowrap;
@@ -169,8 +170,9 @@
   border: 1px solid #c0392b;
   background: transparent;
   color: #c0392b;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-family: var(--font-ui);
+  font-size: var(--text-action-size);
+  font-weight: var(--text-action-weight);
   text-decoration: none;
   white-space: nowrap;
   transition: all 0.18s ease;
@@ -189,8 +191,9 @@
   border: none;
   background: #c0392b;
   color: #ffffff;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-family: var(--font-ui);
+  font-size: var(--text-action-size);
+  font-weight: var(--text-action-weight);
   text-decoration: none;
   white-space: nowrap;
   box-shadow: 0 4px 12px rgba(192, 57, 43, 0.2);
@@ -235,7 +238,8 @@
   border: 1px solid rgba(160, 50, 32, 0.25);
   background: #fff7f3;
   color: #a32020;
-  font-size: 0.875rem;
+  font-family: var(--font-ui);
+  font-size: var(--text-action-size);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.18s ease;
@@ -272,8 +276,9 @@
   border: none;
   background: transparent;
   color: #9b6b45;
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-size: var(--text-chip-size);
+  font-weight: var(--text-chip-weight);
   letter-spacing: 0.06em;
   cursor: pointer;
   transition: background 0.18s ease, color 0.18s ease;

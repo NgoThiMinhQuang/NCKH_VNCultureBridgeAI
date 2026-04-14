@@ -15,6 +15,114 @@ function parseJson(value, fallback = []) {
   }
 }
 
+const ETHNICITY_DETAIL_OVERRIDES = {
+  KINH: {
+    overviewTitle: 'Giới thiệu về dân tộc Kinh',
+    overviewBody: 'Người Kinh là cộng đồng chiếm đa số dân cư ở Việt Nam, phân bố rộng khắp cả nước. Đời sống văn hóa của người Kinh gắn với làng quê, phố thị, tín ngưỡng thờ cúng tổ tiên, áo dài, dân ca và nhiều lớp phong tục đã định hình diện mạo văn hóa Việt Nam.',
+    heroSubtitle: 'Người Kinh sinh sống rộng khắp cả nước, nổi bật với văn hóa làng xã, tín ngưỡng thờ cúng tổ tiên, dân ca, áo dài và những thực hành văn hóa có ảnh hưởng sâu rộng trong đời sống Việt Nam.',
+    cultureTitle: 'Đặc trưng văn hóa',
+    cultureBody: 'Bản sắc văn hóa Kinh thể hiện qua tín ngưỡng thờ cúng tổ tiên, lễ tết truyền thống, áo dài, dân ca vùng miền, ẩm thực phong phú và nếp sinh hoạt gia đình - làng xã bền chặt.',
+    historyTitle: 'Lịch sử & nguồn gốc',
+    historyBody: 'Người Kinh có quá trình hình thành và phát triển lâu dài trên dải đất Việt Nam, gắn với nền văn minh lúa nước, đời sống làng xã và những biến đổi lịch sử từ nông thôn đến đô thị.',
+    architectureTitle: 'Không gian sống',
+    architectureBody: 'Không gian sống của người Kinh trải rộng từ làng quê đồng bằng, ven sông đến đô thị hiện đại. Nhà ở, đình chùa, chợ và không gian sinh hoạt cộng đồng phản ánh rõ nhịp sống và cấu trúc xã hội truyền thống lẫn đương đại.',
+    musicTitle: 'Âm thanh & nghệ thuật trình diễn',
+    musicBody: 'Âm nhạc và nghệ thuật trình diễn của người Kinh rất đa dạng, từ quan họ, chèo, ca trù đến nhã nhạc, cải lương và nhiều hình thức sân khấu dân gian, phản ánh chiều sâu văn hóa qua nhiều vùng miền.',
+    populationLabel: 'Cộng đồng chiếm đa số dân cư Việt Nam',
+    heroBackgroundAlt: 'Không gian đời sống văn hóa của người Kinh',
+    heroForegroundAlt: 'Hình ảnh đại diện văn hóa dân tộc Kinh',
+    introImageAlt: 'Sinh hoạt văn hóa của người Kinh',
+    featureHighlightAlt: 'Nét văn hóa tiêu biểu của người Kinh',
+    musicImageAlt: 'Âm nhạc và nghệ thuật trình diễn của người Kinh',
+    architectureImageAlt: 'Không gian sống của người Kinh',
+  },
+  TAY: {
+    overviewTitle: 'Giới thiệu về dân tộc Tày',
+    overviewBody: 'Người Tày là một trong những cộng đồng dân tộc có dân số đông ở vùng trung du và miền núi phía Bắc. Đời sống văn hóa của người Tày gắn với nhà sàn, hát then, đàn tính, lễ hội Lồng Tồng và những nếp sinh hoạt cộng đồng bền chặt.',
+    heroSubtitle: 'Người Tày sinh sống chủ yếu ở vùng Đông Bắc và trung du miền núi phía Bắc, nổi bật với hát then, đàn tính, nhà sàn và đời sống bản làng gắn bó với ruộng nước, thung lũng và sườn núi.',
+    cultureTitle: 'Đặc trưng văn hóa',
+    cultureBody: 'Bản sắc văn hóa Tày thể hiện rõ qua tiếng nói thuộc nhóm ngôn ngữ Tày - Thái, làn điệu then, lễ hội Lồng Tồng, trang phục chàm truyền thống và không gian nhà sàn gắn với sinh hoạt cộng đồng.',
+    historyTitle: 'Lịch sử & nguồn gốc',
+    historyBody: 'Người Tày có lịch sử cư trú lâu đời ở các tỉnh miền núi phía Bắc như Cao Bằng, Lạng Sơn, Bắc Kạn, Thái Nguyên, Tuyên Quang và Hà Giang. Trong quá trình sinh sống, cộng đồng đã hình thành tri thức bản địa phong phú về canh tác ruộng nước, cư trú ven thung lũng và tổ chức đời sống bản làng.',
+    architectureTitle: 'Không gian sống',
+    architectureBody: 'Không gian sống của người Tày gắn với các bản làng ven suối, chân núi và thung lũng. Nhà sàn là hình thức cư trú tiêu biểu, vừa thích ứng với điều kiện tự nhiên vừa phản ánh nếp sống gia đình và cộng đồng.',
+    musicTitle: 'Âm thanh & nghệ thuật trình diễn',
+    musicBody: 'Hát then và tiếng đàn tính là những biểu tượng nổi bật trong đời sống tinh thần của người Tày. Các làn điệu dân ca, nghi lễ và trình diễn dân gian góp phần lưu giữ ký ức cộng đồng qua nhiều thế hệ.',
+    populationLabel: 'Cộng đồng đông dân ở miền núi phía Bắc',
+    heroBackgroundAlt: 'Không gian bản làng của người Tày ở vùng núi phía Bắc',
+    heroForegroundAlt: 'Hình ảnh đại diện văn hóa dân tộc Tày',
+    introImageAlt: 'Sinh hoạt văn hóa của người Tày',
+    featureHighlightAlt: 'Nét văn hóa tiêu biểu của người Tày',
+    musicImageAlt: 'Âm nhạc và nghệ thuật trình diễn của người Tày',
+    architectureImageAlt: 'Nhà sàn và không gian sống của người Tày',
+  },
+  HMONG: {
+    overviewTitle: 'Giới thiệu về dân tộc H’Mông',
+    overviewBody: 'Người H’Mông sinh sống chủ yếu ở các vùng núi cao phía Bắc. Bản sắc văn hóa của cộng đồng thể hiện qua nghề dệt lanh, trang phục rực rỡ, khèn Mông, chợ phiên và các lễ tục gắn với vòng đời, mùa vụ và cộng đồng bản làng.',
+    heroSubtitle: 'Người H’Mông cư trú nhiều ở các tỉnh núi cao phía Bắc, nổi bật với khèn Mông, nghề dệt lanh, chợ phiên và những thực hành văn hóa gắn với núi rừng.',
+    cultureBody: 'Đời sống văn hóa H’Mông gắn với tiếng khèn, nghề dệt lanh, kỹ thuật in sáp ong trên vải, chợ vùng cao và hệ thống lễ nghi phản ánh mối quan hệ chặt chẽ giữa con người với núi rừng.',
+    architectureBody: 'Người H’Mông thường cư trú tại các vùng núi cao, nhà ở bố trí theo địa hình sườn núi hoặc triền dốc, phản ánh kinh nghiệm thích nghi lâu đời với điều kiện tự nhiên.',
+    musicBody: 'Khèn Mông là nhạc cụ tiêu biểu trong đời sống tinh thần của người H’Mông, xuất hiện trong lễ hội, giao duyên và nhiều nghi lễ cộng đồng.',
+    populationLabel: 'Cộng đồng cư trú ở vùng núi cao phía Bắc',
+    heroBackgroundAlt: 'Không gian sống của người H’Mông ở vùng núi cao',
+    heroForegroundAlt: 'Hình ảnh đại diện văn hóa dân tộc H’Mông',
+    introImageAlt: 'Đời sống văn hóa của người H’Mông',
+    featureHighlightAlt: 'Nét văn hóa tiêu biểu của người H’Mông',
+    musicImageAlt: 'Khèn và nghệ thuật trình diễn của người H’Mông',
+    architectureImageAlt: 'Không gian sống vùng cao của người H’Mông',
+  },
+  DAO: {
+    overviewTitle: 'Giới thiệu về dân tộc Dao',
+    overviewBody: 'Người Dao sinh sống ở nhiều tỉnh miền núi phía Bắc, nổi bật với trang phục thêu hoa văn tinh xảo, lễ cấp sắc, tri thức dân gian và kho tàng văn hóa gắn với đời sống cộng đồng.',
+    heroSubtitle: 'Người Dao được biết đến với lễ cấp sắc, trang phục truyền thống, tri thức bản địa phong phú và đời sống văn hóa đậm bản sắc ở các vùng núi phía Bắc.',
+    cultureBody: 'Bản sắc văn hóa Dao thể hiện qua lễ cấp sắc, nghề thêu may trang phục, nghi lễ dân gian, chữ viết cổ và kho tri thức bản địa về đời sống, chữa bệnh, cư trú và canh tác.',
+    architectureBody: 'Không gian sống của người Dao phân bố theo các sườn núi, thung lũng và vùng đồi cao. Nhà ở phản ánh cách thích nghi với điều kiện địa hình và nếp sinh hoạt gia đình, dòng họ.',
+    musicBody: 'Âm nhạc và trình diễn dân gian của người Dao gắn với nghi lễ, sinh hoạt cộng đồng và nhiều dịp lễ tục quan trọng trong năm.',
+    populationLabel: 'Cộng đồng cư trú ở nhiều tỉnh miền núi phía Bắc',
+    heroBackgroundAlt: 'Không gian sống của người Dao',
+    heroForegroundAlt: 'Hình ảnh đại diện văn hóa dân tộc Dao',
+    introImageAlt: 'Sinh hoạt văn hóa của người Dao',
+    featureHighlightAlt: 'Nét văn hóa tiêu biểu của người Dao',
+    musicImageAlt: 'Âm nhạc và nghi lễ trình diễn của người Dao',
+    architectureImageAlt: 'Không gian nhà ở và bản làng của người Dao',
+  },
+  KHMER: {
+    overviewTitle: 'Giới thiệu về dân tộc Khmer',
+    overviewBody: 'Người Khmer sinh sống tập trung ở Nam Bộ, đặc biệt tại đồng bằng sông Cửu Long. Bản sắc văn hóa của cộng đồng gắn với chùa Khmer, nghệ thuật sân khấu, lễ hội truyền thống và đời sống nông nghiệp vùng sông nước.',
+    heroSubtitle: 'Người Khmer Nam Bộ nổi bật với hệ thống chùa Khmer, lễ hội truyền thống, nghệ thuật trình diễn và đời sống văn hóa gắn với đồng bằng sông Cửu Long.',
+    cultureBody: 'Đời sống văn hóa Khmer thể hiện qua kiến trúc chùa, lễ hội như Chol Chnam Thmay, Ok Om Bok, nghệ thuật múa, nhạc ngũ âm và những tập quán sinh hoạt cộng đồng ở vùng Nam Bộ.',
+    architectureBody: 'Không gian sống của người Khmer gắn với đồng bằng, kênh rạch, phum sóc và hệ thống chùa chiền - nơi vừa là trung tâm tín ngưỡng vừa là không gian văn hóa cộng đồng.',
+    musicBody: 'Âm nhạc và nghệ thuật trình diễn Khmer nổi bật với dàn nhạc ngũ âm, múa dân gian, sân khấu truyền thống và các tiết mục gắn với lễ hội cộng đồng.',
+    populationLabel: 'Cộng đồng tiêu biểu của vùng Nam Bộ',
+    heroBackgroundAlt: 'Không gian văn hóa Khmer Nam Bộ',
+    heroForegroundAlt: 'Hình ảnh đại diện văn hóa dân tộc Khmer',
+    introImageAlt: 'Sinh hoạt văn hóa của người Khmer',
+    featureHighlightAlt: 'Nét văn hóa tiêu biểu của người Khmer',
+    musicImageAlt: 'Âm nhạc và nghệ thuật trình diễn của người Khmer',
+    architectureImageAlt: 'Phum sóc và chùa Khmer Nam Bộ',
+  },
+  CHAM: {
+    overviewTitle: 'Giới thiệu về dân tộc Chăm',
+    overviewBody: 'Người Chăm sinh sống chủ yếu ở khu vực Nam Trung Bộ. Bản sắc văn hóa Chăm nổi bật qua hệ thống tháp Chăm, nghề gốm, dệt thổ cẩm, lễ hội Katê và đời sống cộng đồng gắn với truyền thống lâu đời.',
+    heroSubtitle: 'Người Chăm nổi bật với di sản tháp Chăm, lễ hội Katê, nghề gốm, dệt thổ cẩm và những sinh hoạt văn hóa đặc sắc ở vùng Nam Trung Bộ.',
+    cultureBody: 'Văn hóa Chăm thể hiện qua tín ngưỡng, kiến trúc tháp, lễ hội Katê, nghề gốm Bàu Trúc, dệt Mỹ Nghiệp và những thực hành cộng đồng được lưu giữ qua nhiều thế hệ.',
+    architectureBody: 'Không gian sống của người Chăm gắn với các làng nghề, khu dân cư ở Nam Trung Bộ và hệ thống di tích tháp Chăm phản ánh chiều sâu lịch sử - văn hóa của cộng đồng.',
+    musicBody: 'Âm nhạc và trình diễn dân gian của người Chăm gắn liền với lễ hội, nhạc cụ truyền thống và đời sống tín ngưỡng cộng đồng.',
+    populationLabel: 'Cộng đồng giàu di sản ở Nam Trung Bộ',
+    heroBackgroundAlt: 'Không gian văn hóa Chăm ở Nam Trung Bộ',
+    heroForegroundAlt: 'Hình ảnh đại diện văn hóa dân tộc Chăm',
+    introImageAlt: 'Sinh hoạt văn hóa của người Chăm',
+    featureHighlightAlt: 'Nét văn hóa tiêu biểu của người Chăm',
+    musicImageAlt: 'Âm nhạc và nghệ thuật trình diễn của người Chăm',
+    architectureImageAlt: 'Không gian di sản và cư trú của người Chăm',
+  },
+}
+
+function getEthnicityDetailOverride(code) {
+  if (!code) return null
+  return ETHNICITY_DETAIL_OVERRIDES[String(code).toUpperCase()] || null
+}
+
 function mapFestivalListItem(row, lang) {
   return {
     id: row.LeHoiID,
@@ -386,7 +494,7 @@ function mapCuisineDetail(row, mediaRows, relatedRows, lang) {
   const stepsSource = paragraphs.length ? paragraphs : [introText, originText, meaningText].filter(Boolean)
   const steps = stepsSource.map((paragraph, index) => ({
     stepLabel: `${index + 1}`,
-    title: `${lang === 'vi' ? 'Bước' : 'Step'} ${index + 1}`,
+    title: `Bước ${index + 1}`,
     desc: paragraph,
     imageUrl: mediaImages[index % Math.max(mediaImages.length, 1)]?.imageUrl || mainImage,
     imageAlt: mediaImages[index % Math.max(mediaImages.length, 1)]?.imageAlt || title,
@@ -415,40 +523,40 @@ function mapCuisineDetail(row, mediaRows, relatedRows, lang) {
     code: row.MaBaiViet,
     name: title,
     region,
-    categoryLabel: lang === 'vi' ? 'Ẩm thực' : 'Cuisine',
+    categoryLabel: 'Ẩm thực',
     subtitle,
     heroImageUrl: mainImage,
     heroImageAlt: mainAlt,
     stats: {
-      prepTime: lang === 'vi' ? 'Đang cập nhật' : 'Updating',
-      difficulty: lang === 'vi' ? 'Đang cập nhật' : 'Updating',
-      calories: lang === 'vi' ? 'Đang cập nhật' : 'Updating',
+      prepTime: 'Đang cập nhật',
+      difficulty: 'Đang cập nhật',
+      calories: 'Đang cập nhật',
     },
     intro: {
-      badge: lang === 'vi' ? 'Hương vị truyền thống' : 'Traditional flavor',
+      badge: 'Hương vị truyền thống',
       title: mapText(row, 'TieuDeVI', 'TieuDeEN', lang),
-      paragraphs: introText ? [introText, originText] : [],
+      paragraphs: introText ? [introText, originText].filter(Boolean) : [originText].filter(Boolean),
       imageUrl: mainImage,
       imageAlt: mainAlt,
     },
     ingredients: {
-      badge: lang === 'vi' ? 'Nguyên liệu chọn lọc' : 'Selected ingredients',
-      title: lang === 'vi' ? 'Tinh Hoa Đất Trời Trên Mâm' : 'Essence on the table',
+      badge: 'Nguyên liệu chọn lọc',
+      title: 'Tinh hoa đất trời trên mâm',
       subtitle: subtitle || introText,
       images: mediaImages.slice(0, 3).map((item) => item.imageUrl),
       summary: originText,
     },
     recipeSteps: steps,
     howToEnjoy: {
-      badge: lang === 'vi' ? 'Nghệ thuật ẩm thực' : 'Culinary art',
-      title: lang === 'vi' ? 'Cách Thưởng Thức' : 'How to enjoy',
+      badge: 'Nghệ thuật ẩm thực',
+      title: 'Cách thưởng thức',
       body: meaningText || contextText,
       imageUrl: mediaImages[1]?.imageUrl || mainImage,
       imageAlt: mediaImages[1]?.imageAlt || mainAlt,
     },
     secretTip: {
-      badge: lang === 'vi' ? 'Góc ẩm thực' : 'Kitchen tip',
-      title: lang === 'vi' ? 'Bí Quyết Nấu Ngon' : 'Cooking tip',
+      badge: 'Góc ẩm thực',
+      title: 'Bí quyết nấu ngon',
       body: contextText || meaningText,
       imageUrl: mediaImages[2]?.imageUrl || mainImage,
       imageAlt: mediaImages[2]?.imageAlt || mainAlt,
@@ -878,21 +986,21 @@ async function listCuisines(filters, lang) {
 
   return {
     hero: {
-      badge: lang === 'vi' ? 'Khám phá ẩm thực 3 miền' : 'Discover Vietnamese cuisine',
-      titleLine1: lang === 'vi' ? 'Tinh Hoa' : 'Essence',
-      titleAccent: lang === 'vi' ? 'Ẩm Thực' : 'Cuisine',
-      titleLine3: lang === 'vi' ? 'Việt Nam' : 'of Vietnam',
-      subtitle: heroSubtitle || (lang === 'vi' ? 'Khám phá những món ăn tiêu biểu được lưu giữ và kể lại từ dữ liệu CSDL.' : 'Explore signature dishes preserved and narrated from the database.'),
+      badge: 'Khám phá ẩm thực 3 miền',
+      titleLine1: 'Tinh Hoa',
+      titleAccent: 'Ẩm Thực',
+      titleLine3: 'Việt Nam',
+      subtitle: heroSubtitle || 'Khám phá những món ăn tiêu biểu được lưu giữ và kể lại từ dữ liệu văn hóa Việt Nam.',
       stats: [
-        { value: String(regions.length || 0), label: lang === 'vi' ? 'Vùng miền' : 'Regions' },
-        { value: String(cards.length || 0), label: lang === 'vi' ? 'Món ăn' : 'Dishes' },
-        { value: String(rows.length || 0), label: lang === 'vi' ? 'Bài viết' : 'Articles' },
+        { value: String(regions.length || 0), label: 'Vùng miền' },
+        { value: String(cards.length || 0), label: 'Món ăn' },
+        { value: String(rows.length || 0), label: 'Bài viết' },
       ],
       heroImageUrl: heroRow?.ImageUrl || null,
       heroImageAlt: mapText(heroRow, 'AltTextVI', 'AltTextEN', lang) || mapText(heroRow, 'TieuDeVI', 'TieuDeEN', lang) || '',
     },
-    regions: [lang === 'vi' ? 'Tất cả vùng' : 'All regions', ...regions],
-    heroCuisines: [lang === 'vi' ? 'Tất cả món' : 'All dishes', ...heroCuisines],
+    regions: ['Tất cả vùng', ...regions],
+    heroCuisines: ['Tất cả món', ...heroCuisines],
     cards,
     features: featureSource.map((row, index) => ({
       id: row.BaiVietID || index + 1,
@@ -1038,6 +1146,127 @@ async function getEthnicity(code, lang) {
 
   const card = mapEthnicityCard(row, lang)
   const primaryRegion = resolveRegionName(row.PrimaryRegionCode, lang, mapText(row, 'PrimaryRegionLabelVI', 'PrimaryRegionLabelEN', lang) || mapText(row, 'PrimaryRegionNameVI', 'PrimaryRegionNameEN', lang)) || ''
+  const override = getEthnicityDetailOverride(row.MaDanToc)
+  const firstFestival = festivals[0] || null
+  const firstCuisine = cuisine[0] || null
+  const firstTextile = textiles[0] || null
+  const ethnicityName = card.name || 'cộng đồng dân tộc Việt Nam'
+  const regionText = primaryRegion || 'nhiều vùng văn hóa Việt Nam'
+  const descriptionVi = fixText(row.MoTaVI) || ''
+  const heroSubtitleVi = fixText(row.HeroSubtitleVI) || ''
+  const overviewTitleVi = fixText(row.OverviewTitleVI) || ''
+  const overviewBodyVi = fixText(row.OverviewBodyVI) || ''
+  const historyTitleVi = fixText(row.HistoryTitleVI) || ''
+  const historyBodyVi = fixText(row.HistoryBodyVI) || ''
+  const cultureTitleVi = fixText(row.CultureTitleVI) || ''
+  const cultureBodyVi = fixText(row.CultureBodyVI) || ''
+  const architectureTitleVi = fixText(row.ArchitectureTitleVI) || ''
+  const architectureBodyVi = fixText(row.ArchitectureBodyVI) || ''
+  const populationLabelVi = fixText(row.PopulationLabelVI) || ''
+  const introAltVi = fixText(row.IntroImageAltVI) || ''
+  const heroBgAltVi = fixText(row.HeroBackgroundAltVI) || ''
+  const heroFgAltVi = fixText(row.HeroForegroundAltVI) || ''
+  const featureAltVi = fixText(row.FeatureHighlightAltVI) || ''
+  const architectureAltVi = fixText(row.ArchitectureImageAltVI) || ''
+  const musicAltVi = fixText(row.MusicImageAltVI) || ''
+  const overviewFallback = override?.overviewBody || descriptionVi || `${ethnicityName} là một cộng đồng dân tộc có bản sắc văn hóa riêng, gắn với đời sống sinh hoạt, ký ức cộng đồng và tri thức bản địa được lưu truyền qua nhiều thế hệ.`
+  const heroSubtitle = override?.heroSubtitle || heroSubtitleVi || descriptionVi || `${ethnicityName} là một trong những cộng đồng dân tộc góp phần làm nên sự phong phú của văn hóa Việt Nam, với đời sống gắn bó cùng ${regionText}.`
+  const overviewTitle = override?.overviewTitle || overviewTitleVi || `Giới thiệu về ${ethnicityName}`
+  const historyTitle = override?.historyTitle || historyTitleVi || 'Lịch sử & nguồn gốc'
+  const historyContent = override?.historyBody || historyBodyVi || `${ethnicityName} có lịch sử cư trú lâu đời tại ${regionText}, hình thành nên bản sắc riêng qua quá trình thích nghi với môi trường sống, lao động sản xuất và giao lưu văn hóa.`
+  const cultureTitle = override?.cultureTitle || cultureTitleVi || 'Đặc trưng văn hóa'
+  const cultureContent = override?.cultureBody || cultureBodyVi || firstTextile?.MoTaVI || firstFestival?.MoTaVI || `${ethnicityName} nổi bật với các thực hành văn hóa gắn với ngôn ngữ, trang phục, lễ nghi, tri thức dân gian và sinh hoạt cộng đồng được gìn giữ qua nhiều thế hệ.`
+  const architectureTitle = override?.architectureTitle || architectureTitleVi || 'Không gian sống'
+  const architectureContent = override?.architectureBody || architectureBodyVi || `${ethnicityName} thường cư trú tại ${regionText}, nơi không gian sống phản ánh rõ điều kiện tự nhiên, tập quán sinh hoạt gia đình và cách tổ chức cộng đồng.`
+  const musicTitle = override?.musicTitle || (lang === 'vi' ? 'Âm thanh & nghệ thuật trình diễn' : 'Music & Performing Arts')
+  const musicContent = override?.musicBody || cultureBodyVi || firstFestival?.MoTaVI || `Âm nhạc và nghệ thuật trình diễn của ${ethnicityName} gắn liền với lễ hội, sinh hoạt cộng đồng và đời sống tinh thần của người dân.`
+  const populationLabel = override?.populationLabel || populationLabelVi || mapText(row, 'PopulationLabelVI', 'PopulationLabelEN', lang) || String(card.articleCount || 0)
+  const heroBackgroundAlt = override?.heroBackgroundAlt || heroBgAltVi || mapText(row, 'HeroBackgroundAltVI', 'HeroBackgroundAltEN', lang) || `Không gian văn hóa của ${ethnicityName}`
+  const heroForegroundAlt = override?.heroForegroundAlt || heroFgAltVi || mapText(row, 'HeroForegroundAltVI', 'HeroForegroundAltEN', lang) || `Chân dung đại diện của ${ethnicityName}`
+  const introImageAlt = override?.introImageAlt || introAltVi || mapText(row, 'IntroImageAltVI', 'IntroImageAltEN', lang) || `Hình giới thiệu về ${ethnicityName}`
+  const featureHighlightAlt = override?.featureHighlightAlt || featureAltVi || mapText(row, 'FeatureHighlightAltVI', 'FeatureHighlightAltEN', lang) || `Nét văn hóa tiêu biểu của ${ethnicityName}`
+  const architectureImageAlt = override?.architectureImageAlt || architectureAltVi || mapText(row, 'ArchitectureImageAltVI', 'ArchitectureImageAltEN', lang) || `Không gian sống của ${ethnicityName}`
+  const musicImageAlt = override?.musicImageAlt || musicAltVi || mapText(row, 'MusicImageAltVI', 'MusicImageAltEN', lang) || `Âm nhạc và nghệ thuật trình diễn của ${ethnicityName}`
+  const cuisineFallbackTitle = firstCuisine?.TieuDeVI || ''
+  const cuisineFallbackDescription = firstCuisine?.MoTaVI || ''
+  const cuisineFallbackTag = firstCuisine?.TagVI || ''
+  const cuisineFallbackImage = firstCuisine?.ImageUrl || row.CardImageUrl || null
+  const cuisineFallbackAlt = firstCuisine?.ImageAltVI || `Món ăn truyền thống của ${ethnicityName}`
+  const festivalFallbackTitle = firstFestival?.TieuDeVI || ''
+  const festivalFallbackDescription = firstFestival?.MoTaVI || ''
+  const festivalFallbackTag = firstFestival?.TagVI || 'Lễ hội'
+  const festivalFallbackImage = firstFestival?.ImageUrl || row.FeatureHighlightImageUrl || row.CardImageUrl || null
+  const festivalFallbackAlt = firstFestival?.ImageAltVI || `Lễ hội truyền thống của ${ethnicityName}`
+  const textileFallbackTitle = firstTextile?.TieuDeVI || 'Trang phục & thủ công truyền thống'
+  const textileFallbackDescription = firstTextile?.MoTaVI || cultureContent
+  const textileFallbackTag = firstTextile?.TagVI || 'Di sản'
+  const textileFallbackImage = firstTextile?.ImageUrl || row.FeatureHighlightImageUrl || row.CardImageUrl || null
+  const textileFallbackAlt = firstTextile?.ImageAltVI || featureHighlightAlt
+  const fallbackFestivals = festivals.length ? festivals : (festivalFallbackImage ? [{
+    DanTocSectionItemID: `${row.MaDanToc || 'ethnicity'}-festival-fallback`,
+    TieuDeVI: festivalFallbackTitle || `Lễ hội của ${ethnicityName}`,
+    MoTaVI: festivalFallbackDescription || `${ethnicityName} lưu giữ nhiều nghi lễ và lễ hội gắn với vòng đời, mùa vụ và đời sống cộng đồng.`,
+    ImageUrl: festivalFallbackImage,
+    ImageAltVI: festivalFallbackAlt,
+    TagVI: festivalFallbackTag,
+    LayoutSize: 'small',
+    MaBaiViet: '',
+    NgayXuatBan: null,
+  }] : [])
+  const fallbackCuisine = cuisine.length ? cuisine : (cuisineFallbackImage ? [{
+    DanTocSectionItemID: `${row.MaDanToc || 'ethnicity'}-cuisine-fallback`,
+    TieuDeVI: cuisineFallbackTitle || `Ẩm thực của ${ethnicityName}`,
+    MoTaVI: cuisineFallbackDescription || `Ẩm thực của ${ethnicityName} phản ánh môi trường sống, tập quán canh tác và khẩu vị truyền thống của cộng đồng.`,
+    ImageUrl: cuisineFallbackImage,
+    ImageAltVI: cuisineFallbackAlt,
+    TagVI: cuisineFallbackTag,
+    LayoutSize: 'portrait',
+    MaBaiViet: '',
+    NgayXuatBan: null,
+  }] : [])
+  const fallbackTextiles = textiles.length ? textiles : (textileFallbackImage ? [{
+    DanTocSectionItemID: `${row.MaDanToc || 'ethnicity'}-textile-fallback`,
+    TieuDeVI: textileFallbackTitle,
+    MoTaVI: textileFallbackDescription,
+    ImageUrl: textileFallbackImage,
+    ImageAltVI: textileFallbackAlt,
+    TagVI: textileFallbackTag,
+    LayoutSize: 'square',
+    MaBaiViet: '',
+    NgayXuatBan: null,
+  }] : [])
+  const fallbackGallery = gallery.length ? gallery : [festivalFallbackImage, textileFallbackImage, row.HeroBackgroundImageUrl, row.HeroForegroundImageUrl, row.CardImageUrl]
+    .filter(Boolean)
+    .map((imageUrl, index) => ({
+      DanTocSectionItemID: `${row.MaDanToc || 'ethnicity'}-gallery-${index}`,
+      ImageUrl: imageUrl,
+      ImageAltVI: index === 0 ? festivalFallbackAlt : index === 1 ? textileFallbackAlt : `Hình ảnh văn hóa của ${ethnicityName}`,
+      LayoutSize: index === 0 ? 'large' : 'small',
+      MoTaVI: cultureContent,
+      MaBaiViet: '',
+    }))
+  const fallbackRelatedArticles = relatedArticles.length ? relatedArticles : [{
+    id: `${row.MaDanToc || 'ethnicity'}-article-fallback`,
+    code: '',
+    title: `Khám phá văn hóa ${ethnicityName}`,
+    description: cultureContent,
+    imageUrl: row.CardImageUrl || row.FeatureHighlightImageUrl || row.HeroForegroundImageUrl || null,
+    imageAlt: `Hình minh họa về ${ethnicityName}`,
+  }]
+
+  const finalFestivals = fallbackFestivals
+  const finalCuisine = fallbackCuisine
+  const finalTextiles = fallbackTextiles
+  const finalGallery = fallbackGallery
+  const finalRelatedArticles = fallbackRelatedArticles
+  const sparseSections = [
+    ...(finalFestivals.length ? [] : ['festivals']),
+    ...(finalCuisine.length ? [] : ['cuisine']),
+    ...(arts.length ? [] : ['arts']),
+    ...(finalGallery.length ? [] : ['gallery']),
+  ]
+
+  const hasGeneratedFallbackData = !festivals.length || !cuisine.length || !textiles.length || !gallery.length || !relatedArticles.length
 
   return {
     id: card.id,
@@ -1048,63 +1277,60 @@ async function getEthnicity(code, lang) {
     hero: {
       badge: lang === 'vi' ? 'Dân tộc Việt Nam' : 'Ethnic Cultures of Vietnam',
       title: card.name,
-      subtitle: mapText(row, 'HeroSubtitleVI', 'HeroSubtitleEN', lang) || card.description,
-      backgroundImageUrl: row.HeroBackgroundImageUrl || null,
-      backgroundImageAlt: mapText(row, 'HeroBackgroundAltVI', 'HeroBackgroundAltEN', lang) || card.name,
-      foregroundImageUrl: row.HeroForegroundImageUrl || row.CardImageUrl || null,
-      foregroundImageAlt: mapText(row, 'HeroForegroundAltVI', 'HeroForegroundAltEN', lang) || card.name,
+      subtitle: heroSubtitle,
+      backgroundImageUrl: row.HeroBackgroundImageUrl || row.FeatureHighlightImageUrl || row.CardImageUrl || null,
+      backgroundImageAlt: heroBackgroundAlt,
+      foregroundImageUrl: row.HeroForegroundImageUrl || row.CardImageUrl || row.FeatureHighlightImageUrl || null,
+      foregroundImageAlt: heroForegroundAlt,
       stats: [
-        { value: mapText(row, 'PopulationLabelVI', 'PopulationLabelEN', lang) || String(card.articleCount || 0), label: lang === 'vi' ? 'Quy mô tư liệu' : 'Content scale' },
+        { value: populationLabel, label: lang === 'vi' ? 'Quy mô tư liệu' : 'Content scale' },
         { value: primaryRegion || (lang === 'vi' ? 'Đang cập nhật' : 'Updating'), label: lang === 'vi' ? 'Khu vực chính' : 'Primary region' },
       ],
     },
     overview: {
-      title: mapText(row, 'OverviewTitleVI', 'OverviewTitleEN', lang) || (lang === 'vi' ? `Giới thiệu về ${card.name}` : `Introduction to ${card.name}`),
-      content: mapText(row, 'OverviewBodyVI', 'OverviewBodyEN', lang) || card.description,
-      imageUrl: row.IntroImageUrl || row.HeroForegroundImageUrl || row.CardImageUrl || null,
-      imageAlt: mapText(row, 'IntroImageAltVI', 'IntroImageAltEN', lang) || card.name,
+      title: overviewTitle,
+      content: overviewBodyVi || overviewFallback,
+      imageUrl: row.IntroImageUrl || row.HeroForegroundImageUrl || row.CardImageUrl || row.FeatureHighlightImageUrl || null,
+      imageAlt: introImageAlt,
     },
     featureHighlight: {
-      imageUrl: row.FeatureHighlightImageUrl || null,
-      imageAlt: mapText(row, 'FeatureHighlightAltVI', 'FeatureHighlightAltEN', lang) || card.name,
+      imageUrl: row.FeatureHighlightImageUrl || row.MusicImageUrl || row.CardImageUrl || textileFallbackImage || festivalFallbackImage || null,
+      imageAlt: featureHighlightAlt,
     },
     sections: {
       history: {
-        title: mapText(row, 'HistoryTitleVI', 'HistoryTitleEN', lang) || (lang === 'vi' ? 'Lịch sử & nguồn gốc' : 'History & Origins'),
-        content: mapText(row, 'HistoryBodyVI', 'HistoryBodyEN', lang) || card.description,
+        title: historyTitle,
+        content: historyContent,
       },
       culture: {
-        title: mapText(row, 'CultureTitleVI', 'CultureTitleEN', lang) || (lang === 'vi' ? 'Đặc trưng văn hóa' : 'Cultural Identity'),
-        content: mapText(row, 'CultureBodyVI', 'CultureBodyEN', lang) || card.description,
+        title: cultureTitle,
+        content: cultureContent,
       },
       architecture: {
-        title: mapText(row, 'ArchitectureTitleVI', 'ArchitectureTitleEN', lang) || (lang === 'vi' ? 'Không gian sống' : 'Living Space'),
-        content: mapText(row, 'ArchitectureBodyVI', 'ArchitectureBodyEN', lang) || card.description,
-        imageUrl: row.ArchitectureImageUrl || null,
-        imageAlt: mapText(row, 'ArchitectureImageAltVI', 'ArchitectureImageAltEN', lang) || card.name,
+        title: architectureTitle,
+        content: architectureContent,
+        imageUrl: row.ArchitectureImageUrl || row.HeroBackgroundImageUrl || row.CardImageUrl || festivalFallbackImage || null,
+        imageAlt: architectureImageAlt,
       },
-      textiles: textiles.map((item) => mapEthnicitySectionItem(item, lang, 'square')),
-      festivals: festivals.map((item) => mapEthnicitySectionItem(item, lang, 'small')),
-      cuisine: cuisine.map((item) => mapEthnicitySectionItem(item, lang, 'portrait')),
+      textiles: finalTextiles.map((item) => mapEthnicitySectionItem(item, lang, 'square')),
+      festivals: finalFestivals.map((item) => mapEthnicitySectionItem(item, lang, 'small')),
+      cuisine: finalCuisine.map((item) => mapEthnicitySectionItem(item, lang, 'portrait')),
       arts: arts.map((item) => mapEthnicitySectionItem(item, lang, 'small')),
       music: {
-        title: lang === 'vi' ? 'Âm thanh & nghệ thuật trình diễn' : 'Music & Performing Arts',
-        content: mapText(row, 'CultureBodyVI', 'CultureBodyEN', lang) || card.description,
-        imageUrl: row.MusicImageUrl || null,
-        imageAlt: mapText(row, 'MusicImageAltVI', 'MusicImageAltEN', lang) || card.name,
+        title: musicTitle,
+        content: musicContent,
+        imageUrl: row.MusicImageUrl || row.FeatureHighlightImageUrl || row.CardImageUrl || textileFallbackImage || festivalFallbackImage || null,
+        imageAlt: musicImageAlt,
       },
     },
-    gallery: gallery.map((item) => mapEthnicitySectionItem(item, lang, item.LayoutSize || 'small')),
-    relatedArticles: relatedArticles.map((item) => mapArticleCard(item, lang)),
+    gallery: finalGallery.map((item) => mapEthnicitySectionItem(item, lang, item.LayoutSize || 'small')),
+    relatedArticles: relatedArticles.length ? relatedArticles.map((item) => mapArticleCard(item, lang)) : finalRelatedArticles,
     meta: {
       articleCount: card.articleCount,
       primaryRegion,
-      sparseSections: [
-        ...(festivals.length ? [] : ['festivals']),
-        ...(cuisine.length ? [] : ['cuisine']),
-        ...(arts.length ? [] : ['arts']),
-        ...(gallery.length ? [] : ['gallery']),
-      ],
+      sparseSections,
+      generatedFallbackData: hasGeneratedFallbackData,
+      ethnicityOverrideApplied: Boolean(override),
     },
   }
 }

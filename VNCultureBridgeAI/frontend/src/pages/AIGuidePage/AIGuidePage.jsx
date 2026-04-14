@@ -38,19 +38,17 @@ export default function AIGuidePage() {
       <PageHeader
         lang={lang}
         onLangChange={setLang}
-        breadcrumb={[{ label: 'AI Guide' }]}
+        breadcrumb={[{ label: 'Hướng dẫn AI' }]}
       />
 
       <div className="detail-page__inner ai-chat-shell fade-up">
-        <h1>AI Guide</h1>
+        <h1>Hướng dẫn AI</h1>
         <p className="detail-lead">Hỏi nhanh về văn hoá Việt Nam từ dữ liệu đã kiểm duyệt.</p>
 
         <div className="chat-thread">
           {history.length === 0 ? (
             <div className="chat-bubble chat-bubble--assistant">
-              {lang === 'vi'
-                ? 'Xin chào, hãy hỏi mình về lễ hội, ẩm thực, dân tộc hay nghệ thuật Việt Nam.'
-                : 'Hello, ask me about Vietnamese festivals, cuisine, ethnic groups, or arts.'}
+              Xin chào, hãy hỏi mình về lễ hội, ẩm thực, dân tộc hay nghệ thuật Việt Nam.
             </div>
           ) : null}
           {history.map((item, index) => (
@@ -59,7 +57,7 @@ export default function AIGuidePage() {
               <div className="chat-bubble chat-bubble--assistant">{item.answer}</div>
               {item.relatedArticles?.length ? (
                 <div className="chat-related">
-                  <CardGrid items={item.relatedArticles} variant="blog-grid" actionLabel="Open" lang={lang} basePath="/articles" />
+                  <CardGrid items={item.relatedArticles} variant="blog-grid" actionLabel="Xem bài viết" lang={lang} basePath="/articles" />
                 </div>
               ) : null}
             </div>
@@ -70,10 +68,10 @@ export default function AIGuidePage() {
           <input
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-            placeholder={lang === 'vi' ? 'Ví dụ: Tết có ý nghĩa gì?' : 'Example: What does Tet mean?'}
+            placeholder="Ví dụ: Tết có ý nghĩa gì?"
           />
           <button type="submit" className="gradient-button nav-link-button" disabled={loading || !question.trim()}>
-            {loading ? '...' : 'Ask'}
+            {loading ? '...' : 'Hỏi AI'}
           </button>
         </form>
         {error ? <p className="detail-lead">{error}</p> : null}

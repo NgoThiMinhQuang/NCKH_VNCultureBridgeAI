@@ -37,7 +37,7 @@
   z-index: 1001;
   overflow: hidden;
   border: 1px solid rgba(125, 98, 87, 0.15);
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
 }
 
 .gc-header {

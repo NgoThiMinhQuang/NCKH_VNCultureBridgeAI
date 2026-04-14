@@ -6,7 +6,7 @@
   --color-bg-page: #faf6f0;
   --color-bg-white: #ffffff;
   --color-dark-section: #2b1f1a;
-  --font-heading: 'Playfair Display', serif;
+  --font-heading: var(--font-brand);
   --font-body: 'Inter', sans-serif;
   
   background-color: var(--color-bg-page);

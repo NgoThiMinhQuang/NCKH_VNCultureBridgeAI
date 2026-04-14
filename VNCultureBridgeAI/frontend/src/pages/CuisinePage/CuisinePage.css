@@ -51,7 +51,7 @@
 }
 
 .cp-serif {
-  font-family: 'Playfair Display', "Charter", "Georgia", serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   color: #3d271e;
 }

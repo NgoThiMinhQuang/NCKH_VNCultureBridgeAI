@@ -372,7 +372,7 @@ export default function FestivalsPage() {
                     <div className="festivals-card__times">{fest.date}</div>
                     <div className="festival-card__content">
                       <h3 className="festivals-card__title">{fest.title}</h3>
-                      <span className="festivals-card__en-title">{fest.enTitle}</span>
+                      <span className="festivals-card__en-title">{fest.enTitle && fest.enTitle !== fest.title ? fest.enTitle : ''}</span>
                       <p className="festivals-card__desc">{fest.desc}</p>
                       <div className="festivals-card__meta">
                         <div className="festivals-card__meta-item">{fest.location}</div>
@@ -439,7 +439,7 @@ export default function FestivalsPage() {
                         <span className="festival-tag festival-tag--category">{fest.tag}</span>
                       </div>
                       <h3 className="festival-featured-card__title">{fest.title}</h3>
-                      <p className="festival-featured-card__en-title">{fest.enTitle}</p>
+                      <p className="festival-featured-card__en-title">{fest.enTitle && fest.enTitle !== fest.title ? fest.enTitle : ''}</p>
                       <div className="festival-meta-group">
                         <div className="festival-meta-item">{fest.location}</div>
                         <div className="festival-meta-item">{fest.date}</div>
@@ -461,7 +461,7 @@ export default function FestivalsPage() {
                   </div>
                   <div className="festival-regular-card__content">
                     <h3 className="festival-regular-card__title">{fest.title}</h3>
-                    <p className="festival-regular-card__en-title">{fest.enTitle}</p>
+                    <p className="festival-regular-card__en-title">{fest.enTitle && fest.enTitle !== fest.title ? fest.enTitle : ''}</p>
                     <div className="festival-meta-group">
                       <div className="festival-meta-item">{fest.location}</div>
                       <div className="festival-meta-item">{fest.date}</div>

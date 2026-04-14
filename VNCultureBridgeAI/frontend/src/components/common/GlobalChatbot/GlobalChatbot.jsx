@@ -18,11 +18,11 @@ export default function GlobalChatbot() {
     
     // Khởi tạo Chat Session ngay không cần yêu cầu đăng nhập
     if (!chatSessionRef.current) {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || ''; 
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
       if (apiKey) {
         chatSessionRef.current = getGeminiChatSession(apiKey);
       } else {
-        console.error("Lỗi: Quên thêm biến môi trường VITE_GEMINI_API_KEY trong file .env!");
+        console.error("Lỗi: Chưa cấu hình biến môi trường VITE_GEMINI_API_KEY trong file .env!");
       }
     }
   };
@@ -50,7 +50,7 @@ export default function GlobalChatbot() {
     
     try {
       if (!chatSessionRef.current) {
-         throw new Error("Chat session chưa được khởi tạo. Bạn vui lòng kiểm tra lại API Key.");
+         throw new Error("Phiên trò chuyện chưa được khởi tạo. Vui lòng kiểm tra lại khóa API.");
       }
       
       const result = await chatSessionRef.current.sendMessage(currentQ);
@@ -66,7 +66,7 @@ export default function GlobalChatbot() {
       console.error(err);
       setHistory(current => {
         const newHistory = [...current];
-        newHistory[newHistory.length - 1].answer = "Đã có lỗi xảy ra khi kết nối với Gemini AI! " + err.message;
+        newHistory[newHistory.length - 1].answer = "Đã có lỗi xảy ra khi kết nối với trợ lý văn hóa AI. " + err.message;
         return newHistory;
       });
     } finally {
@@ -90,8 +90,8 @@ export default function GlobalChatbot() {
                 <FaRobot />
               </div>
               <div className="gc-header-text">
-                <h4>VietCulture Master</h4>
-                <span>Đại sứ Văn hóa Ảo</span>
+                <h4>Trợ lý Văn hóa Việt</h4>
+                <span>Đại sứ văn hóa số</span>
               </div>
             </div>
             <button className="gc-close-btn" onClick={toggleChat}>

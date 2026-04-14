@@ -6,6 +6,7 @@ import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
 import banner3 from '../../assets/banner3.jpg'
 import { getCuisines } from '../../services/cuisine.service'
+import { getCuisineLocalImage } from '../../utils/cuisineMedia'
 
 function StarIcon(props) {
   return (
@@ -134,14 +135,51 @@ export default function CuisinePage() {
     })
   }, [cards, activeFilter, activeHeroCuisine, regions, heroCuisines, searchQuery])
 
-  const totalPages = Math.max(1, Math.ceil(filteredCards.length / ITEMS_PER_PAGE))
+  const heroImage = getCuisineLocalImage(hero?.code, hero?.title, hero?.heroImageAlt)
+  const resolvedCards = useMemo(
+    () => cards.map((card) => ({
+      ...card,
+      imgUrl: getCuisineLocalImage(card.code, card.name, card.imageAlt),
+    })),
+    [cards],
+  )
+  const resolvedFeatures = useMemo(
+    () => featuredCards.map((feature) => ({
+      ...feature,
+      imgUrl: getCuisineLocalImage(feature.code, feature.title, feature.tag, feature.desc),
+    })),
+    [featuredCards],
+  )
+  const resolvedStories = useMemo(
+    () => storyCards.map((story) => ({
+      ...story,
+      imgUrl: getCuisineLocalImage(story.code, story.title, story.desc),
+    })),
+    [storyCards],
+  )
+  const resolvedGallery = useMemo(
+    () => masonryImages.map((img) => ({
+      ...img,
+      imgUrl: getCuisineLocalImage(img.code, img.title, img.imageAlt),
+    })),
+    [masonryImages],
+  )
+  const filteredResolvedCards = useMemo(
+    () => filteredCards.map((card) => ({
+      ...card,
+      imgUrl: getCuisineLocalImage(card.code, card.name, card.imageAlt),
+    })),
+    [filteredCards],
+  )
+
+  const totalPages = Math.max(1, Math.ceil(filteredResolvedCards.length / ITEMS_PER_PAGE))
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const currentCards = filteredCards.slice(startIndex, startIndex + ITEMS_PER_PAGE)
-  const featureBullets = featuredCards.slice(0, 3)
-  const highlightImage = featureBullets[0]?.imgUrl || hero?.heroImageUrl || banner3
+  const currentCards = filteredResolvedCards.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+  const featureBullets = resolvedFeatures.slice(0, 3)
+  const highlightImage = featureBullets[0]?.imgUrl || heroImage || banner3
   const highlightTitle = featureBullets[0]?.title || 'Hương vị của sự giao thoa'
   const highlightText = featureBullets[0]?.desc || hero?.subtitle || 'Mỗi món ăn là một câu chuyện văn hóa được kể bằng hương vị, nguyên liệu và ký ức vùng miền.'
-  const hasNoResults = status === 'success' && filteredCards.length === 0
+  const hasNoResults = status === 'success' && filteredResolvedCards.length === 0
   const hasLoadedData = status === 'success' && !!pageData
 
   const handlePageChange = (page) => {
@@ -188,7 +226,7 @@ export default function CuisinePage() {
 
       <main className="cp-main">
         <section className="cp-hero">
-          <div className="cp-hero__bg" style={{ backgroundImage: `url(${hero?.heroImageUrl || banner3})` }}></div>
+          <div className="cp-hero__bg" style={{ backgroundImage: `url(${heroImage || banner3})` }}></div>
           <div className="cp-hero__overlay"></div>
 
           <div className="cp-hero__ornament cp-hero__ornament--tl"></div>
@@ -235,7 +273,7 @@ export default function CuisinePage() {
                     <LuSearch className="cp-search-icon" />
                     <input
                       type="text"
-                      placeholder={lang === 'vi' ? 'Tìm kiếm món ăn...' : 'Search dishes...'}
+                      placeholder="Tìm kiếm món ăn..."
                       value={searchQuery}
                       onChange={(event) => setSearchQuery(event.target.value)}
                     />
@@ -252,7 +290,7 @@ export default function CuisinePage() {
                       setIsHeroCuisineOpen(false)
                     }}
                   >
-                    <span>{activeRegion === (regions[0] || DEFAULT_REGIONS[0]) ? (lang === 'vi' ? 'Vùng' : 'Region') : activeRegion}</span>
+                    <span>{activeRegion === (regions[0] || DEFAULT_REGIONS[0]) ? 'Vùng' : activeRegion}</span>
                     <LuChevronDown className={`cp-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
                   </div>
 
@@ -281,7 +319,7 @@ export default function CuisinePage() {
                       setIsRegionOpen(false)
                     }}
                   >
-                    <span>{activeHeroCuisine === (heroCuisines[0] || DEFAULT_HERO_CUISINES[0]) ? (lang === 'vi' ? 'Món ăn' : 'Dish') : activeHeroCuisine}</span>
+                    <span>{activeHeroCuisine === (heroCuisines[0] || DEFAULT_HERO_CUISINES[0]) ? 'Món ăn' : activeHeroCuisine}</span>
                     <LuChevronDown className={`cp-chevron-icon ${isHeroCuisineOpen ? 'rotate' : ''}`} />
                   </div>
 
@@ -301,14 +339,14 @@ export default function CuisinePage() {
                 </div>
 
                 <button className="cp-hero__cta-btn" type="button" onClick={() => handlePageChange(1)}>
-                  {lang === 'vi' ? 'Tìm kiếm' : 'Search'}
+                  Tìm kiếm
                 </button>
               </div>
             </div>
 
             <div className="cp-hero__right fade-up">
               <div className="cp-hero__img-frame">
-                <img src={hero?.heroImageUrl || highlightImage} alt={hero?.heroImageAlt || 'Ẩm thực'} className="cp-hero__img-main" />
+                <img src={heroImage || highlightImage} alt={hero?.heroImageAlt || 'Ẩm thực'} className="cp-hero__img-main" />
                 <div className="cp-hero__img-ring"></div>
                 <div className="cp-hero__img-badge">
                   <span className="cp-hero__img-badge-icon">🍲</span>
@@ -329,18 +367,14 @@ export default function CuisinePage() {
           <div className="cp-container">
             <div className="cp-section-header cp-center">
               <div className="cp-section-title-wrap">
-                <span className="cp-section-eyebrow cp-eyebrow-capsule">{lang === 'vi' ? 'TINH HOA 3 MIỀN' : 'THREE REGIONS'}</span>
-                <h2 className="cp-section-title cp-serif">{lang === 'vi' ? 'Món ăn tiêu biểu' : 'Signature dishes'}</h2>
+                <span className="cp-section-eyebrow cp-eyebrow-capsule">TINH HOA 3 MIỀN</span>
+                <h2 className="cp-section-title cp-serif">Món ăn tiêu biểu</h2>
                 <p className="cp-section-desc">
-                  {lang === 'vi' ? (
-                    <>
-                      Mỗi món ăn là một kho tàng hương vị độc đáo, góp phần tạo nên
-                      <br />
-                      sự đặc sắc của nền ẩm thực đất Việt
-                    </>
-                  ) : (
-                    'Each dish carries a unique flavor story and helps define the identity of Vietnamese cuisine.'
-                  )}
+                  <>
+                    Mỗi món ăn là một kho tàng hương vị độc đáo, góp phần tạo nên
+                    <br />
+                    sự đặc sắc của nền ẩm thực đất Việt
+                  </>
                 </p>
                 <div className="cp-divider-ornament" aria-hidden="true">
                   <span className="cp-line-main" />
@@ -353,9 +387,7 @@ export default function CuisinePage() {
             <div className="cp-filters">
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
                 <div className="cp-section-desc" style={{ maxWidth: 'none', margin: 0, textAlign: 'left', fontSize: '0.95rem' }}>
-                  {lang === 'vi'
-                    ? `Hiển thị ${filteredCards.length === 0 ? 0 : startIndex + 1}-${Math.min(startIndex + currentCards.length, filteredCards.length)} trên ${filteredCards.length} món ăn${filteredCards.length < cards.length ? ` (tổng ${cards.length} món)` : ''}`
-                    : `Showing ${filteredCards.length === 0 ? 0 : startIndex + 1}-${Math.min(startIndex + currentCards.length, filteredCards.length)} of ${filteredCards.length} dishes${filteredCards.length < cards.length ? ` (${cards.length} total)` : ''}`}
+                  {`Hiển thị ${filteredResolvedCards.length === 0 ? 0 : startIndex + 1}-${Math.min(startIndex + currentCards.length, filteredResolvedCards.length)} trên ${filteredResolvedCards.length} món ăn${filteredResolvedCards.length < resolvedCards.length ? ` (tổng ${resolvedCards.length} món)` : ''}`}
                 </div>
                 <div className="cp-custom-dropdown">
                 <div
@@ -388,7 +420,7 @@ export default function CuisinePage() {
 
             {hasNoResults ? (
               <div className="cp-center" style={{ padding: '32px 0' }}>
-                <p className="cp-section-desc">{lang === 'vi' ? 'Không tìm thấy món ăn phù hợp với bộ lọc hiện tại.' : 'No dishes matched the current filters.'}</p>
+                <p className="cp-section-desc">Không tìm thấy món ăn phù hợp với bộ lọc hiện tại.</p>
               </div>
             ) : (
               <div className="cp-grid cp-grid--4cols fade-up">
@@ -396,7 +428,7 @@ export default function CuisinePage() {
                   <div onClick={() => navigate(`/cuisine/${card.code || card.id}`)} className="cp-card cursor-pointer" key={card.code || card.id}>
                     <div className="cp-card__img-wrap">
                       {card.status && <span className="cp-card__status">{card.status}</span>}
-                      <img src={card.imgUrl || hero?.heroImageUrl || banner3} alt={card.imageAlt || card.name} loading="lazy" />
+                      <img src={card.imgUrl || heroImage || banner3} alt={card.imageAlt || card.name} loading="lazy" />
                     </div>
                     <div className="cp-card__content">
                       <p className="cp-card__loc">
@@ -404,7 +436,7 @@ export default function CuisinePage() {
                         {card.location || card.region}
                       </p>
                       <h3 className="cp-card__title">{card.name}</h3>
-                      <span className="cp-card__link">{lang === 'vi' ? 'Xem chi tiết' : 'View detail'}</span>
+                      <span className="cp-card__link">Xem chi tiết</span>
                     </div>
                   </div>
                 ))}
@@ -429,8 +461,8 @@ export default function CuisinePage() {
                       key={page}
                       className={`cp-pagination__btn ${currentPage === page ? 'active' : ''}`}
                       onClick={() => handlePageChange(page)}
-                      aria-label={`${lang === 'vi' ? 'Trang' : 'Page'} ${page}`}
-                      title={`${lang === 'vi' ? 'Trang' : 'Page'} ${page}`}
+                      aria-label={`Trang ${page}`}
+                      title={`Trang ${page}`}
                     >
                       {page}
                     </button>
@@ -474,7 +506,7 @@ export default function CuisinePage() {
               </div>
 
               <div className="cp-feature-text fade-up delay-1">
-                <span className="cp-badge cp-badge--accent">{lang === 'vi' ? 'Câu chuyện ẩm thực' : 'Culinary story'}</span>
+                <span className="cp-badge cp-badge--accent">Câu chuyện ẩm thực</span>
                 <h2 className="cp-section-title">{highlightTitle}</h2>
                 <p className="cp-feature-desc">{highlightText}</p>
 
@@ -502,26 +534,18 @@ export default function CuisinePage() {
           </section>
         )}
 
-        {hasLoadedData && featuredCards.length > 0 && (
+        {hasLoadedData && resolvedFeatures.length > 0 && (
           <section className="cp-section cp-section--light">
             <div className="cp-container">
               <div className="cp-section-header cp-flex-header">
                 <div>
-                  <span className="cp-section-eyebrow">{lang === 'vi' ? 'Khám phá' : 'Discover'}</span>
+                  <span className="cp-section-eyebrow">Khám phá</span>
                   <h2 className="cp-section-title">
-                    {lang === 'vi' ? (
-                      <>
-                        Ba miền ẩm thực
-                        <br />
-                        đặc sắc
-                      </>
-                    ) : (
-                      <>
-                        Three distinct
-                        <br />
-                        culinary regions
-                      </>
-                    )}
+                    <>
+                      Ba miền ẩm thực
+                      <br />
+                      đặc sắc
+                    </>
                   </h2>
                 </div>
                 <div className="cp-nav-buttons">
@@ -531,7 +555,7 @@ export default function CuisinePage() {
               </div>
 
               <div className="cp-grid cp-grid--3cols fade-up">
-                {featuredCards.map((feature) => (
+                {resolvedFeatures.map((feature) => (
                   <div className="cp-hcard" key={feature.id || feature.title}>
                     <div className="cp-hcard__img">
                       {feature.tag && <span className="cp-card__status">{feature.tag}</span>}
@@ -539,8 +563,8 @@ export default function CuisinePage() {
                     </div>
                     <div className="cp-hcard__content">
                       <h3 className="cp-hcard__title">{feature.title}</h3>
-                      <p className="cp-hcard__desc">{feature.desc || (lang === 'vi' ? 'Cùng chiêm nghiệm và khám phá phong vị đặc trưng phản ánh nét đẹp và lối sống qua nghệ thuật ẩm thực.' : 'Explore signature flavors that reflect local identity and everyday life through culinary art.')}</p>
-                      <span className="cp-card__link">{lang === 'vi' ? 'Tìm hiểu' : 'Learn more'}</span>
+                      <p className="cp-hcard__desc">{feature.desc || 'Cùng chiêm nghiệm và khám phá phong vị đặc trưng phản ánh nét đẹp và lối sống qua nghệ thuật ẩm thực.'}</p>
+                      <span className="cp-card__link">Tìm hiểu</span>
                     </div>
                   </div>
                 ))}
@@ -549,7 +573,7 @@ export default function CuisinePage() {
           </section>
         )}
 
-        {hasLoadedData && masonryImages.length > 0 && (
+        {hasLoadedData && resolvedGallery.length > 0 && (
           <section className="cp-section cp-section--cream cp-section--wavy">
             <div className="cp-section-wave cp-section-wave--top">
               <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
@@ -558,27 +582,19 @@ export default function CuisinePage() {
             </div>
             <div className="cp-container">
               <div className="cp-section-header cp-center">
-                <span className="cp-section-eyebrow">{lang === 'vi' ? 'Thư viện ảnh' : 'Photo gallery'}</span>
+                <span className="cp-section-eyebrow">Thư viện ảnh</span>
                 <h2 className="cp-section-title">
-                  {lang === 'vi' ? (
-                    <>
-                      Khoảnh khắc ẩm thực
-                      <br />
-                      sống động
-                    </>
-                  ) : (
-                    <>
-                      Vivid culinary
-                      <br />
-                      moments
-                    </>
-                  )}
+                  <>
+                    Khoảnh khắc ẩm thực
+                    <br />
+                    sống động
+                  </>
                 </h2>
-                <p className="cp-section-desc">{lang === 'vi' ? 'Những góc máy chân thực nhất làm khơi dậy sự thèm ăn và vẻ rực rỡ của ẩm thực.' : 'Authentic images that bring out the richness and beauty of cuisine.'}</p>
+                <p className="cp-section-desc">Những góc máy chân thực nhất làm khơi dậy sự thèm ăn và vẻ rực rỡ của ẩm thực.</p>
               </div>
 
               <div className="cp-masonry fade-up">
-                {masonryImages.map((img, idx) => (
+                {resolvedGallery.map((img, idx) => (
                   <div key={img.id || idx} className={`cp-masonry-item cp-masonry-item--${img.size || 'small'}`}>
                     <img src={img.imgUrl || img.imageUrl || banner3} alt={img.imageAlt || 'Khoảnh khắc ẩm thực'} loading="lazy" />
                     <div className="cp-masonry-overlay">
@@ -596,33 +612,25 @@ export default function CuisinePage() {
           </section>
         )}
 
-        {hasLoadedData && storyCards.length > 0 && (
+        {hasLoadedData && resolvedStories.length > 0 && (
           <section className="cp-section cp-section--light">
             <div className="cp-container">
               <div className="cp-section-header cp-flex-header">
                 <div>
-                  <span className="cp-section-eyebrow">{lang === 'vi' ? 'Trải nghiệm' : 'Experience'}</span>
+                  <span className="cp-section-eyebrow">Trải nghiệm</span>
                   <h2 className="cp-section-title">
-                    {lang === 'vi' ? (
-                      <>
-                        Chuyện kể
-                        <br />
-                        ẩm thực
-                      </>
-                    ) : (
-                      <>
-                        Culinary
-                        <br />
-                        stories
-                      </>
-                    )}
+                    <>
+                      Chuyện kể
+                      <br />
+                      ẩm thực
+                    </>
                   </h2>
                 </div>
-                <Link to="/blog" className="cp-link-more">{lang === 'vi' ? 'Xem tất cả bài viết' : 'View all posts'} &rsaquo;</Link>
+                <Link to="/blog" className="cp-link-more">Xem tất cả bài viết &rsaquo;</Link>
               </div>
 
               <div className="cp-grid cp-grid--3cols fade-up">
-                {storyCards.map((story, idx) => {
+                {resolvedStories.map((story, idx) => {
                   const storyLink = story.code ? `/cuisine/${story.code}` : '/cuisine'
                   return (
                     <Link to={storyLink} className="cp-scard" key={story.id || story.code || idx}>

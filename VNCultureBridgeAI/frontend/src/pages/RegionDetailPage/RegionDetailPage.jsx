@@ -2,9 +2,28 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getRegion } from '../../services/region.service'
 import { getProvincesByRegion } from '../../services/province.service'
+import { useDetailLoader } from '../../hooks/useDetailLoader'
 import LoadingState from '../../components/common/LoadingState/LoadingState'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
+import imgRegionNorth from '../../assets/images/regions/region_overview_north.png'
+import imgRegionCentral from '../../assets/images/regions/region_overview_central.png'
+import imgRegionSouth from '../../assets/images/regions/region_overview_south.png'
+import imgProvinceCaoBang from '../../assets/images/regions/province_caobang.png'
+import imgProvinceDienBien from '../../assets/images/regions/province_dienbien.png'
+import imgProvinceHaGiang from '../../assets/images/regions/province_hagiang.png'
+import imgProvinceLaiChau from '../../assets/images/regions/province_laichau.png'
+import imgProvinceLaoCai from '../../assets/images/regions/province_laocai.png'
+import imgProvinceSonLa from '../../assets/images/regions/province_sonla.png'
+import imgHighlightHanoi from '../../assets/images/regions/highlight_hanoi.png'
+import imgHighlightSapa from '../../assets/images/regions/highlight_sapa.png'
+import imgHighlightTrangAn from '../../assets/images/regions/highlight_trangan.png'
+import imgHighlightHue from '../../assets/images/regions/highlight_hue.png'
+import imgHighlightHoiAn from '../../assets/images/regions/highlight_hoian.png'
+import imgHighlightDaNang from '../../assets/images/regions/highlight_danang.png'
+import imgHighlightCanTho from '../../assets/images/regions/highlight_cantho.png'
+import imgHighlightNamBo from '../../assets/images/regions/highlight_nambo.png'
+import imgHeroRegions from '../../assets/images/regions/regions_hero_bg.png'
 import '../NorthRegionPage/NorthRegionPage.css'
 import './RegionDetailPage.css'
 
@@ -108,11 +127,101 @@ function getTheme(code) {
   return REGION_THEME[code] || REGION_THEME.BAC_BO
 }
 
-function getProvinceRegionCode(code) {
-  if (code === 'BAC_BO') return 'BAC_BO'
-  if (code === 'TRUNG_BO') return 'TRUNG_BO'
-  if (code === 'NAM_BO') return 'NAM_BO'
+function normalizeRegionCode(code) {
+  if (code === 'north') return 'BAC_BO'
+  if (code === 'central') return 'TRUNG_BO'
+  if (code === 'south') return 'NAM_BO'
   return code
+}
+
+function getProvinceRegionCode(code) {
+  const normalizedCode = normalizeRegionCode(code)
+  if (normalizedCode === 'BAC_BO') return 'BAC_BO'
+  if (normalizedCode === 'TRUNG_BO') return 'TRUNG_BO'
+  if (normalizedCode === 'NAM_BO') return 'NAM_BO'
+  return normalizedCode
+}
+
+const FALLBACK_IMAGE_BY_CODE = {
+  'ha-noi': imgHighlightHanoi,
+  'quang-ninh': imgHighlightHanoi,
+  'ninh-binh': imgHighlightTrangAn,
+  'lao-cai': imgProvinceLaoCai,
+  'sapa': imgHighlightSapa,
+  'ha-giang': imgProvinceHaGiang,
+  'cao-bang': imgProvinceCaoBang,
+  'dien-bien': imgProvinceDienBien,
+  'lai-chau': imgProvinceLaiChau,
+  'son-la': imgProvinceSonLa,
+  'lang-son': imgProvinceCaoBang,
+  'bac-kan': imgProvinceHaGiang,
+  'tuyen-quang': imgProvinceHaGiang,
+  'yen-bai': imgHighlightSapa,
+  'thai-nguyen': imgHighlightHanoi,
+  'phu-tho': imgHighlightTrangAn,
+  'bac-ninh': imgHighlightHanoi,
+  'hai-duong': imgHighlightHanoi,
+  'hai-phong': imgHighlightHanoi,
+  'hung-yen': imgHighlightHanoi,
+  'nam-dinh': imgHighlightTrangAn,
+  'thai-binh': imgHighlightTrangAn,
+  'vinh-phuc': imgHighlightHanoi,
+  'ha-nam': imgHighlightTrangAn,
+  'nghe-an': imgHighlightHue,
+  'ha-tinh': imgHighlightHue,
+  'quang-binh': imgHighlightHue,
+  'quang-tri': imgHighlightHue,
+  'thua-thien-hue': imgHighlightHue,
+  'hue': imgHighlightHue,
+  'da-nang': imgHighlightDaNang,
+  'quang-nam': imgHighlightHoiAn,
+  'quang-ngai': imgHighlightDaNang,
+  'binh-dinh': imgHighlightDaNang,
+  'phu-yen': imgHighlightDaNang,
+  'khanh-hoa': imgHighlightDaNang,
+  'ninh-thuan': imgHighlightDaNang,
+  'binh-thuan': imgHighlightDaNang,
+  'kon-tum': imgRegionCentral,
+  'gia-lai': imgRegionCentral,
+  'dak-lak': imgRegionCentral,
+  'dak-nong': imgRegionCentral,
+  'lam-dong': imgRegionCentral,
+  'tp-ho-chi-minh': imgHighlightNamBo,
+  'ho-chi-minh': imgHighlightNamBo,
+  'can-tho': imgHighlightCanTho,
+  'an-giang': imgHighlightCanTho,
+  'kien-giang': imgHighlightCanTho,
+  'ca-mau': imgHighlightNamBo,
+  'bac-lieu': imgHighlightNamBo,
+  'soc-trang': imgHighlightCanTho,
+  'tra-vinh': imgHighlightCanTho,
+  'vinh-long': imgHighlightCanTho,
+  'dong-thap': imgHighlightCanTho,
+  'ben-tre': imgHighlightCanTho,
+  'tien-giang': imgHighlightCanTho,
+  'long-an': imgHighlightNamBo,
+  'tay-ninh': imgHighlightNamBo,
+  'binh-phuoc': imgHighlightNamBo,
+  'dong-nai': imgHighlightNamBo,
+  'ba-ria-vung-tau': imgHighlightNamBo,
+}
+
+const FALLBACK_IMAGE_BY_REGION = {
+  BAC_BO: imgRegionNorth,
+  TRUNG_BO: imgRegionCentral,
+  NAM_BO: imgRegionSouth,
+}
+
+function getSafeImage(value, regionCode = 'BAC_BO') {
+  return value || FALLBACK_IMAGE_BY_REGION[regionCode] || imgHeroRegions || imgRegionNorth
+}
+
+function getProvinceFallbackImage(province, regionCode = 'BAC_BO') {
+  return FALLBACK_IMAGE_BY_CODE[province?.code] || FALLBACK_IMAGE_BY_REGION[regionCode] || imgHeroRegions || imgRegionNorth
+}
+
+function getSafeTags(tags) {
+  return Array.isArray(tags) ? tags : []
 }
 
 function toMapCards(provinces) {
@@ -123,22 +232,22 @@ function toMapCards(provinces) {
   }))
 }
 
-function toExperienceCards(provinces) {
+function toExperienceCards(provinces, regionCode) {
   return provinces.slice(0, 6).map((province) => ({
     id: province.code,
     title: province.name,
-    image: province.imageUrl,
+    image: province.imageUrl || getProvinceFallbackImage(province, regionCode),
     desc: province.description,
   }))
 }
 
-function toProvinceCards(provinces) {
+function toProvinceCards(provinces, regionCode) {
   return provinces.slice(0, 4).map((province) => ({
     id: province.code,
     name: province.name,
-    image: province.imageUrl,
+    image: province.imageUrl || getProvinceFallbackImage(province, regionCode),
     desc: province.description,
-    tags: province.tags || [],
+    tags: getSafeTags(province.tags),
     code: province.code,
     region: province.region,
   }))
@@ -167,9 +276,10 @@ function toItineraries(provinces, regionCode) {
 
 export default function RegionDetailPage() {
   const { code } = useParams()
+  const normalizedCode = normalizeRegionCode(code)
   const [lang, setLang] = useState('vi')
   const [provinceState, setProvinceState] = useState({ status: 'loading', data: [], error: '' })
-  const { status, data, error } = useDetailLoader(getRegion, lang, code)
+  const { status, data, error } = useDetailLoader(getRegion, lang, normalizedCode)
 
   useEffect(() => {
     let ignore = false
@@ -177,7 +287,7 @@ export default function RegionDetailPage() {
     async function loadProvinces() {
       try {
         setProvinceState({ status: 'loading', data: [], error: '' })
-        const provinces = await getProvincesByRegion(getProvinceRegionCode(code), lang)
+        const provinces = await getProvincesByRegion(getProvinceRegionCode(normalizedCode), lang)
         if (!ignore) {
           setProvinceState({ status: 'success', data: provinces, error: '' })
         }
@@ -192,16 +302,16 @@ export default function RegionDetailPage() {
     return () => {
       ignore = true
     }
-  }, [code, lang])
+  }, [normalizedCode, lang])
 
-  const theme = getTheme(code)
+  const theme = getTheme(normalizedCode)
   const provinces = useMemo(() => provinceState.data || [], [provinceState.data])
   const mapCards = useMemo(() => toMapCards(provinces), [provinces])
-  const experiences = useMemo(() => toExperienceCards(provinces), [provinces])
-  const provinceCards = useMemo(() => toProvinceCards(provinces), [provinces])
-  const itineraries = useMemo(() => toItineraries(provinces, code), [provinces, code])
-  const seasons = useMemo(() => SEASON_COPY[code] || [], [code])
-  const layers = useMemo(() => LAYER_COPY[code] || [], [code])
+  const experiences = useMemo(() => toExperienceCards(provinces, normalizedCode), [provinces, normalizedCode])
+  const provinceCards = useMemo(() => toProvinceCards(provinces, normalizedCode), [provinces, normalizedCode])
+  const itineraries = useMemo(() => toItineraries(provinces, normalizedCode), [provinces, normalizedCode])
+  const seasons = useMemo(() => SEASON_COPY[normalizedCode] || [], [normalizedCode])
+  const layers = useMemo(() => LAYER_COPY[normalizedCode] || [], [normalizedCode])
   const provinceCount = provinces.length || 0
   const highlightCount = data?.highlights?.length || 0
   const stats = [
@@ -227,7 +337,7 @@ export default function RegionDetailPage() {
       <main>
         <section className="north-hero">
           <div className="north-hero__bg">
-            <img src={data?.imageUrl} alt={data?.imageAlt || data?.name} />
+            <img src={getSafeImage(data?.imageUrl, normalizedCode)} alt={data?.imageAlt || data?.name} onError={(event) => { event.currentTarget.src = getSafeImage('', normalizedCode) }} />
             <div className="north-hero__overlay"></div>
           </div>
           <div className="north-hero__content">
@@ -257,7 +367,7 @@ export default function RegionDetailPage() {
           <div className="container">
             <div className="north-story__inner">
               <div className="north-story__image">
-                <img src={data?.imageUrl} alt={data?.imageAlt || data?.name} />
+                <img src={getSafeImage(data?.imageUrl, normalizedCode)} alt={data?.imageAlt || data?.name} onError={(event) => { event.currentTarget.src = getSafeImage('', normalizedCode) }} />
                 <div className="north-story__image-decoration"></div>
               </div>
               <div className="north-story__content">
@@ -304,7 +414,7 @@ export default function RegionDetailPage() {
               {experiences.map((experience) => (
                 <div key={experience.id} className="experience-card">
                   <div className="experience-card__img">
-                    <img src={experience.image} alt={experience.title} />
+                    <img src={experience.image} alt={experience.title} onError={(event) => { event.currentTarget.src = getProvinceFallbackImage({ code: experience.id }, normalizedCode) }} />
                   </div>
                   <div className="experience-card__body">
                     <h3>{experience.title}</h3>
@@ -325,7 +435,7 @@ export default function RegionDetailPage() {
               {provinceCards.map((province) => (
                 <div key={province.id} className="province-mini-card">
                   <div className="province-mini__img">
-                    <img src={province.image} alt={province.name} />
+                    <img src={province.image} alt={province.name} onError={(event) => { event.currentTarget.src = getProvinceFallbackImage(province, normalizedCode) }} />
                     <span className="province-mini__tag">{data?.name}</span>
                   </div>
                   <div className="province-mini__body">

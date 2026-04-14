@@ -19,12 +19,12 @@ export default function Footer({ lang = 'vi' }) {
             <Link to="/" className="ph__brand">
               <img
                 src="/img/Logo.png"
-                alt="VNCulture logo"
+                alt="Biểu trưng VNCulture"
                 className="ph__logo-img"
               />
               <div className="ph__brand-text">
                 <strong>VNCulture</strong>
-                <span>{lang === 'vi' ? 'Di sản & Văn hoá' : 'Heritage & Culture'}</span>
+                <span>Di sản & Văn hoá</span>
               </div>
             </Link>
             <p className="vnc-desc">
@@ -49,13 +49,13 @@ export default function Footer({ lang = 'vi' }) {
                 <Link to="/">{ui[lang].nav[0]}</Link>
                 <Link to="/#ethnic-groups">{ui[lang].nav[2]}</Link>
                 <Link to="/#cuisine">{ui[lang].nav[4]}</Link>
-                <Link to="/#blog">{ui[lang].nav[6] || 'Blog'}</Link>
+                <Link to="/#blog">{ui[lang].nav[6]}</Link>
               </div>
               <div className="vnc-links-group">
                 <Link to="/regions">{ui[lang].nav[1]}</Link>
                 <Link to="/#festivals">{ui[lang].nav[3]}</Link>
-                <Link to="/provinces">{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</Link>
-                <Link to="/articles">{ui[lang].nav[5] || 'Articles'}</Link>
+                <Link to="/provinces">Tỉnh thành</Link>
+                <Link to="/articles">{ui[lang].nav[5]}</Link>
               </div>
             </div>
           </div>
@@ -87,13 +87,13 @@ export default function Footer({ lang = 'vi' }) {
             <div className="vnc-social">
               <h5>{copy.socialTitle}</h5>
               <div className="vnc-social-icons">
-                <a href="#" className="vnc-social-btn" aria-label="Facebook">
+                <a href="#" className="vnc-social-btn" aria-label="Trang Facebook">
                   <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
                 </a>
-                <a href="#" className="vnc-social-btn" aria-label="YouTube">
+                <a href="#" className="vnc-social-btn" aria-label="Kênh YouTube">
                   <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33zM9.75 15.02V8.4l5.73 3.3-5.73 3.32z" /></svg>
                 </a>
-                <a href="#" className="vnc-social-btn" aria-label="TikTok">
+                <a href="#" className="vnc-social-btn" aria-label="Kênh TikTok">
                   <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93v5.8c0 1.96-.54 3.93-1.6 5.6-2.12 3.35-6.27 4.75-10.03 3.51-3.69-1.2-6.2-4.66-6.19-8.52.01-3.79 2.56-7.14 6.22-8.25 2.1-.64 4.4-.33 6.26.85.03.02.04.04.07.06v4.18c-1.47-1.1-3.41-1.3-5.07-.63-1.78.71-2.91 2.4-3 4.28-.09 1.83.82 3.65 2.41 4.48 1.62.84 3.65.65 5.09-.45 1.1-.85 1.78-2.16 1.8-3.56l.01-15.42z" /></svg>
                 </a>
               </div>

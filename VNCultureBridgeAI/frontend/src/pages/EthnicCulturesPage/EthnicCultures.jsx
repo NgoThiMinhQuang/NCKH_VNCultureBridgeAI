@@ -21,6 +21,7 @@ import congChiengImg from '../../assets/cong_chieng.png';
 import leCapSacImg from '../../assets/le-cap-sac.jpg';
 import detThoCamImg from '../../assets/det-tho-cam.jpg';
 import muaTrongImg from '../../assets/mua-trong-sadam.jpg';
+import kinhImg from '../../assets/anhtet1.PNG';
 
 function getFeatureIcon(index) {
   const icons = [LuShirt, LuStar, LuUtensils, LuBookOpen];

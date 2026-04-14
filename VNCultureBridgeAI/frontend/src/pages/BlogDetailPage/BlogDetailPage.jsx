@@ -139,7 +139,7 @@ export default function BlogDetailPage() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M15 18l-6-6 6-6" />
             </svg>
-            <span>{lang === 'vi' ? 'Quay lại Blog' : 'Back to Blog'}</span>
+            <span>Quay lại Blog</span>
           </Link>
 
           {/* Header Section */}
@@ -178,12 +178,12 @@ export default function BlogDetailPage() {
               </div>
 
               <div className="blog-detail__actions">
-                <button className="blog-detail__action-btn" aria-label="Save">
+                <button className="blog-detail__action-btn" aria-label="Lưu bài viết">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
                   </svg>
                 </button>
-                <button className="blog-detail__action-btn" aria-label="Share">
+                <button className="blog-detail__action-btn" aria-label="Chia sẻ bài viết">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="18" cy="5" r="3" />
                     <circle cx="6" cy="12" r="3" />
@@ -212,7 +212,7 @@ export default function BlogDetailPage() {
                     <span>✧ ✧ ✧</span>
                   </div>
 
-                  <h2 className="blog-detail__sub-title">{lang === 'vi' ? 'Nguồn Gốc và Ý Nghĩa' : 'Origin and Meaning'}</h2>
+                  <h2 className="blog-detail__sub-title">Nguồn gốc và ý nghĩa</h2>
                   <p>
                     {lang === 'vi' 
                       ? 'Tết Nguyên Đán bắt nguồn từ nền văn minh nông nghiệp lúa nước, đánh dấu sự chuyển giao giữa mùa đông và mùa xuân, giữa năm cũ và năm mới. Theo quan niệm của người Việt, đây là thời điểm thiên nhiên thay đổi, vạn vật sinh sôi và con người bắt đầu một chu kỳ mới đầy hứa hẹn.' 
@@ -255,10 +255,10 @@ export default function BlogDetailPage() {
                 </section>
 
                 <section className="blog-detail__section modern">
-                  <h2 className="blog-detail__sub-title">{lang === 'vi' ? 'Tết Trong Thời Hiện Đại' : 'Tet in Modern Times'}</h2>
+                  <h2 className="blog-detail__sub-title">Tết trong thời hiện đại</h2>
                   <div className="blog-detail__side-images">
-                    <img src="https://images.unsplash.com/photo-1582230842845-6f6eb3906385?mw=800" alt="Tet Dragon" />
-                    <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?mw=800" alt="Tet Ritual" />
+                    <img src="https://images.unsplash.com/photo-1582230842845-6f6eb3906385?mw=800" alt="Múa lân ngày Tết" />
+                    <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?mw=800" alt="Nghi thức ngày Tết" />
                   </div>
                   <p>
                     {lang === 'vi' 
@@ -272,7 +272,7 @@ export default function BlogDetailPage() {
                   </p>
 
                   <div className="blog-detail__conclusion">
-                    <h3 className="blog-detail__conclusion-title">{lang === 'vi' ? 'Kết Luận' : 'Conclusion'}</h3>
+                    <h3 className="blog-detail__conclusion-title">Kết luận</h3>
                     <p>
                       {lang === 'vi'
                         ? 'Tết Nguyên Đán là di sản văn hóa quý báu, là niềm tự hào của dân tộc Việt Nam. Dù thời gian có trôi qua, những giá trị cốt lõi của Tết - tinh thần, lòng hiếu thảo, và hy vọng về một năm mới tốt đẹp - vẫn luôn được gìn giữ và truyền đạt qua các thế hệ. Hãy cùng nhau bảo tồn và phát huy những giá trị truyền thống tốt đẹp này để Tết mãi mãi là dịp lễ ý nghĩa nhất trong lòng mỗi người Việt.'
@@ -285,7 +285,7 @@ export default function BlogDetailPage() {
               {/* Tag & Share Card */}
               <div className="blog-detail__footer-card fade-up">
                 <div className="blog-detail__tags">
-                  <span className="blog-detail__tags-label">{lang === 'vi' ? 'Thẻ:' : 'Tags:'}</span>
+                  <span className="blog-detail__tags-label">Thẻ:</span>
                   <div className="blog-detail__tags-list">
                     <span className="tag-item">#Tết Nguyên Đán</span>
                     <span className="tag-item">#Văn hóa</span>
@@ -294,7 +294,7 @@ export default function BlogDetailPage() {
                   </div>
                 </div>
                 <div className="blog-detail__share">
-                  <span className="blog-detail__share-label">{lang === 'vi' ? 'Chia sẻ:' : 'Share:'}</span>
+                  <span className="blog-detail__share-label">Chia sẻ:</span>
                   <div className="blog-detail__share-list">
                     <button className="share-btn"><i className="fab fa-facebook-f"></i></button>
                     <button className="share-btn"><i className="fab fa-twitter"></i></button>
@@ -310,7 +310,7 @@ export default function BlogDetailPage() {
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '12px'}}>
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   </svg>
-                  {lang === 'vi' ? `Bình Luận (${comments.length})` : `Comments (${comments.length})`}
+                  {`Bình luận (${comments.length})`}
                 </h3>
                 
                 {/* Comment List */}
@@ -332,13 +332,13 @@ export default function BlogDetailPage() {
                 {/* Comment Input */}
                 <form className="comment-input-wrapper" onSubmit={handleCommentSubmit}>
                   <textarea 
-                    placeholder={lang === 'vi' ? 'Chia sẻ suy nghĩ của bạn về bài viết...' : 'Share your thoughts about the post...'}
+                    placeholder="Chia sẻ suy nghĩ của bạn về bài viết..."
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                   ></textarea>
                   <div className="comment-input__actions">
                     <button type="submit" className="comment-submit-btn">
-                      {lang === 'vi' ? 'Gửi bình luận' : 'Post Comment'}
+                      Gửi bình luận
                     </button>
                   </div>
                 </form>
@@ -357,15 +357,15 @@ export default function BlogDetailPage() {
                   <div className="author-card__stats">
                     <div className="author-card__stat">
                       <span className="author-card__stat-val">{blogData.author.stats.posts}</span>
-                      <span className="author-card__stat-label">{lang === 'vi' ? 'Bài viết' : 'Posts'}</span>
+                      <span className="author-card__stat-label">Bài viết</span>
                     </div>
                     <div className="author-card__stat">
                       <span className="author-card__stat-val">{blogData.author.stats.followers}</span>
-                      <span className="author-card__stat-label">{lang === 'vi' ? 'Người theo dõi' : 'Followers'}</span>
+                      <span className="author-card__stat-label">Người theo dõi</span>
                     </div>
                     <div className="author-card__stat">
                       <span className="author-card__stat-val">{blogData.author.stats.comments}</span>
-                      <span className="author-card__stat-label">{lang === 'vi' ? 'Bình luận' : 'Comments'}</span>
+                      <span className="author-card__stat-label">Bình luận</span>
                     </div>
                   </div>
 
@@ -388,7 +388,7 @@ export default function BlogDetailPage() {
                   </div>
 
                   <button className="author-card__follow">
-                    {lang === 'vi' ? 'Theo dõi' : 'Follow'}
+                    Theo dõi
                   </button>
                 </div>
               </div>

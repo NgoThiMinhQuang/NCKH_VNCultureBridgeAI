@@ -190,23 +190,23 @@ export default function ProvinceDetailPage() {
         <PageHeader lang={lang} onLangChange={setLang} />
         <div className="province-detail__status province-detail__status--error">
           {isNotFound
-            ? (lang === 'vi' ? 'Không tìm thấy tỉnh thành phù hợp.' : 'Province not found.')
-            : (lang === 'vi' ? `Không tải được dữ liệu tỉnh. ${error}` : `Could not load province data. ${error}`)}
+            ? 'Không tìm thấy tỉnh thành phù hợp.'
+            : `Không tải được dữ liệu tỉnh. ${error}`}
         </div>
         <div className="province-top-nav">
-          <Link to="/" className="breadcrumb-link">{lang === 'vi' ? 'Trang chủ' : 'Home'}</Link>
+          <Link to="/" className="breadcrumb-link">Trang chủ</Link>
           <span className="breadcrumb-separator">›</span>
-          <Link to="/provinces" className="breadcrumb-link">{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</Link>
+          <Link to="/provinces" className="breadcrumb-link">Tỉnh thành</Link>
         </div>
         <section className="province-section bg-light">
           <div className="section-title center">
-            <h2>{isNotFound ? (lang === 'vi' ? 'Mã tỉnh không tồn tại' : 'Unknown province code') : (lang === 'vi' ? 'Không thể tải dữ liệu tỉnh' : 'Could not load province data')}</h2>
+            <h2>{isNotFound ? 'Mã tỉnh không tồn tại' : 'Không thể tải dữ liệu tỉnh'}</h2>
             <p>
               {isNotFound
-                ? (lang === 'vi' ? 'Hãy quay lại danh sách tỉnh thành và chọn một địa phương hợp lệ.' : 'Please return to the province list and choose a valid location.')
-                : (lang === 'vi' ? 'Vui lòng thử lại hoặc quay về danh sách tỉnh thành.' : 'Please try again or go back to the province list.')}
+                ? 'Hãy quay lại danh sách tỉnh thành và chọn một địa phương hợp lệ.'
+                : 'Vui lòng thử lại hoặc quay về danh sách tỉnh thành.'}
             </p>
-            <Link to="/provinces" className="btn-primary">{lang === 'vi' ? 'Quay lại danh sách tỉnh thành' : 'Back to provinces'}</Link>
+            <Link to="/provinces" className="btn-primary">Quay lại danh sách tỉnh thành</Link>
           </div>
         </section>
         <Footer lang={lang} />
@@ -244,7 +244,7 @@ export default function ProvinceDetailPage() {
             <p className="hero-desc">{getHeroDescription(data)}</p>
             <div className="hero-actions">
               <Link to="#places" className="btn-primary">{lang === 'vi' ? 'Khám phá điểm đến' : 'Explore places'}</Link>
-              <Link to="#itinerary" className="btn-ghost">{lang === 'vi' ? 'Lưu hành trình' : 'Save itinerary'}</Link>
+              <Link to="#itinerary" className="btn-ghost">Lưu hành trình</Link>
             </div>
           </div>
         </div>

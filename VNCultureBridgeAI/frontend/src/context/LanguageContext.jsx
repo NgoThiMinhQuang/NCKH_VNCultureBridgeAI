@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { DEFAULT_LANGUAGE } from '../utils/constants'
 
 /** @type {React.Context<{ lang: string, setLang: (lang: string) => void }>} */
@@ -11,9 +11,12 @@ const LanguageContext = createContext(null)
 export function LanguageProvider({ children }) {
   const [lang, setLangState] = useState(DEFAULT_LANGUAGE)
 
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
+
   const setLang = useCallback((nextLang) => {
     setLangState(nextLang)
-    document.documentElement.lang = nextLang
   }, [])
 
   const value = useMemo(() => ({ lang, setLang }), [lang, setLang])

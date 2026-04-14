@@ -629,6 +629,168 @@ WHERE NOT EXISTS (
       AND ISNULL(existing.TieuDeVI, N'') = ISNULL(x.TieuDeVI, N'')
 );
 
+;WITH EthnicImageOverrides AS (
+    SELECT *
+    FROM (VALUES
+        ('HMONG',
+         N'/images/hmong_hero_landscape_1775575827859.png', N'Không gian vùng núi cao gắn với người H''Mông', N'Hmong highland landscape',
+         N'/images/hmong.jpg', N'Hình ảnh đại diện văn hóa dân tộc H''Mông', N'Hmong portrait',
+         N'/images/hmong_intro_portrait_1775575846120.png', N'Đời sống văn hóa của người H''Mông', N'Hmong cultural life',
+         N'/images/hmong_textile_grid_1775575869410.png', N'Nét văn hóa tiêu biểu của người H''Mông', N'Hmong cultural highlight',
+         N'/images/hmong_festival_gau_tao_1775575986843.png', N'Âm thanh và sinh hoạt lễ hội của người H''Mông', N'Hmong festive performance',
+         N'/images/hmong_architecture_house_1775576026757.png', N'Không gian cư trú của người H''Mông', N'Hmong dwelling space',
+         N'/images/hmong.jpg', N'Ảnh đại diện dân tộc H''Mông', N'Hmong card image'),
+        ('TAY',
+         N'/images/regions/province_caobang.png', N'Không gian bản làng vùng Đông Bắc gắn với người Tày', N'Tay village landscape',
+         N'/images/ethnic_mountain.png', N'Hình ảnh đại diện văn hóa dân tộc Tày', N'Tay cultural portrait',
+         N'/images/ethnic_mountain.png', N'Sinh hoạt cộng đồng của người Tày', N'Tay community life',
+         N'/images/ruong-bac-thang.jpg', N'Không gian văn hóa tiêu biểu của người Tày', N'Tay cultural highlight',
+         N'/images/ethnic_mountain.png', N'Âm nhạc và nghệ thuật trình diễn của người Tày', N'Tay performing arts',
+         N'/images/ruong-bac-thang.jpg', N'Nhà sàn và không gian sống của người Tày', N'Tay living space',
+         N'/images/ethnic_mountain.png', N'Ảnh đại diện dân tộc Tày', N'Tay card image'),
+        ('DAO',
+         N'/images/ethnic_mountain.png', N'Không gian núi rừng gắn với người Dao', N'Dao mountain landscape',
+         N'/images/dao.jpg', N'Hình ảnh đại diện văn hóa dân tộc Dao', N'Dao portrait',
+         N'/images/dao.jpg', N'Sinh hoạt văn hóa của người Dao', N'Dao cultural life',
+         N'/images/le-cap-sac.jpg', N'Nét văn hóa tiêu biểu của người Dao', N'Dao cultural highlight',
+         N'/images/le-cap-sac.jpg', N'Nghệ thuật nghi lễ của người Dao', N'Dao ritual performance',
+         N'/images/ethnic_mountain.png', N'Không gian nhà ở của cộng đồng Dao', N'Dao living space',
+         N'/images/dao.jpg', N'Ảnh đại diện dân tộc Dao', N'Dao card image'),
+        ('KHMER',
+         N'/images/ethnic_south.png', N'Không gian văn hóa Khmer Nam Bộ', N'Khmer southern cultural landscape',
+         N'/images/khmer.jpg', N'Hình ảnh đại diện văn hóa dân tộc Khmer', N'Khmer portrait',
+         N'/images/khmer.jpg', N'Sinh hoạt văn hóa của người Khmer', N'Khmer cultural life',
+         N'/images/mua-trong-sadam.jpg', N'Nét văn hóa tiêu biểu của người Khmer', N'Khmer cultural highlight',
+         N'/images/mua-trong-sadam.jpg', N'Âm nhạc và nghệ thuật trình diễn của người Khmer', N'Khmer performance arts',
+         N'/images/ethnic_south.png', N'Phum sóc và không gian sống của người Khmer', N'Khmer living space',
+         N'/images/khmer.jpg', N'Ảnh đại diện dân tộc Khmer', N'Khmer card image'),
+        ('CHAM',
+         N'/images/ethnic_south.png', N'Không gian văn hóa Chăm ở Nam Trung Bộ', N'Cham cultural landscape',
+         N'/images/cham.jpg', N'Hình ảnh đại diện văn hóa dân tộc Chăm', N'Cham portrait',
+         N'/images/cham.jpg', N'Sinh hoạt văn hóa của người Chăm', N'Cham cultural life',
+         N'/images/det-tho-cam.jpg', N'Nét văn hóa tiêu biểu của người Chăm', N'Cham cultural highlight',
+         N'/images/det-tho-cam.jpg', N'Âm nhạc và nghệ thuật trình diễn của người Chăm', N'Cham performing arts',
+         N'/images/ethnic_south.png', N'Không gian di sản và cư trú của người Chăm', N'Cham living space',
+         N'/images/cham.jpg', N'Ảnh đại diện dân tộc Chăm', N'Cham card image'),
+        ('EDE',
+         N'/images/ethnic_highlands.png', N'Không gian Tây Nguyên gắn với người Ê Đê', N'Ede highlands landscape',
+         N'/images/ede.jpg', N'Hình ảnh đại diện văn hóa dân tộc Ê Đê', N'Ede portrait',
+         N'/images/ede.jpg', N'Sinh hoạt văn hóa của người Ê Đê', N'Ede cultural life',
+         N'/images/cong_chieng.png', N'Nét văn hóa tiêu biểu của người Ê Đê', N'Ede cultural highlight',
+         N'/images/cong_chieng.png', N'Âm nhạc và nghệ thuật trình diễn của người Ê Đê', N'Ede performing arts',
+         N'/images/ethnic_highlands.png', N'Nhà dài và không gian sống của người Ê Đê', N'Ede living space',
+         N'/images/ede.jpg', N'Ảnh đại diện dân tộc Ê Đê', N'Ede card image'),
+        ('KINH',
+         N'/images/anhtet1.PNG', N'Không gian đời sống văn hóa của người Kinh', N'Kinh cultural life scene',
+         N'/images/anhtet1.PNG', N'Hình ảnh đại diện văn hóa dân tộc Kinh', N'Kinh portrait',
+         N'/images/anhtet1.PNG', N'Sinh hoạt văn hóa của người Kinh', N'Kinh cultural life',
+         N'/images/art_aodai.png', N'Nét văn hóa tiêu biểu của người Kinh', N'Kinh cultural highlight',
+         N'/images/hat-quan-ho.png', N'Âm nhạc và nghệ thuật trình diễn của người Kinh', N'Kinh performing arts',
+         N'/images/mien_bac.png', N'Không gian sống của người Kinh', N'Kinh living space',
+         N'/images/anhtet1.PNG', N'Ảnh đại diện dân tộc Kinh', N'Kinh card image')
+    ) AS v(MaDanToc,
+        HeroBackgroundImageUrl, HeroBackgroundAltVI, HeroBackgroundAltEN,
+        HeroForegroundImageUrl, HeroForegroundAltVI, HeroForegroundAltEN,
+        IntroImageUrl, IntroImageAltVI, IntroImageAltEN,
+        FeatureHighlightImageUrl, FeatureHighlightAltVI, FeatureHighlightAltEN,
+        MusicImageUrl, MusicImageAltVI, MusicImageAltEN,
+        ArchitectureImageUrl, ArchitectureImageAltVI, ArchitectureImageAltEN,
+        CardImageUrl, CardImageAltVI, CardImageAltEN)
+)
+UPDATE dp
+SET
+    HeroBackgroundImageUrl = src.HeroBackgroundImageUrl,
+    HeroBackgroundAltVI = src.HeroBackgroundAltVI,
+    HeroBackgroundAltEN = src.HeroBackgroundAltEN,
+    HeroForegroundImageUrl = src.HeroForegroundImageUrl,
+    HeroForegroundAltVI = src.HeroForegroundAltVI,
+    HeroForegroundAltEN = src.HeroForegroundAltEN,
+    IntroImageUrl = src.IntroImageUrl,
+    IntroImageAltVI = src.IntroImageAltVI,
+    IntroImageAltEN = src.IntroImageAltEN,
+    FeatureHighlightImageUrl = src.FeatureHighlightImageUrl,
+    FeatureHighlightAltVI = src.FeatureHighlightAltVI,
+    FeatureHighlightAltEN = src.FeatureHighlightAltEN,
+    MusicImageUrl = src.MusicImageUrl,
+    MusicImageAltVI = src.MusicImageAltVI,
+    MusicImageAltEN = src.MusicImageAltEN,
+    ArchitectureImageUrl = src.ArchitectureImageUrl,
+    ArchitectureImageAltVI = src.ArchitectureImageAltVI,
+    ArchitectureImageAltEN = src.ArchitectureImageAltEN,
+    CardImageUrl = src.CardImageUrl,
+    CardImageAltVI = src.CardImageAltVI,
+    CardImageAltEN = src.CardImageAltEN,
+    NgayCapNhat = SYSUTCDATETIME()
+FROM dbo.DanTocProfile dp
+JOIN dbo.DanToc dt ON dt.DanTocID = dp.DanTocID
+JOIN EthnicImageOverrides src ON src.MaDanToc = dt.MaDanToc;
+
+UPDATE item
+SET
+    ImageUrl = CASE
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'TEXTILES' THEN N'/images/hmong_textile_close_up_1775576097396.png'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'FESTIVALS' THEN N'/images/hmong_festival_gau_tao_1775575986843.png'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'CUISINE' THEN N'/images/hmong_cuisine_thang_co_1775576005757.png'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'ARTS' THEN N'/images/hmong_festival_gau_tao_1775575986843.png'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'GALLERY' THEN N'/images/hmong.jpg'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'FEATURES' THEN N'/images/hmong_textile_grid_1775575869410.png'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'STORIES' THEN N'/images/hmong_hero_landscape_1775575827859.png'
+        WHEN dt.MaDanToc = 'TAY' AND item.LoaiSection IN ('FEATURES','STORIES','ARTS') THEN N'/images/ethnic_mountain.png'
+        WHEN dt.MaDanToc = 'TAY' AND item.LoaiSection = 'GALLERY' THEN N'/images/ruong-bac-thang.jpg'
+        WHEN dt.MaDanToc = 'TAY' AND item.LoaiSection = 'FESTIVALS' THEN N'/images/ethnic_mountain.png'
+        WHEN dt.MaDanToc = 'TAY' AND item.LoaiSection = 'CUISINE' THEN N'/images/ruong-bac-thang.jpg'
+        WHEN dt.MaDanToc = 'DAO' AND item.LoaiSection IN ('FEATURES','FESTIVALS','ARTS') THEN N'/images/le-cap-sac.jpg'
+        WHEN dt.MaDanToc = 'DAO' AND item.LoaiSection = 'STORIES' THEN N'/images/dao.jpg'
+        WHEN dt.MaDanToc = 'DAO' AND item.LoaiSection = 'GALLERY' THEN N'/images/dao.jpg'
+        WHEN dt.MaDanToc = 'DAO' AND item.LoaiSection = 'CUISINE' THEN N'/images/det-tho-cam.jpg'
+        WHEN dt.MaDanToc = 'KHMER' AND item.LoaiSection IN ('FEATURES','STORIES','ARTS') THEN N'/images/mua-trong-sadam.jpg'
+        WHEN dt.MaDanToc = 'KHMER' AND item.LoaiSection = 'GALLERY' THEN N'/images/khmer.jpg'
+        WHEN dt.MaDanToc = 'KHMER' AND item.LoaiSection = 'FESTIVALS' THEN N'/images/dua-bo.jpg'
+        WHEN dt.MaDanToc = 'KHMER' AND item.LoaiSection = 'CUISINE' THEN N'/images/khmer.jpg'
+        WHEN dt.MaDanToc = 'CHAM' AND item.LoaiSection IN ('FEATURES','STORIES','ARTS','CUISINE') THEN N'/images/det-tho-cam.jpg'
+        WHEN dt.MaDanToc = 'CHAM' AND item.LoaiSection = 'GALLERY' THEN N'/images/cham.jpg'
+        WHEN dt.MaDanToc = 'CHAM' AND item.LoaiSection = 'FESTIVALS' THEN N'/images/cham.jpg'
+        WHEN dt.MaDanToc = 'EDE' AND item.LoaiSection IN ('FEATURES','ARTS') THEN N'/images/cong_chieng.png'
+        WHEN dt.MaDanToc = 'EDE' AND item.LoaiSection = 'STORIES' THEN N'/images/ede.jpg'
+        WHEN dt.MaDanToc = 'EDE' AND item.LoaiSection = 'GALLERY' THEN N'/images/ede.jpg'
+        WHEN dt.MaDanToc = 'EDE' AND item.LoaiSection = 'FESTIVALS' THEN N'/images/cong_chieng.png'
+        WHEN dt.MaDanToc = 'EDE' AND item.LoaiSection = 'CUISINE' THEN N'/images/ede.jpg'
+        WHEN dt.MaDanToc = 'KINH' AND item.LoaiSection = 'FEATURES' THEN N'/images/art_aodai.png'
+        WHEN dt.MaDanToc = 'KINH' AND item.LoaiSection = 'STORIES' THEN N'/images/anhtet1.PNG'
+        WHEN dt.MaDanToc = 'KINH' AND item.LoaiSection = 'GALLERY' THEN N'/images/anhtet1.PNG'
+        WHEN dt.MaDanToc = 'KINH' AND item.LoaiSection = 'FESTIVALS' THEN N'/images/festival_banner.jpg'
+        WHEN dt.MaDanToc = 'KINH' AND item.LoaiSection = 'CUISINE' THEN N'/images/cuisine_pho.png'
+        WHEN dt.MaDanToc = 'KINH' AND item.LoaiSection = 'ARTS' THEN N'/images/hat-quan-ho.png'
+        ELSE item.ImageUrl
+    END,
+    ImageAltVI = CASE
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'TEXTILES' THEN N'Chi tiết thổ cẩm của người H''Mông'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'FESTIVALS' THEN N'Lễ hội truyền thống của người H''Mông'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'CUISINE' THEN N'Ẩm thực truyền thống của người H''Mông'
+        WHEN dt.MaDanToc = 'TAY' THEN N'Hình ảnh văn hóa của người Tày'
+        WHEN dt.MaDanToc = 'DAO' THEN N'Hình ảnh văn hóa của người Dao'
+        WHEN dt.MaDanToc = 'KHMER' THEN N'Hình ảnh văn hóa của người Khmer'
+        WHEN dt.MaDanToc = 'CHAM' THEN N'Hình ảnh văn hóa của người Chăm'
+        WHEN dt.MaDanToc = 'EDE' THEN N'Hình ảnh văn hóa của người Ê Đê'
+        WHEN dt.MaDanToc = 'KINH' THEN N'Hình ảnh văn hóa của người Kinh'
+        ELSE item.ImageAltVI
+    END,
+    ImageAltVI = CASE
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'TEXTILES' THEN N'Chi tiết thổ cẩm của người H''Mông'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'FESTIVALS' THEN N'Lễ hội truyền thống của người H''Mông'
+        WHEN dt.MaDanToc = 'HMONG' AND item.LoaiSection = 'CUISINE' THEN N'Ẩm thực truyền thống của người H''Mông'
+        WHEN dt.MaDanToc = 'TAY' THEN N'Hình ảnh văn hóa của người Tày'
+        WHEN dt.MaDanToc = 'DAO' THEN N'Hình ảnh văn hóa của người Dao'
+        WHEN dt.MaDanToc = 'KHMER' THEN N'Hình ảnh văn hóa của người Khmer'
+        WHEN dt.MaDanToc = 'CHAM' THEN N'Hình ảnh văn hóa của người Chăm'
+        WHEN dt.MaDanToc = 'EDE' THEN N'Hình ảnh văn hóa của người Ê Đê'
+        ELSE item.ImageAltVI
+    END,
+    NgayCapNhat = SYSUTCDATETIME()
+FROM dbo.DanTocSectionItem item
+JOIN dbo.DanToc dt ON dt.DanTocID = item.DanTocID
+WHERE dt.MaDanToc IN ('HMONG','TAY','DAO','KHMER','CHAM','EDE','KINH');
+
 UPDATE dp
 SET
   ListBadgeVI = CASE
