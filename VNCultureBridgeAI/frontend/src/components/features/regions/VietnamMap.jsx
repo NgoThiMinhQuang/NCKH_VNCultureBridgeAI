@@ -3,7 +3,15 @@ import { useMemo, useState } from 'react';
 export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = [] }) {
   const [hoveredKey, setHoveredKey] = useState(null);
 
-  const visibleKey = hoveredKey ?? activeKey;
+  const KEY_MAP = {
+    BAC_BO: 'north',
+    TRUNG_BO: 'central',
+    NAM_BO: 'south'
+  };
+
+  const internalActiveKey = KEY_MAP[activeKey] || activeKey;
+  const visibleKey = hoveredKey ?? internalActiveKey;
+
   const labels = useMemo(() => {
     const defaults = {
       north: 'MIỀN BẮC',
@@ -12,8 +20,10 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
     }
 
     for (const region of regions) {
-      if (region?.key && region?.badge) {
-        defaults[region.key] = String(region.badge).toUpperCase()
+      const key = region?.key || region?.id;
+      const internalKey = KEY_MAP[key] || key;
+      if (internalKey && region?.badge) {
+        defaults[internalKey] = String(region.badge).toUpperCase()
       }
     }
 
@@ -27,15 +37,15 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
         <img src="/maps/vietnam-map-base.png" alt="Bản đồ Việt Nam" className="vietnam-map-base" />
 
         {/* Overlay Images */}
-        <div className={`vietnam-map-overlay vietnam-map-overlay--north ${visibleKey === 'north' ? 'is-visible' : ''} ${hoveredKey === 'north' ? 'is-hovered' : ''} ${activeKey === 'north' ? 'is-active' : ''}`}>
+        <div className={`vietnam-map-overlay vietnam-map-overlay--north ${visibleKey === 'north' ? 'is-visible' : ''} ${hoveredKey === 'north' ? 'is-hovered' : ''} ${internalActiveKey === 'north' ? 'is-active' : ''}`}>
           <img src="/maps/vietnam-map-north-active.png" alt="Lớp phủ Miền Bắc" />
         </div>
 
-        <div className={`vietnam-map-overlay vietnam-map-overlay--central ${visibleKey === 'central' ? 'is-visible' : ''} ${hoveredKey === 'central' ? 'is-hovered' : ''} ${activeKey === 'central' ? 'is-active' : ''}`}>
+        <div className={`vietnam-map-overlay vietnam-map-overlay--central ${visibleKey === 'central' ? 'is-visible' : ''} ${hoveredKey === 'central' ? 'is-hovered' : ''} ${internalActiveKey === 'central' ? 'is-active' : ''}`}>
           <img src="/maps/vietnam-map-central-active.png" alt="Lớp phủ Miền Trung" />
         </div>
 
-        <div className={`vietnam-map-overlay vietnam-map-overlay--south ${visibleKey === 'south' ? 'is-visible' : ''} ${hoveredKey === 'south' ? 'is-hovered' : ''} ${activeKey === 'south' ? 'is-active' : ''}`}>
+        <div className={`vietnam-map-overlay vietnam-map-overlay--south ${visibleKey === 'south' ? 'is-visible' : ''} ${hoveredKey === 'south' ? 'is-hovered' : ''} ${internalActiveKey === 'south' ? 'is-active' : ''}`}>
           <img src="/maps/vietnam-map-south-active.png" alt="Lớp phủ Miền Nam" />
         </div>
 
@@ -45,9 +55,9 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
         <div className="vietnam-map-marker vietnam-map-marker--south">●</div>
 
         {/* Texts for regions that change color on active */}
-        <div className={`vietnam-map-text vietnam-map-text--north ${activeKey === 'north' ? 'is-active' : ''}`}>{labels.north}</div>
-        <div className={`vietnam-map-text vietnam-map-text--central ${activeKey === 'central' ? 'is-active' : ''}`}>{labels.central}</div>
-        <div className={`vietnam-map-text vietnam-map-text--south ${activeKey === 'south' ? 'is-active' : ''}`}>{labels.south}</div>
+        <div className={`vietnam-map-text vietnam-map-text--north ${internalActiveKey === 'north' ? 'is-active' : ''}`}>{labels.north}</div>
+        <div className={`vietnam-map-text vietnam-map-text--central ${internalActiveKey === 'central' ? 'is-active' : ''}`}>{labels.central}</div>
+        <div className={`vietnam-map-text vietnam-map-text--south ${internalActiveKey === 'south' ? 'is-active' : ''}`}>{labels.south}</div>
 
         {/* Hover interaction zones (invisible) to perfectly route mouse events */}
         <button
@@ -55,10 +65,10 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
           className="hover-zone north-zone"
           onMouseEnter={() => {
             setHoveredKey('north');
-            onSelectRegion('north');
+            onSelectRegion('BAC_BO');
           }}
           onMouseLeave={() => setHoveredKey(null)}
-          onClick={() => onSelectRegion('north')}
+          onClick={() => onSelectRegion('BAC_BO')}
           aria-label="Chọn Miền Bắc"
         />
         <button
@@ -66,10 +76,10 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
           className="hover-zone central-zone"
           onMouseEnter={() => {
             setHoveredKey('central');
-            onSelectRegion('central');
+            onSelectRegion('TRUNG_BO');
           }}
           onMouseLeave={() => setHoveredKey(null)}
-          onClick={() => onSelectRegion('central')}
+          onClick={() => onSelectRegion('TRUNG_BO')}
           aria-label="Chọn Miền Trung"
         />
         <button
@@ -77,12 +87,13 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
           className="hover-zone south-zone"
           onMouseEnter={() => {
             setHoveredKey('south');
-            onSelectRegion('south');
+            onSelectRegion('NAM_BO');
           }}
           onMouseLeave={() => setHoveredKey(null)}
-          onClick={() => onSelectRegion('south')}
+          onClick={() => onSelectRegion('NAM_BO')}
           aria-label="Chọn Miền Nam"
         />
+
       </div>
     </div>
   )

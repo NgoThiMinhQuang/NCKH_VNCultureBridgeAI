@@ -262,12 +262,10 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(45deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%);
   transform: rotate(45deg);
   transition: all 0.6s ease;
   pointer-events: none;
@@ -540,9 +538,11 @@
     transform: translate(-50%, 0);
     opacity: 0;
   }
+
   30% {
     opacity: 1;
   }
+
   100% {
     transform: translate(-50%, 18px);
     opacity: 0;
@@ -693,10 +693,7 @@
   margin-top: 28px;
 }
 
-.inspiration-section {
-  padding: 84px 0;
-  margin: 48px 0 32px;
-}
+.inspiration-section {}
 
 .inspiration__header {
   margin: 0 auto 40px;

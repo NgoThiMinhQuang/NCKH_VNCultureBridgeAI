@@ -830,7 +830,7 @@ const overviewRegions = [
 const SectionWave = ({ position = 'bottom', color = '#fffcf8' }) => (
   <div className={`section-wave section-wave--${position}`} style={{ position: 'absolute', width: '100%', height: '100px', left: 0, zIndex: 10, [position]: position === 'bottom' ? '-1px' : '0' }}>
     <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%', display: 'block' }}>
-      <path d="M0 120L48 110C96 100 192 80 288 70C384 60 480 60 576 70C672 80 768 100 864 100C960 100 1056 80 1152 70C1248 60 1344 60 1392 60L1440 60V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill={color}/>
+      <path d="M0 120L48 110C96 100 192 80 288 70C384 60 480 60 576 70C672 80 768 100 864 100C960 100 1056 80 1152 70C1248 60 1344 60 1392 60L1440 60V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill={color} />
     </svg>
   </div>
 );
@@ -1022,16 +1022,16 @@ export default function RegionsPage() {
   const provinceCount = provinceState.status === 'success' ? provinceState.data.length : 34
   const localizedFilterOptions = lang === 'en'
     ? [
-        { id: 'all', label: 'All' },
-        { id: 'regions', label: 'Regions' },
-        { id: 'nature', label: 'Nature' },
-        { id: 'heritage', label: 'Heritage' },
-        { id: 'food', label: 'Cuisine' },
-        { id: 'sea', label: 'Sea & Islands' },
-        { id: 'mountains', label: 'Mountains' },
-        { id: 'oldtown', label: 'Old Towns' },
-        { id: 'craft', label: 'Craft Villages' }
-      ]
+      { id: 'all', label: 'All' },
+      { id: 'regions', label: 'Regions' },
+      { id: 'nature', label: 'Nature' },
+      { id: 'heritage', label: 'Heritage' },
+      { id: 'food', label: 'Cuisine' },
+      { id: 'sea', label: 'Sea & Islands' },
+      { id: 'mountains', label: 'Mountains' },
+      { id: 'oldtown', label: 'Old Towns' },
+      { id: 'craft', label: 'Craft Villages' }
+    ]
     : filterOptions
   const visibleProvinces = (provinceState.data || [])
     .map(normalizeProvinceCard)
@@ -1046,10 +1046,10 @@ export default function RegionsPage() {
 
   const previewSource = !searchQuery.trim() && activeFilter === 'all'
     ? visibleProvinces.filter((province) => {
-        const targetLabel = (regionLabelByKey[activeKey] || activeRegion.badge || '').toLowerCase()
-        const provinceRegion = (province.region || '').toLowerCase()
-        return provinceRegion.includes(targetLabel) || targetLabel.includes(provinceRegion)
-      })
+      const targetLabel = (regionLabelByKey[activeKey] || activeRegion.badge || '').toLowerCase()
+      const provinceRegion = (province.region || '').toLowerCase()
+      return provinceRegion.includes(targetLabel) || targetLabel.includes(provinceRegion)
+    })
     : visibleProvinces
 
   const previewProvinces = previewSource.slice(0, 6)
@@ -1255,86 +1255,86 @@ export default function RegionsPage() {
         <div className="regions-page__shell">
           <section className="regions-split-layout fade-up">
             <div className="container regions-split-container">
-            <div className="regions-split-layout__map">
-              {isLoading ? <div className="regions-loading-inline">{copy.loading}</div> : null}
-              {isError ? <div className="regions-loading-inline regions-loading-inline--error">{copy.error}</div> : null}
-              <h2>{lang === 'vi' ? 'Bản đồ văn hóa' : 'Cultural map'}</h2>
-              <p className="regions-split-layout__map-desc">
-                {lang === 'vi'
-                  ? 'Chạm hoặc rê chuột vào từng vùng để khám phá những nét văn hóa đặc trưng từ Bắc chí Nam.'
-                  : 'Hover or tap each region to explore the cultural identity of Vietnam from north to south.'}
-              </p>
-              <VietnamMap activeKey={activeKey} onSelectRegion={handleSelectRegion} lang={lang} regions={mappedRegions} />
-            </div>
+              <div className="regions-split-layout__map">
+                {isLoading ? <div className="regions-loading-inline">{copy.loading}</div> : null}
+                {isError ? <div className="regions-loading-inline regions-loading-inline--error">{copy.error}</div> : null}
+                <h2>{lang === 'vi' ? 'Bản đồ văn hóa' : 'Cultural map'}</h2>
+                <p className="regions-split-layout__map-desc">
+                  {lang === 'vi'
+                    ? 'Chạm hoặc rê chuột vào từng vùng để khám phá những nét văn hóa đặc trưng từ Bắc chí Nam.'
+                    : 'Hover or tap each region to explore the cultural identity of Vietnam from north to south.'}
+                </p>
+                <VietnamMap activeKey={activeKey} onSelectRegion={handleSelectRegion} lang={lang} regions={mappedRegions} />
+              </div>
 
-            <div className="regions-split-layout__content">
-              <div className="region-card-wrapper">
-                <div className="region-tabs">
-                  {mappedRegions.map((item) => (
-                    <button
-                      key={item.key || item.code || item.id}
-                      type="button"
-                      className={`region-tab ${activeKey === item.key ? 'is-active' : ''}`}
-                      onClick={() => handleSelectRegion(item.key)}
-                    >
-                      {item.badge}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="region-card">
-                  <div className="region-card__header">
-                    <span className="region-card__decorator"></span>
-                    <h2>{activeRegion.badge}</h2>
+              <div className="regions-split-layout__content">
+                <div className="region-card-wrapper">
+                  <div className="region-tabs">
+                    {mappedRegions.map((item) => (
+                      <button
+                        key={item.key || item.code || item.id}
+                        type="button"
+                        className={`region-tab ${activeKey === item.key ? 'is-active' : ''}`}
+                        onClick={() => handleSelectRegion(item.key)}
+                      >
+                        {item.badge}
+                      </button>
+                    ))}
                   </div>
 
-                  <p className="region-card__desc">{activeRegion.description}</p>
+                  <div className="region-card">
+                    <div className="region-card__header">
+                      <span className="region-card__decorator"></span>
+                      <h2>{activeRegion.badge}</h2>
+                    </div>
 
-                  <div className="region-card__details">
-                    <div className="region-card__detail-item">
-                      <div className="region-card__detail-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <p className="region-card__desc">{activeRegion.description}</p>
+
+                    <div className="region-card__details">
+                      <div className="region-card__detail-item">
+                        <div className="region-card__detail-icon">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        </div>
+                        <div className="region-card__detail-text">
+                          <strong>{lang === 'vi' ? 'Điểm đến nổi bật' : 'Highlighted Destinations'}</strong>
+                          <span>{(activeRegion.highlights || []).join(', ')}</span>
+                        </div>
                       </div>
-                      <div className="region-card__detail-text">
-                        <strong>{lang === 'vi' ? 'Điểm đến nổi bật' : 'Highlighted Destinations'}</strong>
-                        <span>{(activeRegion.highlights || []).join(', ')}</span>
+
+                      <div className="region-card__detail-item">
+                        <div className="region-card__detail-icon">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        </div>
+                        <div className="region-card__detail-text">
+                          <strong>{lang === 'vi' ? 'Trải nghiệm đặc trưng' : 'Signature Experiences'}</strong>
+                          <span>{activeRegion.experiences}</span>
+                        </div>
+                      </div>
+
+                      <div className="region-card__detail-item">
+                        <div className="region-card__detail-icon">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        </div>
+                        <div className="region-card__detail-text">
+                          <strong>{lang === 'vi' ? 'Không khí' : 'Atmosphere'}</strong>
+                          <span>{activeRegion.atmosphere}</span>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="region-card__detail-item">
-                      <div className="region-card__detail-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                      </div>
-                      <div className="region-card__detail-text">
-                        <strong>{lang === 'vi' ? 'Trải nghiệm đặc trưng' : 'Signature Experiences'}</strong>
-                        <span>{activeRegion.experiences}</span>
-                      </div>
+                    <div className="region-card__actions">
+                      <Link to={activeRegion.code ? `/regions/${activeRegion.code}` : '/regions'} className="region-card__btn">
+                        {lang === 'vi' ? 'Xem chi tiết vùng miền' : 'Explore this region'} →
+                      </Link>
                     </div>
-
-                    <div className="region-card__detail-item">
-                      <div className="region-card__detail-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                      </div>
-                      <div className="region-card__detail-text">
-                        <strong>{lang === 'vi' ? 'Không khí' : 'Atmosphere'}</strong>
-                        <span>{activeRegion.atmosphere}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="region-card__actions">
-                    <Link to={activeRegion.code ? `/regions/${activeRegion.code}` : '/regions'} className="region-card__btn">
-                      {lang === 'vi' ? 'Xem chi tiết vùng miền' : 'Explore this region'} →
-                    </Link>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <SectionWave position="bottom" color="#ffffff" />
-        </section>
+            <SectionWave position="bottom" color="#ffffff" />
+          </section>
 
-          <section className="regions-overview-section" style={{ position: 'relative', background: '#ffffff', paddingBottom: '120px' }}>
+          <section className="regions-overview-section" style={{ position: 'relative', background: '#ffffff' }}>
             <div className="regions-overview__header fade-up">
               <h2>{lang === 'vi' ? 'Câu chuyện từng vùng đất' : 'Stories of every land'}</h2>
               <p>{lang === 'vi'
@@ -1353,7 +1353,7 @@ export default function RegionsPage() {
                 return (
                   <div key={region.id} className={`regions-overview__card ${isReversed ? 'is-reversed' : ''}`}>
 
-"                    <div className="regions-overview__image-col">
+                    "                    <div className="regions-overview__image-col">
                       <div className="regions-overview__image">
                         {regionImage ? <img src={regionImage} alt={region.overviewTitle || region.title} /> : <div className="placeholder-image">Ảnh {region.badge}</div>}
                       </div>
@@ -1378,13 +1378,11 @@ export default function RegionsPage() {
                 )
               })}
             </div>
-            <div className="section-view-all">
-              <Link to="/regions" className="provinces__button view-all-btn">{lang === 'vi' ? 'Xem tất cả vùng miền →' : 'View all regions →'}</Link>
-            </div>
+
             <SectionWave position="bottom" color="#f8f4f0" />
           </section>
 
-          <section className="inspiration-section" style={{ position: 'relative', background: '#f8f4f0', paddingBottom: '120px' }}>
+          <section className="inspiration-section" style={{ position: 'relative', background: '#f8f4f0' }}>
             <div className="inspiration__container container fade-up">
               <div className="inspiration__header">
                 <h2>{lang === 'vi' ? 'Khám phá theo cảm hứng' : 'Explore by Inspiration'}</h2>
