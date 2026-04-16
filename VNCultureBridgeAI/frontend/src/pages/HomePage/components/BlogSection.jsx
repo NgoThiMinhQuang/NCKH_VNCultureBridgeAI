@@ -43,7 +43,7 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
           <span className="blog-showcase__title-accent">{copy?.blogShowcaseTitleAccent}</span>
         </h2>
         <p className="section-desc">{copy?.blogShowcaseDescription}</p>
-        
+
         <div className="heritage-divider">
           <span className="heritage-divider-line" />
           <span className="heritage-divider-icon">⚜️</span>
@@ -70,7 +70,7 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
           </div>
           <h3 className="blog-showcase__featured-title">{featuredPost.title}</h3>
           <p className="blog-showcase__featured-excerpt">{featuredPost.description}</p>
-          
+
           <div className="blog-showcase__featured-footer">
             <div className="blog-showcase__author">
               <div className="blog-showcase__author-avatar" aria-hidden="true">
@@ -81,7 +81,7 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
                 <span>{formatBlogDate(featuredPost.createdAt)}</span>
               </div>
             </div>
-            
+
             <Link to={`/articles/${featuredPost.code}`} className="blog-card__cta">
               <span>{copy?.learnMore}</span>
               <span aria-hidden="true">→</span>
@@ -103,7 +103,7 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
                 )}
                 <span className="blog-card__category-pill">{getBlogCategoryLabel(post.category)}</span>
               </div>
-              
+
               <div className="blog-card__body">
                 <div className="blog-card__meta-top">
                   <span className="blog-card__date">{formatBlogDate(post.createdAt)}</span>
@@ -112,8 +112,8 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
                 <h4 className="blog-card__title">{post.title}</h4>
                 <p className="blog-card__excerpt">{post.description}</p>
                 <Link to={`/articles/${post.code}`} className="blog-card__cta">
-                   <span>{copy?.learnMore}</span>
-                   <span aria-hidden="true">→</span>
+                  <span>{copy?.learnMore}</span>
+                  <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </article>
@@ -124,7 +124,7 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
       <div className="blog-showcase__cta-row fade-up">
         <Link to="/articles" className="primary-button">
           <span>{copy?.blogShowcasePrimaryCta}</span>
-          <span aria-hidden="true" className="btn-arrow-silk">→</span>
+          <span aria-hidden="true" className="btn-arrow-silk">Xem thêm →</span>
         </Link>
       </div>
     </section>

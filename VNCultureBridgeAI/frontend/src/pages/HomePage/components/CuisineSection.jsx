@@ -79,7 +79,7 @@ export default function CuisineSection({ cuisine, copy }) {
       <div className="cuisine-showcase__footer fade-up">
         <Link to="/articles?category=AM_THUC" className="primary-button">
           <span>{copy?.cuisineShowcasePrimaryCta}</span>
-          <span aria-hidden="true" className="btn-arrow-silk">→</span>
+          <span aria-hidden="true" className="btn-arrow-silk">Xem thêm →</span>
         </Link>
       </div>
     </section>
