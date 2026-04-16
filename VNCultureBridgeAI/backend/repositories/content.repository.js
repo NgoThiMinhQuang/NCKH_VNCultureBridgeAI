@@ -72,7 +72,16 @@ async function getEthnicityByCode(code) {
 
 // 4. PROVINCES (TinhThanh)
 async function getAllProvinces() {
-    return query(`SELECT tt.*, vv.MaVung FROM dbo.TinhThanh tt JOIN dbo.VungVanHoa vv ON tt.VungID = vv.VungID ORDER BY tt.ThuTuHienThi ASC`)
+    return query(`
+        SELECT 
+            tt.*, 
+            vv.MaVung, 
+            vv.TenVI AS VungTenVI, 
+            vv.TenEN AS VungTenEN 
+        FROM dbo.TinhThanh tt 
+        JOIN dbo.VungVanHoa vv ON tt.VungID = vv.VungID 
+        ORDER BY tt.ThuTuHienThi ASC
+    `)
 }
 
 async function getProvincesByVung(vungId) {

@@ -88,10 +88,10 @@ export default function HomePage() {
   return (
     <div className="homepage-root">
       <PageHeader lang={lang} setLang={setLang} />
-      
-      <main className="page-content-shell">
-        <HeroSection 
-          hero={h.hero} 
+
+      <main className="">
+        <HeroSection
+          hero={h.hero}
           stats={h.stats || []}
           search={search}
           setSearch={setSearch}
@@ -101,35 +101,35 @@ export default function HomePage() {
           copy={copy}
         />
 
-        <RegionSection 
-          regions={h.regions || []} 
-          copy={copy} 
+        <RegionSection
+          regions={h.regions || []}
+          copy={copy}
         />
 
-        <EthnicGroupSection 
-          ethnicGroups={h.ethnicGroups || []} 
+        <EthnicGroupSection
+          ethnicGroups={h.ethnicGroups || []}
           stats={copy.ethnicShowcaseStats || []}
           copy={copy}
         />
 
-        <FestivalSection 
-          festivals={h.festivals || []} 
+        <FestivalSection
+          festivals={h.festivals || []}
           copy={copy}
         />
 
-        <CuisineSection 
-          cuisine={h.cuisine || []} 
+        <CuisineSection
+          cuisine={h.cuisine || []}
           copy={copy}
         />
 
-        <ArtsSection 
+        <ArtsSection
           featuredArt={(h.arts || [])[0]}
           additionalArts={(h.arts || []).slice(1, 7)}
           copy={copy}
           lang={lang}
         />
 
-        <BlogSection 
+        <BlogSection
           featuredPost={(h.blogPosts || [])[0]}
           secondaryPosts={(h.blogPosts || []).slice(1, 4)}
           copy={copy}

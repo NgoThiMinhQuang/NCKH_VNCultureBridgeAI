@@ -1,7 +1,7 @@
 :root {
   /* Typography */
   --font-body: 'Inter', system-ui, sans-serif;
-  --font-heading: "Roboto", system-ui, sans-serif;
+  --font-heading: 'EB Garamond', serif;
   --font-ui: var(--font-body);
   --font-brand: var(--font-heading);
 
@@ -299,12 +299,7 @@ h6,
 button,
 input,
 textarea,
-select,
-label,
-p,
-span,
-a,
-li {
+select {
   font-family: var(--font-ui);
 }
 

@@ -35,22 +35,20 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
   }
 
   return (
-    <section className="content-section blog-showcase" id="blog">
-      <div className="blog-showcase__header fade-up">
-        <span className="blog-showcase__eyebrow">
-          <span>{copy?.blogShowcaseBadge}</span>
-        </span>
-        <h2>
+    <section className="content-section cream-section blog-showcase" id="blog">
+      <div className="blog-showcase__header ec-center fade-up">
+        <span className="section-eyebrow">{copy?.blogShowcaseBadge}</span>
+        <h2 className="section-title">
           <span>{copy?.blogShowcaseTitle}</span>{' '}
           <span className="blog-showcase__title-accent">{copy?.blogShowcaseTitleAccent}</span>
         </h2>
-        <div className="blog-showcase__divider" aria-hidden="true">
-          <span />
-          <i />
-          <b />
-          <span />
+        <p className="section-desc">{copy?.blogShowcaseDescription}</p>
+        
+        <div className="heritage-divider">
+          <span className="heritage-divider-line" />
+          <span className="heritage-divider-icon">⚜️</span>
+          <span className="heritage-divider-line" />
         </div>
-        <p>{copy?.blogShowcaseDescription}</p>
       </div>
 
       <div className="blog-showcase__featured fade-up">
@@ -65,12 +63,12 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
 
         <div className="blog-showcase__featured-body">
           <div className="blog-showcase__featured-meta-top">
-            <span className="blog-showcase__featured-category">{getBlogCategoryLabel(featuredPost.category)}</span>
+            <span className="blog-card__category-pill">{getBlogCategoryLabel(featuredPost.category)}</span>
             <span className="blog-showcase__featured-read">
               {featuredPost.readTime || (lang === 'vi' ? '8 phút đọc' : '8 min read')}
             </span>
           </div>
-          <h3>{featuredPost.title}</h3>
+          <h3 className="blog-showcase__featured-title">{featuredPost.title}</h3>
           <p className="blog-showcase__featured-excerpt">{featuredPost.description}</p>
           
           <div className="blog-showcase__featured-footer">
@@ -84,8 +82,9 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
               </div>
             </div>
             
-            <Link to={`/articles/${featuredPost.code}`} className="blog-showcase__featured-cta">
-              {copy?.learnMore} →
+            <Link to={`/articles/${featuredPost.code}`} className="blog-card__cta">
+              <span>{copy?.learnMore}</span>
+              <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>
@@ -98,11 +97,11 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
             <article key={post.code || post.id || index} className={`blog-card fade-up ${accentClass}`}>
               <div className="blog-card__media">
                 {post.imageUrl ? (
-                  <img src={post.imageUrl} alt={post.imageAlt || post.title} className="blog-card__image" loading="lazy" decoding="async" />
+                  <img src={post.imageUrl} alt={post.imageAlt || post.title} className="blog-card__image" loading="lazy" />
                 ) : (
                   <div className="blog-card__image blog-card__image--placeholder">{post.title}</div>
                 )}
-                <span className="blog-card__category-badge">{getBlogCategoryLabel(post.category)}</span>
+                <span className="blog-card__category-pill">{getBlogCategoryLabel(post.category)}</span>
               </div>
               
               <div className="blog-card__body">
@@ -110,10 +109,11 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
                   <span className="blog-card__date">{formatBlogDate(post.createdAt)}</span>
                   <span className="blog-card__read">{post.readTime || (lang === 'vi' ? '5 phút' : '5 min')}</span>
                 </div>
-                <h4>{post.title}</h4>
-                <p>{post.description}</p>
+                <h4 className="blog-card__title">{post.title}</h4>
+                <p className="blog-card__excerpt">{post.description}</p>
                 <Link to={`/articles/${post.code}`} className="blog-card__cta">
-                   {copy?.learnMore} →
+                   <span>{copy?.learnMore}</span>
+                   <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </article>
@@ -122,9 +122,9 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
       </div>
 
       <div className="blog-showcase__cta-row fade-up">
-        <Link to="/articles" className="blog-showcase__button">
+        <Link to="/articles" className="primary-button">
           <span>{copy?.blogShowcasePrimaryCta}</span>
-          <span aria-hidden="true">→</span>
+          <span aria-hidden="true" className="btn-arrow-silk">→</span>
         </Link>
       </div>
     </section>

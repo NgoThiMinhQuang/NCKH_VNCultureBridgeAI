@@ -691,7 +691,7 @@ function getProvinceCardsToRender(provinces, lang) {
 const regionMeta = {
   vi: [
     {
-      key: 'north',
+      key: 'BAC_BO',
       badge: 'Miền Bắc',
       mapLabel: 'Bắc Bộ',
       headline: 'Sắc màu núi rừng và di sản ngàn năm',
@@ -701,7 +701,7 @@ const regionMeta = {
       atmosphere: 'Cổ kính, đậm đà bản sắc, nhịp sống chậm rãi'
     },
     {
-      key: 'central',
+      key: 'TRUNG_BO',
       badge: 'Miền Trung',
       mapLabel: 'Trung Bộ',
       headline: 'Dải đất di sản giữa biển và núi',
@@ -711,7 +711,7 @@ const regionMeta = {
       atmosphere: 'Sâu lắng, duyên dáng, giàu chiều sâu văn hóa'
     },
     {
-      key: 'south',
+      key: 'NAM_BO',
       badge: 'Miền Nam',
       mapLabel: 'Nam Bộ',
       headline: 'Nhịp sống sông nước và đô thị sôi động',
@@ -723,7 +723,7 @@ const regionMeta = {
   ],
   en: [
     {
-      key: 'north',
+      key: 'BAC_BO',
       badge: 'Northern',
       mapLabel: 'North',
       headline: 'Mountains, heritage, and timeless capital culture',
@@ -733,7 +733,7 @@ const regionMeta = {
       atmosphere: 'Ancient, rich in identity, slow-paced life'
     },
     {
-      key: 'central',
+      key: 'TRUNG_BO',
       badge: 'Central',
       mapLabel: 'Central',
       headline: 'A heritage corridor between coast and mountains',
@@ -743,7 +743,7 @@ const regionMeta = {
       atmosphere: 'Profound, graceful, culturally rich'
     },
     {
-      key: 'south',
+      key: 'NAM_BO',
       badge: 'Southern',
       mapLabel: 'South',
       headline: 'River life, tropical islands, and modern energy',
@@ -757,10 +757,11 @@ const regionMeta = {
 
 function mergeRegionContent(listRegions, lang) {
   const meta = regionMeta[lang] || regionMeta.vi
-  const regionByKey = new Map(listRegions.map((item) => [item.key, item]))
+  // The API returns 'id' which is MaVung (e.g. BAC_BO)
+  const regionByKey = new Map(listRegions.map((item) => [item.id || item.key || item.code, item]))
 
-  return meta.map((item, index) => {
-    const region = regionByKey.get(item.key) || listRegions[index] || {}
+  return meta.map((item) => {
+    const region = regionByKey.get(item.key) || {}
     return {
       ...item,
       ...region,
@@ -782,7 +783,7 @@ function mergeRegionContent(listRegions, lang) {
 
 const overviewRegions = [
   {
-    id: 'north',
+    id: 'BAC_BO',
     badge: 'Miền Bắc',
     title: 'Nơi mây núi tích tụ từng lớp lịch sử',
     desc: 'Miền Bắc mang trong mình sự trầm lắng, kín đáo như tầng tầng lớp lớp ruộng bậc thang. Từ thủ đô nghìn năm văn hiến đến những bản làng cao nguyên, mỗi góc đất đều thấm đượm hồn văn hiến và sức sống bền bỉ của con người vùng núi.',
@@ -793,10 +794,10 @@ const overviewRegions = [
       { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Gốm Bát Tràng, lụa Vạn Phúc, tranh Đông Hồ, ca trù, quan họ Bắc Ninh' }
     ],
     image: imgOverviewNorth,
-    link: '/regions/north'
+    link: '/regions/BAC_BO'
   },
   {
-    id: 'central',
+    id: 'TRUNG_BO',
     badge: 'Miền Trung',
     title: 'Dải đất di sản giữa núi và biển',
     desc: 'Miền Trung là nơi hội tụ của núi non hùng vĩ và biển cả mênh mông. Từ cố đô Huế với hoàng cung nguy nga đến phố cổ Hội An thơ mộng, vùng đất này chứa đựng những di sản văn hoá vật thể và phi vật thể quý giá nhất của Việt Nam.',
@@ -810,7 +811,7 @@ const overviewRegions = [
     link: '/regions/TRUNG_BO'
   },
   {
-    id: 'south',
+    id: 'NAM_BO',
     badge: 'Miền Nam',
     title: 'Vùng sông nước bao la, lòng người rộng mở',
     desc: 'Miền Nam là vùng đất của những dòng sông giao thoa, nơi nhịp sống chảy theo dòng nước. Từ Sài Gòn sôi động đến đồng bằng sông Cửu Long thơ mộng, miền Nam toát lên sự rộng mở, phóng khoáng và lòng mến khách.',
@@ -930,9 +931,11 @@ const filterOptions = [
 function normalizeProvinceCard(province) {
   return {
     ...province,
-    imageUrl: province.imageUrl || province.image || null,
-    imageAlt: province.imageAlt || province.name,
-    description: province.desc || province.description || (province.type && province.subRegion ? `${province.type} thuộc ${province.subRegion}` : province.type || province.subRegion || ''),
+    name: province.name || province.TenVI || province.TenEN || '',
+    imageUrl: province.imageUrl || province.HeroImageUrl || province.AnhDaiDienUrl || province.image || null,
+    imageAlt: province.imageAlt || province.name || '',
+    description: province.description || province.TongQuanVI || province.TongQuanEN || province.desc || '',
+    region: province.region || province.VungTenVI || province.VungTenEN || '',
     tags: province.tags || [],
   }
 }
@@ -965,8 +968,8 @@ function filterProvinceCard(province, activeFilter, lang) {
 
 export default function RegionsPage() {
   const [lang, setLang] = useState('vi')
-  const [state, setState] = useState({ status: 'loading', data: null, error: '' })
-  const [activeKey, setActiveKey] = useState('north')
+  const [state, setState] = useState({ status: 'loading', data: { regions: [] }, error: '' })
+  const [activeKey, setActiveKey] = useState('BAC_BO')
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState('all')
   const [provinceState, setProvinceState] = useState({ status: 'loading', data: [], error: '' })
@@ -1036,13 +1039,17 @@ export default function RegionsPage() {
     .filter((province) => filterProvinceCard(province, activeFilter, lang))
 
   const regionLabelByKey = {
-    north: 'Miền Bắc',
-    central: 'Miền Trung',
-    south: 'Miền Nam',
+    BAC_BO: lang === 'vi' ? 'Bắc Bộ' : 'Northern Vietnam',
+    TRUNG_BO: lang === 'vi' ? 'Trung Bộ' : 'Central Vietnam',
+    NAM_BO: lang === 'vi' ? 'Nam Bộ' : 'Southern Vietnam',
   }
 
   const previewSource = !searchQuery.trim() && activeFilter === 'all'
-    ? visibleProvinces.filter((province) => province.region === (regionLabelByKey[activeKey] || activeRegion.badge))
+    ? visibleProvinces.filter((province) => {
+        const targetLabel = (regionLabelByKey[activeKey] || activeRegion.badge || '').toLowerCase()
+        const provinceRegion = (province.region || '').toLowerCase()
+        return provinceRegion.includes(targetLabel) || targetLabel.includes(provinceRegion)
+      })
     : visibleProvinces
 
   const previewProvinces = previewSource.slice(0, 6)

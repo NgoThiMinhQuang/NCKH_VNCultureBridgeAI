@@ -190,8 +190,12 @@ async function listRegions(lang) {
     const rows = await contentRepository.getVungVanHoa()
     return rows.map(r => ({
         id: r.MaVung,
+        code: r.MaVung,
         name: mapText(r, 'TenVI', 'TenEN', lang),
-        image: r.ImageUrl
+        title: mapText(r, 'TenVI', 'TenEN', lang),
+        description: mapText(r, 'MoTaVI', 'MoTaEN', lang),
+        imageUrl: r.ImageUrl,
+        icon: r.Icon
     }))
 }
 
@@ -201,7 +205,9 @@ async function getRegion(code, lang) {
     const stats = await contentRepository.getGlobalStats()
     return {
         id: r.MaVung,
+        code: r.MaVung,
         name: mapText(r, 'TenVI', 'TenEN', lang),
+        title: mapText(r, 'TenVI', 'TenEN', lang),
         imageUrl: r.ImageUrl,
         description: mapText(r, 'MoTaVI', 'MoTaEN', lang),
         articleCount: stats.articleCount
@@ -212,10 +218,12 @@ async function listProvinces(options, lang) {
     const rows = await contentRepository.getAllProvinces()
     return rows.map(r => ({
         id: r.MaTinh,
+        code: r.MaTinh,
         name: mapText(r, 'TenVI', 'TenEN', lang),
         description: mapText(r, 'TongQuanVI', 'TongQuanEN', lang),
         imageUrl: r.HeroImageUrl || r.AnhDaiDienUrl,
-        regionCode: r.MaVung
+        regionCode: r.MaVung,
+        region: lang === 'vi' ? r.VungTenVI : r.VungTenEN
     }))
 }
 

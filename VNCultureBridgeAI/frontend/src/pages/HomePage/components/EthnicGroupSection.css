@@ -1,87 +1,34 @@
+/* ═══════════════════════════════════════════════════════════
+   ETHNIC GROUP SECTION - PREMIUM EDITORIAL (DARK)
+   ═══════════════════════════════════════════════════════════ */
 .ethnic-showcase {
+  padding: 40px 0px !important;
+  text-align: center;
   position: relative;
-  display: grid;
-  gap: 30px;
-  padding: 88px 0 56px;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at top center, rgba(255, 187, 87, 0.16), transparent 28%),
-    linear-gradient(180deg, #321109 0%, #230a05 55%, #1a0704 100%);
-}
-
-.ethnic-showcase::before {
-  content: '';
-  position: absolute;
-  top: 24px;
-  left: 0;
-  right: 0;
-  height: 5px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #8a2a14 0%, #f2af3f 50%, #b71f2e 100%);
+  z-index: 5;
 }
 
 .ethnic-showcase__header {
-  position: relative;
-  z-index: 1;
-  max-width: 860px;
-  margin: 0 auto;
-  text-align: center;
-  display: grid;
-  gap: 10px;
-}
-
-.ethnic-showcase__eyebrow {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin: 0 auto;
-  padding: 8px 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(246, 186, 88, 0.3);
-  background: rgba(117, 53, 18, 0.4);
-  color: #ffb948;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.7rem;
-  font-weight: 800;
 }
 
-.ethnic-showcase__eyebrow-star {
-  color: #ffd27e;
-  font-size: 0.95rem;
-}
-
-.ethnic-showcase__header h2 {
-  margin: 20px 0 0;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.06;
-  color: #fff8f0;
-}
-
-.ethnic-showcase__header p {
-  max-width: 640px;
-  margin: 20px auto 0;
-  color: rgba(255, 239, 226, 0.88);
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
+/* ── Stats ── */
 .ethnic-showcase__stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin: 40px auto 0;
-  width: min(1200px, 100%);
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
 }
 
 .ethnic-stat-card {
-  padding: 24px 20px;
-  border-radius: 24px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 186, 90, 0.1);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  border-radius: var(--radius-standard);
+  padding: 24px 40px;
+  backdrop-filter: blur(12px);
+  min-width: 240px;
 }
 
 .ethnic-stat-card__value {
@@ -92,114 +39,127 @@
   margin-bottom: 8px;
 }
 
+.ethnic-stat-card__icon {
+  font-size: 2rem;
+}
+
 .ethnic-stat-card strong {
-  display: block;
-  color: #ffbf45;
-  font-size: 2.2rem;
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  color: var(--premium-gold);
   line-height: 1;
 }
 
 .ethnic-stat-card__label {
-  display: block;
-  color: rgba(255, 235, 214, 0.7);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
 }
 
-.ethnic-stat-card__icon {
-  font-size: 2.2rem;
-}
-
+/* ── Portrait Cards Grid ── */
 .ethnic-showcase__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 56px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .ethnic-card {
   position: relative;
-  background: #23120b;
-  border-radius: 40px;
+  border-radius: var(--radius-premium);
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  aspect-ratio: 3 / 4;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: var(--transition-smooth);
   display: flex;
   flex-direction: column;
-  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-  height: 480px;
-  isolation: isolate;
+  justify-content: flex-end;
 }
 
 .ethnic-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(197, 160, 89, 0.15);
+  border-color: rgba(197, 160, 89, 0.4);
+}
+
+.ethnic-card__image-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .ethnic-card__image {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 1.5s ease;
-  z-index: 0;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: brightness(0.8);
+}
+
+.ethnic-card__image--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.2);
+  background: #1a0f0d;
 }
 
 .ethnic-card:hover .ethnic-card__image {
-  transform: scale(1.1);
+  transform: scale(1.08);
+  /* Slow zoom effect */
+  filter: brightness(0.9);
 }
 
 .ethnic-card__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 20%, rgba(35, 18, 11, 0.8) 100%);
-  z-index: 1;
+  background: linear-gradient(to bottom,
+      rgba(15, 5, 4, 0) 0%,
+      rgba(15, 5, 4, 0.4) 50%,
+      rgba(15, 5, 4, 0.95) 100%);
 }
 
 .ethnic-card__content {
   position: relative;
   z-index: 2;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 32px;
-  color: #fffaf5;
+  padding: 40px 32px;
+  text-align: left;
 }
 
 .ethnic-card__top {
-  display: flex;
-  justify-content: flex-end;
+  margin-bottom: 16px;
 }
 
 .ethnic-card__count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #fff;
+  display: inline-block;
   font-size: 0.75rem;
-  font-weight: 800;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--premium-gold);
 }
 
-.ethnic-card__body h3 {
-  font-size: 2.2rem;
-  font-weight: 800;
+.ethnic-card__title {
+  font-family: var(--font-heading);
+  font-size: 2.4rem;
+  color: white;
   margin: 0 0 12px;
-  color: #fff;
+  line-height: 1.1;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-.ethnic-card__body p {
+.ethnic-card__desc {
   font-size: 0.95rem;
-  line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
-  margin: 0;
+  line-height: 1.6;
+  margin-bottom: 24px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -207,48 +167,47 @@
 }
 
 .ethnic-card__cta {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: #ffbf45;
+  gap: 8px;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   text-decoration: none;
-  font-weight: 800;
-  font-size: 0.9rem;
-  margin-top: 24px;
+  transition: var(--transition-smooth);
+}
+
+.cta-arrow {
+  color: var(--premium-gold);
+  transition: transform 0.3s ease;
+}
+
+.ethnic-card:hover .cta-arrow {
+  transform: translateX(4px);
 }
 
 .ethnic-showcase__footer {
+  margin-top: 80px;
   display: flex;
   justify-content: center;
-  margin-top: 48px;
 }
 
-.ethnic-showcase__button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 48px;
-  background: linear-gradient(90deg, #d21f1f, #f59e0b);
-  border-radius: 999px;
-  color: white;
-  text-decoration: none;
-  font-weight: 800;
-  box-shadow: 0 10px 25px rgba(210, 31, 31, 0.3);
-  transition: all 0.3s ease;
-}
-
-.ethnic-showcase__button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 30px rgba(210, 31, 31, 0.4);
-}
-
+/* ── Responsive ── */
 @media (max-width: 1024px) {
-  .ethnic-showcase__grid { grid-template-columns: repeat(2, 1fr); }
-  .ethnic-showcase__stats { grid-template-columns: repeat(2, 1fr); }
+  .ethnic-showcase__stats {
+    gap: 16px;
+  }
+
+  .ethnic-stat-card {
+    min-width: 200px;
+    padding: 16px 24px;
+  }
 }
 
 @media (max-width: 768px) {
-  .ethnic-showcase__grid { grid-template-columns: 1fr; }
-  .ethnic-card { height: 400px; }
-  .ethnic-showcase__header h2 { font-size: 2.5rem; }
+  .ethnic-card {
+    aspect-ratio: 4 / 5;
+  }
 }

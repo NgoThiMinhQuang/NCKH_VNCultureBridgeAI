@@ -6,23 +6,19 @@ export default function FestivalSection({ festivals, copy }) {
 
   return (
     <section className="content-section light-section festival-showcase" id="festivals">
-      <div className="festival-showcase__header fade-up">
-        <span className="festival-showcase__eyebrow">
-          <span className="festival-showcase__eyebrow-star" aria-hidden="true">✦</span>
-          <span>{copy?.festivalShowcaseBadge}</span>
-          <span className="festival-showcase__eyebrow-star" aria-hidden="true">✦</span>
-        </span>
-        <h2>
+      <div className="festival-showcase__header ec-center fade-up">
+        <span className="section-eyebrow">{copy?.festivalShowcaseBadge}</span>
+        <h2 className="section-title">
           <span>{copy?.festivalShowcaseTitle}</span>{' '}
           <span className="festival-showcase__title-accent">{copy?.festivalShowcaseTitleAccent}</span>
         </h2>
-        <div className="festival-showcase__divider" aria-hidden="true">
-          <span />
-          <i />
-          <b />
-          <span />
+        <p className="section-desc">{copy?.festivalShowcaseDescription}</p>
+        
+        <div className="heritage-divider">
+          <span className="heritage-divider-line" />
+          <span className="heritage-divider-icon">⚜️</span>
+          <span className="heritage-divider-line" />
         </div>
-        <p>{copy?.festivalShowcaseDescription}</p>
       </div>
 
       <div className="festival-showcase__grid">
@@ -41,7 +37,7 @@ export default function FestivalSection({ festivals, copy }) {
             <article key={item.code || item.id || index} className={`festival-card fade-up is-${accent}`}>
               <div className="festival-card__media">
                 {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.imageAlt || item.title} className="festival-card__image" loading="lazy" decoding="async" />
+                  <img src={item.imageUrl} alt={item.imageAlt || item.title} className="festival-card__image" loading="lazy" />
                 ) : (
                   <div className="festival-card__image festival-card__image--placeholder">{item.title}</div>
                 )}
@@ -52,21 +48,19 @@ export default function FestivalSection({ festivals, copy }) {
                     <span>{badgeLabel}</span>
                   </span>
                 ) : null}
-
-                {item.badgeIcon && <span className="festival-card__corner-icon" aria-hidden="true">{item.badgeIcon}</span>}
               </div>
 
               <div className="festival-card__body">
-                <h3>{item.title}</h3>
+                <h3 className="festival-card__title">{item.title}</h3>
                 {item.subtitle ? <p className="festival-card__subtitle">{item.subtitle}</p> : null}
                 {item.description ? <p className="festival-card__description">{item.description}</p> : null}
 
                 {metaItems.length > 0 && (
                   <div className="festival-card__meta">
                     {metaItems.map((meta) => (
-                      <span key={meta.key}>
-                        <span aria-hidden="true">{meta.icon}</span>
-                        <span>{meta.value}</span>
+                      <span key={meta.key} className="meta-item">
+                        <span className="meta-icon" aria-hidden="true">{meta.icon}</span>
+                        <span className="meta-text">{meta.value}</span>
                       </span>
                     ))}
                   </div>
@@ -75,7 +69,7 @@ export default function FestivalSection({ festivals, copy }) {
                 {tags.length > 0 && (
                   <div className="festival-card__chips">
                     {tags.map((tag, tagIndex) => (
-                      <span key={`${tag}-${tagIndex}`}>{tag}</span>
+                      <span key={`${tag}-${tagIndex}`} className="tag-chip">{tag}</span>
                     ))}
                   </div>
                 )}
@@ -83,7 +77,7 @@ export default function FestivalSection({ festivals, copy }) {
                 {item.code && (
                   <div className="festival-card__footer">
                     <Link to={`/articles/${item.code}`} className="festival-card__cta">
-                      {copy?.learnMore}
+                      <span>{copy?.learnMore}</span>
                       <span aria-hidden="true">→</span>
                     </Link>
                     {rating ? <span className="festival-card__rating" aria-hidden="true">{rating}</span> : null}

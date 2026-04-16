@@ -6,23 +6,19 @@ export default function CuisineSection({ cuisine, copy }) {
 
   return (
     <section className="content-section light-section cuisine-showcase" id="cuisine">
-      <div className="cuisine-showcase__header fade-up">
-        <span className="cuisine-showcase__eyebrow">
-          <span className="cuisine-showcase__eyebrow-star" aria-hidden="true">✦</span>
-          <span>{copy?.cuisineShowcaseBadge}</span>
-          <span className="cuisine-showcase__eyebrow-star" aria-hidden="true">✦</span>
-        </span>
-        <h2>
+      <div className="cuisine-showcase__header ec-center fade-up">
+        <span className="section-eyebrow">{copy?.cuisineShowcaseBadge}</span>
+        <h2 className="section-title">
           <span>{copy?.cuisineShowcaseTitle}</span>{' '}
           <span className="cuisine-showcase__title-accent">{copy?.cuisineShowcaseTitleAccent}</span>
         </h2>
-        <div className="cuisine-showcase__divider" aria-hidden="true">
-          <span />
-          <i />
-          <b />
-          <span />
+        <p className="section-desc">{copy?.cuisineShowcaseDescription}</p>
+        
+        <div className="heritage-divider">
+          <span className="heritage-divider-line" />
+          <span className="heritage-divider-icon">⚜️</span>
+          <span className="heritage-divider-line" />
         </div>
-        <p>{copy?.cuisineShowcaseDescription}</p>
       </div>
 
       <div className="cuisine-showcase__grid">
@@ -35,7 +31,7 @@ export default function CuisineSection({ cuisine, copy }) {
             <article key={item.code || item.id || index} className="cuisine-card fade-up">
               <div className="cuisine-card__media">
                 {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.imageAlt || item.title} className="cuisine-card__image" loading="lazy" decoding="async" />
+                  <img src={item.imageUrl} alt={item.imageAlt || item.title} className="cuisine-card__image" loading="lazy" />
                 ) : (
                   <div className="cuisine-card__image cuisine-card__image--placeholder">{item.title}</div>
                 )}
@@ -44,45 +40,36 @@ export default function CuisineSection({ cuisine, copy }) {
                   <span className="cuisine-card__popularity-badge">
                     <span className="heart-icon">♥</span> {score}
                   </span>
-                  <button className="cuisine-card__favorite-btn" aria-label="Add to favorites">
-                    <span className="heart-icon">♥</span>
-                  </button>
                 </div>
-
-                {item.spiceLevel && (
-                  <div className="cuisine-card__spice-overlay">
-                    <span className="spice-flames">{'🌶️'.repeat(item.spiceLevel)}</span>
-                  </div>
-                )}
               </div>
 
               <div className="cuisine-card__body">
-                <span className="cuisine-card__red-subtitle">{subtitle}</span>
-                <h3>{item.title}</h3>
+                <span className="cuisine-card__badge-pill">{subtitle}</span>
+                <h3 className="cuisine-card__title">{item.title}</h3>
                 {item.description ? <p className="cuisine-card__description">{item.description}</p> : null}
 
-                <div className="cuisine-card__info-row">
-                  <div className="info-item">
-                    <span className="info-icon">🍽️</span>
-                    <span>{item.metaSecondary || copy?.featuredDish}</span>
+                <div className="cuisine-card__meta">
+                  <div className="meta-item">
+                    <span className="meta-icon">🍽️</span>
+                    <span className="meta-text">{item.metaSecondary || copy?.featuredDish}</span>
                   </div>
-                  <div className="info-item">
-                    <span className="info-icon">⭐</span>
-                    <span>{item.footerIcon || '★★★★★'}</span>
+                  <div className="meta-item">
+                    <span className="meta-icon">⭐</span>
+                    <span className="meta-text">{item.footerIcon || '★★★★★'}</span>
                   </div>
                 </div>
 
                 {tags.length > 0 && (
-                  <div className="cuisine-card__chips">
+                  <div className="tag-chips-container">
                     {tags.map((tag, tagIndex) => (
-                      <span key={`${tag}-${tagIndex}`}>{tag}</span>
+                      <span key={`${tag}-${tagIndex}`} className="tag-chip">{tag}</span>
                     ))}
                   </div>
                 )}
 
                 <div className="cuisine-card__footer">
                   <Link to={`/articles/${item.code}`} className="cuisine-card__cta">
-                    {copy?.learnMore}
+                    <span>{copy?.learnMore}</span>
                     <span aria-hidden="true">→</span>
                   </Link>
                 </div>
@@ -93,9 +80,9 @@ export default function CuisineSection({ cuisine, copy }) {
       </div>
 
       <div className="cuisine-showcase__footer fade-up">
-        <Link to="/articles?category=AM_THUC" className="cuisine-showcase__button">
+        <Link to="/articles?category=AM_THUC" className="primary-button">
           <span>{copy?.cuisineShowcasePrimaryCta}</span>
-          <span aria-hidden="true">→</span>
+          <span aria-hidden="true" className="btn-arrow-silk">→</span>
         </Link>
       </div>
     </section>

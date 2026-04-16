@@ -22,10 +22,17 @@ export default function ArtsSection({ featuredArt, additionalArts, copy, lang })
   }
 
   return (
-    <section className="content-section arts-showcase" id="arts">
-      <div className="arts-showcase__header fade-up">
-        <h2>{copy?.moreArtsTitle}</h2>
-        <p>{copy?.artsDescription || (lang === 'vi' ? 'Khám phá sự tinh xảo trong các sản phẩm thủ công và nghệ thuật biểu diễn truyền thống Việt Nam.' : 'Discover the sophistication in Vietnamese traditional crafts and performing arts.')}</p>
+    <section className="content-section dark-section arts-showcase" id="arts">
+      <div className="arts-showcase__header ec-center fade-up">
+        <span className="section-eyebrow">{copy?.artsTabTitle || 'Nghệ thuật & Thủ công'}</span>
+        <h2 className="section-title">{copy?.moreArtsTitle}</h2>
+        <p className="section-desc">{copy?.artsDescription || (lang === 'vi' ? 'Khám phá sự tinh xảo trong các sản phẩm thủ công và nghệ thuật biểu diễn truyền thống Việt Nam.' : 'Discover the sophistication in Vietnamese traditional crafts and performing arts.')}</p>
+        
+        <div className="heritage-divider">
+          <span className="heritage-divider-line" />
+          <span className="heritage-divider-icon">⚜️</span>
+          <span className="heritage-divider-line" />
+        </div>
       </div>
 
       <div className="arts-showcase__hero fade-up">
@@ -35,41 +42,44 @@ export default function ArtsSection({ featuredArt, additionalArts, copy, lang })
           ) : (
             <div className="arts-showcase__hero-image--placeholder">{featuredArt.title}</div>
           )}
+          <div className="arts-showcase__hero-overlay" />
           <span className="arts-showcase__hero-badge">{featuredArt.category || copy?.featuredContent}</span>
         </div>
 
         <div className="arts-showcase__hero-body">
           <div className="arts-showcase__hero-kicker">{copy?.featuredArchive || 'Tư liệu nổi bật'}</div>
-          <h2>{featuredArt.title}</h2>
-          <div className="arts-showcase__hero-line" />
-          <p>{featuredArt.description}</p>
+          <h2 className="arts-showcase__hero-title">{featuredArt.title}</h2>
+          <p className="arts-showcase__hero-desc">{featuredArt.description}</p>
           
-          <div className="arts-showcase__hero-chips">
+          <div className="tag-chips-container">
             {featuredArt.tags && featuredArt.tags.map(tag => (
-              <span key={tag} className="tag-chip">{tag}</span>
+              <span key={tag} className="tag-chip tag-chip--amber">{tag}</span>
             ))}
           </div>
 
-          <Link to={`/articles/${featuredArt.code}`} className="primary-button arts-showcase__hero-cta">
-            {copy?.learnMore} →
+          <Link to={`/articles/${featuredArt.code}`} className="primary-button">
+            <span>{copy?.learnMore}</span>
+            <span aria-hidden="true" className="btn-arrow-silk">→</span>
           </Link>
         </div>
       </div>
 
       <div className="arts-showcase__more fade-up">
-        <h3>{copy?.artsTabTitle || 'Khám phá thêm'}</h3>
         <div className="arts-showcase__mini-grid">
           {(additionalArts || []).map((item, index) => (
             <Link 
               key={item.code || item.id || index} 
               to={`/articles/${item.code}`} 
-              className="arts-showcase__mini-card"
+              className="arts-mini-card"
             >
-              <div className="arts-showcase__mini-icon">
-                <span className="arts-showcase__mini-icon-text">{getArtTileIcon(item, index)}</span>
+              <div className="arts-mini-card__icon">
+                <span aria-hidden="true">{getArtTileIcon(item, index)}</span>
               </div>
-              <strong>{item.title}</strong>
-              <span>{item.category || item.subtitle}</span>
+              <div className="arts-mini-card__content">
+                <strong>{item.title}</strong>
+                <span>{item.category || item.subtitle}</span>
+              </div>
+              <span className="arts-mini-card__arrow">→</span>
             </Link>
           ))}
         </div>

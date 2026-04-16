@@ -251,12 +251,38 @@
   background: #e2a628;
   color: #1a100c;
   box-shadow: 0 8px 24px rgba(226, 166, 40, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.regions-hero__btn--primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  transform: rotate(45deg);
+  transition: all 0.6s ease;
+  pointer-events: none;
+  opacity: 0;
 }
 
 .regions-hero__btn--primary:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 32px rgba(226, 166, 40, 0.45);
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 16px 36px rgba(226, 166, 40, 0.45);
   background: #f8c97a;
+}
+
+.regions-hero__btn--primary:hover::after {
+  opacity: 1;
+  transform: rotate(45deg) translate(25%, 25%);
 }
 
 .regions-hero__btn--secondary {
@@ -264,12 +290,18 @@
   color: #fdf5e6;
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
+  position: relative;
 }
 
 .regions-hero__btn--secondary:hover {
   background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
+  border-color: rgba(226, 166, 40, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.regions-hero__btn:active {
+  transform: translateY(-1px) scale(0.98);
 }
 
 /* ─── FAN CARD STACK ─── */
@@ -298,14 +330,15 @@
   overflow: hidden;
   transform-origin: bottom center;
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.55),
-    0 0 0 1.5px rgba(226, 166, 40, 0.28);
+    0 20px 50px rgba(0, 0, 0, 0.45),
+    0 0 0 1.5px rgba(226, 166, 40, 0.2);
   transition:
-    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.4s ease,
     opacity 0.4s ease,
     filter 0.4s ease;
   cursor: pointer;
+  background: #1a1512;
 }
 
 .regions-fan__card img {
@@ -353,7 +386,7 @@
   filter: brightness(1);
   box-shadow:
     0 32px 80px rgba(0, 0, 0, 0.65),
-    0 0 0 2px rgba(226, 166, 40, 0.50),
+    0 0 0 2px rgba(226, 166, 40, 0.4),
     inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
@@ -374,23 +407,28 @@
 }
 
 .regions-fan__card--fl:hover {
-  transform: translateX(-60px) rotate(-26deg) translateY(-14px) scale(1.04);
+  transform: translateX(-80px) rotate(-28deg) translateY(-24px) scale(1.06);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.7);
 }
 
 .regions-fan__card--fr:hover {
-  transform: translateX(60px) rotate(26deg) translateY(-14px) scale(1.04);
+  transform: translateX(80px) rotate(28deg) translateY(-24px) scale(1.06);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.7);
 }
 
 .regions-fan__card--l:hover {
-  transform: translateX(-30px) rotate(-13deg) translateY(-14px) scale(1.04);
+  transform: translateX(-40px) rotate(-15deg) translateY(-24px) scale(1.06);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.7);
 }
 
 .regions-fan__card--r:hover {
-  transform: translateX(30px) rotate(13deg) translateY(-14px) scale(1.04);
+  transform: translateX(40px) rotate(15deg) translateY(-24px) scale(1.06);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.7);
 }
 
 .regions-fan__card--c:hover {
-  transform: rotate(0deg) translateY(-14px) scale(1.03);
+  transform: rotate(0deg) translateY(-24px) scale(1.05);
+  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(226, 166, 40, 0.6);
 }
 
 /* Card labels */
@@ -429,7 +467,7 @@
   height: 7px;
   background: #e2a628;
   border-radius: 50%;
-  animation: regionsPulseDot 2s infinite;
+  animation: regionsPulseDot 1.5s infinite;
   flex-shrink: 0;
 }
 
@@ -500,13 +538,21 @@
 @keyframes regionsScrollAnim {
   0% {
     transform: translate(-50%, 0);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-50%, 14px);
     opacity: 0;
   }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, 18px);
+    opacity: 0;
+  }
+}
+
+.regions-hero__scroll:hover .regions-mouse-icon {
+  border-color: #e2a628;
+  transform: translateY(4px);
+  transition: all 0.3s ease;
 }
 
 /* Responsive hero */
@@ -1461,9 +1507,10 @@
 }
 
 .region-tab:hover {
-  color: #c20d2f;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(194, 13, 47, 0.12);
+  color: #19100c;
+  background: rgba(226, 166, 40, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(226, 166, 40, 0.15);
 }
 
 .region-tab.is-active {
@@ -1568,8 +1615,8 @@
 }
 
 .region-card__btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(222, 179, 50, 0.4);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 36px rgba(222, 179, 50, 0.4);
   background: #cba22d;
 }
 
@@ -1777,8 +1824,8 @@
 }
 
 .region-card__btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(222, 179, 50, 0.4);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 36px rgba(222, 179, 50, 0.4);
   background: #cba22d;
 }
 
@@ -2089,7 +2136,12 @@
 .filter-chip.is-active {
   background: #e76f51;
   color: #fff;
-  box-shadow: 0 4px 15px rgba(231, 111, 81, 0.3);
+  box-shadow: 0 8px 20px rgba(231, 111, 81, 0.4);
+  transform: scale(1.05);
+}
+
+.filter-chip:active {
+  transform: scale(0.95);
 }
 
 .provinces-search__grid {
@@ -2110,8 +2162,39 @@
 }
 
 .province-item-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-12px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+}
+
+.province-item__image img {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.province-item-card:hover .province-item__image img {
+  transform: scale(1.1);
+}
+
+.province-item__cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.province-item__cta::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.province-item__cta:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .province-item__image {
@@ -2338,8 +2421,20 @@
 }
 
 .season-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+}
+
+.season-card:hover .season-card__bg img {
+  transform: scale(1.15);
+}
+
+.season-card__content {
+  transition: transform 0.4s ease;
+}
+
+.season-card:hover .season-card__content {
+  transform: translateY(-8px);
 }
 
 .season-card__bg {
