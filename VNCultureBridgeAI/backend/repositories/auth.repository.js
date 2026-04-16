@@ -1,62 +1,51 @@
 const { query } = require('../db/sql')
 
-async function findStaffByEmail(email) {
+async function findUserByEmail(email) {
   const rows = await query(`
     SELECT TOP 1
       NguoiDungID AS id,
+      MaNguoiDung AS code,
+      TenDangNhap AS username,
       HoTen AS fullName,
       Email AS email,
-      MatKhauHash AS passwordHash,
+      MatKhau AS passwordHash,
       VaiTro AS role,
       TrangThai AS status
     FROM dbo.NguoiDung
-    WHERE Email = @email
+    WHERE Email = @email OR TenDangNhap = @email
   `, { email })
 
   return rows[0] || null
 }
 
-async function findCustomerByEmail(email) {
-  const rows = await query(`
-    SELECT TOP 1
-      KhachHangID AS id,
-      HoTen AS fullName,
-      Email AS email,
-      MatKhauHash AS passwordHash,
-      TrangThai AS status
-    FROM dbo.KhachHang
-    WHERE Email = @email
-  `, { email })
-
-  return rows[0] || null
-}
-
-async function emailExistsAnywhere(email) {
+async function emailExists(email) {
   const rows = await query(`
     SELECT TOP 1 Email
-    FROM (
-      SELECT Email FROM dbo.NguoiDung WHERE Email = @email
-      UNION ALL
-      SELECT Email FROM dbo.KhachHang WHERE Email = @email
-    ) AS ExistingEmails
+    FROM dbo.NguoiDung
+    WHERE Email = @email
   `, { email })
 
   return rows.length > 0
 }
 
-async function createCustomer({ fullName, email, passwordHash }) {
+async function createUser({ fullName, email, passwordHash, username }) {
+  const code = 'U' + Date.now().toString().slice(-7)
   const rows = await query(`
-    INSERT INTO dbo.KhachHang (HoTen, Email, MatKhauHash, TrangThai)
-    OUTPUT INSERTED.KhachHangID AS id, INSERTED.HoTen AS fullName, INSERTED.Email AS email, INSERTED.TrangThai AS status
-    VALUES (@fullName, @email, @passwordHash, 'ACTIVE')
-  `, { fullName, email, passwordHash })
+    INSERT INTO dbo.NguoiDung (MaNguoiDung, TenDangNhap, HoTen, Email, MatKhau, VaiTro, TrangThai)
+    OUTPUT INSERTED.NguoiDungID AS id, INSERTED.HoTen AS fullName, INSERTED.Email AS email, INSERTED.TrangThai AS status, INSERTED.VaiTro AS role
+    VALUES (@code, @username, @fullName, @email, @passwordHash, 'USER', 'ACTIVE')
+  `, { code, username: username || email, fullName, email, passwordHash })
 
   return rows[0] || null
 }
 
 module.exports = {
-  findStaffByEmail,
-  findCustomerByEmail,
-  emailExistsAnywhere,
-  createCustomer,
+  findUserByEmail,
+  emailExists,
+  createUser,
+  // Aliases for compatibility
+  findStaffByEmail: findUserByEmail,
+  findCustomerByEmail: findUserByEmail,
+  emailExistsAnywhere: emailExists,
+  createCustomer: createUser
 }

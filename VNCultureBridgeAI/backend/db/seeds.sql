@@ -135,3 +135,9 @@ N'Hương vị đồng quê.', N'Mắm, cá, rau đồng...', N'Quang Nguyễn',
 INSERT INTO dbo.HinhAnh (Url, MoTaVI, BaiVietID, AmThucID) VALUES
 ('https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=1000&q=80', N'Phở bò nóng hổi', NULL, 1),
 ('https://images.unsplash.com/photo-1593361427131-0164c09d5718?auto=format&fit=crop&w=1000&q=80', N'Bún chả Hà Nội', NULL, 2);
+
+-- 10. MẪU PROMPT AI
+INSERT INTO dbo.MauPrompt (MaPrompt, LoaiPrompt, TenPrompt, NoiDungPrompt) VALUES
+('P1', 'EXPLORE', N'Tìm hiểu về văn hóa cồng chiêng', N'Hãy cho tôi biết về ý nghĩa và cách thức biểu diễn cồng chiêng Tây Nguyên.'),
+('P2', 'TRAVEL', N'Gợi ý lộ trình du lịch Tây Bắc', N'Lên kế hoạch du lịch 5 ngày tại Hà Giang và Lào Cai.'),
+('P3', 'CUISINE', N'Công thức phở bò truyền thống', N'Hướng dẫn cách nấu phở bò Hà Nội chuẩn vị xưa.');

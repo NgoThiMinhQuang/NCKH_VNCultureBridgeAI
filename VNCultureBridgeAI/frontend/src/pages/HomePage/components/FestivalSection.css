@@ -1,0 +1,272 @@
+.festival-showcase {
+  display: grid;
+  gap: 34px;
+  padding: 88px 0 24px;
+  border-radius: 40px;
+  background: linear-gradient(180deg, #fff9f1 0%, #fffdf9 100%);
+}
+
+.festival-showcase__header {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-inline: 28px;
+  text-align: center;
+  display: grid;
+  gap: 14px;
+}
+
+.festival-showcase__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(229, 112, 112, 0.24);
+  background: rgba(255, 243, 243, 0.88);
+  color: #d53a37;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.festival-showcase__eyebrow-star {
+  color: #f0a11b;
+  font-size: 0.95rem;
+}
+
+.festival-showcase__header h2 {
+  margin: 20px 0 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.02;
+  color: #1f0b06;
+}
+
+.festival-showcase__title-accent {
+  background: linear-gradient(90deg, #d63839 0%, #f0901d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.festival-showcase__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.festival-showcase__divider span {
+  width: 78px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(219, 70, 69, 0.1), rgba(219, 70, 69, 0.95), rgba(219, 70, 69, 0.1));
+}
+
+.festival-showcase__divider i {
+  width: 15px;
+  height: 15px;
+  background: #f0a11b;
+  border-radius: 50%;
+}
+
+.festival-showcase__divider b {
+  width: 12px;
+  height: 12px;
+  background: #e68ca1;
+  border-radius: 50%;
+}
+
+.festival-showcase__header p {
+  max-width: 760px;
+  margin: 20px auto 0;
+  color: #6d584d;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.festival-showcase__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding-inline: 28px;
+}
+
+.festival-card {
+  overflow: hidden;
+  border-radius: 40px;
+  background: #fff;
+  box-shadow: 0 20px 50px rgba(118, 74, 39, 0.1);
+  border: 1px solid rgba(143, 102, 82, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.festival-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.festival-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.festival-card:hover .festival-card__image {
+  transform: scale(1.1);
+}
+
+.festival-card__image--placeholder {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #8b5e34, #2b0b05);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 800;
+  width: 100%;
+  height: 100%;
+}
+
+.festival-card__badge {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 800;
+  z-index: 2;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.festival-card__corner-icon {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.festival-card__body {
+  padding: 32px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.festival-card__body h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  line-height: 1.2;
+  color: #1f0b06;
+}
+
+.festival-card__subtitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.festival-card__description {
+  margin: 0;
+  color: #6f594d;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.festival-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  color: #8b776b;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.festival-card__meta span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.festival-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.festival-card__chips span {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid currentColor;
+  background: white;
+}
+
+.festival-card__footer {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(134, 110, 97, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.festival-card__cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.festival-card__rating {
+  letter-spacing: 0.15em;
+  font-size: 1.1rem;
+  color: #f0a11b;
+}
+
+/* Accent Colors */
+.is-red .festival-card__badge { background: linear-gradient(90deg, #d71f3e, #ef3c2c); }
+.is-red .festival-card__subtitle, .is-red .festival-card__cta { color: #d71f3e; }
+.is-red .festival-card__chips span { color: #d71f3e; }
+
+.is-gold .festival-card__badge { background: linear-gradient(90deg, #eca81d, #f4c32f); }
+.is-gold .festival-card__subtitle, .is-gold .festival-card__cta { color: #e4a11a; }
+.is-gold .festival-card__chips span { color: #e4a11a; }
+
+.is-purple .festival-card__badge { background: linear-gradient(90deg, #842cc8, #b135c6); }
+.is-purple .festival-card__subtitle, .is-purple .festival-card__cta { color: #8a34c5; }
+.is-purple .festival-card__chips span { color: #8a34c5; }
+
+@media (max-width: 1024px) {
+  .festival-showcase__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .festival-showcase__grid { grid-template-columns: 1fr; }
+  .festival-showcase__header h2 { font-size: 2.5rem; }
+}
