@@ -25,9 +25,9 @@ export default function ArtsSection({ featuredArt, additionalArts, copy, lang })
     <section className="content-section dark-section arts-showcase" id="arts">
       <div className="arts-showcase__header ec-center fade-up">
         <span className="section-eyebrow">{copy?.artsTabTitle || 'Nghệ thuật & Thủ công'}</span>
-        <h2 className="section-title">{copy?.moreArtsTitle}</h2>
+        <h2 className="section-title" style={{ marginBottom: '0px' }}>{copy?.moreArtsTitle}</h2>
         <p className="section-desc">{copy?.artsDescription || (lang === 'vi' ? 'Khám phá sự tinh xảo trong các sản phẩm thủ công và nghệ thuật biểu diễn truyền thống Việt Nam.' : 'Discover the sophistication in Vietnamese traditional crafts and performing arts.')}</p>
-        
+
         <div className="heritage-divider">
           <span className="heritage-divider-line" />
           <span className="heritage-divider-icon">⚜️</span>
@@ -50,7 +50,7 @@ export default function ArtsSection({ featuredArt, additionalArts, copy, lang })
           <div className="arts-showcase__hero-kicker">{copy?.featuredArchive || 'Tư liệu nổi bật'}</div>
           <h2 className="arts-showcase__hero-title">{featuredArt.title}</h2>
           <p className="arts-showcase__hero-desc">{featuredArt.description}</p>
-          
+
           <div className="tag-chips-container">
             {featuredArt.tags && featuredArt.tags.map(tag => (
               <span key={tag} className="tag-chip tag-chip--amber">{tag}</span>
@@ -67,9 +67,9 @@ export default function ArtsSection({ featuredArt, additionalArts, copy, lang })
       <div className="arts-showcase__more fade-up">
         <div className="arts-showcase__mini-grid">
           {(additionalArts || []).map((item, index) => (
-            <Link 
-              key={item.code || item.id || index} 
-              to={`/articles/${item.code}`} 
+            <Link
+              key={item.code || item.id || index}
+              to={`/articles/${item.code}`}
               className="arts-mini-card"
             >
               <div className="arts-mini-card__icon">

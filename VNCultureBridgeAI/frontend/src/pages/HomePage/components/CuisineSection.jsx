@@ -8,12 +8,12 @@ export default function CuisineSection({ cuisine, copy }) {
     <section className="content-section light-section cuisine-showcase" id="cuisine">
       <div className="cuisine-showcase__header ec-center fade-up">
         <span className="section-eyebrow">{copy?.cuisineShowcaseBadge}</span>
-        <h2 className="section-title">
+        <h2 className="section-title" style={{ marginBottom: '0px' }}>
           <span>{copy?.cuisineShowcaseTitle}</span>{' '}
           <span className="cuisine-showcase__title-accent">{copy?.cuisineShowcaseTitleAccent}</span>
         </h2>
         <p className="section-desc">{copy?.cuisineShowcaseDescription}</p>
-        
+
         <div className="heritage-divider">
           <span className="heritage-divider-line" />
           <span className="heritage-divider-icon">⚜️</span>
@@ -53,10 +53,7 @@ export default function CuisineSection({ cuisine, copy }) {
                     <span className="meta-icon">🍽️</span>
                     <span className="meta-text">{item.metaSecondary || copy?.featuredDish}</span>
                   </div>
-                  <div className="meta-item">
-                    <span className="meta-icon">⭐</span>
-                    <span className="meta-text">{item.footerIcon || '★★★★★'}</span>
-                  </div>
+
                 </div>
 
                 {tags.length > 0 && (

@@ -8,12 +8,12 @@ export default function FestivalSection({ festivals, copy }) {
     <section className="content-section light-section festival-showcase" id="festivals">
       <div className="festival-showcase__header ec-center fade-up">
         <span className="section-eyebrow">{copy?.festivalShowcaseBadge}</span>
-        <h2 className="section-title">
+        <h2 className="section-title" style={{ marginBottom: '0px' }}>
           <span>{copy?.festivalShowcaseTitle}</span>{' '}
           <span className="festival-showcase__title-accent">{copy?.festivalShowcaseTitleAccent}</span>
         </h2>
         <p className="section-desc">{copy?.festivalShowcaseDescription}</p>
-        
+
         <div className="heritage-divider">
           <span className="heritage-divider-line" />
           <span className="heritage-divider-icon">⚜️</span>

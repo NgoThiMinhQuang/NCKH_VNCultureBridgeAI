@@ -20,7 +20,7 @@ app.get('/api/health', async (req, res) => {
 
     res.json({
       ok: true,
-      service: 'vnculturebridge-backend',
+      service: 'vnculturebridge-backend-v2',
       db,
       timestamp: new Date().toISOString(),
     })

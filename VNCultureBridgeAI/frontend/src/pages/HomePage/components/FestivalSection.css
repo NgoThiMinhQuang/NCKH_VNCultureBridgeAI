@@ -2,13 +2,13 @@
    FESTIVAL SECTION - PREMIUM EDITORIAL (LIGHT)
    ═══════════════════════════════════════════════════════════ */
 .festival-showcase {
+  padding: 40px 0px !important;
   text-align: center;
   position: relative;
   z-index: 3;
 }
 
 .festival-showcase__header {
-  margin-bottom: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,7 +24,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 40px;
-  max-width: 1440px;
+  max-width: 1360px;
   margin: 0 auto;
 }
 
@@ -82,7 +82,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(197, 160, 89, 0.2);
 }
 

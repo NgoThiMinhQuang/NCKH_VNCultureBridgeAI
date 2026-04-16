@@ -11,13 +11,14 @@ function mapText(row, viKey, enKey, lang) {
 async function getHomepage(lang = 'vi') {
     const [regions, ethnics, articles, amThuc, festivals, arts, prompts] = await Promise.all([
         homepageRepository.getFeaturedRegions(),
-        homepageRepository.getFeaturedEthnicGroups(6),
+        homepageRepository.getFeaturedEthnicGroups(8),
         homepageRepository.getLatestArticles(12),
         homepageRepository.getFeaturedAmThuc(4),
         homepageRepository.getFeaturedLeHoi(3),
         homepageRepository.getFeaturedVanHoa(null, 6),
         homepageRepository.getPromptSamples()
     ])
+    console.log('DEBUG: Fetched ethnics count:', ethnics.length);
 
     // Hero section (static fallback as used in previous logic or from DB if available)
     const hero = lang === 'vi' ? {
