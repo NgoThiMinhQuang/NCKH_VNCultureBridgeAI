@@ -1179,12 +1179,12 @@ export default function RegionsPage() {
 
               <div className="regions-hero__actions">
                 <button className="regions-hero__btn regions-hero__btn--primary" onClick={() => scrollToSelector('.regions-split-layout')}>
-                  {lang === 'vi' ? 'Khám phá ngay' : 'Explore Now'}
+                  {lang === 'vi' ? 'Khám phá' : 'Explore'}
                   <span className="btn-icon">→</span>
                 </button>
                 <button className="regions-hero__btn regions-hero__btn--secondary" onClick={() => scrollToSelector('.regions-split-layout')}>
                   <span className="btn-icon">🗺️</span>
-                  {lang === 'vi' ? 'Xem bản đồ vùng miền' : 'View Region Map'}
+                  {lang === 'vi' ? 'Xem bản đồ' : 'View Map'}
                 </button>
               </div>
             </div>

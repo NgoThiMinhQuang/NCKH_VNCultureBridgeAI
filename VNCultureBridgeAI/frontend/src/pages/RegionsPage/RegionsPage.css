@@ -141,7 +141,8 @@
   color: #fdf5e6;
   letter-spacing: -0.01em;
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
-  font-family: var(--font-heading);
+  font-family: var(--font-heading) !important;
+  font-weight: 400 !important;
 }
 
 .regions-hero__title-accent {
@@ -693,8 +694,6 @@
   margin-top: 28px;
 }
 
-.inspiration-section {}
-
 .inspiration__header {
   margin: 0 auto 40px;
 }
@@ -880,13 +879,9 @@
   margin-top: 28px;
 }
 
-.inspiration-section {
-  padding: 84px 0;
-  margin: 48px 0 32px;
-}
 
 .inspiration__header {
-  margin: 0 auto 40px;
+  margin: 0 auto !important;
 }
 
 .provinces-search-section {
@@ -1392,13 +1387,11 @@
 }
 
 .inspiration-section {
-  padding: 60px 0;
-  margin: 10px 0 20px;
+  padding: 40px 0;
+  margin: 0px !important;
 }
 
-.inspiration__header {
-  margin: 0 auto 28px;
-}
+
 
 .provinces-search-section {
   padding: 56px 0 64px;
@@ -1658,7 +1651,7 @@
 .regions-overview-section,
 .provinces-section,
 .highlights-section {
-  padding-top: 80px;
+  padding-top: 40px !important;
   width: 100%;
 }
 
@@ -3013,9 +3006,8 @@
 /* --- Inspiration Section --- */
 .inspiration-section {
   background: #110e0c;
-  padding: 120px 0;
+  padding: 40px 0;
   color: #fff;
-  margin: 120px 0;
 }
 
 .inspiration__container {
@@ -3028,7 +3020,6 @@
 .inspiration__header {
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 64px;
 }
 
 .inspiration__header h2 {
@@ -3040,7 +3031,7 @@
 }
 
 .inspiration__header p {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.7) !important;
   font-size: 1.1rem;
   line-height: 1.6;
 }
@@ -3487,9 +3478,10 @@
 
 .regions-hero__title-accent {
   display: block;
-  font-family: var(--font-heading);
-  font-style: italic;
-  color: #e2a628;
+  font-family: var(--font-heading) !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: #e2a628 !important;
   margin-top: 10px;
   background: linear-gradient(to right, #ffd700, #e2a628);
   -webkit-background-clip: text;
@@ -3617,8 +3609,8 @@
 .regions-page .cultural-layers__summary p,
 .regions-page .inspiration-card__content h3,
 .regions-page .province-item__title-row h3 {
-  font-family: var(--font-heading);
-  font-weight: 700;
+  font-family: var(--font-heading) !important;
+  font-weight: 700 !important;
 }
 
 .regions-page .regions-hero__title {
