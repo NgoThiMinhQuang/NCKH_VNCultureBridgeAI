@@ -6,6 +6,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') })
 const homepageRoutes = require('./routes/homepage.routes')
 const contentRoutes = require('./routes/content.routes')
 const authRoutes = require('./routes/auth.routes')
+const blogRoutes = require('./routes/blog.routes')
 const { testConnection } = require('./db/sql')
 
 const app = express()
@@ -36,6 +37,7 @@ app.get('/api/health', async (req, res) => {
 
 app.use('/api/homepage', homepageRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/blog', blogRoutes)
 app.use('/api', contentRoutes)
 
 app.use((error, req, res, next) => {

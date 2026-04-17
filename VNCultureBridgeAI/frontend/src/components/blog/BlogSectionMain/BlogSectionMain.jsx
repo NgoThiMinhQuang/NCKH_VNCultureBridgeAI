@@ -2,12 +2,20 @@ import { useState, useMemo } from 'react'
 import { ui } from '../../../i18n/messages'
 import BlogCardDetailed from './BlogCardDetailed'
 import BlogSidebar from './BlogSidebar'
+import Pagination from '../../common/Pagination/Pagination'
 import './BlogSectionMain.css'
 
 /**
  * Main Content Section for the Blog page (2 columns: Grid + Sidebar).
  */
-export default function BlogSectionMain({ lang, articles, popularPosts, trendingTopics }) {
+export default function BlogSectionMain({ 
+  lang, 
+  articles, 
+  popularPosts, 
+  trendingTopics, 
+  pagination,
+  onPageChange
+}) {
   const [activeCategory, setActiveCategory] = useState(0)
   const categories = useMemo(() => ui[lang].blogCategories, [lang])
   const copy = useMemo(() => ui[lang].blogSidebar, [lang])
@@ -45,12 +53,12 @@ export default function BlogSectionMain({ lang, articles, popularPosts, trending
               ))}
             </div>
             
-            {/* Load More Button */}
-            <div className="blog-load-more">
-              <button className="outline-button blog-load-more-btn">
-                {copy.readMore}
-              </button>
-            </div>
+            {/* Pagination replaces Load More */}
+            <Pagination 
+              currentPage={pagination.currentPage} 
+              totalPages={pagination.totalPages} 
+              onPageChange={onPageChange} 
+            />
           </div>
 
           {/* Sidebar */}

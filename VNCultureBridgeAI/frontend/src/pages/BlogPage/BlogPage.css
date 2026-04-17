@@ -3,13 +3,13 @@
 }
 
 .blog-page main {
-  background-color: #fff;
+  background-color: #faf9f6; /* Premium creamy background */
 }
 
-.page-content-shell {
-  width: min(1360px, calc(100% - 64px));
+.blog-page__container {
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 60px 0 100px;
+  padding: 0 32px;
 }
 
 .blog-list-section {
@@ -26,4 +26,29 @@
   .page-content-shell {
     padding: 40px 20px 80px;
   }
+}
+
+/* Loading States */
+.blog-loading-spinner {
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  color: #887165;
+}
+
+.spinner-accent {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #cd211b;
+  border-radius: 50%;
+  animation: blog-spin 1s linear infinite;
+}
+
+@keyframes blog-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

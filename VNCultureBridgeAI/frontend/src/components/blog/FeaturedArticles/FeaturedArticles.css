@@ -1,6 +1,6 @@
 .featured-articles {
-  padding: 80px 0;
-  background-color: #fff;
+  padding: 100px 0 60px;
+  background-color: #faf9f6;
 }
 
 .featured-articles__container {
@@ -10,8 +10,10 @@
 }
 
 .featured-articles__header {
-  margin-bottom: 40px;
-  text-align: left;
+  margin-bottom: 50px;
+  position: relative;
+  border-bottom: 2px solid rgba(185, 28, 28, 0.1);
+  padding-bottom: 30px;
 }
 
 .featured-articles__badge {

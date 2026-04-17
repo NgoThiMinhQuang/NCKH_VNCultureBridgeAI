@@ -20,11 +20,11 @@ function buildWhereClause(tableAlias, filters = {}) {
 
 // 1. ARTICLES (BaiViet)
 async function getArticles(filters = {}) {
-    const { limit = 12 } = filters
+    const { limit = 12, offset = 0 } = filters
     const where = buildWhereClause('bv', filters)
     
     return query(`
-        SELECT TOP (${Number(limit)})
+        SELECT 
             bv.*,
             vv.TenVI AS VungTenVI, vv.TenEN AS VungTenEN,
             dt.TenVI AS DanTocTenVI, dt.TenEN AS DanTocTenEN
@@ -33,7 +33,15 @@ async function getArticles(filters = {}) {
         LEFT JOIN dbo.DanToc dt ON bv.DanTocID = dt.DanTocID
         ${where}
         ORDER BY bv.NgayXuatBan DESC, bv.BaiVietID DESC
+        OFFSET ${Number(offset)} ROWS
+        FETCH NEXT ${Number(limit)} ROWS ONLY
     `, filters)
+}
+
+async function countArticles(filters = {}) {
+    const where = buildWhereClause('bv', filters)
+    const rows = await query(`SELECT COUNT(*) as total FROM dbo.BaiViet bv ${where}`, filters)
+    return rows[0]?.total || 0
 }
 
 async function getArticleByCode(code) {
@@ -172,6 +180,7 @@ async function getArticlesByDanTocId(danTocId, limit = 5) {
 
 module.exports = {
     getArticles,
+    countArticles,
     getArticleByCode,
     getVungVanHoa,
     getVungByCode,

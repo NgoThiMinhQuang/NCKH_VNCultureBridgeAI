@@ -10,24 +10,6 @@ export default function BlogSidebar({ lang, popularPosts, trendingTopics }) {
 
   return (
     <aside className="blog-sidebar">
-      {/* Newsletter Widget */}
-      <div className="sidebar-widget sidebar-widget--newsletter fade-up">
-        <div className="newsletter-box">
-          <div className="newsletter-box__icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-              <polyline points="22,6 12,13 2,6" />
-            </svg>
-          </div>
-          <h3>{copy.newsletterTitle}</h3>
-          <p>{copy.newsletterDesc}</p>
-          <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Email của bạn..." required />
-            <button type="submit">{copy.newsletterBtn}</button>
-          </form>
-        </div>
-      </div>
-
       {/* Popular Posts Widget */}
       <div className="sidebar-widget fade-up">
         <h3 className="sidebar-widget__title">{copy.popularTitle}</h3>
