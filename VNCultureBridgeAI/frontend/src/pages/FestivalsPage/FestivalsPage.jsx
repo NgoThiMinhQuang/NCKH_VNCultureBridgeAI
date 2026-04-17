@@ -123,6 +123,7 @@ export default function FestivalsPage() {
         <FestivalHero
           page={data.page}
           fanCards={data.festivals.slice(0, 5)}
+          lang={lang}
         />
 
         <FestivalSearchSection

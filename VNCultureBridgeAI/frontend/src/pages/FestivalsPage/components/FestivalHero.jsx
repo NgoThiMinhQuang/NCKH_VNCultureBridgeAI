@@ -1,87 +1,116 @@
 import React from "react";
 import { getImageUrl } from "../FestivalsPage.constants";
+import SectionWave from "../../../components/common/SectionWave/SectionWave";
+import imgHeroBg from "../../../assets/images/trong-dong-bg.png";
 
-const FestivalHero = ({ page, fanCards }) => {
+const FestivalHero = ({ page, fanCards, lang = "vi" }) => {
   const hero = page.hero || {};
+  const stats = page.stats || [];
   
+  const scrollToExplore = () => {
+    document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="festivals-hero">
-      <div className="festivals-hero__content">
-        <div className="festivals-hero__badge">{hero.badge || "Di sản văn hóa"}</div>
-        <h1 className="festivals-hero__title">{hero.title}</h1>
-        <p className="festivals-hero__subtitle">{hero.subtitle}</p>
-        <div className="festivals-hero__actions">
-          <button className="festivals-btn festivals-btn--primary" onClick={() => document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth' })}>
-            Khám phá ngay
-          </button>
-          <button className="festivals-btn festivals-btn--outline">
-            Xem video giới thiệu
-          </button>
-        </div>
+      {/* Background image */}
+      <div className="festivals-hero__bg">
+        <img src={imgHeroBg} alt="Vietnamese Cultural Festivals" />
+        <div className="festivals-hero__overlay"></div>
       </div>
 
-      <div className="festivals-hero__right">
-        <div className="festivals-fan">
-          {fanCards[0] ? (
-            <div className="festivals-fan__card festivals-fan__card--fl">
-              <img src={getImageUrl(fanCards[0].image)} alt={fanCards[0].title} />
-              <div className="festivals-fan__card-label">
-                <span className="festivals-fan__card-dot"></span>
-                {fanCards[0].title}
-              </div>
-            </div>
-          ) : null}
+      {/* Ornamental corners */}
+      <div className="festivals-hero__ornament festivals-hero__ornament--tl"></div>
+      <div className="festivals-hero__ornament festivals-hero__ornament--br"></div>
 
-          {fanCards[1] ? (
-            <div className="festivals-fan__card festivals-fan__card--fr">
-              <img src={getImageUrl(fanCards[1].image)} alt={fanCards[1].title} />
-              <div className="festivals-fan__card-label">
-                <span className="festivals-fan__card-dot"></span>
-                {fanCards[1].title}
-              </div>
-            </div>
-          ) : null}
+      {/* Hero Inner Split Layout */}
+      <div className="festivals-hero__inner">
+        
+        {/* LEFT: Text & Content */}
+        <div className="festivals-hero__left">
+          <div className="festivals-hero__badge">
+            <span className="festivals-hero__badge-dot"></span>
+            {hero.badge}
+          </div>
 
-          {fanCards[2] ? (
-            <div className="festivals-fan__card festivals-fan__card--l">
-              <img src={getImageUrl(fanCards[2].image)} alt={fanCards[2].title} />
-              <div className="festivals-fan__card-label">
-                <span className="festivals-fan__card-dot"></span>
-                {fanCards[2].title}
-              </div>
-            </div>
-          ) : null}
+          <h1 className="festivals-hero__title">
+            <span className="festivals-hero__title-line">{hero.titleLine}</span>
+            <span className="festivals-hero__title-accent">{hero.titleAccent}</span>
+            <span className="festivals-hero__title-line">{hero.titleLine2}</span>
+          </h1>
 
-          {fanCards[3] ? (
-            <div className="festivals-fan__card festivals-fan__card--r">
-              <img src={getImageUrl(fanCards[3].image)} alt={fanCards[3].title} />
-              <div className="festivals-fan__card-label">
-                <span className="festivals-fan__card-dot"></span>
-                {fanCards[3].title}
-              </div>
-            </div>
-          ) : null}
+          {/* Ornamental divider */}
+          <div className="festivals-hero__divider-row">
+            <span className="festivals-hero__divider-line"></span>
+            <span className="festivals-hero__divider-diamond">◆</span>
+            <span className="festivals-hero__divider-line"></span>
+          </div>
 
-          {fanCards[4] ? (
-            <div className="festivals-fan__card festivals-fan__card--c">
-              <img src={getImageUrl(fanCards[4].image)} alt={fanCards[4].title} />
-              <div className="festivals-fan__card-label">
-                <span className="festivals-fan__card-dot"></span>
-                {fanCards[4].title}
-              </div>
-            </div>
-          ) : null}
+          <p className="festivals-hero__subtitle">
+            {hero.subtitle}
+          </p>
 
-          <div className="festivals-fan__badge">
-            <span>🎏</span>
-            <span>{page.stats?.[0]?.value || "8.000+"} lễ hội</span>
+          {/* Stats section */}
+          <div className="festivals-hero__stats">
+            <div className="festivals-hero__stat">
+              <strong>{stats[0]?.value || "8,000+"}</strong>
+              <span>{stats[0]?.label || (lang === "vi" ? "Lễ hội" : "Festivals")}</span>
+            </div>
+            <div className="festivals-hero__stat-sep">|</div>
+            <div className="festivals-hero__stat">
+              <strong>{stats[1]?.value || "54"}</strong>
+              <span>{stats[1]?.label || (lang === "vi" ? "Dân tộc" : "Ethnic Groups")}</span>
+            </div>
+            <div className="festivals-hero__stat-sep">|</div>
+            <div className="festivals-hero__stat">
+              <strong>{stats[2]?.value || "3"}</strong>
+              <span>{stats[2]?.label || (lang === "vi" ? "Vùng miền" : "Regions")}</span>
+            </div>
+          </div>
+
+          <div className="festivals-hero__actions">
+            <button className="festivals-hero__btn festivals-hero__btn--primary" onClick={scrollToExplore}>
+              {lang === "vi" ? "Khám phá ngay" : "Explore Now"}
+              <span className="btn-icon">→</span>
+            </button>
+            <button className="festivals-hero__btn festivals-hero__btn--secondary" onClick={() => window.open('https://www.youtube.com/results?search_query=le+hoi+viet+nam', '_blank')}>
+              <span className="btn-icon">🎥</span>
+              {lang === "vi" ? "Xem phim tư liệu" : "Watch Documentaries"}
+            </button>
+          </div>
+        </div>
+
+        {/* RIGHT: Fan Card Stack */}
+        <div className="festivals-hero__right">
+          <div className="festivals-fan">
+            {fanCards.slice(0, 5).map((card, idx) => {
+              const positions = ['fl', 'fr', 'l', 'r', 'c'];
+              const posClass = positions[idx];
+              return (
+                <div key={card.id || idx} className={`festivals-fan__card festivals-fan__card--${posClass}`}>
+                  <img src={getImageUrl(card.image)} alt={card.title} />
+                  <div className="festivals-fan__card-label">
+                    <span className="festivals-fan__card-dot"></span>
+                    {card.title}
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Floating badge */}
+            <div className="festivals-fan__badge">
+              <span>🎏</span>
+              <span>{stats[0]?.value || "8.000+"} {lang === "vi" ? "Lễ hội" : "Festivals"}</span>
+            </div>
           </div>
         </div>
       </div>
-      
+
       <div className="festivals-hero__scroll">
         <div className="festivals-mouse-icon"></div>
       </div>
+      
+      <SectionWave position="bottom" color="#ffffff" />
     </section>
   );
 };

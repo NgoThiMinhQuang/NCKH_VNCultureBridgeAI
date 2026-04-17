@@ -6,23 +6,28 @@
 
 .festivals-hero {
     position: relative;
-    min-height: 92vh;
+    min-height: 100vh;
+    background: #12060a;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -130px;
     padding-top: 130px;
-    overflow: hidden;
-    background-color: #12060a;
 }
 
 .festivals-hero__bg {
     position: absolute;
     inset: 0;
     background-size: cover;
-    background-position: center 30%;
+    background-position: center;
     z-index: 0;
     opacity: 0.65;
+}
+
+.festivals-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .festivals-hero__overlay {
@@ -30,10 +35,10 @@
     inset: 0;
     background:
         linear-gradient(105deg,
-            rgba(10, 3, 1, 0.92) 0%,
-            rgba(10, 3, 1, 0.72) 38%,
-            rgba(10, 3, 1, 0.28) 68%,
-            rgba(10, 3, 1, 0.10) 100%);
+            rgba(26, 6, 10, 0.95) 0%,
+            rgba(26, 6, 10, 0.8) 40%,
+            rgba(26, 6, 10, 0.3) 70%,
+            rgba(26, 6, 10, 0.15) 100%);
     z-index: 1;
 }
 
@@ -44,24 +49,13 @@
 }
 
 .festivals-hero__ornament--tl {
-    top: 140px;
-    left: 40px;
+    top: 80px;
+    left: 50px;
     width: 160px;
     height: 160px;
     border-top: 2px solid rgba(206, 17, 45, 0.35);
     border-left: 2px solid rgba(206, 17, 45, 0.35);
     border-radius: 4px 0 0 0;
-}
-
-.festivals-hero__ornament--tl::before {
-    content: '';
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 60%;
-    height: 60%;
-    border-top: 1px solid rgba(206, 17, 45, 0.2);
-    border-left: 1px solid rgba(206, 17, 45, 0.2);
 }
 
 .festivals-hero__ornament--br {
@@ -83,7 +77,6 @@
     grid-template-columns: 1fr 1fr;
     gap: 60px;
     align-items: center;
-    padding: 60px 0 120px;
 }
 
 .festivals-hero__left {
@@ -114,24 +107,21 @@
     height: 8px;
     background: #ce112d;
     border-radius: 50%;
-    animation: festivPulseDot 2s infinite;
+    animation: festivalsPulseDot 2s infinite;
     flex-shrink: 0;
 }
 
-@keyframes festivPulseDot {
-
+@keyframes festivalsPulseDot {
     0%,
     100% {
         box-shadow: 0 0 0 0 rgba(206, 17, 45, 0.7);
     }
-
     50% {
         box-shadow: 0 0 0 6px rgba(206, 17, 45, 0);
     }
 }
 
 .festivals-hero__title {
-    font-family: var(--font-heading);
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -141,17 +131,21 @@
 }
 
 .festivals-hero__title-line {
-    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    font-size: clamp(3rem, 5vw, 4.5rem) !important;
     color: #fdf5e6;
     letter-spacing: -0.01em;
     text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    font-family: var(--font-heading) !important;
+    font-weight: 700 !important;
 }
 
 .festivals-hero__title-accent {
-    font-size: clamp(2.4rem, 4.8vw, 4.2rem);
+    font-size: clamp(3rem, 5vw, 4.5rem) !important;
     color: #ce112d;
     letter-spacing: 0.02em;
     text-shadow: 0 2px 16px rgba(206, 17, 45, 0.4);
+    font-family: var(--font-heading) !important;
+    font-weight: 700 !important;
 }
 
 .festivals-hero__divider-row {
@@ -164,15 +158,15 @@
 .festivals-hero__divider-line {
     height: 1px;
     width: 60px;
-    background: linear-gradient(to right, transparent, rgba(218, 165, 32, 0.6));
+    background: linear-gradient(to right, transparent, rgba(206, 17, 45, 0.6));
 }
 
 .festivals-hero__divider-row .festivals-hero__divider-line:last-child {
-    background: linear-gradient(to left, transparent, rgba(218, 165, 32, 0.6));
+    background: linear-gradient(to left, transparent, rgba(206, 17, 45, 0.6));
 }
 
 .festivals-hero__divider-diamond {
-    color: #daa520;
+    color: #ce112d;
     font-size: 0.7rem;
     opacity: 0.8;
 }
@@ -190,12 +184,13 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 20px 28px;
+    padding: 24px 34px;
     background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(218, 165, 32, 0.2);
+    border: 1px solid rgba(206, 17, 45, 0.2);
     border-radius: 16px;
     backdrop-filter: blur(8px);
     width: fit-content;
+    margin-bottom: 40px;
 }
 
 .festivals-hero__stat {
@@ -222,68 +217,92 @@
 }
 
 .festivals-hero__stat-sep {
-    color: rgba(218, 165, 32, 0.35);
+    color: rgba(206, 17, 45, 0.35);
     font-size: 1.5rem;
     line-height: 1;
     padding: 0 4px;
 }
 
-/* ─── FAN CARD STACK (5 cards, symmetric arc) ───────────────────────── */
+.festivals-hero__actions {
+    display: flex;
+    gap: 16px;
+}
+
+.festivals-hero__btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+}
+
+.festivals-hero__btn--primary {
+    background: #ce112d;
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(206, 17, 45, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.festivals-hero__btn--primary:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 16px 36px rgba(206, 17, 45, 0.45);
+    background: #e61937;
+}
+
+.festivals-hero__btn--secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fdf5e6;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+}
+
+.festivals-hero__btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(206, 17, 45, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
 
 .festivals-hero__right {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    /* anchor to bottom so pivots align */
-    transform: translateY(-40px);
 }
 
-/*
-  The fan container’s width is driven by how far the outermost cards spread.
-  With a 300px card, 20° rotation, and transform-origin at the bottom-center,
-  the top edge swings ≈ card_height * sin(20°) ≈ 300 * 0.34 ≈ 102px to each side.
-  We add some generous padding so clipping never occurs.
-*/
 .festivals-fan {
     position: relative;
-    /* Wide enough: 280*cos(26) + 420*sin(26) ≈ 251 + 184 ≈ 435px each side from center => 870px */
     width: 800px;
-    height: 560px;
+    height: 450px;
     flex-shrink: 0;
-    /* Do NOT use isolation:isolate here - it creates a new stacking context that clips */
     overflow: visible;
 }
 
-
-
-/* ── Base card ──
-   All 5 cards share the SAME size and the SAME transform-origin
-   so the fan pivot is perfectly consistent.
-   Cards are centred horizontally in the fan container via left:50% + margin-left.
-   Rotation pivots at the BOTTOM CENTRE of each card.
-   At ±26°: the top of a 420px tall card sweeps about 184px left/right from its
-   resting centre — which fits inside the 800px container.
-*/
 .festivals-fan__card {
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: 280px;
-    height: 420px;
-    margin-left: -140px;
-    /* = -width/2 to centre on the pivot */
+    width: 320px;
+    height: 480px;
+    margin-left: -160px;
     border-radius: 20px;
     overflow: hidden;
     transform-origin: bottom center;
     box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.55),
-        0 0 0 1.5px rgba(218, 165, 32, 0.28);
+        0 20px 50px rgba(0, 0, 0, 0.45),
+        0 0 0 1.5px rgba(206, 17, 45, 0.2);
     transition:
-        transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
         box-shadow 0.4s ease,
         opacity 0.4s ease,
         filter 0.4s ease;
     cursor: pointer;
+    background: #1a060a;
 }
 
 .festivals-fan__card img {
@@ -292,97 +311,36 @@
     object-fit: cover;
     display: block;
     border-radius: 20px;
-    pointer-events: none;
-    user-select: none;
 }
 
-/* z-order: FL(1) < FR(2) < L(3) < R(4) < C(5=top) */
-
-/* ——— Card FL: −26° (far left, deepest back) ——— */
 .festivals-fan__card--fl {
     transform: translateX(-60px) rotate(-26deg);
     z-index: 1;
     opacity: 0.72;
     filter: brightness(0.78);
-    box-shadow:
-        0 14px 36px rgba(0, 0, 0, 0.45),
-        0 0 0 1.5px rgba(218, 165, 32, 0.20);
 }
 
-.festivals-fan__card--fl:hover {
-    transform: translateX(-60px) rotate(-26deg) translateY(-14px) scale(1.04);
-    opacity: 0.9;
-    filter: brightness(0.88);
-    box-shadow:
-        0 28px 56px rgba(0, 0, 0, 0.55),
-        0 0 0 2px rgba(218, 165, 32, 0.42);
-    z-index: 6;
-}
-
-/* ——— Card FR: +26° (far right, second deepest) ——— */
 .festivals-fan__card--fr {
     transform: translateX(60px) rotate(26deg);
     z-index: 2;
     opacity: 0.72;
     filter: brightness(0.78);
-    box-shadow:
-        0 14px 36px rgba(0, 0, 0, 0.45),
-        0 0 0 1.5px rgba(218, 165, 32, 0.20);
 }
 
-.festivals-fan__card--fr:hover {
-    transform: translateX(60px) rotate(26deg) translateY(-14px) scale(1.04);
-    opacity: 0.9;
-    filter: brightness(0.88);
-    box-shadow:
-        0 28px 56px rgba(0, 0, 0, 0.55),
-        0 0 0 2px rgba(218, 165, 32, 0.42);
-    z-index: 6;
-}
-
-/* ——— Card L: −13° (left, mid-back) ——— */
 .festivals-fan__card--l {
     transform: translateX(-30px) rotate(-13deg);
     z-index: 3;
     opacity: 0.85;
     filter: brightness(0.88);
-    box-shadow:
-        0 18px 44px rgba(0, 0, 0, 0.50),
-        0 0 0 1.5px rgba(218, 165, 32, 0.30);
 }
 
-.festivals-fan__card--l:hover {
-    transform: translateX(-30px) rotate(-13deg) translateY(-14px) scale(1.04);
-    opacity: 0.96;
-    filter: brightness(0.95);
-    box-shadow:
-        0 28px 56px rgba(0, 0, 0, 0.58),
-        0 0 0 2px rgba(218, 165, 32, 0.48);
-    z-index: 6;
-}
-
-/* ——— Card R: +13° (right, mid-back) ——— */
 .festivals-fan__card--r {
     transform: translateX(30px) rotate(13deg);
     z-index: 4;
     opacity: 0.85;
     filter: brightness(0.88);
-    box-shadow:
-        0 18px 44px rgba(0, 0, 0, 0.50),
-        0 0 0 1.5px rgba(218, 165, 32, 0.30);
 }
 
-.festivals-fan__card--r:hover {
-    transform: translateX(30px) rotate(13deg) translateY(-14px) scale(1.04);
-    opacity: 0.96;
-    filter: brightness(0.95);
-    box-shadow:
-        0 28px 56px rgba(0, 0, 0, 0.58),
-        0 0 0 2px rgba(218, 165, 32, 0.48);
-    z-index: 6;
-}
-
-/* ——— Card C: 0° (center, front) ——— */
 .festivals-fan__card--c {
     transform: rotate(0deg);
     z-index: 5;
@@ -390,30 +348,21 @@
     filter: brightness(1);
     box-shadow:
         0 32px 80px rgba(0, 0, 0, 0.65),
-        0 0 0 2px rgba(218, 165, 32, 0.50),
+        0 0 0 2px rgba(206, 17, 45, 0.4),
         inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
-.festivals-fan__card--c::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    background: linear-gradient(to bottom, transparent 55%, rgba(10, 3, 1, 0.72) 100%);
-    pointer-events: none;
-    z-index: 1;
+.festivals-fan__card:hover {
+    z-index: 10;
+    opacity: 1 !important;
+    filter: brightness(1) !important;
 }
 
-.festivals-fan__card--c:hover {
-    transform: rotate(0deg) translateY(-14px) scale(1.03);
-    box-shadow:
-        0 48px 100px rgba(0, 0, 0, 0.75),
-        0 0 0 2px rgba(218, 165, 32, 0.70),
-        0 0 48px rgba(218, 165, 32, 0.18);
-    z-index: 6;
+.festivals-fan__card:hover .festivals-fan__card-label {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
 
-/* Card labels */
 .festivals-fan__card-label {
     position: absolute;
     bottom: 16px;
@@ -424,14 +373,14 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(10, 3, 1, 0.82);
+    background: rgba(26, 6, 10, 0.85);
     color: #f8c97a;
     font-size: 0.76rem;
     font-weight: 700;
     letter-spacing: 0.05em;
     padding: 7px 16px;
     border-radius: 99px;
-    border: 1px solid rgba(218, 165, 32, 0.38);
+    border: 1px solid rgba(206, 17, 45, 0.38);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
     opacity: 0;
@@ -439,55 +388,41 @@
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.festivals-fan__card:hover .festivals-fan__card-label {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
 .festivals-fan__card-dot {
     width: 7px;
     height: 7px;
     background: #ce112d;
     border-radius: 50%;
-    animation: festivPulseDot 2s infinite;
+    animation: festivalsPulseDot 1.5s infinite;
     flex-shrink: 0;
 }
 
-/* Floating badge */
 .festivals-fan__badge {
     position: absolute;
-    top: 14px;
+    top: -50px;
     right: -12px;
     z-index: 20;
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 10px 18px;
-    background: rgba(18, 6, 10, 0.90);
-    border: 1px solid rgba(218, 165, 32, 0.5);
+    background: rgba(26, 6, 10, 0.90);
+    border: 1px solid rgba(206, 17, 45, 0.5);
     border-radius: 999px;
     color: #f8c97a;
     font-size: 0.82rem;
     font-weight: 700;
     white-space: nowrap;
     backdrop-filter: blur(14px);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(218, 165, 32, 0.12);
-    animation: festivBadgeFloat 3s ease-in-out infinite;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(206, 17, 45, 0.12);
+    animation: festivalsBadgeFloat 3s ease-in-out infinite;
 }
 
-@keyframes festivBadgeFloat {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-6px);
-    }
+@keyframes festivalsBadgeFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
 
-/* Scroll indicator */
 .festivals-hero__scroll {
     position: absolute;
     bottom: 40px;
@@ -499,7 +434,7 @@
 .festivals-mouse-icon {
     width: 24px;
     height: 40px;
-    border: 1.5px solid rgba(218, 165, 32, 0.6);
+    border: 1.5px solid rgba(206, 17, 45, 0.6);
     border-radius: 12px;
     position: relative;
 }
@@ -512,24 +447,17 @@
     transform: translateX(-50%);
     width: 4px;
     height: 6px;
-    background-color: rgba(218, 165, 32, 0.9);
+    background-color: rgba(206, 17, 45, 0.9);
     border-radius: 2px;
-    animation: festivScrollAnim 1.8s infinite cubic-bezier(0.15, 0.41, 0.69, 0.94);
+    animation: festivalsScrollAnim 1.8s infinite cubic-bezier(0.15, 0.41, 0.69, 0.94);
 }
 
-@keyframes festivScrollAnim {
-    0% {
-        transform: translate(-50%, 0);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translate(-50%, 14px);
-        opacity: 0;
-    }
+@keyframes festivalsScrollAnim {
+    0% { transform: translate(-50%, 0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translate(-50%, 18px); opacity: 0; }
 }
 
-/* ─── Responsive ──────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
     .festivals-hero__inner {
         grid-template-columns: 1fr;
@@ -537,84 +465,25 @@
         gap: 40px;
         padding-bottom: 100px;
     }
-
-    .festivals-hero__left {
-        align-items: center;
-    }
-
-    .festivals-hero__subtitle {
-        max-width: 640px;
-    }
-
-    .festivals-hero__ornament--br {
-        display: none;
-    }
-
-    .festivals-hero__stats {
-        justify-content: center;
-    }
-
-    /* Shrink fan slightly on tablet */
-    .festivals-fan {
-        width: 460px;
-        height: 440px;
-    }
-
-    .festivals-fan__card {
-        width: 210px;
-        height: 310px;
-        margin-left: -105px;
-    }
-
-    .festivals-fan__badge {
-        right: -8px;
-        top: 10px;
-    }
+    .festivals-hero__left { align-items: center; }
+    .festivals-hero__subtitle { max-width: 640px; }
+    .festivals-hero__ornament--br { display: none; }
+    .festivals-hero__stats { justify-content: center; }
+    .festivals-hero__actions { justify-content: center; }
+    .festivals-fan { width: 460px; height: 440px; }
+    .festivals-fan__card { width: 210px; height: 310px; margin-left: -105px; }
 }
 
 @media (max-width: 640px) {
-    .festivals-hero {
-        min-height: 80vh;
-    }
-
-    .festivals-hero__inner {
-        width: calc(100% - 40px);
-        padding-bottom: 80px;
-    }
-
-    .festivals-hero__stats {
-        flex-wrap: wrap;
-        gap: 16px;
-    }
-
-    .festivals-hero__stat-sep {
-        display: none;
-    }
-
-    /* Compact fan on mobile — hide outermost cards */
-    .festivals-fan {
-        width: 340px;
-        height: 380px;
-    }
-
-    .festivals-fan__card {
-        width: 170px;
-        height: 250px;
-        margin-left: -85px;
-    }
-
-    .festivals-fan__card--fl,
-    .festivals-fan__card--fr {
-        display: none;
-    }
-
-    .festivals-fan__badge {
-        font-size: 0.72rem;
-        padding: 8px 14px;
-        right: -4px;
-        top: 8px;
-    }
+    .festivals-hero { min-height: 80vh; }
+    .festivals-hero__inner { width: calc(100% - 40px); padding-bottom: 80px; }
+    .festivals-hero__stats { flex-wrap: wrap; gap: 16px; padding: 15px 20px; }
+    .festivals-hero__stat-sep { display: none; }
+    .festivals-fan { width: 340px; height: 380px; }
+    .festivals-fan__card { width: 170px; height: 250px; margin-left: -85px; }
+    .festivals-fan__card--fl, .festivals-fan__card--fr { display: none; }
 }
+
 
 /* --- Search & Filter Section --- */
 .festivals-search-section {

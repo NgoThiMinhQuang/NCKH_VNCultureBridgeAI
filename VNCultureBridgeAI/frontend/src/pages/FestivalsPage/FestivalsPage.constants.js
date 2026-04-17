@@ -67,12 +67,14 @@ export const buildFestivalData = (apiData, lang) => {
     imageUrl: g.imageUrl,
     alt: g.imageAlt
   }));
-
   return {
     page: {
       hero: {
-        title: apiData.hero?.title || (lang === "vi" ? "Lễ hội Việt Nam" : "Vietnamese Festivals"),
-        subtitle: apiData.hero?.subtitle || (lang === "vi" ? "Khám phá bản sắc văn hóa và tinh thần cộng đồng" : "Explore cultural identity and community spirit"),
+        badge: lang === "vi" ? "Di sản văn hóa phi vật thể" : "Intangible Cultural Heritage",
+        titleLine: lang === "vi" ? "Tinh hoa" : "The Essence of",
+        titleAccent: lang === "vi" ? "Lễ hội" : "Festivals",
+        titleLine2: lang === "vi" ? "Việt Nam" : "Vietnam",
+        subtitle: apiData.hero?.subtitle || (lang === "vi" ? "Khám phá bản sắc văn hóa và tinh thần cộng đồng qua những mùa lễ hội truyền thống đặc sắc." : "Explore cultural identity and community spirit through unique traditional festivals."),
       },
       stats,
       major: {
