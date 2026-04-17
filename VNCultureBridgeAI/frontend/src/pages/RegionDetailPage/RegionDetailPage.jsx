@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import { Link, useParams } from 'react-router-dom'
 import { getRegion } from '../../services/region.service'
 import { useDetailLoader } from '../../hooks/useDetailLoader'
@@ -76,9 +77,9 @@ function normalizeRegionCode(code) {
 }
 
 export default function RegionDetailPage() {
+  const { lang, setLang } = useLanguage()
   const { code } = useParams()
   const normalizedCode = useMemo(() => normalizeRegionCode(code), [code])
-  const [lang, setLang] = useState('vi')
 
   const { status, data, error } = useDetailLoader(getRegion, lang, normalizedCode)
 
@@ -91,7 +92,7 @@ export default function RegionDetailPage() {
   useEffect(() => {
     window.scrollTo(0, 0)
     if (data?.name) {
-      document.title = `${data.name} - VietCultura`
+      document.title = `${data.name} - VNCultureBridgeAI`
     }
   }, [normalizedCode, data?.name])
 
@@ -213,12 +214,12 @@ export default function RegionDetailPage() {
               <span className="section-badge">{lang === 'vi' ? 'Khám phá' : 'Explore'}</span>
               <h2 className="section-title">{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</h2>
               <div className="section-actions">
-                <button 
-                  className="btn-outline-sm" 
+                <button
+                  className="btn-outline-sm"
                   onClick={() => setIsProvincePaginated(!isProvincePaginated)}
                 >
-                  {isProvincePaginated 
-                    ? (lang === 'vi' ? 'Xem tất cả' : 'See All') 
+                  {isProvincePaginated
+                    ? (lang === 'vi' ? 'Xem tất cả' : 'See All')
                     : (lang === 'vi' ? 'Phân trang' : 'Show Paginated')}
                 </button>
               </div>
@@ -241,13 +242,13 @@ export default function RegionDetailPage() {
 
             {isProvincePaginated && totalProvincePages > 1 && (
               <div className="pagination-wrapper">
-                <Pagination 
-                  currentPage={provincePage} 
-                  totalPages={totalProvincePages} 
+                <Pagination
+                  currentPage={provincePage}
+                  totalPages={totalProvincePages}
                   onPageChange={(page) => {
                     setProvincePage(page)
                     document.querySelector('.province-hub').scrollIntoView({ behavior: 'smooth' })
-                  }} 
+                  }}
                 />
               </div>
             )}
@@ -261,12 +262,12 @@ export default function RegionDetailPage() {
               <span className="section-badge">{lang === 'vi' ? 'Hương vị' : 'Taste'}</span>
               <h2 className="section-title">{lang === 'vi' ? 'Tinh hoa ẩm thực' : 'Culinary Highlights'}</h2>
               <div className="section-actions">
-                <button 
-                  className="btn-outline-sm" 
+                <button
+                  className="btn-outline-sm"
                   onClick={() => setIsCuisinePaginated(!isCuisinePaginated)}
                 >
-                  {isCuisinePaginated 
-                    ? (lang === 'vi' ? 'Xem tất cả' : 'See All') 
+                  {isCuisinePaginated
+                    ? (lang === 'vi' ? 'Xem tất cả' : 'See All')
                     : (lang === 'vi' ? 'Phân trang' : 'Show Paginated')}
                 </button>
               </div>
@@ -289,13 +290,13 @@ export default function RegionDetailPage() {
 
             {isCuisinePaginated && totalCuisinePages > 1 && (
               <div className="pagination-wrapper">
-                <Pagination 
-                  currentPage={cuisinePage} 
-                  totalPages={totalCuisinePages} 
+                <Pagination
+                  currentPage={cuisinePage}
+                  totalPages={totalCuisinePages}
                   onPageChange={(page) => {
                     setCuisinePage(page)
                     document.querySelector('.cuisine-hub').scrollIntoView({ behavior: 'smooth' })
-                  }} 
+                  }}
                 />
               </div>
             )}

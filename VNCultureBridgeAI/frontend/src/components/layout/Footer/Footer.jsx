@@ -24,7 +24,7 @@ export default function Footer({ lang = 'vi' }) {
               />
               <div className="ph__brand-text">
                 <strong>VNCulture</strong>
-                <span>Di sản & Văn hoá</span>
+                <span>{ui[lang].brandSubtitle}</span>
               </div>
             </Link>
             <p className="vnc-desc">
@@ -54,7 +54,7 @@ export default function Footer({ lang = 'vi' }) {
               <div className="vnc-links-group">
                 <Link to="/regions">{ui[lang].nav[1]}</Link>
                 <Link to="/#festivals">{ui[lang].nav[3]}</Link>
-                <Link to="/provinces">Tỉnh thành</Link>
+                <Link to="/provinces">{ui[lang].provinces}</Link>
                 <Link to="/blog">{ui[lang].nav[5]}</Link>
               </div>
             </div>

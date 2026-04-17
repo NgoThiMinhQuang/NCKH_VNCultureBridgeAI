@@ -2,8 +2,13 @@ import React from "react";
 import { getImageUrl } from "../FestivalsPage.constants";
 import SectionWave from "../../../components/common/SectionWave/SectionWave";
 import imgHeroBg from "../../../assets/images/trong-dong-bg.png";
+import { useLanguage } from "../../../context/LanguageContext";
+import { ui } from "../../../i18n/messages";
 
 const FestivalHero = ({ page, fanCards, lang = "vi" }) => {
+  const { lang: currentLang } = useLanguage();
+  const copy = ui[currentLang];
+  
   const hero = page.hero || {};
   const stats = page.stats || [];
 
@@ -54,28 +59,28 @@ const FestivalHero = ({ page, fanCards, lang = "vi" }) => {
           <div className="festivals-hero__stats">
             <div className="festivals-hero__stat">
               <strong>{stats[0]?.value || "8,000+"}</strong>
-              <span>{stats[0]?.label || (lang === "vi" ? "Lễ hội" : "Festivals")}</span>
+              <span>{stats[0]?.label}</span>
             </div>
             <div className="festivals-hero__stat-sep">|</div>
             <div className="festivals-hero__stat">
               <strong>{stats[1]?.value || "54"}</strong>
-              <span>{stats[1]?.label || (lang === "vi" ? "Dân tộc" : "Ethnic Groups")}</span>
+              <span>{stats[1]?.label}</span>
             </div>
             <div className="festivals-hero__stat-sep">|</div>
             <div className="festivals-hero__stat">
               <strong>{stats[2]?.value || "3"}</strong>
-              <span>{stats[2]?.label || (lang === "vi" ? "Vùng miền" : "Regions")}</span>
+              <span>{stats[2]?.label}</span>
             </div>
           </div>
 
           <div className="festivals-hero__actions">
             <button className="festivals-hero__btn festivals-hero__btn--primary" onClick={scrollToExplore}>
-              {lang === "vi" ? "Khám phá ngay" : "Explore Now"}
+              {copy.festivals?.exploreNow || "Khám phá ngay"}
               <span className="btn-icon">→</span>
             </button>
             <button className="festivals-hero__btn festivals-hero__btn--secondary" onClick={() => window.open('https://www.youtube.com/results?search_query=le+hoi+viet+nam', '_blank')}>
               <span className="btn-icon">🎥</span>
-              {lang === "vi" ? "Xem phim tư liệu" : "Watch Documentaries"}
+              {copy.festivals?.watchDocumentaries || "Xem phim tư liệu"}
             </button>
           </div>
         </div>
@@ -100,7 +105,7 @@ const FestivalHero = ({ page, fanCards, lang = "vi" }) => {
             {/* Floating badge */}
             <div className="festivals-fan__badge">
               <span>🎏</span>
-              <span>{stats[0]?.value || "8.000+"} {lang === "vi" ? "Lễ hội" : "Festivals"}</span>
+              <span>{stats[0]?.value || "8.000+"} {stats[0]?.label}</span>
             </div>
           </div>
         </div>

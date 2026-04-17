@@ -57,7 +57,7 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
   }
 
   function handleLogout() {
-    const confirmed = window.confirm('Bạn có chắc chắn muốn đăng xuất không?')
+    const confirmed = window.confirm(copy.navLogoutConfirm)
 
     if (!confirmed) return
 
@@ -66,7 +66,7 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
     localStorage.removeItem('isAuthenticated')
     setCurrentUser(null)
     window.dispatchEvent(new Event('auth-changed'))
-    window.alert('Đăng xuất thành công.')
+    window.alert(copy.navLogoutSuccess || 'Success')
   }
 
   return (
@@ -82,7 +82,7 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
           />
           <div className="ph__brand-text">
             <strong>VNCulture</strong>
-            <span>Di sản & Văn hoá</span>
+            <span>{copy.brandSubtitle}</span>
           </div>
         </Link>
 
@@ -126,23 +126,23 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
           {currentUser ? (
             <>
               <div className="ph__user-chip" title={currentUser.fullName}>
-                <span className="ph__user-chip-label">Xin chào</span>
+                <span className="ph__user-chip-label">{copy.navGreeting}</span>
                 <strong className="ph__user-chip-name">{currentUser.fullName}</strong>
               </div>
               <button type="button" className="ph__btn-logout" onClick={handleLogout}>
-                Đăng xuất
+                {copy.navLogout}
               </button>
             </>
           ) : (
             <>
               {/* Đăng nhập */}
               <Link to="/login" className="ph__btn-login">
-                Đăng nhập
+                {copy.navLogin}
               </Link>
 
               {/* Đăng ký */}
               <Link to="/register" className="ph__btn-register">
-                Đăng ký
+                {copy.navRegister}
               </Link>
             </>
           )}
@@ -153,7 +153,7 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
       {breadcrumb && breadcrumb.length > 0 && (
         <div className="ph__crumb">
           <div className="ph__crumb-inner">
-            <Link to="/" className="ph__crumb-link">Trang chủ</Link>
+            <Link to="/" className="ph__crumb-link">{copy.nav[0]}</Link>
             {breadcrumb.map((item, i) => (
               <span key={i} className="ph__crumb-item">
                 <span className="ph__crumb-sep" aria-hidden="true">›</span>

@@ -4,12 +4,25 @@ const { query } = require('../db/sql')
  * Common filters for articles, cuisines, festivals, etc.
  */
 function buildWhereClause(tableAlias, filters = {}) {
-    const { region, ethnicity, category, q } = filters
+    const { region, ethnicity, category, q, province } = filters
     const conditions = []
     
     if (category) conditions.push(`${tableAlias}.ChuyenMuc = @category`)
-    if (region) conditions.push(`${tableAlias}.VungID IN (SELECT VungID FROM dbo.VungVanHoa WHERE MaVung = @region)`)
-    if (ethnicity) conditions.push(`${tableAlias}.DanTocID IN (SELECT DanTocID FROM dbo.DanToc WHERE MaDanToc = @ethnicity)`)
+    if (region) {
+        if (typeof region === 'number' || !isNaN(Number(region))) {
+            conditions.push(`${tableAlias}.VungID = @region`)
+        } else {
+            conditions.push(`${tableAlias}.VungID IN (SELECT VungID FROM dbo.VungVanHoa WHERE MaVung = @region)`)
+        }
+    }
+    if (ethnicity) {
+        if (typeof ethnicity === 'number' || !isNaN(Number(ethnicity))) {
+            conditions.push(`${tableAlias}.DanTocID = @ethnicity`)
+        } else {
+            conditions.push(`${tableAlias}.DanTocID IN (SELECT DanTocID FROM dbo.DanToc WHERE MaDanToc = @ethnicity)`)
+        }
+    }
+    if (province) conditions.push(`${tableAlias}.TinhThanhID = @province`)
     
     if (q) {
         conditions.push(`(${tableAlias}.TenVI LIKE '%' + @q + '%' OR ${tableAlias}.TenEN LIKE '%' + @q + '%' OR ${tableAlias}.MoTaNganVI LIKE '%' + @q + '%')`)
@@ -124,6 +137,7 @@ async function getAmThucExtended(filters = {}) {
 // 6. FESTIVALS (LeHoi)
 async function getFestivalsExtended(filters = {}) {
     const { limit = 50 } = filters
+    const where = buildWhereClause('lh', filters)
     return query(`
         SELECT TOP (${Number(limit)})
             lh.*,
@@ -132,8 +146,9 @@ async function getFestivalsExtended(filters = {}) {
         FROM dbo.LeHoi lh
         LEFT JOIN dbo.VungVanHoa vv ON lh.VungID = vv.VungID
         LEFT JOIN dbo.DanToc dt ON lh.DanTocID = dt.DanTocID
+        ${where}
         ORDER BY lh.NgayTao DESC, lh.LeHoiID DESC
-    `)
+    `, filters)
 }
 
 // 7. GALLERY & MEDIA

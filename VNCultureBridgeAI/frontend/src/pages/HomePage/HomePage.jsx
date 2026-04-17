@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import './HomePage.css'
 import { getHomepage } from '../../services/homepage.service'
 import { searchArticles } from '../../services/content.service'
@@ -15,7 +16,7 @@ import CuisineSection from './components/CuisineSection'
 import ArtsSection from './components/ArtsSection'
 
 export default function HomePage() {
-  const [lang, setLang] = useState('vi')
+  const { lang, setLang } = useLanguage()
   const [homepage, setHomepage] = useState(null)
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
@@ -25,7 +26,7 @@ export default function HomePage() {
 
   const copy = useMemo(() => ui[lang], [lang])
   const homepageData = homepage || {}
-  const pageTitle = copy?.pageTitle || 'VietCultura'
+  const pageTitle = copy?.pageTitle || 'VNCultureBridgeAI'
 
   useEffect(() => {
     let ignore = false

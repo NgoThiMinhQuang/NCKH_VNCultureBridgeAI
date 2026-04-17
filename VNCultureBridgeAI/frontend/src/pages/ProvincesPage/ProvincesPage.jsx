@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import { Link, useLocation } from 'react-router-dom'
 import './ProvincesPage.css'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
@@ -126,8 +127,8 @@ function getProvinceImage(province) {
 }
 
 export default function ProvincesPage() {
+  const { lang, setLang } = useLanguage()
   const location = useLocation()
-  const [lang, setLang] = useState('vi')
   const [searchTerm, setSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState('name')
   const [viewMode, setViewMode] = useState('grid')
@@ -300,14 +301,14 @@ export default function ProvincesPage() {
                     onClick={() => setViewMode('grid')}
                     aria-label="Chế độ lưới"
                   >
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z" /></svg>
                   </button>
                   <button
                     className={`provinces-view-btn ${viewMode === 'list' ? 'is-active' : ''}`}
                     onClick={() => setViewMode('list')}
                     aria-label="Chế độ danh sách"
                   >
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/></svg>
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z" /></svg>
                   </button>
                 </div>
                 <span className="provinces-sort__label">Sắp xếp:</span>

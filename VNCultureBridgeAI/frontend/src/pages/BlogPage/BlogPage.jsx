@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import { getBlogOverview } from '../../services/blog.service'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
@@ -15,7 +16,7 @@ import './BlogPage.css'
  * Displays the blog hero and a collection of blog posts.
  */
 export default function BlogPage() {
-  const [lang, setLang] = useState('vi')
+  const { lang, setLang } = useLanguage()
   const [currentPage, setCurrentPage] = useState(1)
   const resultsRef = useRef(null)
   const [blogData, setBlogData] = useState({

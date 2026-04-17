@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import './CuisineDetailPage.css'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
@@ -25,7 +26,7 @@ function buildNavItems() {
 }
 
 export default function CuisineDetailPage() {
-  const [lang, setLang] = useState('vi')
+  const { lang, setLang } = useLanguage()
   const [detail, setDetail] = useState(null)
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')

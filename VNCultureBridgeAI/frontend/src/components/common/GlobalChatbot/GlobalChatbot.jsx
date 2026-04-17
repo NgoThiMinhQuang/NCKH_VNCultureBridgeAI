@@ -2,9 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getGeminiChatSession } from '../../../services/gemini';
 import { FaRobot, FaUser, FaTimes, FaPaperPlane } from 'react-icons/fa';
 import { RiDoubleQuotesL } from 'react-icons/ri';
+import { useLanguage } from '../../../context/LanguageContext';
+import { ui } from '../../../i18n/messages';
 import './GlobalChatbot.css';
 
 export default function GlobalChatbot() {
+  const { lang } = useLanguage();
+  const copy = ui[lang];
+  
   const [isOpen, setIsOpen] = useState(false);
   const [question, setQuestion] = useState('');
   const [history, setHistory] = useState([]);
@@ -59,20 +64,21 @@ export default function GlobalChatbot() {
          throw new Error("Phiên trò chuyện chưa được khởi tạo. Vui lòng kiểm tra lại khóa API.");
       }
       
-      const result = await chatSessionRef.current.sendMessage(currentQ);
+      const contextPrompt = `(Trả lời bằng ${lang === 'vi' ? 'Tiếng Việt' : 'English'}):\n${currentQ}`;
+      const result = await chatSessionRef.current.sendMessage(contextPrompt);
       const answer = result.response.text();
       
       // Update câu trả lời của AI
       setHistory(current => {
         const newHistory = [...current];
-        newHistory[newHistory.length - 1].answer = answer || "Xin lỗi, tôi không thể trả lời câu hỏi này.";
+        newHistory[newHistory.length - 1].answer = answer || copy.chatNoAnswer;
         return newHistory;
       });
     } catch (err) {
       console.error(err);
       setHistory(current => {
         const newHistory = [...current];
-        newHistory[newHistory.length - 1].answer = "Đã có lỗi xảy ra khi kết nối với trợ lý văn hóa AI. " + err.message;
+        newHistory[newHistory.length - 1].answer = `${copy.chatError} ` + err.message;
         return newHistory;
       });
     } finally {
@@ -96,8 +102,8 @@ export default function GlobalChatbot() {
                 <FaRobot />
               </div>
               <div className="gc-header-text">
-                <h4>Trợ lý Văn hóa Việt</h4>
-                <span>Đại sứ văn hóa số</span>
+                <h4>{copy.chatTitle}</h4>
+                <span>{copy.chatSubtitle}</span>
               </div>
             </div>
             <button className="gc-close-btn" onClick={toggleChat}>
@@ -110,7 +116,7 @@ export default function GlobalChatbot() {
               <div className="gc-message-wrapper assistant">
                 <div className="gc-avatar-small"><RiDoubleQuotesL /></div>
                 <div className="gc-message assistant">
-                  Kính chào quý khách. Rất hân hạnh được đón tiếp bạn trong không gian của văn hóa Việt Nam. Chúc bạn một ngày an yên. Bạn muốn tìm hiểu về phong tục, ẩm thực hay di sản nào của đất nước chúng ta hôm nay?
+                  {copy.chatGreeting}
                 </div>
               </div>
             )}
@@ -141,7 +147,7 @@ export default function GlobalChatbot() {
           <form className="gc-input-area" onSubmit={handleAsk}>
             <input 
               type="text" 
-              placeholder="Hỏi chuyên gia văn hóa..." 
+              placeholder={copy.chatPlaceholder} 
               value={question}
               onChange={e => setQuestion(e.target.value)}
               disabled={loading}

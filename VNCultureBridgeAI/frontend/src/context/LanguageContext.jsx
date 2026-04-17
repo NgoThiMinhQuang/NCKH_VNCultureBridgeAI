@@ -9,7 +9,9 @@ const LanguageContext = createContext(null)
  * Wrap quanh <App> hoặc <BrowserRouter>.
  */
 export function LanguageProvider({ children }) {
-  const [lang, setLangState] = useState(DEFAULT_LANGUAGE)
+  const [lang, setLangState] = useState(() => {
+    return localStorage.getItem('vnc_language') || DEFAULT_LANGUAGE
+  })
 
   useEffect(() => {
     document.documentElement.lang = lang
@@ -17,6 +19,7 @@ export function LanguageProvider({ children }) {
 
   const setLang = useCallback((nextLang) => {
     setLangState(nextLang)
+    localStorage.setItem('vnc_language', nextLang)
   }, [])
 
   const value = useMemo(() => ({ lang, setLang }), [lang, setLang])

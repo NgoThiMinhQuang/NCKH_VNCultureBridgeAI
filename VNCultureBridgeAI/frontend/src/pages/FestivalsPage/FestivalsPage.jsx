@@ -5,6 +5,8 @@ import "./FestivalsPage.css";
 import PageHeader from "../../components/layout/PageHeader/PageHeader";
 import Footer from "../../components/layout/Footer/Footer";
 import LoadingState from "../../components/common/LoadingState/LoadingState";
+import { useLanguage } from "../../context/LanguageContext";
+import { ui } from "../../i18n/messages";
 
 // Sub-components
 import FestivalHero from "./components/FestivalHero";
@@ -23,7 +25,8 @@ import {
 } from "./FestivalsPage.constants";
 
 export default function FestivalsPage() {
-  const [lang, setLang] = useState("vi");
+  const { lang, setLang } = useLanguage();
+  const copy = ui[lang];
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
@@ -58,8 +61,8 @@ export default function FestivalsPage() {
   /* ── Derived Lists ── */
   const ethnicOptions = useMemo(() => {
     const values = [...new Set(data.festivals.map((item) => item.tag).filter(Boolean))];
-    return [{ value: "", label: "Tất cả nhóm trải nghiệm" }, ...values.map((value) => ({ value, label: value }))];
-  }, [data.festivals]);
+    return [{ value: "", label: lang === 'vi' ? "Tất cả nhóm trải nghiệm" : "All experience groups" }, ...values.map((value) => ({ value, label: value }))];
+  }, [data.festivals, lang]);
 
   const filteredFestivals = useMemo(() => {
     return data.festivals.filter((fest) => {
@@ -69,7 +72,7 @@ export default function FestivalsPage() {
       const matchesSearch = !searchText || searchStr.includes(searchText.toLowerCase());
       const matchesRegion = !selectedRegion || fest.region === selectedRegion;
       const matchesMonth = !selectedMonth ||
-        (fest.date || "").includes(`Tháng ${selectedMonth}`) ||
+        (fest.date || "").includes(lang === 'vi' ? `Tháng ${selectedMonth}` : `/${selectedMonth}`) ||
         (fest.date || "").includes(`/${selectedMonth}`);
       const matchesCategory = !selectedCategory || fest.category === selectedCategory;
       const matchesEthnic = !selectedEthnicGroup || fest.tag === selectedEthnicGroup;
@@ -104,11 +107,11 @@ export default function FestivalsPage() {
   };
 
   if (state.status === "loading") {
-    return <LoadingState message="Đang tải dữ liệu lễ hội..." />;
+    return <LoadingState message={copy.festivals?.loading || "Đang tải dữ liệu lễ hội..."} />;
   }
 
   if (state.status === "error") {
-    return <LoadingState type="error" message="Không tải được dữ liệu lễ hội." detail={state.error} />;
+    return <LoadingState type="error" message={copy.festivals?.error || "Không tải được dữ liệu lễ hội."} detail={state.error} />;
   }
 
   return (
@@ -172,7 +175,7 @@ export default function FestivalsPage() {
         <button
           className="festivals-scroll-top"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="Cuộn lên đầu trang"
+          aria-label={copy.festivals?.scrollUp || "Cuộn lên đầu trang"}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="m18 15-6-6-6 6" />

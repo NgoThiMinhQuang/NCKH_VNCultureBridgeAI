@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { LuChevronDown, LuSearch } from 'react-icons/lu'
 import './CuisinePage.css'
@@ -7,6 +8,7 @@ import Footer from '../../components/layout/Footer/Footer'
 import banner3 from '../../assets/banner3.jpg'
 import { getCuisines } from '../../services/cuisine.service'
 import { getCuisineLocalImage } from '../../utils/cuisineMedia'
+import { ui } from '../../i18n/messages'
 
 function StarIcon(props) {
   return (
@@ -36,21 +38,20 @@ function BookOpenIcon(props) {
   )
 }
 
-const DEFAULT_REGIONS = ['Tất cả vùng', 'Miền Bắc', 'Miền Trung', 'Miền Nam']
-const DEFAULT_HERO_CUISINES = ['Tất cả món']
-const DEFAULT_STATS = [
-  { value: '3', label: 'Vùng miền' },
-  { value: '100+', label: 'Món ăn' },
-  { value: '54', label: 'Dân tộc' },
-]
-
 export default function CuisinePage() {
-  const [lang, setLang] = useState('vi')
+  const { lang, setLang } = useLanguage()
+  const copy = ui[lang]
+  const cuisineCopy = copy.cuisine
   const navigate = useNavigate()
   const [pageData, setPageData] = useState(null)
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  
+  const DEFAULT_REGIONS = cuisineCopy.defaultRegions
+  const DEFAULT_HERO_CUISINES = cuisineCopy.defaultHeroCuisines
+  const DEFAULT_STATS = cuisineCopy.defaultStats
+
   const [activeFilter, setActiveFilter] = useState(DEFAULT_REGIONS[0])
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [activeRegion, setActiveRegion] = useState(DEFAULT_REGIONS[0])
@@ -177,8 +178,8 @@ export default function CuisinePage() {
   const currentCards = filteredResolvedCards.slice(startIndex, startIndex + ITEMS_PER_PAGE)
   const featureBullets = resolvedFeatures.slice(0, 3)
   const highlightImage = featureBullets[0]?.imgUrl || heroImage || banner3
-  const highlightTitle = featureBullets[0]?.title || 'Hương vị của sự giao thoa'
-  const highlightText = featureBullets[0]?.desc || hero?.subtitle || 'Mỗi món ăn là một câu chuyện văn hóa được kể bằng hương vị, nguyên liệu và ký ức vùng miền.'
+  const highlightTitle = featureBullets[0]?.title || cuisineCopy.featureFallbackTitle
+  const highlightText = featureBullets[0]?.desc || hero?.subtitle || cuisineCopy.featureFallbackDesc
   const hasNoResults = status === 'success' && filteredResolvedCards.length === 0
   const hasLoadedData = status === 'success' && !!pageData
 
@@ -209,9 +210,9 @@ export default function CuisinePage() {
         <main className="cp-main">
           <section className="cp-section cp-section--light">
             <div className="cp-container cp-center">
-              <span className="cp-section-eyebrow">Ẩm thực</span>
-              <h2 className="cp-section-title cp-serif">Không tải được dữ liệu</h2>
-              <p className="cp-section-desc">{error || 'Đã xảy ra lỗi khi tải dữ liệu ẩm thực.'}</p>
+              <span className="cp-section-eyebrow">{copy.nav[4]}</span>
+              <h2 className="cp-section-title cp-serif">{cuisineCopy.error}</h2>
+              <p className="cp-section-desc">{error || cuisineCopy.error}</p>
             </div>
           </section>
         </main>
@@ -236,13 +237,13 @@ export default function CuisinePage() {
             <div className="cp-hero__left fade-up">
               <div className="cp-hero__badge">
                 <span className="cp-hero__badge-dot"></span>
-                {hero?.badge || 'Khám phá ẩm thực 3 miền'}
+                {hero?.badge || cuisineCopy.heroBadge}
               </div>
 
               <h1 className="cp-hero__title">
-                <span className="cp-hero__title-accent">{hero?.titleLine1 || 'Tinh Hoa'}</span>
-                <span className="cp-hero__title-line">{hero?.titleAccent || 'Ẩm Thực'}</span>
-                <span className="cp-hero__title-line">{hero?.titleLine3 || 'Việt Nam'}</span>
+                <span className="cp-hero__title-accent">{hero?.titleLine1 || cuisineCopy.heroTitleLine1}</span>
+                <span className="cp-hero__title-line">{hero?.titleAccent || cuisineCopy.heroTitleAccent}</span>
+                <span className="cp-hero__title-line">{hero?.titleLine3 || cuisineCopy.heroTitleLine3}</span>
               </h1>
 
               <div className="cp-hero__divider-row">
@@ -252,7 +253,7 @@ export default function CuisinePage() {
               </div>
 
               <p className="cp-hero__subtitle">
-                {hero?.subtitle || 'Từ Bắc tinh tế, Trung đậm đà đến Nam ngọt ngào — mỗi món ăn đều mang theo một câu chuyện văn hóa riêng.'}
+                {hero?.subtitle || cuisineCopy.heroSubtitle}
               </p>
 
               <div className="cp-hero__stats">
@@ -273,7 +274,7 @@ export default function CuisinePage() {
                     <LuSearch className="cp-search-icon" />
                     <input
                       type="text"
-                      placeholder="Tìm kiếm món ăn..."
+                      placeholder={cuisineCopy.searchPlaceholder}
                       value={searchQuery}
                       onChange={(event) => setSearchQuery(event.target.value)}
                     />
@@ -290,7 +291,7 @@ export default function CuisinePage() {
                       setIsHeroCuisineOpen(false)
                     }}
                   >
-                    <span>{activeRegion === (regions[0] || DEFAULT_REGIONS[0]) ? 'Vùng' : activeRegion}</span>
+                    <span>{activeRegion === (regions[0] || DEFAULT_REGIONS[0]) ? cuisineCopy.regionLabel : activeRegion}</span>
                     <LuChevronDown className={`cp-chevron-icon ${isRegionOpen ? 'rotate' : ''}`} />
                   </div>
 
@@ -319,7 +320,7 @@ export default function CuisinePage() {
                       setIsRegionOpen(false)
                     }}
                   >
-                    <span>{activeHeroCuisine === (heroCuisines[0] || DEFAULT_HERO_CUISINES[0]) ? 'Món ăn' : activeHeroCuisine}</span>
+                    <span>{activeHeroCuisine === (heroCuisines[0] || DEFAULT_HERO_CUISINES[0]) ? cuisineCopy.cuisineLabel : activeHeroCuisine}</span>
                     <LuChevronDown className={`cp-chevron-icon ${isHeroCuisineOpen ? 'rotate' : ''}`} />
                   </div>
 
@@ -339,18 +340,18 @@ export default function CuisinePage() {
                 </div>
 
                 <button className="cp-hero__cta-btn" type="button" onClick={() => handlePageChange(1)}>
-                  Tìm kiếm
+                  {cuisineCopy.searchButton}
                 </button>
               </div>
             </div>
 
             <div className="cp-hero__right fade-up">
               <div className="cp-hero__img-frame">
-                <img src={heroImage || highlightImage} alt={hero?.heroImageAlt || 'Ẩm thực'} className="cp-hero__img-main" />
+                <img src={heroImage || highlightImage} alt={hero?.heroImageAlt || cuisineCopy.heroImageAlt} className="cp-hero__img-main" />
                 <div className="cp-hero__img-ring"></div>
                 <div className="cp-hero__img-badge">
                   <span className="cp-hero__img-badge-icon">🍲</span>
-                  {hero?.badge || 'Bản sắc Việt Nam'}
+                  {hero?.badge || cuisineCopy.heroBadgeAlt}
                 </div>
               </div>
             </div>
@@ -367,15 +368,13 @@ export default function CuisinePage() {
           <div className="cp-container">
             <div className="cp-section-header cp-center">
               <div className="cp-section-title-wrap">
-                <span className="cp-section-eyebrow cp-eyebrow-capsule">TINH HOA 3 MIỀN</span>
-                <h2 className="cp-section-title cp-serif">Món ăn tiêu biểu</h2>
-                <p className="cp-section-desc">
-                  <>
-                    Mỗi món ăn là một kho tàng hương vị độc đáo, góp phần tạo nên
-                    <br />
-                    sự đặc sắc của nền ẩm thực đất Việt
-                  </>
-                </p>
+                <span className="cp-section-eyebrow cp-eyebrow-capsule">{cuisineCopy.sectionTypicalBadge}</span>
+                <h2 className="cp-section-title cp-serif">{cuisineCopy.sectionTypicalTitle}</h2>
+                <div className="cp-section-desc">
+                  <p>
+                    {cuisineCopy.sectionTypicalDesc}
+                  </p>
+                </div>
                 <div className="cp-divider-ornament" aria-hidden="true">
                   <span className="cp-line-main" />
                   <span className="cp-dot" />
@@ -387,7 +386,11 @@ export default function CuisinePage() {
             <div className="cp-filters">
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
                 <div className="cp-section-desc" style={{ maxWidth: 'none', margin: 0, textAlign: 'left', fontSize: '0.95rem' }}>
-                  {`Hiển thị ${filteredResolvedCards.length === 0 ? 0 : startIndex + 1}-${Math.min(startIndex + currentCards.length, filteredResolvedCards.length)} trên ${filteredResolvedCards.length} món ăn${filteredResolvedCards.length < resolvedCards.length ? ` (tổng ${resolvedCards.length} món)` : ''}`}
+                  {cuisineCopy.resultsInfo
+                    .replace('{start}', filteredResolvedCards.length === 0 ? 0 : startIndex + 1)
+                    .replace('{end}', Math.min(startIndex + currentCards.length, filteredResolvedCards.length))
+                    .replace('{total}', filteredResolvedCards.length)}
+                  {filteredResolvedCards.length < resolvedCards.length && ` ${cuisineCopy.totalMón.replace('{count}', resolvedCards.length)}`}
                 </div>
                 <div className="cp-custom-dropdown">
                   <div
@@ -420,7 +423,7 @@ export default function CuisinePage() {
 
             {hasNoResults ? (
               <div className="cp-center" style={{ padding: '32px 0' }}>
-                <p className="cp-section-desc">Không tìm thấy món ăn phù hợp với bộ lọc hiện tại.</p>
+                <p className="cp-section-desc">{cuisineCopy.noResults}</p>
               </div>
             ) : (
               <div className="cp-grid cp-grid--4cols fade-up">
@@ -430,7 +433,7 @@ export default function CuisinePage() {
                       {card.status && <span className="cp-card__status">{card.status}</span>}
                       <img src={card.imgUrl || heroImage || banner3} alt={card.imageAlt || card.name} loading="lazy" />
                       <div className="cp-card__explore-overlay">
-                        <span>Khám phá ngay</span>
+                        <span>{cuisineCopy.exploreNow}</span>
                       </div>
                     </div>
                     <div className="cp-card__content">
@@ -439,7 +442,7 @@ export default function CuisinePage() {
                         {card.location || card.region}
                       </p>
                       <h3 className="cp-card__title">{card.name}</h3>
-                      <span className="cp-card__link">Xem chi tiết</span>
+                      <span className="cp-card__link">{cuisineCopy.viewDetails}</span>
                     </div>
                   </div>
                 ))}
@@ -459,17 +462,20 @@ export default function CuisinePage() {
                 </button>
 
                 <div className="cp-pagination__pages">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                    const pageTitle = lang === 'vi' ? `Trang ${page}` : `Page ${page}`
+                    return (
                     <button
                       key={page}
                       className={`cp-pagination__btn ${currentPage === page ? 'active' : ''}`}
                       onClick={() => handlePageChange(page)}
-                      aria-label={`Trang ${page}`}
-                      title={`Trang ${page}`}
+                      aria-label={pageTitle}
+                      title={pageTitle}
                     >
                       {page}
                     </button>
-                  ))}
+                    )
+                  })}
                 </div>
 
                 <button
@@ -502,14 +508,14 @@ export default function CuisinePage() {
                 <div className="cp-feature-img-tag glass-panel">
                   <div className="cp-tag-icon"><StarIcon /></div>
                   <div className="cp-tag-text">
-                    <strong>{featureBullets[0]?.title || hero?.badge || 'Ẩm thực Việt'}</strong>
-                    <span>{featureBullets[0]?.tag || hero?.subtitle || 'Linh hồn của nền ẩm thực'}</span>
+                    <strong>{featureBullets[0]?.title || cuisineCopy.heroBadgeAlt}</strong>
+                    <span>{featureBullets[0]?.tag || cuisineCopy.featureBadge}</span>
                   </div>
                 </div>
               </div>
 
               <div className="cp-feature-text fade-up delay-1">
-                <span className="cp-badge cp-badge--accent">Câu chuyện ẩm thực</span>
+                <span className="cp-badge cp-badge--accent">{cuisineCopy.featureBadge}</span>
                 <h2 className="cp-section-title">{highlightTitle}</h2>
                 <p className="cp-feature-desc">{highlightText}</p>
 
@@ -542,13 +548,9 @@ export default function CuisinePage() {
             <div className="cp-container">
               <div className="cp-section-header cp-flex-header">
                 <div>
-                  <span className="cp-section-eyebrow">Khám phá</span>
+                  <span className="cp-section-eyebrow">{copy.learnMore}</span>
                   <h2 className="cp-section-title">
-                    <>
-                      Ba miền ẩm thực
-                      <br />
-                      đặc sắc
-                    </>
+                    {cuisineCopy.storiesTitle}
                   </h2>
                 </div>
                 <div className="cp-nav-buttons">
@@ -564,13 +566,13 @@ export default function CuisinePage() {
                       {feature.tag && <span className="cp-card__status">{feature.tag}</span>}
                       <img src={feature.imgUrl || banner3} alt={feature.title} loading="lazy" />
                       <div className="cp-card__explore-overlay">
-                        <span>Tìm hiểu ngay</span>
+                        <span>{cuisineCopy.learnMore}</span>
                       </div>
                     </div>
                     <div className="cp-hcard__content">
                       <h3 className="cp-hcard__title">{feature.title}</h3>
-                      <p className="cp-hcard__desc">{feature.desc || 'Cùng chiêm nghiệm và khám phá phong vị đặc trưng phản ánh nét đẹp và lối sống qua nghệ thuật ẩm thực.'}</p>
-                      <span className="cp-card__link">Tìm hiểu</span>
+                      <p className="cp-hcard__desc">{feature.desc || cuisineCopy.featureItemDesc}</p>
+                      <span className="cp-card__link">{cuisineCopy.findMore}</span>
                     </div>
                   </div>
                 ))}
@@ -578,10 +580,6 @@ export default function CuisinePage() {
             </div>
           </section>
         )}
-
-
-
-
 
         {hasLoadedData && resolvedGallery.length > 0 && (
           <section className="cp-section cp-section--cream cp-section--wavy">
@@ -592,21 +590,17 @@ export default function CuisinePage() {
             </div>
             <div className="cp-container">
               <div className="cp-section-header cp-center">
-                <span className="cp-section-eyebrow">Thư viện ảnh</span>
+                <span className="cp-section-eyebrow">{cuisineCopy.galleryBadge}</span>
                 <h2 className="cp-section-title">
-                  <>
-                    Khoảnh khắc ẩm thực
-                    <br />
-                    sống động
-                  </>
+                  {cuisineCopy.galleryTitle}
                 </h2>
-                <p className="cp-section-desc">Những góc máy chân thực nhất làm khơi dậy sự thèm ăn và vẻ rực rỡ của ẩm thực.</p>
+                <p className="cp-section-desc">{cuisineCopy.galleryDesc}</p>
               </div>
 
               <div className="cp-masonry fade-up">
                 {resolvedGallery.map((img, idx) => (
                   <div key={img.id || idx} className={`cp-masonry-item cp-masonry-item--${img.size || 'small'}`}>
-                    <img src={img.imgUrl || img.imageUrl} alt={img.imageAlt || 'Khoảnh khắc ẩm thực'} loading="lazy" />
+                    <img src={img.imgUrl || img.imageUrl} alt={img.imageAlt || cuisineCopy.galleryItemAlt} loading="lazy" />
                     <div className="cp-masonry-overlay">
                       <span className="cp-btn-icon">🔍</span>
                     </div>
@@ -627,16 +621,12 @@ export default function CuisinePage() {
             <div className="cp-container">
               <div className="cp-section-header cp-flex-header">
                 <div>
-                  <span className="cp-section-eyebrow">Trải nghiệm</span>
+                  <span className="cp-section-eyebrow">{cuisineCopy.storiesBadge}</span>
                   <h2 className="cp-section-title">
-                    <>
-                      Chuyện kể
-                      <br />
-                      ẩm thực
-                    </>
+                    {cuisineCopy.storiesTitle}
                   </h2>
                 </div>
-                <Link to="/blog" className="cp-link-more">Xem tất cả bài viết &rsaquo;</Link>
+                <Link to="/blog" className="cp-link-more">{cuisineCopy.viewAllStories}</Link>
               </div>
 
               <div className="cp-grid cp-grid--3cols fade-up">

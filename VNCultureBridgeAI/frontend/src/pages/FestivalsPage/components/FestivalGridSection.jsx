@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../FestivalsPage.constants";
+import { useLanguage } from "../../../context/LanguageContext";
+import { ui } from "../../../i18n/messages";
 
 const FestivalGridSection = ({
   page,
@@ -12,6 +14,9 @@ const FestivalGridSection = ({
   canGoPrev,
   canGoNext
 }) => {
+  const { lang } = useLanguage();
+  const copy = ui[lang];
+
   return (
     <>
       <section className="festivals-major" id="explore">
@@ -29,7 +34,7 @@ const FestivalGridSection = ({
                   <img src={getImageUrl(fest.image)} alt={fest.title} loading="lazy" />
                   <span className="festivals-card__tag">{fest.tag}</span>
                   <div className="festivals-card__explore-overlay">
-                    <span>Khám phá ngay</span>
+                    <span>{copy.festivals?.exploreNow || "Khám phá ngay"}</span>
                   </div>
                 </div>
                 <div className="festivals-card__body">
@@ -65,7 +70,7 @@ const FestivalGridSection = ({
                   <div className="festival-featured-card__overlay"></div>
                   <div className="festival-featured-card__content">
                     <div className="festival-tags">
-                      <span className="festival-tag festival-tag--featured">Nổi bật</span>
+                      <span className="festival-tag festival-tag--featured">{copy.festivals?.featured || "Nổi bật"}</span>
                       <span className="festival-tag festival-tag--category">{fest.tag}</span>
                     </div>
                     <h3 className="festival-featured-card__title">{fest.title}</h3>
@@ -76,7 +81,7 @@ const FestivalGridSection = ({
                     </div>
                     <p className="festival-featured-card__desc">{fest.desc}</p>
                     <Link to={`/festivals/${fest.code || fest.id}`} className="festival-btn-explore">
-                      Khám phá ngay
+                      {copy.festivals?.exploreNow || "Khám phá ngay"}
                     </Link>
                   </div>
                 </article>
@@ -98,7 +103,7 @@ const FestivalGridSection = ({
                   </div>
                   <p className="festival-regular-card__desc">{fest.desc}</p>
                   <Link to={`/festivals/${fest.code || fest.id}`} className="festival-btn-discover">
-                    Xem câu chuyện lễ hội
+                    {copy.festivals?.viewStory || "Xem câu chuyện lễ hội"}
                   </Link>
                 </div>
               </article>

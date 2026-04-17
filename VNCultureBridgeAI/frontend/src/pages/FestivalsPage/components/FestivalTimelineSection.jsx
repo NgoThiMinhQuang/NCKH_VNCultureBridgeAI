@@ -20,7 +20,8 @@ const FestivalTimelineSection = ({ page, timeline }) => {
             <div className="timeline-item" key={item.id || index} style={{ animationDelay: `${index * 0.1}s` }}>
               <div className="timeline-item__top-dot" style={{ backgroundColor: item.color, boxShadow: `0 0 15px ${item.color}` }}></div>
               <div className="timeline-item__circle" style={{ border: `2px solid ${item.color}`, boxShadow: `0 0 30px ${item.color}40, inset 0 0 20px ${item.color}20` }}>
-                <span>{item.month}</span>
+                <span className="timeline-item__month-label">{section.monthLabel}</span>
+                <span className="timeline-item__month-value">{item.month}</span>
               </div>
               <div className="timeline-card">
                 <div className="timeline-card__image-wrapper">
@@ -31,11 +32,11 @@ const FestivalTimelineSection = ({ page, timeline }) => {
                   <h3 className="timeline-card__title">{item.title}</h3>
                   <div className="timeline-card__meta">
                     <div className="timeline-card__info">
-                      <span className="info-label">{page.timeline?.dateLabel || "Thời gian:"}</span>
+                      <span className="info-label">{section.dateLabel || "Thời gian:"}</span>
                       <span className="info-value">{item.date}</span>
                     </div>
                     <div className="timeline-card__info">
-                      <span className="info-label">{page.timeline?.locationLabel || "Địa điểm:"}</span>
+                      <span className="info-label">{section.locationLabel || "Địa điểm:"}</span>
                       <span className="info-value">{item.location}</span>
                     </div>
                   </div>

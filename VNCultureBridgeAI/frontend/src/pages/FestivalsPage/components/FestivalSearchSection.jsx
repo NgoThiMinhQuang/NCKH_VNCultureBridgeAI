@@ -1,5 +1,5 @@
 import React from "react";
-import { REGION_OPTIONS, MONTH_OPTIONS, CATEGORY_OPTIONS } from "../FestivalsPage.constants";
+
 
 const FestivalSearchSection = ({
   page,
@@ -32,7 +32,7 @@ const FestivalSearchSection = ({
             </svg>
             <input
               type="text"
-              placeholder={page.searchPlaceholder || "Tìm kiếm lễ hội, nghi lễ và truyền thống..."}
+              placeholder={page.search?.placeholder || "Tìm kiếm lễ hội, nghi lễ và truyền thống..."}
               className="festivals-search-input"
               value={searchText}
               onChange={handleSearchChange}
@@ -45,7 +45,7 @@ const FestivalSearchSection = ({
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ce112d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
-            <span>{page.filterButton || "Bộ lọc nâng cao"}</span>
+            <span>{page.search?.filterButton || "Bộ lọc nâng cao"}</span>
             <svg
               width="18"
               height="18"

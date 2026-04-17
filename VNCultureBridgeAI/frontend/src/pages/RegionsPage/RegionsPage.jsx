@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import { Link } from 'react-router-dom'
 import './RegionsPage.css'
 import { getRegions } from '../../services/region.service'
@@ -223,10 +224,9 @@ const regionMeta = {
   ],
 }
 
-function mergeRegionContent(listRegions, lang) {
+function mergeRegionContent(regions, lang) {
   const meta = regionMeta[lang] || regionMeta.vi
-  // The API returns 'id' which is MaVung (e.g. BAC_BO)
-  const regionByKey = new Map(listRegions.map((item) => [item.id || item.key || item.code, item]))
+  const regionByKey = new Map(regions.map((item) => [item.id || item.key || item.code, item]))
 
   return meta.map((item) => {
     const region = regionByKey.get(item.key) || {}
@@ -249,136 +249,141 @@ function mergeRegionContent(listRegions, lang) {
   })
 }
 
-const overviewRegions = [
-  {
-    id: 'BAC_BO',
-    badge: 'Miền Bắc',
-    title: 'Nơi mây núi tích tụ từng lớp lịch sử',
-    desc: 'Miền Bắc mang trong mình sự trầm lắng, kín đáo như tầng tầng lớp lớp ruộng bậc thang. Từ thủ đô nghìn năm văn hiến đến những bản làng cao nguyên, mỗi góc đất đều thấm đượm hồn văn hiến và sức sống bền bỉ của con người vùng núi.',
-    details: [
-      { label: 'CẢNH QUAN ĐẶC TRƯNG', value: 'Ruộng bậc thang Mù Cang Chải, núi non Hà Giang, vịnh Hạ Long, Ninh Bình tiên cảnh, đồng bằng sông Hồng' },
-      { label: 'NÉT ẨM THỰC', value: 'Phở Hà Nội, bún chả, nem rán, bánh cuốn, cà phê trứng, đặc sản vùng cao' },
-      { label: 'LỄ HỘI TIÊU BIỂU', value: 'Hội Lim, Chùa Hương, Lễ hội Đền Hùng, Tết Nguyên Đán, Hội Gióng' },
-      { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Gốm Bát Tràng, lụa Vạn Phúc, tranh Đông Hồ, ca trù, quan họ Bắc Ninh' }
+const getLocalizedRegionsData = (lang) => {
+  const isVi = lang === 'vi'
+
+  return {
+    overview: [
+      {
+        id: 'BAC_BO',
+        badge: isVi ? 'Miền Bắc' : 'North Vietnam',
+        title: isVi ? 'Nơi mây núi tích tụ từng lớp lịch sử' : 'Where clouds and mountains accumulate history',
+        desc: isVi
+          ? 'Miền Bắc mang trong mình sự trầm lắng, kín đáo như tầng tầng lớp lớp ruộng bậc thang. Từ thủ đô nghìn năm văn hiến đến những bản làng cao nguyên, mỗi góc đất đều thấm đượm hồn văn hiến và sức sống bền bỉ của con người vùng núi.'
+          : 'Northern Vietnam carries a profound, discreet serenity like layers of rice terraces. From the thousand-year-old capital to highland villages, every corner is steeped in history and the resilient spirit of the mountain people.',
+        details: [
+          { label: isVi ? 'CẢNH QUAN ĐẶC TRƯNG' : 'CHARACTERISTIC LANDSCAPES', value: isVi ? 'Ruộng bậc thang Mù Cang Chải, núi non Hà Giang, vịnh Hạ Long, Ninh Bình tiên cảnh, đồng bằng sông Hồng' : 'Mu Cang Chai terraces, Ha Giang mountains, Ha Long Bay, Ninh Binh, Red River Delta' },
+          { label: isVi ? 'NÉT ẨM THỰC' : 'CUISINE HIGHLIGHTS', value: isVi ? 'Phở Hà Nội, bún chả, nem rán, bánh cuốn, cà phê trứng, đặc sản vùng cao' : 'Hanoi Pho, bun cha, spring rolls, steamed rice rolls, egg coffee, highland specialties' },
+          { label: isVi ? 'LỄ HỘI TIÊU BIỂU' : 'TYPICAL FESTIVALS', value: isVi ? 'Hội Lim, Chùa Hương, Lễ hội Đền Hùng, Tết Nguyên Đán, Hội Gióng' : 'Lim Festival, Huong Pagoda, Hung Temple Festival, Lunar New Year, Giong Festival' },
+          { label: isVi ? 'NGHỆ THUẬT & THỦ CÔNG' : 'ARTS & CRAFTS', value: isVi ? 'Gốm Bát Tràng, lụa Vạn Phúc, tranh Đông Hồ, ca trù, quan họ Bắc Ninh' : 'Bat Trang ceramics, Van Phuc silk, Dong Ho paintings, Ca tru, Quan ho singing' }
+        ],
+        image: imgOverviewNorth,
+        link: '/regions/BAC_BO'
+      },
+      {
+        id: 'TRUNG_BO',
+        badge: isVi ? 'Miền Trung' : 'Central Vietnam',
+        title: isVi ? 'Dải đất di sản giữa núi và biển' : 'A heritage corridor between coast and mountains',
+        desc: isVi
+          ? 'Miền Trung là nơi hội tụ của núi non hùng vĩ và biển cả mênh mông. Từ cố đô Huế với hoàng cung nguy nga đến phố cổ Hội An thơ mộng, vùng đất này chứa đựng những di sản văn hoá vật thể và phi vật thể quý giá nhất của Việt Nam.'
+          : 'Central Vietnam is where majestic mountains meet the vast ocean. From the imperial capital of Hue to the poetic Hoi An ancient town, this land holds some of Vietnam\'s most precious tangible and intangible cultural heritage.',
+        details: [
+          { label: isVi ? 'CẢNH QUAN ĐẶC TRƯNG' : 'CHARACTERISTIC LANDSCAPES', value: isVi ? 'Cố đô Huế, phố cổ Hội An, thánh địa Mỹ Sơn, động Phong Nha, bán đảo Sơn Trà, Quy Nhơn biển xanh' : 'Hue Citadel, Hoi An Ancient Town, My Son Sanctuary, Phong Nha Caves, Son Tra Peninsula, Quy Nhon' },
+          { label: isVi ? 'NÉT ẨM THỰC' : 'CUISINE HIGHLIGHTS', value: isVi ? 'Bún bò Huế, cao lầu, mì Quảng, bánh xèo, nem lụi, ẩm thực cung đình Huế' : 'Hue beef noodles, cao lau, Quang noodles, banh xeo, nem lui, Hue royal cuisine' },
+          { label: isVi ? 'LỄ HỘI TIÊU BIỂU' : 'TYPICAL FESTIVALS', value: isVi ? 'Festival Huế, Lễ hội Hoa đăng Hội An, Lễ hội Cầu Ngư, Tết Nguyên Tiêu' : 'Hue Festival, Hoi An Lantern Festival, Cau Ngu Festival, Tet Nguyen Tieu' },
+          { label: isVi ? 'NGHỆ THUẬT & THỦ CÔNG' : 'ARTS & CRAFTS', value: isVi ? 'Thêu tay Huế, mộc điêu khắc, đèn lồng Hội An, tranh cát Mộc Nghệ, nhã nhạc cung đình' : 'Hue hand embroidery, wood carving, Hoi An lanterns, Moc Nghệ sand painting, Royal court music' }
+        ],
+        image: imgOverviewCentral,
+        link: '/regions/TRUNG_BO'
+      },
+      {
+        id: 'NAM_BO',
+        badge: isVi ? 'Miền Nam' : 'Southern Vietnam',
+        title: isVi ? 'Vùng sông nước bao la, lòng người rộng mở' : 'Vast river regions, open hearts',
+        desc: isVi
+          ? 'Miền Nam là vùng đất của những dòng sông giao thoa, nơi nhịp sống chảy theo dòng nước. Từ Sài Gòn sôi động đến đồng bằng sông Cửu Long thơ mộng, miền Nam toát lên sự rộng mở, phóng khoáng và lòng mến khách.'
+          : 'Southern Vietnam is a land of intersecting rivers, where life flows with the water. From vibrant Saigon to the poetic Mekong Delta, the South exudes openness, hospitality, and a liberal spirit.',
+        details: [
+          { label: isVi ? 'CẢNH QUAN ĐẶC TRƯNG' : 'CHARACTERISTIC LANDSCAPES', value: isVi ? 'Đồng bằng sông Cửu Long, chợ nổi Cái Răng, rừng tràm Trà Sư, Phú Quốc đảo ngọc, Côn Đảo hoang sơ' : 'Mekong Delta, Cai Rang floating market, Tra Su cajuput forest, Phu Quoc Island, Con Dao Island' },
+          { label: isVi ? 'NÉT ẨM THỰC' : 'CUISINE HIGHLIGHTS', value: isVi ? 'Hủ tiếu Nam Vang, bánh tráng trộn, lẩu mắm, cá lóc nướng trui, trái cây miệt vườn, cơm tấm' : 'Nam Vang noodle soup, mixed rice paper, fish sauce hotpot, grilled snakehead fish, orchard fruits, broken rice' },
+          { label: isVi ? 'LỄ HỘI TIÊU BIỂU' : 'TYPICAL FESTIVALS', value: isVi ? 'Lễ hội Ok Om Bok, Lễ hội Nghinh Ông, Tết Chol Chnam Thmay, Lễ hội Cầu Bông' : 'Ok Om Bok Festival, Nghinh Ông Festival, Chol Chnam Thmay New Year, Cau Bong Festival' },
+          { label: isVi ? 'NGHỆ THUẬT & THỦ CÔNG' : 'ARTS & CRAFTS', value: isVi ? 'Lụa Tân Châu, đan lát cói, gốm sứ Biên Hoà, đờn ca tài tử, hát bội Nam Bộ' : 'Tan Chau silk, sedge weaving, military pottery, Don ca tài tử, Southern Hat Boi' }
+        ],
+        image: imgOverviewSouth,
+        link: '/regions/NAM_BO'
+      }
     ],
-    image: imgOverviewNorth,
-    link: '/regions/BAC_BO'
-  },
-  {
-    id: 'TRUNG_BO',
-    badge: 'Miền Trung',
-    title: 'Dải đất di sản giữa núi và biển',
-    desc: 'Miền Trung là nơi hội tụ của núi non hùng vĩ và biển cả mênh mông. Từ cố đô Huế với hoàng cung nguy nga đến phố cổ Hội An thơ mộng, vùng đất này chứa đựng những di sản văn hoá vật thể và phi vật thể quý giá nhất của Việt Nam.',
-    details: [
-      { label: 'CẢNH QUAN ĐẶC TRƯNG', value: 'Cố đô Huế, phố cổ Hội An, thánh địa Mỹ Sơn, động Phong Nha, bán đảo Sơn Trà, Quy Nhơn biển xanh' },
-      { label: 'NÉT ẨM THỰC', value: 'Bún bò Huế, cao lầu, mì Quảng, bánh xèo, nem lụi, ẩm thực cung đình Huế' },
-      { label: 'LỄ HỘI TIÊU BIỂU', value: 'Festival Huế, Lễ hội Hoa đăng Hội An, Lễ hội Cầu Ngư, Tết Nguyên Tiêu' },
-      { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Thêu tay Huế, mộc điêu khắc, đèn lồng Hội An, tranh cát Mộc Nghệ, nhã nhạc cung đình' }
+    inspiration: [
+      { title: isVi ? 'Miền núi và mây' : 'Mountains and Clouds', desc: isVi ? 'Khám phá những cao nguyên mờ sương, bản làng dân tộc và những thửa ruộng bậc thang trải dài như tranh.' : 'Explore misty highlands, ethnic villages, and terraced rice fields stretching like a painting.', image: imgHlSapa },
+      { title: isVi ? 'Di sản và ký ức' : 'Heritage and Memories', desc: isVi ? 'Những cố đô hoàng triều, đền chùa nghìn năm, kiến trúc cổ kính lưu giữ linh hồn của dân tộc.' : 'Imperial capitals, thousand-year-old temples, and ancient architecture preserving the nation\'s soul.', image: imgHlHue },
+      { title: isVi ? 'Sông nước và chợ quê' : 'Rivers and Floating Markets', desc: isVi ? 'Nhịp sống chảy theo dòng sông, chợ nổi, lòng chài and cuộc sống gắn bó với lúa nước.' : 'Life flows with the rivers, floating markets, fishing villages, and life tied to wet rice cultivation.', image: imgHlCanTho },
+      { title: isVi ? 'Biển xanh và làng chài' : 'Blue Sea and Fishing Villages', desc: isVi ? 'Những bãi biển hoang sơ, làng chài yên bình và cuộc sống gắn liền với biển cả.' : 'Pristine beaches, peaceful fishing villages, and life connected to the ocean.', image: imgHlDaNang },
+      { title: isVi ? 'Ẩm thực địa phương' : 'Local Cuisine', desc: isVi ? 'Từ phở Hà Nội, bún bò Huế đến hủ tiếu Nam Vang - hành trình khám phá hương vị từng vùng miền.' : 'From Hanoi Pho, Hue beef noodles to Nam Vang noodle soup - a journey to discover the flavors of each region.', image: imgHlHanoi },
+      { title: isVi ? 'Làng nghề và thủ công' : 'Craft Villages and Handcrafts', desc: isVi ? 'Khám phá các làng nghề truyền thống: gốm sứ, lụa tơ tằm, tranh dân gian và tay nghề thủ công tinh xảo.' : 'Explore traditional craft villages: ceramics, silk, folk paintings, and exquisite craftsmanship.', image: imgHlNamBo }
     ],
-    image: imgOverviewCentral,
-    link: '/regions/TRUNG_BO'
-  },
-  {
-    id: 'NAM_BO',
-    badge: 'Miền Nam',
-    title: 'Vùng sông nước bao la, lòng người rộng mở',
-    desc: 'Miền Nam là vùng đất của những dòng sông giao thoa, nơi nhịp sống chảy theo dòng nước. Từ Sài Gòn sôi động đến đồng bằng sông Cửu Long thơ mộng, miền Nam toát lên sự rộng mở, phóng khoáng và lòng mến khách.',
-    details: [
-      { label: 'CẢNH QUAN ĐẶC TRƯNG', value: 'Đồng bằng sông Cửu Long, chợ nổi Cái Răng, rừng tràm Trà Sư, Phú Quốc đảo ngọc, Côn Đảo hoang sơ' },
-      { label: 'NÉT ẨM THỰC', value: 'Hủ tiếu Nam Vang, bánh tráng trộn, lẩu mắm, cá lóc nướng trui, trái cây miệt vườn, cơm tấm' },
-      { label: 'LỄ HỘI TIÊU BIỂU', value: 'Lễ hội Ok Om Bok, Lễ hội Nghinh Ông, Tết Chol Chnam Thmay, Lễ hội Cầu Bông' },
-      { label: 'NGHỆ THUẬT & THỦ CÔNG', value: 'Lụa Tân Châu, đan lát cói, gốm sứ Biên Hoà, đờn ca tài tử, hát bội Nam Bộ' }
+    seasons: [
+      {
+        id: 'spring',
+        title: isVi ? 'Mùa xuân' : 'Spring',
+        months: isVi ? 'THÁNG 1 - 3' : 'JAN - MAR',
+        desc: isVi ? 'Hoa nở, lễ hội Tết, không khí tươi mới.' : 'Flowers bloom, Tet festivals, fresh atmosphere.',
+        details: [
+          { region: isVi ? 'Miền Bắc' : 'North', text: isVi ? 'Hoa đào, mai nở rộ' : 'Peach blossoms in full bloom' },
+          { region: isVi ? 'Miền Trung' : 'Central', text: isVi ? 'Tiết trời ấm áp' : 'Warm and pleasant weather' },
+          { region: isVi ? 'Miền Nam' : 'South', text: isVi ? 'Vườn trái cây đầu mùa' : 'Early season fruit orchards' }
+        ],
+        image: imgHlTrangAn
+      },
+      {
+        id: 'summer',
+        title: isVi ? 'Mùa hè' : 'Summer',
+        months: isVi ? 'THÁNG 4 - 6' : 'APR - JUN',
+        desc: isVi ? 'Biển xanh, núi mát, lễ hội mùa màng.' : 'Blue sea, cool mountains, harvest festivals.',
+        details: [
+          { region: isVi ? 'Miền Bắc' : 'North', text: isVi ? 'Mùa lúa xanh' : 'Green rice season' },
+          { region: isVi ? 'Miền Trung' : 'Central', text: isVi ? 'Biển đẹp nhất năm' : 'Best beach time of the year' },
+          { region: isVi ? 'Miền Nam' : 'South', text: isVi ? 'Trái cây chín rộ' : 'Peak fruit harvest season' }
+        ],
+        image: imgOverviewSouth
+      },
+      {
+        id: 'autumn',
+        title: isVi ? 'Mùa thu' : 'Autumn',
+        months: isVi ? 'THÁNG 7 - 9' : 'JUL - SEP',
+        desc: isVi ? 'Lúa chín vàng, trời trong xanh, se se lạnh.' : 'Golden rice fields, clear sky, cool breeze.',
+        details: [
+          { region: isVi ? 'Miền Bắc' : 'North', text: isVi ? 'Mùa lúa chín vàng' : 'Golden harvest on terraces' },
+          { region: isVi ? 'Miền Trung' : 'Central', text: isVi ? 'Mùa mưa bão' : 'Typhoon and rainy season' },
+          { region: isVi ? 'Miền Nam' : 'South', text: isVi ? 'Nước nổi đồng bằng' : 'Floating water season' }
+        ],
+        image: imgProvLaoCai
+      },
+      {
+        id: 'winter',
+        title: isVi ? 'Mùa đông' : 'Winter',
+        months: isVi ? 'THÁNG 10 - 12' : 'OCT - DEC',
+        desc: isVi ? 'Sương mù, se lạnh, không khí tĩnh lặng.' : 'Mist, chilly air, quiet atmosphere.',
+        details: [
+          { region: isVi ? 'Miền Bắc' : 'North', text: isVi ? 'Sương mù, băng giá Sapa' : 'Mist and frost in Sapa' },
+          { region: isVi ? 'Miền Trung' : 'Central', text: isVi ? 'Nắng ấm dần' : 'Gradual warming sun' },
+          { region: isVi ? 'Miền Nam' : 'South', text: isVi ? 'Khô ráo, dễ chịu' : 'Dry and comfortable air' }
+        ],
+        image: imgProvHaGiang
+      }
     ],
-    image: imgOverviewSouth,
-    link: '/regions/NAM_BO'
+    categories: [
+      { id: 'culinary', title: isVi ? 'Ẩm thực' : 'Culinary', icon: '🍴', desc: isVi ? 'Từ phở Bắc, bún Huế đến hủ tiếu Nam - ẩm thực là linh hồn vùng miền' : 'From Northern Pho to Central Bun Bo and Southern Hu Tieu - cuisine is the soul of regions' },
+      { id: 'festival', title: isVi ? 'Lễ hội' : 'Festivals', icon: '🏮', desc: isVi ? 'Tết Nguyên Đán, Festival Huế, lễ hội đền chùa - văn hóa tín ngưỡng đa dạng' : 'Lunar New Year, Hue Festival, pagoda festivals - diverse spiritual culture' },
+      { id: 'architecture', title: isVi ? 'Kiến trúc' : 'Architecture', icon: '🏠', desc: isVi ? 'Từ nhà sàn, nhà rường đến kiến trúc cung đình và phố cổ' : 'From stilt houses and communal houses to royal court architecture and ancient towns' },
+      { id: 'craft', title: isVi ? 'Nghệ thủ công' : 'Craftsmanship', icon: '🎨', desc: isVi ? 'Gốm sứ, lụa tơ tằm, tranh dân gian - tay nghề tinh xảo qua thế hệ' : 'Ceramics, silk, folk paintings - exquisite craftsmanship through generations' },
+      { id: 'music', title: isVi ? 'Âm nhạc dân gian' : 'Folk Music', icon: '🎻', desc: isVi ? 'Ca trù, quan họ, đờn ca tài tử - điệu nhạc của từng vùng miền' : 'Ca tru, Quan ho, Don ca tài tử - the melody of each region' },
+      { id: 'custom', title: isVi ? 'Phong tục' : 'Customs', icon: '🧺', desc: isVi ? 'Tục lệ cưới hỏi, tang lễ, lễ nghi - giá trị truyền thống' : 'Wedding traditions, funerals, rituals - traditional values' },
+      { id: 'fashion', title: isVi ? 'Trang phục' : 'Fashion', icon: '👗', desc: isVi ? 'Áo dài, áo tứ thân, trang phục dân tộc - bản sắc qua trang phục' : 'Ao Dai, Ao Tu Than, ethnic costumes - identity through attire' },
+      { id: 'community', title: isVi ? 'Sinh hoạt cộng đồng' : 'Community Life', icon: '👥', desc: isVi ? 'Làng xã, hội làng, tương thân tương ái - tinh thần cộng đồng' : 'Villages, festivals, mutual support - community spirit' }
+    ],
+    filters: [
+      { id: 'all', label: isVi ? 'Tất cả' : 'All' },
+      { id: 'regions', label: isVi ? 'Vùng miền' : 'Regions' },
+      { id: 'nature', label: isVi ? 'Thiên nhiên' : 'Nature' },
+      { id: 'heritage', label: isVi ? 'Di sản' : 'Heritage' },
+      { id: 'food', label: isVi ? 'Ẩm thực' : 'Cuisine' },
+      { id: 'sea', label: isVi ? 'Biển đảo' : 'Sea & Islands' },
+      { id: 'mountains', label: isVi ? 'Núi rừng' : 'Mountains' },
+      { id: 'oldtown', label: isVi ? 'Phố cổ' : 'Old Towns' },
+      { id: 'craft', label: isVi ? 'Làng nghề' : 'Craft Villages' }
+    ]
   }
-]
-
-// Mini component for wavy dividers
-
-// (Existing constants...)
-const inspirationCards = [
-  { title: 'Miền núi và mây', desc: 'Khám phá những cao nguyên mờ sương, bản làng dân tộc và những thửa ruộng bậc thang trải dài như tranh.', image: imgHlSapa },
-  { title: 'Di sản và ký ức', desc: 'Những cố đô hoàng triều, đền chùa nghìn năm, kiến trúc cổ kính lưu giữ linh hồn của dân tộc.', image: imgHlHue },
-  { title: 'Sông nước và chợ quê', desc: 'Nhịp sống chảy theo dòng sông, chợ nổi, lòng chài và cuộc sống gắn bó với lúa nước.', image: imgHlCanTho },
-  { title: 'Biển xanh và làng chài', desc: 'Những bãi biển hoang sơ, làng chài yên bình và cuộc sống gắn liền với biển cả.', image: imgHlDaNang },
-  { title: 'Ẩm thực địa phương', desc: 'Từ phở Hà Nội, bún bò Huế đến hủ tiếu Nam Vang - hành trình khám phá hương vị từng vùng miền.', image: imgHlHanoi },
-  { title: 'Làng nghề và thủ công', desc: 'Khám phá các làng nghề truyền thống: gốm sứ, lụa tơ tằm, tranh dân gian và tay nghề thủ công tinh xảo.', image: imgHlNamBo }
-]
-
-const seasonsData = [
-  {
-    id: 'spring',
-    title: 'Mùa xuân',
-    months: 'THÁNG 1 - 3',
-    desc: 'Hoa nở, lễ hội Tết, không khí tươi mới.',
-    details: [
-      { region: 'Miền Bắc', text: 'Hoa đào, mai nở rộ' },
-      { region: 'Miền Trung', text: 'Tiết trời ấm áp' },
-      { region: 'Miền Nam', text: 'Vườn trái cây đầu mùa' }
-    ],
-    image: imgHlTrangAn
-  },
-  {
-    id: 'summer',
-    title: 'Mùa hè',
-    months: 'THÁNG 4 - 6',
-    desc: 'Biển xanh, núi mát, lễ hội mùa màng.',
-    details: [
-      { region: 'Miền Bắc', text: 'Mùa lúa xanh' },
-      { region: 'Miền Trung', text: 'Biển đẹp nhất năm' },
-      { region: 'Miền Nam', text: 'Trái cây chín rộ' }
-    ],
-    image: imgOverviewSouth
-  },
-  {
-    id: 'autumn',
-    title: 'Mùa thu',
-    months: 'THÁNG 7 - 9',
-    desc: 'Lúa chín vàng, trời trong xanh, se se lạnh.',
-    details: [
-      { region: 'Miền Bắc', text: 'Mùa lúa chín vàng' },
-      { region: 'Miền Trung', text: 'Mùa mưa bão' },
-      { region: 'Miền Nam', text: 'Nước nổi đồng bằng' }
-    ],
-    image: imgProvLaoCai
-  },
-  {
-    id: 'winter',
-    title: 'Mùa đông',
-    months: 'THÁNG 10 - 12',
-    desc: 'Sương mù, se lạnh, không khí tĩnh lặng.',
-    details: [
-      { region: 'Miền Bắc', text: 'Sương mù, băng giá Sapa' },
-      { region: 'Miền Trung', text: 'Nắng ấm dần' },
-      { region: 'Miền Nam', text: 'Khô ráo, dễ chịu' }
-    ],
-    image: imgProvHaGiang
-  }
-]
-
-const culturalCategories = [
-  { id: 'culinary', title: 'Ẩm thực', icon: '🍴', desc: 'Từ phở Bắc, bún Huế đến hủ tiếu Nam - ẩm thực là linh hồn vùng miền' },
-  { id: 'festival', title: 'Lễ hội', icon: '🏮', desc: 'Tết Nguyên Đán, Festival Huế, lễ hội đền chùa - văn hóa tín ngưỡng đa dạng' },
-  { id: 'architecture', title: 'Kiến trúc', icon: '🏠', desc: 'Từ nhà sàn, nhà rường đến kiến trúc cung đình và phố cổ' },
-  { id: 'craft', title: 'Nghệ thủ công', icon: '🎨', desc: 'Gốm sứ, lụa tơ tằm, tranh dân gian - tay nghề tinh xảo qua thế hệ' },
-  { id: 'music', title: 'Âm nhạc dân gian', icon: '🎻', desc: 'Ca trù, quan họ, đờn ca tài tử - điệu nhạc của từng vùng miền' },
-  { id: 'custom', title: 'Phong tục', icon: '🧺', desc: 'Tục lệ cưới hỏi, tang lễ, lễ nghi - giá trị truyền thống' },
-  { id: 'fashion', title: 'Trang phục', icon: '👗', desc: 'Áo dài, áo tứ thân, trang phục dân tộc - bản sắc qua trang phục' },
-  { id: 'community', title: 'Sinh hoạt cộng đồng', icon: '👥', desc: 'Làng xã, hội làng, tương thân tương ái - tinh thần cộng đồng' }
-]
-
-const filterOptions = [
-  { id: 'all', label: 'Tất cả' },
-  { id: 'regions', label: 'Vùng miền' },
-  { id: 'nature', label: 'Thiên nhiên' },
-  { id: 'heritage', label: 'Di sản' },
-  { id: 'food', label: 'Ẩm thực' },
-  { id: 'sea', label: 'Biển đảo' },
-  { id: 'mountains', label: 'Núi rừng' },
-  { id: 'oldtown', label: 'Phố cổ' },
-  { id: 'craft', label: 'Làng nghề' }
-]
+}
 
 function normalizeProvinceCard(province) {
   return {
@@ -419,14 +424,15 @@ function filterProvinceCard(province, activeFilter, lang) {
 }
 
 export default function RegionsPage() {
-  const [lang, setLang] = useState('vi')
+  const { lang, setLang } = useLanguage()
   const [state, setState] = useState({ status: 'loading', data: { regions: [] }, error: '' })
   const [activeKey, setActiveKey] = useState('BAC_BO')
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState('all')
-  const [explorerRegion, setExplorerRegion] = useState('all') // New independent state
+  const [explorerRegion, setExplorerRegion] = useState('all')
   const [provinceState, setProvinceState] = useState({ status: 'loading', data: [], error: '' })
   const copy = useMemo(() => ui[lang], [lang])
+  const i18n = useMemo(() => getLocalizedRegionsData(lang), [lang])
 
   useEffect(() => {
     let ignore = false
@@ -438,7 +444,7 @@ export default function RegionsPage() {
         if (!ignore) {
           setState({ status: 'success', data: { regions }, error: '' })
           document.documentElement.lang = lang
-          document.title = lang === 'vi' ? 'VietCultura - Khám phá vùng miền' : 'VietCultura - Explore regions'
+          document.title = lang === 'vi' ? 'VNCultureBridgeAI - Khám phá vùng miền' : 'VNCultureBridgeAI - Explore regions'
         }
       } catch (error) {
         if (!ignore) {
@@ -473,19 +479,7 @@ export default function RegionsPage() {
   const fallbackRegion = (regionMeta[lang] || regionMeta.vi)[0]
   const activeRegion = mappedRegions.find((item) => item.key === activeKey) || mappedRegions[0] || fallbackRegion
   const provinceCount = provinceState.status === 'success' ? provinceState.data.length : 34
-  const localizedFilterOptions = lang === 'en'
-    ? [
-      { id: 'all', label: 'All' },
-      { id: 'regions', label: 'Regions' },
-      { id: 'nature', label: 'Nature' },
-      { id: 'heritage', label: 'Heritage' },
-      { id: 'food', label: 'Cuisine' },
-      { id: 'sea', label: 'Sea & Islands' },
-      { id: 'mountains', label: 'Mountains' },
-      { id: 'oldtown', label: 'Old Towns' },
-      { id: 'craft', label: 'Craft Villages' }
-    ]
-    : filterOptions
+  const localizedFilterOptions = i18n.filters
 
   const explorerRegionOptions = [
     { id: 'all', label: lang === 'vi' ? 'Tất cả vùng' : 'All Regions' },
@@ -557,20 +551,15 @@ export default function RegionsPage() {
 
       <main className="regions-page">
         <section className="regions-hero">
-          {/* Background image */}
           <div className="regions-hero__bg">
             <img src={imgHeroBg} alt="Vietnam Cultural Heritage" />
             <div className="regions-hero__overlay"></div>
           </div>
 
-          {/* Ornamental corners */}
           <div className="regions-hero__ornament regions-hero__ornament--tl"></div>
           <div className="regions-hero__ornament regions-hero__ornament--br"></div>
 
-          {/* New Split Layout matching Festivals style */}
           <div className="regions-hero__inner">
-
-            {/* LEFT: Text & Content */}
             <div className="regions-hero__left">
               <div className="regions-hero__badge">
                 <span className="regions-hero__badge-dot"></span>
@@ -593,7 +582,6 @@ export default function RegionsPage() {
                 )}
               </h1>
 
-              {/* Ornamental divider */}
               <div className="regions-hero__divider-row">
                 <span className="regions-hero__divider-line"></span>
                 <span className="regions-hero__divider-diamond">◆</span>
@@ -606,7 +594,6 @@ export default function RegionsPage() {
                   : 'Each land is a heartbeat, a layer of memory, a unique cultural color waiting to be felt.'}
               </p>
 
-              {/* Stats like festival page */}
               <div className="regions-hero__stats">
                 <div className="regions-hero__stat">
                   <strong>{mappedRegions.length || 3}</strong>
@@ -636,10 +623,8 @@ export default function RegionsPage() {
               </div>
             </div>
 
-            {/* RIGHT: Fan Card Stack */}
             <div className="regions-hero__right">
               <div className="regions-fan">
-                {/* Card FL – Northern (Sapa) */}
                 <div className="regions-fan__card regions-fan__card--fl">
                   <img src={imgHlSapa} alt="Northern Vietnam" />
                   <div className="regions-fan__card-label">
@@ -648,7 +633,6 @@ export default function RegionsPage() {
                   </div>
                 </div>
 
-                {/* Card FR – Southern (Mekong) */}
                 <div className="regions-fan__card regions-fan__card--fr">
                   <img src={imgHlCanTho} alt="Southern Vietnam" />
                   <div className="regions-fan__card-label">
@@ -657,7 +641,6 @@ export default function RegionsPage() {
                   </div>
                 </div>
 
-                {/* Card L – Northern Capital (Hanoi) */}
                 <div className="regions-fan__card regions-fan__card--l">
                   <img src={imgHlHanoi} alt="Hanoi Capital" />
                   <div className="regions-fan__card-label">
@@ -666,7 +649,6 @@ export default function RegionsPage() {
                   </div>
                 </div>
 
-                {/* Card R – Central Coast (Da Nang) */}
                 <div className="regions-fan__card regions-fan__card--r">
                   <img src={imgHlDaNang} alt="Central Coast" />
                   <div className="regions-fan__card-label">
@@ -675,7 +657,6 @@ export default function RegionsPage() {
                   </div>
                 </div>
 
-                {/* Card C – Ancient Capital (Hue) */}
                 <div className="regions-fan__card regions-fan__card--c">
                   <img src={imgHlHue} alt="Ancient Capital" />
                   <div className="regions-fan__card-label">
@@ -684,7 +665,6 @@ export default function RegionsPage() {
                   </div>
                 </div>
 
-                {/* Floating badge */}
                 <div className="regions-fan__badge">
                   <span>🗺️</span>
                   <span>{lang === 'vi' ? `${provinceCount} Tỉnh Thành` : `${provinceCount} Provinces`}</span>
@@ -788,40 +768,40 @@ export default function RegionsPage() {
               </p>
             </div>
             <div className="regions-overview__container container fade-up">
-              {mappedRegions.map((region, idx) => {
-                const fallbackOverview = overviewRegions[idx] || {}
-                const isReversed = idx === 1
-                const regionImage = idx === 0 ? imgOverviewNorth : idx === 1 ? imgOverviewCentral : imgOverviewSouth
-                const overviewTitle = region.overviewTitle || fallbackOverview.title || region.title
-                const overviewDescription = region.overviewDescription || fallbackOverview.desc || region.description
-                const overviewDetails = region.overviewDetails?.length ? region.overviewDetails : (fallbackOverview.details || [])
-                return (
-                  <div key={region.id} className={`regions-overview__card ${isReversed ? 'is-reversed' : ''}`}>
-
-                    <div className="regions-overview__image-col">
-                      <div className="regions-overview__image">
-                        {regionImage ? <img src={regionImage} alt={region.overviewTitle || region.title} /> : <div className="placeholder-image">Ảnh {region.badge}</div>}
+              <div className="regions-overview__list">
+                {i18n.overview.map((region, idx) => {
+                  const isReversed = idx === 1
+                  const regionImage = region.image
+                  const overviewTitle = region.title
+                  const overviewDescription = region.desc
+                  const overviewDetails = region.details
+                  return (
+                    <div key={region.id} className={`regions-overview__card ${isReversed ? 'is-reversed' : ''}`}>
+                      <div className="regions-overview__image-col">
+                        <div className="regions-overview__image">
+                          {regionImage ? <img src={regionImage} alt={region.title} /> : <div className="placeholder-image">Ảnh {region.badge}</div>}
+                        </div>
+                      </div>
+                      <div className="regions-overview__content-col">
+                        <span className="regions-overview__badge">{region.badge}</span>
+                        <h3 className="regions-overview__title">{overviewTitle}</h3>
+                        <p className="regions-overview__desc">{overviewDescription}</p>
+                        <div className="regions-overview__details">
+                          {overviewDetails.map((detail, dIdx) => (
+                            <div key={dIdx} className="regions-overview__detail-row">
+                              <span className="regions-overview__detail-label">{detail.label}</span>
+                              <span className="regions-overview__detail-value">{detail.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <Link to={region.link} className="regions-overview__cta-btn">
+                          {lang === 'vi' ? 'Xem sâu hơn' : 'View more'} <span aria-hidden="true">→</span>
+                        </Link>
                       </div>
                     </div>
-                    <div className="regions-overview__content-col">
-                      <span className="regions-overview__badge">{region.badge || fallbackOverview.badge}</span>
-                      <h3 className="regions-overview__title">{overviewTitle}</h3>
-                      <p className="regions-overview__desc">{overviewDescription}</p>
-                      <div className="regions-overview__details">
-                        {overviewDetails.map((detail, dIdx) => (
-                          <div key={dIdx} className="regions-overview__detail-row">
-                            <span className="regions-overview__detail-label">{detail.label}</span>
-                            <span className="regions-overview__detail-value">{detail.value}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <Link to={region.code ? `/regions/${region.code}` : '/regions'} className="regions-overview__cta-btn">
-                        {lang === 'vi' ? 'Xem sâu hơn' : 'View more'} <span aria-hidden="true">→</span>
-                      </Link>
-                    </div>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
           </section>
 
@@ -835,7 +815,7 @@ export default function RegionsPage() {
                 </p>
               </div>
               <div className="inspiration__grid">
-                {inspirationCards.map((card, idx) => (
+                {i18n.inspiration.map((card, idx) => (
                   <div key={`${card.title}-${idx}`} className="inspiration-card">
                     <div className="inspiration-card__bg">
                       <img src={card.image} alt={card.title} />
@@ -849,7 +829,6 @@ export default function RegionsPage() {
                 ))}
               </div>
             </div>
-
           </section>
 
           <section className="provinces-search-section" style={{ position: 'relative', background: '#ffffff', paddingBottom: '120px' }}>
@@ -885,7 +864,7 @@ export default function RegionsPage() {
 
                 <div className="filter-chips">
                   <span className="filter-label">{lang === 'vi' ? '📍 Chủ đề:' : '📍 Themes:'}</span>
-                  {localizedFilterOptions.map((filter) => (
+                  {i18n.filters.map((filter) => (
                     <button
                       key={filter.id}
                       className={`filter-chip ${activeFilter === filter.id ? 'is-active' : ''}`}
@@ -945,7 +924,7 @@ export default function RegionsPage() {
                 <p>{lang === 'vi' ? 'Mỗi mùa mang một sắc thái riêng, khám phá vùng miền Việt Nam qua bốn mùa thay đổi.' : 'Each season brings its own tone, revealing Vietnam through four changing moments.'}</p>
               </div>
               <div className="seasons__grid">
-                {seasonsData.map((season) => (
+                {i18n.seasons.map((season) => (
                   <div key={season.id} className="season-card">
                     <div className="season-card__bg">
                       <img src={season.image} alt={season.title} />
@@ -967,7 +946,6 @@ export default function RegionsPage() {
                 ))}
               </div>
             </div>
-
           </section>
 
           <section className="cultural-layers-section" style={{ position: 'relative', background: '#ffffff', paddingBottom: '120px' }}>
@@ -978,7 +956,7 @@ export default function RegionsPage() {
               </div>
 
               <div className="cultural-layers__grid">
-                {culturalCategories.map((cat) => (
+                {i18n.categories.map((cat) => (
                   <div key={cat.id} className="culture-layer-card">
                     <div className="culture-layer__icon-box">{cat.icon}</div>
                     <h3>{cat.title}</h3>

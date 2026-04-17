@@ -23,13 +23,13 @@ async function getHomepage(lang = 'vi') {
     // Hero section (static fallback as used in previous logic or from DB if available)
     const hero = lang === 'vi' ? {
         badge: 'Việt Nam',
-        title: 'Chào mừng đến với VNCulture',
+        title: 'Chào mừng đến với VNCultureBridgeAI',
         subtitle: 'Khám phá di sản văn hóa Việt Nam',
         primaryCta: 'Khám phá ngay',
         secondaryCta: 'Xem lễ hội'
     } : {
         badge: 'Vietnam',
-        title: ' Welcome to VNCulture',
+        title: 'Welcome to VNCultureBridgeAI',
         subtitle: 'Discover Vietnam\'s Cultural Heritage',
         primaryCta: 'Explore Now',
         secondaryCta: 'View Festivals'

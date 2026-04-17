@@ -5,6 +5,7 @@ import Footer from '../../components/layout/Footer/Footer';
 import LoadingState from '../../components/common/LoadingState/LoadingState';
 import { getFestival } from '../../services/festival.service';
 import { useDetailLoader } from '../../hooks/useDetailLoader';
+import { useLanguage } from '../../context/LanguageContext';
 import './FestivalsDetailPage.css';
 import '../../App.css';
 
@@ -13,7 +14,7 @@ function getLabel(labels, key, fallback) {
 }
 
 export default function FestivalsDetailPage() {
-  const [lang, setLang] = useState('vi');
+  const { lang, setLang } = useLanguage();
   const [foodPage, setFoodPage] = useState(1);
   const { id = 'tet-nguyen-dan' } = useParams();
   const { status, data, error } = useDetailLoader(getFestival, lang, id);

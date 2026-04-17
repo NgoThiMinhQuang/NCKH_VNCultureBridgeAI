@@ -6,17 +6,12 @@ async function resetDb() {
   try {
     console.log('--- Starting Database Reset ---')
     
-    const schemaPath = path.join(__dirname, 'db', 'schema.sql')
-    const seedsPath = path.join(__dirname, 'db', 'seeds.sql')
+    const fullScriptPath = path.join(__dirname, 'db', 'vn_culture_bridge_data.sql')
     
-    const schemaSql = fs.readFileSync(schemaPath, 'utf8')
-    const seedsSql = fs.readFileSync(seedsPath, 'utf8')
+    const fullSql = fs.readFileSync(fullScriptPath, 'utf8')
     
-    console.log('Executing schema.sql...')
-    await db.query(schemaSql)
-    
-    console.log('Executing seeds.sql...')
-    await db.query(seedsSql)
+    console.log('Executing vn_culture_bridge_data.sql (Full DB Build)...')
+    await db.query(fullSql)
     
     console.log('Database reset SUCCESSFUL!')
     process.exit(0)

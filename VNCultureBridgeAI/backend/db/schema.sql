@@ -1,6 +1,15 @@
 -- SCHEMA CHO VN CULTURE BRIDGE AI (MSSQL) - VERSION 5.0 (CLEAN STANDARD)
 -- Dựa trên sơ đồ thực thể (ER Diagram) và yêu cầu tinh gọn, thêm module Ẩm thực
 
+-- Xóa tất cả các khóa ngoại trước khi xóa bảng
+DECLARE @sql NVARCHAR(MAX) = N'';
+SELECT @sql += N'
+ALTER TABLE ' + QUOTENAME(OBJECT_SCHEMA_NAME(parent_object_id))
+    + '.' + QUOTENAME(OBJECT_NAME(parent_object_id)) + 
+    ' DROP CONSTRAINT ' + QUOTENAME(name) + ';'
+FROM sys.foreign_keys;
+EXEC sp_executesql @sql;
+
 -- Xóa các bảng cũ nếu tồn tại (theo thứ tự ràng buộc khóa ngoại)
 IF OBJECT_ID('dbo.MauPrompt', 'U') IS NOT NULL DROP TABLE dbo.MauPrompt;
 IF OBJECT_ID('dbo.BinhLuan', 'U') IS NOT NULL DROP TABLE dbo.BinhLuan;
@@ -149,7 +158,7 @@ CREATE TABLE dbo.VanHoa (
 -- 8. Bảng Bài Viết (BaiViet)
 CREATE TABLE dbo.BaiViet (
     BaiVietID INT PRIMARY KEY IDENTITY(1,1),
-    MaBaiViet NVARCHAR(50) UNIQUE NOT NULL,
+    MaBaiViet NVARCHAR(255) UNIQUE NOT NULL,
     TieuDeVI NVARCHAR(255) NOT NULL,
     TieuDeEN NVARCHAR(255),
     MoTaNganVI NVARCHAR(MAX),

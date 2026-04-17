@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import { useParams, Link } from 'react-router-dom'
 import './ProvinceDetailPage.css'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
@@ -8,15 +9,15 @@ import { getProvince } from '../../services/province.service'
 import { useDetailLoader } from '../../hooks/useDetailLoader'
 
 export default function ProvinceDetailPage() {
+  const { lang, setLang } = useLanguage()
   const { code } = useParams()
-  const [lang, setLang] = useState('vi')
-  
+
   const { status, data, error } = useDetailLoader(getProvince, lang, code)
 
   useEffect(() => {
     window.scrollTo(0, 0)
     if (data?.title) {
-      document.title = `${data.title} - VietCultura`
+      document.title = `${data.title} - VNCultureBridgeAI`
     }
   }, [code, data?.title])
 

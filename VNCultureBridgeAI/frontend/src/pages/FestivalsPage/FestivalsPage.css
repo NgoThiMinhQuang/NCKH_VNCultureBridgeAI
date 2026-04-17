@@ -1605,28 +1605,36 @@
     height: 130px;
     border-radius: 50%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-bottom: 40px;
     color: #fdf5e6;
     font-weight: 800;
-    font-size: 1.8rem;
-    font-family: var(--font-heading);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(5px);
     z-index: 5;
     position: relative;
+    padding-top: 10px;
 }
 
-.timeline-item__circle::before {
-    content: 'Tháng';
-    position: absolute;
-    top: 30px;
+.timeline-item__month-label {
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     opacity: 0.6;
+    margin-top: -5px;
+}
+
+.timeline-item__month-value {
+    font-size: 1.8rem;
+    font-family: var(--font-heading);
+    line-height: 1;
+}
+
+.timeline-item__circle::before {
+    display: none;
 }
 
 .timeline-item:hover .timeline-item__circle {

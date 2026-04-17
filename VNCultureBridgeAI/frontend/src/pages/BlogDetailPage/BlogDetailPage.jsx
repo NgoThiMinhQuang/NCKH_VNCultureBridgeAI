@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
@@ -10,9 +11,9 @@ import './BlogDetailPage.css'
  * Displays a detailed view of a blog post with premium "Cream & Red" styling.
  */
 export default function BlogDetailPage() {
+  const { lang, setLang } = useLanguage()
   const { code } = useParams()
   const navigate = useNavigate()
-  const [lang, setLang] = useState('vi')
   const [blogData, setBlogData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)

@@ -2,35 +2,35 @@ import { API_BASE_URL } from "../../utils/constants";
 
 export const FESTIVALS_PER_PAGE = 9;
 
-export const REGION_OPTIONS = [
-  { value: "", label: "Tất cả vùng miền" },
-  { value: "BAC_BO", label: "Bắc Bộ" },
-  { value: "TRUNG_BO", label: "Trung Bộ" },
-  { value: "NAM_BO", label: "Nam Bộ" },
+export const getRegionOptions = (lang) => [
+  { value: "", label: lang === 'vi' ? "Tất cả vùng miền" : "All Regions" },
+  { value: "BAC_BO", label: lang === 'vi' ? "Bắc Bộ" : "Northern" },
+  { value: "TRUNG_BO", label: lang === 'vi' ? "Trung Bộ" : "Central" },
+  { value: "NAM_BO", label: lang === 'vi' ? "Nam Bộ" : "Southern" },
 ];
 
-export const MONTH_OPTIONS = [
-  { value: "", label: "Tất cả các tháng" },
-  { value: "01", label: "Tháng 01" },
-  { value: "02", label: "Tháng 02" },
-  { value: "03", label: "Tháng 03" },
-  { value: "04", label: "Tháng 04" },
-  { value: "05", label: "Tháng 05" },
-  { value: "06", label: "Tháng 06" },
-  { value: "07", label: "Tháng 07" },
-  { value: "08", label: "Tháng 08" },
-  { value: "09", label: "Tháng 09" },
-  { value: "10", label: "Tháng 10" },
-  { value: "11", label: "Tháng 11" },
-  { value: "12", label: "Tháng 12" },
+export const getMonthOptions = (lang) => [
+  { value: "", label: lang === 'vi' ? "Tất cả các tháng" : "All Months" },
+  { value: "01", label: lang === 'vi' ? "Tháng 01" : "January" },
+  { value: "02", label: lang === 'vi' ? "Tháng 02" : "February" },
+  { value: "03", label: lang === 'vi' ? "Tháng 03" : "March" },
+  { value: "04", label: lang === 'vi' ? "Tháng 04" : "April" },
+  { value: "05", label: lang === 'vi' ? "Tháng 05" : "May" },
+  { value: "06", label: lang === 'vi' ? "Tháng 06" : "June" },
+  { value: "07", label: lang === 'vi' ? "Tháng 07" : "July" },
+  { value: "08", label: lang === 'vi' ? "Tháng 08" : "August" },
+  { value: "09", label: lang === 'vi' ? "Tháng 09" : "September" },
+  { value: "10", label: lang === 'vi' ? "Tháng 10" : "October" },
+  { value: "11", label: lang === 'vi' ? "Tháng 11" : "November" },
+  { value: "12", label: lang === 'vi' ? "Tháng 12" : "December" },
 ];
 
-export const CATEGORY_OPTIONS = [
-  { value: "", label: "Tất cả loại hình" },
-  { value: "DAN_GIAN", label: "Lễ hội dân gian" },
-  { value: "TON_GIAO", label: "Lễ hội tôn giáo" },
-  { value: "LICH_SU", label: "Lễ hội lịch sử" },
-  { value: "VAN_HOA", label: "Lễ hội văn hóa" },
+export const getCategoryOptions = (lang) => [
+  { value: "", label: lang === 'vi' ? "Tất cả loại hình" : "All Categories" },
+  { value: "DAN_GIAN", label: lang === 'vi' ? "Lễ hội dân gian" : "Folk Festival" },
+  { value: "TON_GIAO", label: lang === 'vi' ? "Lễ hội tôn giáo" : "Religious Festival" },
+  { value: "LICH_SU", label: lang === 'vi' ? "Lễ hội lịch sử" : "Historical Festival" },
+  { value: "VAN_HOA", label: lang === 'vi' ? "Lễ hội văn hóa" : "Cultural Festival" },
 ];
 
 export const getImageUrl = (url) => {
@@ -77,6 +77,10 @@ export const buildFestivalData = (apiData, lang) => {
         subtitle: apiData.hero?.subtitle || (lang === "vi" ? "Khám phá bản sắc văn hóa và tinh thần cộng đồng qua những mùa lễ hội truyền thống đặc sắc." : "Explore cultural identity and community spirit through unique traditional festivals."),
       },
       stats,
+      search: {
+        placeholder: lang === "vi" ? "Tìm kiếm lễ hội, nghi lễ và truyền thống..." : "Search for festivals, rituals, and traditions...",
+        filterButton: lang === "vi" ? "Bộ lọc nâng cao" : "Advanced Filters",
+      },
       major: {
         badge: lang === "vi" ? "Lễ hội nổi bật" : "Featured Festivals",
         title: lang === "vi" ? "Lễ hội tiêu biểu" : "Representative Festivals",
@@ -86,6 +90,7 @@ export const buildFestivalData = (apiData, lang) => {
         badge: lang === "vi" ? "Ý nghĩa văn hóa" : "Cultural Meaning",
         title: apiData.sections?.meaning?.title || (lang === "vi" ? "Linh hồn của lễ hội Việt" : "The Soul of Vietnamese Festivals"),
         desc: apiData.sections?.meaning?.desc || (lang === "vi" ? "Mỗi lễ hội là một bức tranh sống động về lòng biết ơn cội nguồn" : "Each festival is a vibrant picture of gratitude to the roots"),
+        button: lang === "vi" ? "Tìm hiểu thêm về văn hóa Việt" : "Learn more about Vietnamese culture",
       },
       all: {
         title: lang === "vi" ? "Khám phá các lễ hội Việt Nam" : "Discover Vietnamese Festivals",
@@ -94,6 +99,11 @@ export const buildFestivalData = (apiData, lang) => {
       timeline: {
         badge: lang === "vi" ? "Lễ hội quanh năm" : "Year-round Festivals",
         title: lang === "vi" ? "Dòng thời gian lễ hội" : "Festival Timeline",
+        subtitle: lang === "vi" ? "Khám phá nhịp điệu văn hóa Việt Nam qua từng mùa trong năm" : "Explore the rhythm of Vietnamese culture through the seasons",
+        hint: lang === "vi" ? "Cuộn ngang để xem thêm →" : "Scroll horizontally to see more →",
+        dateLabel: lang === "vi" ? "Thời gian:" : "Time:",
+        locationLabel: lang === "vi" ? "Địa điểm:" : "Location:",
+        monthLabel: lang === "vi" ? "Tháng" : "Month",
       },
       gallery: {
         badge: lang === "vi" ? "Hành trình thị giác" : "Visual Journey",
@@ -102,6 +112,7 @@ export const buildFestivalData = (apiData, lang) => {
       quote: {
         title: apiData.sections?.quote?.text || (lang === "vi" ? "Uống nước nhớ nguồn" : "Remember the Source"),
         desc: apiData.sections?.quote?.author || (lang === "vi" ? "Tinh thần biết ơn cội nguồn chính là nền tảng." : "The spirit of gratitude to the roots is the foundation."),
+        button: lang === "vi" ? "Khám phá văn hóa" : "Explore Culture",
       }
     },
     festivals,
