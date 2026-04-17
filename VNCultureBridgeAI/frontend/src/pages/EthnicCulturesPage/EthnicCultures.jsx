@@ -131,7 +131,7 @@ export default function EthnicCultures() {
   const [isHeroEthnicOpen, setIsHeroEthnicOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 6;
+  const ITEMS_PER_PAGE = 8;
 
   useEffect(() => {
     let ignore = false;

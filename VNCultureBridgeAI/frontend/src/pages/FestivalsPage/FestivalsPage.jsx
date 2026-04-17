@@ -127,6 +127,7 @@ export default function FestivalsPage() {
 
         <FestivalSearchSection
           page={data.page}
+          filters={state.data?.filters}
           isFiltersOpen={isFiltersOpen}
           setIsFiltersOpen={setIsFiltersOpen}
           searchText={searchText}

@@ -42,27 +42,39 @@ export const getImageUrl = (url) => {
 };
 
 export const buildFestivalData = (apiData, lang) => {
-  const festivals = (apiData || []).map((item) => ({
-    id: item.LeHoiID || item.id,
-    code: item.MaLeHoi || item.code,
-    title: lang === "vi" ? item.TenVI : (item.TenEN || item.TenVI),
-    enTitle: item.TenEN,
-    date: lang === "vi" ? item.ThoiGianVI : (item.ThoiGianEN || item.ThoiGianVI),
-    location: lang === "vi" ? item.DiaDiemVI : (item.DiaDiemEN || item.DiaDiemVI),
-    desc: lang === "vi" ? item.MoTaNganVI : (item.MoTaNganEN || item.MoTaNganVI),
-    image: item.ImageUrl || item.image,
-    region: item.MaVung || (item.VungID === 1 ? "BAC_BO" : item.VungID === 2 ? "TRUNG_BO" : "NAM_BO"),
-    tag: item.TenDanToc || item.DanTocVI || (lang === "vi" ? "Lễ hội truyền thống" : "Traditional Festival"),
-    category: item.LoaiLeHoi || "DAN_GIAN",
+  if (!apiData) return { festivals: [], page: {}, gallery: [], timeline: [] };
+
+  const festivals = (apiData.festivals || []).map((item) => ({
+    id: item.id,
+    code: item.code,
+    title: item.title,
+    date: item.date,
+    location: item.location,
+    desc: item.desc,
+    image: item.image,
+    region: item.region,
+    tag: item.tagName,
+    category: item.category,
+  }));
+
+  const stats = [
+    { label: lang === 'vi' ? 'Lễ hội' : 'Festivals', value: apiData.stats?.festivalCount || '8.000+' },
+    { label: lang === 'vi' ? 'Dân tộc' : 'Ethnic Groups', value: apiData.stats?.ethnicGroupCount?.toString() || '54' },
+    { label: lang === 'vi' ? 'Vùng miền' : 'Regions', value: apiData.stats?.regionCount?.toString() || '3' }
+  ];
+
+  const gallery = (apiData.sections?.gallery || []).map(g => ({
+    imageUrl: g.imageUrl,
+    alt: g.imageAlt
   }));
 
   return {
     page: {
       hero: {
-        title: lang === "vi" ? "Lễ hội Việt Nam" : "Vietnamese Festivals",
-        subtitle: lang === "vi" ? "Khám phá bản sắc văn hóa và tinh thần cộng đồng qua những mùa lễ hội" : "Explore cultural identity and community spirit through festival seasons",
+        title: apiData.hero?.title || (lang === "vi" ? "Lễ hội Việt Nam" : "Vietnamese Festivals"),
+        subtitle: apiData.hero?.subtitle || (lang === "vi" ? "Khám phá bản sắc văn hóa và tinh thần cộng đồng" : "Explore cultural identity and community spirit"),
       },
-      stats: [{ label: "Lễ hội", value: "8.000+" }],
+      stats,
       major: {
         badge: lang === "vi" ? "Lễ hội nổi bật" : "Featured Festivals",
         title: lang === "vi" ? "Lễ hội tiêu biểu" : "Representative Festivals",
@@ -70,7 +82,8 @@ export const buildFestivalData = (apiData, lang) => {
       },
       meaning: {
         badge: lang === "vi" ? "Ý nghĩa văn hóa" : "Cultural Meaning",
-        title: lang === "vi" ? "Linh hồn của lễ hội Việt" : "The Soul of Vietnamese Festivals",
+        title: apiData.sections?.meaning?.title || (lang === "vi" ? "Linh hồn của lễ hội Việt" : "The Soul of Vietnamese Festivals"),
+        desc: apiData.sections?.meaning?.desc || (lang === "vi" ? "Mỗi lễ hội là một bức tranh sống động về lòng biết ơn cội nguồn" : "Each festival is a vibrant picture of gratitude to the roots"),
       },
       all: {
         title: lang === "vi" ? "Khám phá các lễ hội Việt Nam" : "Discover Vietnamese Festivals",
@@ -85,12 +98,12 @@ export const buildFestivalData = (apiData, lang) => {
         title: lang === "vi" ? "Khoảnh khắc lễ hội" : "Festival Moments",
       },
       quote: {
-        title: lang === "vi" ? "Uống nước nhớ nguồn" : "Remember the Source",
-        desc: lang === "vi" ? "Tinh thần biết ơn cội nguồn chính là nền tảng để các lễ hội Việt Nam tiếp tục sống động." : "The spirit of gratitude to the roots is the foundation for Vietnamese festivals to continue to be vibrant.",
+        title: apiData.sections?.quote?.text || (lang === "vi" ? "Uống nước nhớ nguồn" : "Remember the Source"),
+        desc: apiData.sections?.quote?.author || (lang === "vi" ? "Tinh thần biết ơn cội nguồn chính là nền tảng." : "The spirit of gratitude to the roots is the foundation."),
       }
     },
     festivals,
-    gallery: festivals.slice(0, 10).map(f => ({ imageUrl: f.image, alt: f.title })),
+    gallery: gallery.length > 0 ? gallery : festivals.slice(0, 10).map(f => ({ imageUrl: f.image, alt: f.title })),
     timeline: [
       { id: 1, month: "01", title: lang === "vi" ? "Lễ hội Xuân" : "Spring Festival", season: lang === "vi" ? "Mùa Xuân" : "Spring", color: "#e63946", image: "https://images.unsplash.com/photo-1579624538806-259837f4876b?auto=format&fit=crop&w=400&q=80" },
       { id: 2, month: "03", title: lang === "vi" ? "Lễ hội Phú Thọ" : "Phu Tho Festival", season: lang === "vi" ? "Mùa Xuân" : "Spring", color: "#f1faee", image: "https://images.unsplash.com/photo-1542332213-31f87348057f?auto=format&fit=crop&w=400&q=80" },

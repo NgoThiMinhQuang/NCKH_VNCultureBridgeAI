@@ -305,9 +305,25 @@ async function listEthnicities(lang) {
 }
 
 async function listFestivals(lang) {
-    const rows = await contentRepository.getFestivalsExtended()
-    const stats = await contentRepository.getGlobalStats()
+    const [stats, rows, regions, gallery] = await Promise.all([
+        contentRepository.getGlobalStats(),
+        contentRepository.getFestivalsExtended(),
+        contentRepository.getVungVanHoa(),
+        contentRepository.getGlobalGallery(10)
+    ])
+
     return {
+        stats: {
+            festivalCount: '8.000+', // Traditional value
+            ethnicGroupCount: stats.ethnicGroupCount,
+            regionCount: stats.regionCount
+        },
+        hero: {
+            title: lang === 'vi' ? 'Lễ hội Việt Nam' : 'Vietnamese Festivals',
+            subtitle: lang === 'vi' 
+                ? 'Khám phá bản sắc văn hóa và tinh thần cộng đồng qua những mùa lễ hội truyền thống đặc sắc trên khắp dải đất hình chữ S.'
+                : 'Explore cultural identity and community spirit through unique traditional festivals across the S-shaped land.'
+        },
         festivals: rows.map(f => ({
             id: f.LeHoiID,
             code: f.MaLeHoi,
@@ -316,15 +332,46 @@ async function listFestivals(lang) {
             location: mapText(f, 'DiaDiemVI', 'DiaDiemEN', lang),
             date: mapText(f, 'ThoiGianVI', 'ThoiGianEN', lang),
             image: f.ImageUrl,
-            region: f.MaVung?.toLowerCase()
+            region: mapText(f, 'MaVung', 'MaVung', lang), // Use code for logical mapping
+            tagName: mapText(f, 'DanTocTenVI', 'DanTocTenEN', lang) || (lang === 'vi' ? 'Dân gian' : 'Folk'),
+            category: f.LoaiLeHoi || (lang === 'vi' ? 'DAN_GIAN' : 'FOLK')
         })),
-        page: {
-            titleLine1: lang === 'vi' ? 'Tinh hoa' : 'Essence of',
-            titleAccent: lang === 'vi' ? 'Lễ hội' : 'Festivals',
-            stats: [
-                { value: '8,000+', label: lang === 'vi' ? 'Lễ hội hàng năm' : 'Annual Festivals' },
-                { value: stats.ethnicGroupCount.toString(), label: lang === 'vi' ? 'Dân tộc' : 'Ethnic Groups' }
+        filters: {
+            regions: [
+                { value: "", label: lang === 'vi' ? "Tất cả vùng miền" : "All Regions" },
+                ...regions.map(r => ({ value: r.MaVung, label: mapText(r, 'TenVI', 'TenEN', lang) }))
+            ],
+            months: [
+                { value: "", label: lang === 'vi' ? "Tất cả các tháng" : "All Months" },
+                ...Array.from({ length: 12 }, (_, i) => ({ 
+                    value: (i + 1).toString().padStart(2, '0'), 
+                    label: lang === 'vi' ? `Tháng ${(i + 1).toString().padStart(2, '0')}` : `Month ${(i + 1).toString().padStart(2, '0')}` 
+                }))
+            ],
+            categories: [
+                { value: "", label: lang === 'vi' ? "Tất cả loại hình" : "All Categories" },
+                { value: "DAN_GIAN", label: lang === 'vi' ? "Lễ hội dân gian" : "Folk Festival" },
+                { value: "TON_GIAO", label: lang === 'vi' ? "Lễ hội tôn giáo" : "Religious Festival" },
+                { value: "LICH_SU", label: lang === 'vi' ? "Lễ hội lịch sử" : "Historical Festival" },
+                { value: "VAN_HOA", label: lang === 'vi' ? "Lễ hội văn hóa" : "Cultural Festival" }
             ]
+        },
+        sections: {
+            meaning: {
+                title: lang === 'vi' ? 'Linh hồn của lễ hội Việt' : 'The Soul of Vietnamese Festivals',
+                desc: lang === 'vi' 
+                    ? 'Mỗi lễ hội là một bức tranh sống động về lòng biết ơn cội nguồn, niềm tin vào những điều tốt đẹp và khát vọng gắn kết cộng đồng.'
+                    : 'Each festival is a vibrant picture of gratitude to the roots, belief in good things and the desire for community cohesion.'
+            },
+            quote: {
+                text: lang === 'vi' ? 'Uống nước nhớ nguồn' : 'Remembering the Source',
+                author: lang === 'vi' ? 'Tục ngữ Việt Nam' : 'Vietnamese Proverb'
+            },
+            gallery: gallery.map((g, idx) => ({
+                id: idx,
+                imageUrl: g.imageUrl,
+                imageAlt: mapText(g, 'altVI', 'altEN', lang)
+            }))
         }
     }
 }

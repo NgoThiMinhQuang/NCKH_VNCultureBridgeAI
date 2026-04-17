@@ -3,6 +3,7 @@ import { REGION_OPTIONS, MONTH_OPTIONS, CATEGORY_OPTIONS } from "../FestivalsPag
 
 const FestivalSearchSection = ({
   page,
+  filters,
   isFiltersOpen,
   setIsFiltersOpen,
   searchText,
@@ -17,6 +18,9 @@ const FestivalSearchSection = ({
   handleEthnicChange,
   ethnicOptions
 }) => {
+  const regions = filters?.regions || [];
+  const months = filters?.months || [];
+  const categories = filters?.categories || [];
   return (
     <section className="festivals-search-section">
       <div className="festivals-search-container">
@@ -62,7 +66,7 @@ const FestivalSearchSection = ({
           <div className="festivals-filter-item">
             <span className="festivals-filter-icon">📍</span>
             <select className="festivals-filter-select" value={selectedRegion} onChange={handleRegionChange}>
-              {REGION_OPTIONS.map((option) => (
+              {regions.map((option) => (
                 <option key={option.value || "all-regions"} value={option.value}>{option.label}</option>
               ))}
             </select>
@@ -74,7 +78,7 @@ const FestivalSearchSection = ({
           <div className="festivals-filter-item">
             <span className="festivals-filter-icon">🗓️</span>
             <select className="festivals-filter-select" value={selectedMonth} onChange={handleMonthChange}>
-              {MONTH_OPTIONS.map((option) => (
+              {months.map((option) => (
                 <option key={option.value || "all-months"} value={option.value}>{option.label}</option>
               ))}
             </select>
@@ -86,7 +90,7 @@ const FestivalSearchSection = ({
           <div className="festivals-filter-item">
             <span className="festivals-filter-icon">🎭</span>
             <select className="festivals-filter-select" value={selectedCategory} onChange={handleCategoryChange}>
-              {CATEGORY_OPTIONS.map((option) => (
+              {categories.map((option) => (
                 <option key={option.value || "all-categories"} value={option.value}>{option.label}</option>
               ))}
             </select>
