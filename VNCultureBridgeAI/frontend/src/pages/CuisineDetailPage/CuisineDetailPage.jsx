@@ -6,27 +6,28 @@ import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
 import { getCuisine } from '../../services/cuisine.service'
 import { getCuisineImageSet, getCuisineLocalImage } from '../../utils/cuisineMedia'
+import { ui } from '../../i18n/messages'
 import {
   FiClock,
-  FiGlobe,
-  FiBookOpen,
   FiCoffee,
   FiHome,
   FiImage,
   FiArrowLeft,
 } from 'react-icons/fi'
 
-function buildNavItems() {
+function buildNavItems(copy) {
   return [
-    { icon: <FiClock />, label: 'Giới thiệu' },
-    { icon: <FiCoffee />, label: 'Thưởng thức' },
-    { icon: <FiHome />, label: 'Góc bếp' },
-    { icon: <FiImage />, label: 'Thư viện' },
+    { icon: <FiClock />, label: copy.introduction },
+    { icon: <FiCoffee />, label: copy.enjoyment },
+    { icon: <FiHome />, label: copy.kitchen },
+    { icon: <FiImage />, label: copy.gallery },
   ]
 }
 
 export default function CuisineDetailPage() {
   const { lang, setLang } = useLanguage()
+  const copy = ui[lang]
+  const dCopy = copy.cuisineDetail
   const [detail, setDetail] = useState(null)
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
@@ -69,7 +70,7 @@ export default function CuisineDetailPage() {
     }
   }, [id, lang])
 
-  const navItems = useMemo(() => buildNavItems(), [])
+  const navItems = useMemo(() => buildNavItems(dCopy), [dCopy])
 
   if (status === 'error' && !detail) {
     return (
@@ -78,10 +79,10 @@ export default function CuisineDetailPage() {
         <main className="cdp-main">
           <section className="cdp-section cdp-section--light">
             <div className="cdp-container" style={{ textAlign: 'center', padding: '80px 0' }}>
-              <h2 className="cdp-section-title">Không tải được món ăn</h2>
-              <p className="cdp-section-subtitle">{error || 'Đã xảy ra lỗi khi tải dữ liệu món ăn.'}</p>
+              <h2 className="cdp-section-title">{dCopy.failedToLoad}</h2>
+              <p className="cdp-section-subtitle">{error || dCopy.errorLoading}</p>
               <Link to="/cuisine" className="primary-button" style={{ display: 'inline-flex', marginTop: '24px', padding: '12px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none' }}>
-                Quay lại danh sách món ăn
+                {dCopy.backToList}
               </Link>
             </div>
           </section>
@@ -98,10 +99,10 @@ export default function CuisineDetailPage() {
         <main className="cdp-main">
           <section className="cdp-section cdp-section--light">
             <div className="cdp-container" style={{ textAlign: 'center', padding: '80px 0' }}>
-              <h2 className="cdp-section-title">Không tìm thấy món ăn</h2>
-              <p className="cdp-section-subtitle">Món ăn bạn đang tìm không tồn tại hoặc chưa được xuất bản.</p>
+              <h2 className="cdp-section-title">{dCopy.notFound}</h2>
+              <p className="cdp-section-subtitle">{dCopy.notFoundDesc}</p>
               <Link to="/cuisine" className="primary-button" style={{ display: 'inline-flex', marginTop: '24px', padding: '12px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none' }}>
-                Quay lại danh sách món ăn
+                {dCopy.backToList}
               </Link>
             </div>
           </section>
@@ -118,7 +119,7 @@ export default function CuisineDetailPage() {
         <main className="cdp-main">
           <section className="cdp-section cdp-section--light">
             <div className="cdp-container" style={{ textAlign: 'center', padding: '80px 0' }}>
-              <p className="cdp-section-subtitle">Đang tải dữ liệu món ăn...</p>
+              <p className="cdp-section-subtitle">{dCopy.loading}</p>
             </div>
           </section>
         </main>
@@ -140,16 +141,9 @@ export default function CuisineDetailPage() {
         size: index === 0 ? 'large' : 'small',
       }))
 
-  const ingredientImages = detail.ingredients?.images?.length
-    ? detail.ingredients.images.slice(0, 3).map((_, index) => imageSet.ingredients[index] || heroImage)
-    : imageSet.ingredients
   const similarFoods = (detail.similarFoods?.slice(0, 3) || []).map((food) => ({
     ...food,
     imageUrl: food.imageUrl || getCuisineLocalImage(food.code, food.title, food.imageAlt),
-  }))
-  const recipeSteps = (detail.recipeSteps || []).map((step, index) => ({
-    ...step,
-    imageUrl: imageSet.steps[index] || heroImage,
   }))
   const introImage = detail.intro?.imageUrl || imageSet.intro || heroImage
   const howToEnjoyImage = detail.howToEnjoy?.imageUrl || imageSet.enjoy || heroImage
@@ -169,8 +163,8 @@ export default function CuisineDetailPage() {
 
           <div className="cdp-hero__inner">
             <div className="cdp-hero__left fade-up">
-              <button onClick={() => navigate(-1)} className="cdp-back-btn" aria-label="Quay lại" style={{ position: 'relative', top: 0, left: 0, display: 'inline-flex', marginBottom: '24px', width: 'fit-content', background: 'transparent', border: 'none', color: '#f8c97a', cursor: 'pointer', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
-                <FiArrowLeft /> <span>Quay lại</span>
+              <button onClick={() => navigate(-1)} className="cdp-back-btn" aria-label={dCopy.back} style={{ position: 'relative', top: 0, left: 0, display: 'inline-flex', marginBottom: '24px', width: 'fit-content', background: 'transparent', border: 'none', color: '#f8c97a', cursor: 'pointer', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+                <FiArrowLeft /> <span>{dCopy.back}</span>
               </button>
 
               <div className="cdp-hero__badge">
@@ -183,18 +177,18 @@ export default function CuisineDetailPage() {
 
               <div className="cdp-hero__stats">
                 <div className="cdp-hero__stat">
-                  <strong>{detail.stats?.prepTime || 'Đang cập nhật'}</strong>
-                  <span>Thời gian chế biến</span>
+                  <strong>{detail.stats?.prepTime || dCopy.updating}</strong>
+                  <span>{dCopy.prepTime}</span>
                 </div>
                 <div className="cdp-hero__stat-sep"></div>
                 <div className="cdp-hero__stat">
-                  <strong>{detail.stats?.difficulty || 'Đang cập nhật'}</strong>
-                  <span>Độ khó</span>
+                  <strong>{detail.stats?.difficulty || dCopy.updating}</strong>
+                  <span>{dCopy.difficulty}</span>
                 </div>
                 <div className="cdp-hero__stat-sep"></div>
                 <div className="cdp-hero__stat">
-                  <strong>{detail.stats?.calories || 'Đang cập nhật'}</strong>
-                  <span>Năng lượng</span>
+                  <strong>{detail.stats?.calories || dCopy.updating}</strong>
+                  <span>{dCopy.calories}</span>
                 </div>
               </div>
 
@@ -245,8 +239,6 @@ export default function CuisineDetailPage() {
           </div>
         </section>
 
-
-
         <section className="cdp-section cdp-section--cream cdp-music">
           <div className="cdp-container">
             <div className="cdp-arch__grid">
@@ -266,13 +258,13 @@ export default function CuisineDetailPage() {
           <section className="cdp-section cdp-section--light cdp-cuisine">
             <div className="cdp-container">
               <header className="cdp-section-header">
-                <span className="cdp-section-badge">Gợi ý thêm</span>
-                <h2 className="cdp-section-title">Món ăn tương tự</h2>
+                <span className="cdp-section-badge">{dCopy.moreSuggestions}</span>
+                <h2 className="cdp-section-title">{dCopy.similarDishes}</h2>
               </header>
               <div className="cdp-cuisine-grid">
                 {similarFoods.map((food) => (
                   <div className="cdp-cuisine-item" onClick={() => navigate(`/cuisine/${food.code || food.id}`)} style={{ cursor: 'pointer' }} key={food.code || food.id}>
-                    <img src={food.imageUrl || imageSet.similar || heroImage} alt={food.imageAlt || food.title} className="cdp-cuisine-img" />
+                    <img src={food.imageUrl || getCuisineLocalImage(food.code, food.title, food.imageAlt)} alt={food.imageAlt || food.title} className="cdp-cuisine-img" />
                     <h3 className="cdp-cuisine-title">{food.title}</h3>
                   </div>
                 ))}
@@ -300,8 +292,8 @@ export default function CuisineDetailPage() {
           <section className="cdp-section cdp-section--light cdp-gallery">
             <div className="cdp-container">
               <header className="cdp-section-header">
-                <h2 className="cdp-section-title">Thư viện hình ảnh</h2>
-                <p className="cdp-section-subtitle">{`Góc nhìn chân thực, tinh tế về ${detail.name.toLowerCase()}.`}</p>
+                <h2 className="cdp-section-title">{dCopy.imageGallery}</h2>
+                <p className="cdp-section-subtitle">{dCopy.galleryDesc.replace('{name}', detail.name)}</p>
               </header>
 
               <div className="cdp-gallery-grid">
@@ -317,12 +309,12 @@ export default function CuisineDetailPage() {
 
         <section className="cdp-cta-banner">
           <div className="cdp-container" style={{ textAlign: 'center' }}>
-            <h2 className="cdp-cta-title" style={{ fontSize: '2rem', marginBottom: '24px', color: '#1a0a04' }}>Khám phá nền ẩm thực Việt</h2>
+            <h2 className="cdp-cta-title" style={{ fontSize: '2rem', marginBottom: '24px', color: '#1a0a04' }}>{dCopy.exploreBanner}</h2>
             <Link to="/cuisine" className="primary-button" style={{
               display: 'inline-flex', padding: '12px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)',
               color: 'white', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none'
             }}>
-              Trở lại danh sách món ăn
+              {dCopy.backToList}
             </Link>
           </div>
         </section>

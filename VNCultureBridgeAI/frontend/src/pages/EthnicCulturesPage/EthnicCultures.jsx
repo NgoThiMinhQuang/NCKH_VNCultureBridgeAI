@@ -28,99 +28,6 @@ import congChiengImg from "../../assets/cong_chieng.png";
 import leCapSacImg from "../../assets/le-cap-sac.jpg";
 import detThoCamImg from "../../assets/det-tho-cam.jpg";
 import muaTrongImg from "../../assets/mua-trong-sadam.jpg";
-function SearchIcon(props) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.35-4.35" />
-    </svg>
-  );
-}
-
-function ChevronDownIcon(props) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
-
-function ShirtIcon(props) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="m4 7 5-3 2 3 2-3 5 3" />
-      <path d="M7 4h10l2 5-2 2v9H7v-9L5 9z" />
-    </svg>
-  );
-}
-
-function StarIcon(props) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="m12 2.5 3.09 6.26 6.91 1.01-5 4.87 1.18 6.88L12 18.3 5.82 21.52 7 14.64 2 9.77l6.91-1.01L12 2.5z" />
-    </svg>
-  );
-}
-
-function CoffeeIcon(props) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M4 8h13a3 3 0 0 1 0 6H4z" />
-      <path d="M4 8v7a4 4 0 0 0 4 4h5a4 4 0 0 0 4-4v-1" />
-      <path d="M18 9h2a2 2 0 0 1 0 4h-2" />
-    </svg>
-  );
-}
-
-function BookOpenIcon(props) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M12 7v14" />
-      <path d="M3 6a3 3 0 0 1 3-3h8v15H6a3 3 0 0 0-3 3z" />
-      <path d="M21 6a3 3 0 0 0-3-3h-8v15h8a3 3 0 0 1 3 3z" />
-    </svg>
-  );
-}
 
 // Localized Data Helper
 const getI18nData = (lang) => {
@@ -171,6 +78,8 @@ const getI18nData = (lang) => {
     filters: isVi
       ? ["Tất cả dân tộc", "Mường", "Thái", "H'Mông", "Dao", "Kinh", "Khmer"]
       : ["All ethnic groups", "Muong", "Thai", "H'Mong", "Dao", "Kinh", "Khmer"],
+    gridTitle: isVi ? "Cộng Đồng 54 Dân Tộc" : "Community of 54 Ethnic Groups",
+    gridDesc: isVi ? "Mỗi dân tộc là một mảnh ghép rực rỡ trong bức tranh văn hóa Việt." : "Each ethnic group is a vibrant piece in the Vietnamese cultural tapestry.",
     ethnicCards: [
       {
         id: "hmong",
@@ -436,6 +345,7 @@ export default function EthnicCultures() {
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 8;
+  const regions = i18n.regions;
 
   // Reset filters when language changes
   React.useEffect(() => {
@@ -538,37 +448,42 @@ export default function EthnicCultures() {
 
               {/* Search Bar Restyled */}
               <div className="ec-hero__search-bar">
-                <div className="ec-search-field-wrapper" style={{ flex: 1.2 }}>
-                  <div
-                    className="ec-search-field"
-                    style={{ paddingLeft: "24px" }}
-                  >
-                    <LuSearch className="ec-search-icon" />
-                    <input
-                      type="text"
-                      placeholder={i18n.hero.searchPlaceholder}
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
+                <div 
+                  className={`ec-search-field-wrapper ${searchQuery ? "active" : ""}`}
+                >
+                  <div className="ec-search-main">
+                    <span className="ec-search-label">{isVi ? "Dân tộc & Vùng miền" : "Ethnicities & Regions"}</span>
+                    <div className="ec-search-field">
+                      <LuSearch className="ec-search-icon" />
+                      <input
+                        type="text"
+                        placeholder={i18n.hero.searchPlaceholder}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
                   </div>
                 </div>
 
                 <div className="ec-search-divider" />
 
-                <div className="ec-search-field-wrapper">
-                  <div
-                    className={`ec-search-field ${isRegionOpen ? "active" : ""}`}
-                    onClick={() => {
-                      setIsRegionOpen(!isRegionOpen);
-                      setIsHeroEthnicOpen(false);
-                    }}
-                  >
-                    <span>
-                      {activeRegion === i18n.regions[0] ? i18n.hero.filterRegion : activeRegion}
-                    </span>
-                    <LuChevronDown
-                      className={`ec-chevron-icon ${isRegionOpen ? "rotate" : ""}`}
-                    />
+                <div 
+                  className={`ec-search-field-wrapper ${isRegionOpen ? "active" : ""}`}
+                  onClick={() => {
+                    setIsRegionOpen(!isRegionOpen);
+                    setIsHeroEthnicOpen(false);
+                  }}
+                >
+                  <div className="ec-search-main">
+                    <span className="ec-search-label">{i18n.hero.filterRegion}</span>
+                    <div className="ec-search-field">
+                      <span>
+                        {activeRegion === i18n.regions[0] ? (isVi ? "Tất cả vùng" : "All regions") : activeRegion}
+                      </span>
+                      <LuChevronDown
+                        className={`ec-chevron-icon ${isRegionOpen ? "rotate" : ""}`}
+                      />
+                    </div>
                   </div>
 
                   {isRegionOpen && (
@@ -577,7 +492,8 @@ export default function EthnicCultures() {
                         <li
                           key={r}
                           className={`ec-hero-dropdown-item ${activeRegion === r ? "selected" : ""}`}
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setActiveRegion(r);
                             setIsRegionOpen(false);
                           }}
@@ -591,22 +507,25 @@ export default function EthnicCultures() {
 
                 <div className="ec-search-divider" />
 
-                <div className="ec-search-field-wrapper">
-                  <div
-                    className={`ec-search-field ${isHeroEthnicOpen ? "active" : ""}`}
-                    onClick={() => {
-                      setIsHeroEthnicOpen(!isHeroEthnicOpen);
-                      setIsRegionOpen(false);
-                    }}
-                  >
-                    <span>
-                      {activeHeroEthnic === "Tất cả dân tộc"
-                        ? "Dân tộc"
-                        : activeHeroEthnic}
-                    </span>
-                    <LuChevronDown
-                      className={`ec-chevron-icon ${isHeroEthnicOpen ? "rotate" : ""}`}
-                    />
+                <div 
+                  className={`ec-search-field-wrapper ${isHeroEthnicOpen ? "active" : ""}`}
+                  onClick={() => {
+                    setIsHeroEthnicOpen(!isHeroEthnicOpen);
+                    setIsRegionOpen(false);
+                  }}
+                >
+                  <div className="ec-search-main">
+                    <span className="ec-search-label">{i18n.hero.filterEthnic}</span>
+                    <div className="ec-search-field">
+                      <span>
+                        {activeHeroEthnic === i18n.heroEthnicGroups[0]
+                          ? (isVi ? "Tất cả dân tộc" : "All ethnicities")
+                          : activeHeroEthnic}
+                      </span>
+                      <LuChevronDown
+                        className={`ec-chevron-icon ${isHeroEthnicOpen ? "rotate" : ""}`}
+                      />
+                    </div>
                   </div>
 
                   {isHeroEthnicOpen && (
@@ -615,7 +534,8 @@ export default function EthnicCultures() {
                         <li
                           key={e}
                           className={`ec-hero-dropdown-item ${activeHeroEthnic === e ? "selected" : ""}`}
-                          onClick={() => {
+                          onClick={(ev) => {
+                            ev.stopPropagation();
                             setActiveHeroEthnic(e);
                             setIsHeroEthnicOpen(false);
                           }}
@@ -627,7 +547,10 @@ export default function EthnicCultures() {
                   )}
                 </div>
 
-                <button className="ec-hero__cta-btn">{isVi ? "Tìm kiếm" : "Search"}</button>
+                <button className="ec-hero__cta-btn">
+                  <LuSearch />
+                  {isVi ? "Tìm ngay" : "Search"}
+                </button>
               </div>
             </div>
 
