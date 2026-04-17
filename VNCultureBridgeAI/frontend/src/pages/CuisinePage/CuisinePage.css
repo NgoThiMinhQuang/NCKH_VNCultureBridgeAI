@@ -248,8 +248,7 @@
       rgba(10, 3, 1, 0.88) 0%,
       rgba(10, 3, 1, 0.70) 40%,
       rgba(10, 3, 1, 0.25) 70%,
-      rgba(10, 3, 1, 0.10) 100%
-    );
+      rgba(10, 3, 1, 0.10) 100%);
   z-index: 1;
 }
 
@@ -269,6 +268,7 @@
   border-left: 2px solid rgba(196, 160, 80, 0.35);
   border-radius: 4px 0 0 0;
 }
+
 .cp-hero__ornament--tl::before {
   content: '';
   position: absolute;
@@ -375,6 +375,7 @@
   width: 60px;
   background: linear-gradient(to right, transparent, rgba(196, 160, 80, 0.6));
 }
+
 .cp-hero__divider-row .cp-hero__divider-line:last-child {
   background: linear-gradient(to left, transparent, rgba(196, 160, 80, 0.6));
 }
@@ -444,7 +445,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.08); /* slightly darker glass */
+  background: rgba(255, 255, 255, 0.08);
+  /* slightly darker glass */
   backdrop-filter: blur(20px);
   padding: 6px;
   border-radius: 999px;
@@ -479,12 +481,26 @@
   font-size: 0.88rem;
   outline: none;
 }
+
 .cp-search-field input::placeholder {
   color: rgba(253, 235, 210, 0.6);
 }
-.cp-search-icon { font-size: 1.2rem; color: #f8c97a; }
-.cp-chevron-icon { margin-left: auto; font-size: 0.8rem; color: rgba(253, 235, 210, 0.6); transition: transform 0.3s ease; }
-.cp-chevron-icon.rotate { transform: rotate(180deg); }
+
+.cp-search-icon {
+  font-size: 1.2rem;
+  color: #f8c97a;
+}
+
+.cp-chevron-icon {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: rgba(253, 235, 210, 0.6);
+  transition: transform 0.3s ease;
+}
+
+.cp-chevron-icon.rotate {
+  transform: rotate(180deg);
+}
 
 .cp-search-divider {
   width: 1.5px;
@@ -505,13 +521,19 @@
   transition: all 0.3s ease;
   white-space: nowrap;
 }
+
 .cp-hero__cta-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(185, 28, 28, 0.3);
 }
 
 /* Base dropdown */
-.cp-search-field-wrapper { position: relative; flex: 1; display: flex; }
+.cp-search-field-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+}
+
 .cp-hero-dropdown {
   position: absolute;
   top: calc(100% + 10px);
@@ -527,13 +549,16 @@
   max-height: 250px;
   overflow-y: auto;
 }
+
 .cp-hero-dropdown-item {
   padding: 8px 18px;
   color: #fdf5e6;
   cursor: pointer;
   font-size: 0.85rem;
 }
-.cp-hero-dropdown-item:hover, .cp-hero-dropdown-item.selected {
+
+.cp-hero-dropdown-item:hover,
+.cp-hero-dropdown-item.selected {
   background-color: rgba(185, 28, 28, 0.2);
   color: #f8c97a;
 }
@@ -561,6 +586,7 @@
   pointer-events: none;
   z-index: 0;
 }
+
 .cp-hero__img-ring::before {
   content: '';
   position: absolute;
@@ -608,10 +634,20 @@
     gap: 40px;
     padding-top: 20px;
   }
-  .cp-hero__left { align-items: center; }
-  .cp-hero__subtitle { max-width: 640px; }
-  .cp-hero__search-bar { max-width: 100%; }
+
+  .cp-hero__left {
+    align-items: center;
+  }
+
+  .cp-hero__subtitle {
+    max-width: 640px;
+  }
+
+  .cp-hero__search-bar {
+    max-width: 100%;
+  }
 }
+
 /* Section Header Flex */
 .cp-flex-header {
   display: flex;
@@ -1397,12 +1433,196 @@
   }
 
   .cp-flex-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
 
-  .cp-stats {
-    grid-template-columns: 1fr;
+    /* Cuisine Philosophy Section */
+    .cp-philosophy {
+      padding: 100px 0;
+      background-color: #fdfaf7;
+      position: relative;
+    }
+
+    .cp-philosophy__card {
+      background: #3d271e;
+      border-radius: 40px;
+      padding: 80px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      color: #fdf5e6;
+      box-shadow: 0 40px 100px rgba(61, 39, 30, 0.2);
+    }
+
+    .cp-philosophy__ornament {
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 250px;
+      height: 250px;
+      border: 2px solid rgba(248, 201, 122, 0.1);
+      border-radius: 50%;
+    }
+
+    .cp-philosophy__title {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      color: #f8c97a;
+      margin: 16px 0 24px;
+    }
+
+    .cp-philosophy__text {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: rgba(253, 245, 230, 0.8);
+    }
+
+    .cp-philosophy__visual {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      position: relative;
+    }
+
+    .philosophy-element {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+      cursor: default;
+    }
+
+    .philosophy-element:hover {
+      transform: scale(1.1);
+      border-color: rgba(248, 201, 122, 0.5);
+      box-shadow: 0 0 30px rgba(248, 201, 122, 0.2);
+    }
+
+    .philosophy-element span {
+      z-index: 2;
+    }
+
+    .philosophy-element--metal {
+      background: rgba(192, 192, 192, 0.1);
+      color: #e5e7eb;
+    }
+
+    .philosophy-element--wood {
+      background: rgba(52, 211, 153, 0.1);
+      color: #34d399;
+    }
+
+    .philosophy-element--water {
+      background: rgba(59, 130, 246, 0.1);
+      color: #60a5fa;
+    }
+
+    .philosophy-element--fire {
+      background: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+
+    .philosophy-element--earth {
+      background: rgba(245, 158, 11, 0.1);
+      color: #fbbf24;
+    }
+
+    /* Regional Highlights */
+    .cp-regional-highlights {
+      background-color: #ffffff;
+    }
+
+    .cp-highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 60px;
+    }
+
+    .cp-highlight-card {
+      border-radius: 24px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: all 0.4s ease;
+    }
+
+    .cp-highlight-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    .cp-highlight-card__img {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+    }
+
+    .cp-highlight-card__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .cp-highlight-card:hover .cp-highlight-card__img img {
+      transform: scale(1.1);
+    }
+
+    .cp-highlight-card__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 60%);
+    }
+
+    .cp-highlight-card__badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #f8c97a;
+      color: #3d271e;
+      padding: 6px 16px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .cp-highlight-card__content {
+      padding: 32px;
+    }
+
+    .cp-highlight-card__title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      color: #3d271e;
+      margin-bottom: 12px;
+    }
+
+    .cp-highlight-card__desc {
+      color: #6b7280;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 1100px) {
+      .cp-philosophy__card {
+        grid-template-columns: 1fr;
+        padding: 50px;
+      }
+
+      .cp-highlights-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   }
 }

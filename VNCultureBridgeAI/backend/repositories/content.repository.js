@@ -96,6 +96,8 @@ async function getProvinceByCode(code) {
 // 5. CUISINE (AmThuc)
 async function getAmThucExtended(filters = {}) {
     const { limit = 50 } = filters
+    const where = buildWhereClause('at', filters)
+    
     return query(`
         SELECT TOP (${Number(limit)})
             at.*,
@@ -106,8 +108,9 @@ async function getAmThucExtended(filters = {}) {
         LEFT JOIN dbo.VungVanHoa vv ON at.VungID = vv.VungID
         LEFT JOIN dbo.TinhThanh tt ON at.TinhThanhID = tt.TinhThanhID
         LEFT JOIN dbo.DanToc dt ON at.DanTocID = dt.DanTocID
+        ${where}
         ORDER BY at.NgayTao DESC, at.AmThucID DESC
-    `)
+    `, filters)
 }
 
 // 6. FESTIVALS (LeHoi)

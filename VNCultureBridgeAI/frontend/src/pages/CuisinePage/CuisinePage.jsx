@@ -390,30 +390,30 @@ export default function CuisinePage() {
                   {`Hiển thị ${filteredResolvedCards.length === 0 ? 0 : startIndex + 1}-${Math.min(startIndex + currentCards.length, filteredResolvedCards.length)} trên ${filteredResolvedCards.length} món ăn${filteredResolvedCards.length < resolvedCards.length ? ` (tổng ${resolvedCards.length} món)` : ''}`}
                 </div>
                 <div className="cp-custom-dropdown">
-                <div
-                  className={`cp-dropdown-header ${isDropdownOpen ? 'open' : ''}`}
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                >
-                  {activeFilter}
-                  <span className="cp-dropdown-arrow">▼</span>
-                </div>
-                {isDropdownOpen && (
-                  <ul className="cp-dropdown-list">
-                    {regions.map((region) => (
-                      <li
-                        key={region}
-                        className={`cp-dropdown-item ${activeFilter === region ? 'selected' : ''}`}
-                        onClick={() => {
-                          setRegionFilter(region)
-                          setIsDropdownOpen(false)
-                          handlePageChange(1)
-                        }}
-                      >
-                        {region}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                  <div
+                    className={`cp-dropdown-header ${isDropdownOpen ? 'open' : ''}`}
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
+                    {activeFilter}
+                    <span className="cp-dropdown-arrow">▼</span>
+                  </div>
+                  {isDropdownOpen && (
+                    <ul className="cp-dropdown-list">
+                      {regions.map((region) => (
+                        <li
+                          key={region}
+                          className={`cp-dropdown-item ${activeFilter === region ? 'selected' : ''}`}
+                          onClick={() => {
+                            setRegionFilter(region)
+                            setIsDropdownOpen(false)
+                            handlePageChange(1)
+                          }}
+                        >
+                          {region}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>
@@ -573,6 +573,10 @@ export default function CuisinePage() {
           </section>
         )}
 
+
+
+
+
         {hasLoadedData && resolvedGallery.length > 0 && (
           <section className="cp-section cp-section--cream cp-section--wavy">
             <div className="cp-section-wave cp-section-wave--top">
@@ -596,7 +600,7 @@ export default function CuisinePage() {
               <div className="cp-masonry fade-up">
                 {resolvedGallery.map((img, idx) => (
                   <div key={img.id || idx} className={`cp-masonry-item cp-masonry-item--${img.size || 'small'}`}>
-                    <img src={img.imgUrl || img.imageUrl || banner3} alt={img.imageAlt || 'Khoảnh khắc ẩm thực'} loading="lazy" />
+                    <img src={img.imgUrl || img.imageUrl} alt={img.imageAlt || 'Khoảnh khắc ẩm thực'} loading="lazy" />
                     <div className="cp-masonry-overlay">
                       <span className="cp-btn-icon">🔍</span>
                     </div>

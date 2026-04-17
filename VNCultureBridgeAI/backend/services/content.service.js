@@ -377,15 +377,91 @@ async function listFestivals(lang) {
 }
 
 async function listCuisines(filters, lang) {
-    const rows = await contentRepository.getAmThucExtended(filters)
+    const [stats, allCuisines, regions, gallery, featured, stories] = await Promise.all([
+        contentRepository.getGlobalStats(),
+        contentRepository.getAmThucExtended(filters),
+        contentRepository.getVungVanHoa(),
+        contentRepository.getGlobalGallery(7),
+        homepageRepository.getFeaturedAmThuc(3),
+        homepageRepository.getLatestArticles(3)
+    ])
+
+    const cuisineHeroStats = [
+        { label: lang === 'vi' ? 'Vùng miền' : 'Regions', value: stats.regionCount.toString() },
+        { label: lang === 'vi' ? 'Món ăn' : 'Dishes', value: '100+' },
+        { label: lang === 'vi' ? 'Dân tộc' : 'Ethnicities', value: stats.ethnicGroupCount.toString() }
+    ]
+
     return {
-        cards: rows.map(r => ({
+        hero: {
+            badge: lang === 'vi' ? 'Hành trình vị giác 3 miền' : 'A Journey of 3 Regional Tastes',
+            titleLine1: lang === 'vi' ? 'Tinh Hoa' : 'The Essence',
+            titleAccent: lang === 'vi' ? 'Ẩm Thực' : 'of Cuisine',
+            titleLine3: lang === 'vi' ? 'Việt Nam' : 'Vietnam',
+            subtitle: lang === 'vi' 
+                ? 'Từ Bắc tinh tế, Trung đậm đà đến Nam ngọt ngào — mỗi món ăn đều mang theo một câu chuyện văn hóa, bản sắc cốt cách của con người Việt.'
+                : 'From the delicate North, the flavorful Central to the sweet South — each dish carries a cultural story, the identity and character of the Vietnamese people.',
+            stats: cuisineHeroStats
+        },
+        regions: [
+            lang === 'vi' ? 'Tất cả vùng' : 'All Regions',
+            ...regions.map(r => mapText(r, 'TenVI', 'TenEN', lang))
+        ],
+        heroCuisines: [
+            lang === 'vi' ? 'Tất cả món' : 'All Dishes',
+            'Phở', 'Bún chả', 'Bánh mì', 'Lẩu mắm', 'Bánh xèo'
+        ],
+        cards: allCuisines.map(r => ({
             id: r.AmThucID,
             code: r.MaMonAn,
             name: mapText(r, 'TenVI', 'TenEN', lang),
+            region: mapText(r, 'VungTenVI', 'VungTenEN', lang),
             location: mapText(r, 'TinhTenVI', 'TinhTenEN', lang),
-            imageUrl: r.ImageUrl
-        }))
+            imageUrl: r.ImageUrl,
+            imageAlt: mapText(r, 'TenVI', 'TenEN', lang),
+            status: r.AmThucID <= 3 ? (lang === 'vi' ? 'Phổ biến' : 'Popular') : ''
+        })),
+        features: featured.map(f => ({
+            id: f.AmThucID,
+            code: f.Ma,
+            title: mapText(f, 'TenVI', 'TenEN', lang),
+            tag: lang === 'vi' ? 'Đặc sản' : 'Specialty',
+            desc: mapText(f, 'MoTaNganVI', 'MoTaNganEN', lang)
+        })),
+        stories: stories.map(s => mapArticleCard(s, lang)),
+        gallery: gallery.map((g, idx) => ({
+            id: idx,
+            imageUrl: g.imageUrl,
+            imageAlt: mapText(g, 'altVI', 'altEN', lang),
+            size: ['large', 'small', 'small', 'tall', 'small', 'wide', 'small'][idx % 7]
+        })),
+        philosophy: {
+            title: lang === 'vi' ? 'Triết lý mâm cơm Việt' : 'Vietnamese Culinary Philosophy',
+            subtitle: lang === 'vi' ? 'Sự cân bằng hoàn mỹ của Ngũ hành và Âm dương' : 'The Perfect Balance of Five Elements and Yin-Yang',
+            content: lang === 'vi' 
+                ? 'Ẩm thực Việt Nam không chỉ là việc ăn uống mà còn là triết lý sống. Sự kết hợp giữa Kim - Mộc - Thủy - Hỏa - Thổ qua 5 vị: Cay - Chua - Mặn - Đắng - Ngọt tạo nên sự hài hòa tuyệt đối cho sức khỏe và tâm hồn.'
+                : 'Vietnamese cuisine is not just about eating; it is a philosophy of life. The combination of Metal - Wood - Water - Fire - Earth through 5 flavors: Spicy - Sour - Salty - Bitter - Sweet creates absolute harmony for health and soul.'
+        },
+        regionalHighlights: [
+            {
+                region: lang === 'vi' ? 'Miền Bắc' : 'Northern Vietnam',
+                title: lang === 'vi' ? 'Sự tinh tế & Thanh tao' : 'Delicacy & Elegance',
+                desc: lang === 'vi' ? 'Gia vị trung tính, tôn vinh độ tươi ngon nguyên bản của nguyên liệu.' : 'Neutral spices, honoring the original freshness of ingredients.',
+                image: 'https://images.unsplash.com/photo-1593361427131-0164c09d5718?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                region: lang === 'vi' ? 'Miền Trung' : 'Central Vietnam',
+                title: lang === 'vi' ? 'Sự đậm đà & Sâu lắng' : 'Richness & Depth',
+                desc: lang === 'vi' ? 'Vị cay nồng, mặn mà phản ánh sự kiên cường của con người dải đất miền Trung.' : 'Spicy and salty flavors reflecting the resilience of the people in the Central region.',
+                image: 'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                region: lang === 'vi' ? 'Miền Nam' : 'Southern Vietnam',
+                title: lang === 'vi' ? 'Sự hào sảng & Trù phú' : 'Generosity & Abundance',
+                desc: lang === 'vi' ? 'Vị ngọt và béo của cốt dừa, đa dạng loại rau sông nước đặc trưng.' : 'Sweet and fatty taste of coconut milk, diverse types of characteristic river vegetables.',
+                image: 'https://images.unsplash.com/photo-1528612991054-9469db38a14b?auto=format&fit=crop&w=800&q=80'
+            }
+        ]
     }
 }
 
