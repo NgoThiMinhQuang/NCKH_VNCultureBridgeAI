@@ -1,24 +1,23 @@
 /* ==========================================================================
    FESTIVAL DETAIL PAGE CSS 
-   Style Concept: Bright, warm, clean, readable, welcoming.
-   Palette: Background (#FFF8F0), Primary (#E63946), Sec (#E9C46A)
+   Style Concept: Bright, warm, premium, readable, welcoming.
    ========================================================================== */
 
 /* Variables */
 :root {
-  --fest-bg: #FFF8F0;
-  --fest-bg-alt: #FFF1E6;
-  --fest-primary: #E63946;
-  --fest-secondary: #E9C46A;
-  --fest-text: #2C3E50;
-  --fest-text-light: #5A6A7A;
-  --fest-heading: var(--font-heading, "Roboto", sans-serif);
-  --fest-body: var(--font-body, 'Inter', system-ui, -apple-system, sans-serif);
-  --fest-radius-lg: 24px;
-  --fest-radius-md: 16px;
-  --fest-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
-  --fest-shadow-md: 0 12px 24px rgba(230, 57, 70, 0.08);
-  --fest-shadow-hover: 0 16px 32px rgba(230, 57, 70, 0.12);
+  --fest-bg: var(--bg);
+  --fest-bg-alt: var(--surface);
+  --fest-primary: var(--accent);
+  --fest-secondary: var(--accent-2);
+  --fest-text: var(--text-heading);
+  --fest-text-light: var(--text);
+  --fest-heading: var(--font-heading);
+  --fest-body: var(--font-body);
+  --fest-radius-lg: 48px;
+  --fest-radius-md: 32px;
+  --fest-shadow-sm: 0 12px 36px rgba(45, 26, 18, 0.05);
+  --fest-shadow-md: 0 20px 48px rgba(45, 26, 18, 0.12);
+  --fest-shadow-hover: 0 24px 60px rgba(45, 26, 18, 0.18);
 }
 
 .festival-detail-page {
@@ -73,70 +72,124 @@
 /* ================== 1. HERO SECTION ================== */
 .festival-hero {
   position: relative;
-  height: 60vh;
-  min-height: 500px;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('https://images.unsplash.com/photo-1549420659-19ff296a84f3?q=80&w=2070&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
   text-align: center;
   color: white;
-  padding: 0 20px;
+  padding: 160px 24px 80px;
 }
 
 .hero-overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.6) 70%, rgba(230,57,70,0.7) 100%);
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 8, 5, 0.65) 0%,
+    rgba(15, 8, 5, 0.45) 40%,
+    rgba(15, 8, 5, 0.95) 100%
+  );
   z-index: 1;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 800px;
-  animation: fadeInDown 1s ease-out;
+  max-width: 1000px;
+  animation: fadeInDown 1.2s ease-out;
 }
 
 .hero-tag {
-  background-color: var(--fest-secondary);
-  color: #fff;
-  padding: 6px 16px;
-  border-radius: 30px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 1rem;
   display: inline-block;
-  box-shadow: var(--fest-shadow-sm);
+  padding: 8px 24px;
+  background: rgba(230, 57, 70, 0.85); /* Premium red backdrop */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 40px rgba(230, 57, 70, 0.4);
+  color: #fff;
 }
 
 .hero-title {
-  font-size: 4.5rem;
-  color: white;
-  margin: 0;
-  text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  color: #fff !important;
+  letter-spacing: -0.01em;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero-subtitle {
-  font-size: 2rem;
-  color: #fff;
-  font-family: var(--fest-body);
-  font-weight: 300;
-  margin: 10px 0 20px;
-  text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #f8c97a; /* Elegant goldish yellow */
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-style: italic;
+  margin: 0 0 24px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.05em;
 }
 
 .hero-desc {
-  font-size: 1.2rem;
-  color: #f8f9fa;
-  max-width: 600px;
-  margin: 0 auto;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 750px;
+  margin: 0 auto 50px;
+  line-height: 1.8;
+  font-weight: 400;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(40px, 8vw, 80px);
+  margin-top: 20px;
+  background: rgba(20, 10, 5, 0.6); /* very dark glass */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  padding: 30px 60px;
+  border-radius: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  max-width: 100%;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-stat-val {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hero-stat-lbl {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-2);
 }
 
 /* ================== CONTAINER ================== */
@@ -159,7 +212,7 @@
 .what-is-it, .why-it-matters {
   display: flex;
   align-items: center;
-  gap: 4rem;
+  gap: 6rem;
 }
 
 .reverse {
@@ -168,53 +221,26 @@
 
 .text-content {
   flex: 1;
+  padding: 20px 0;
 }
 
 .image-content {
   flex: 1;
   position: relative;
+  border-radius: var(--fest-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--fest-shadow-md);
 }
 
 .image-content img {
   width: 100%;
-  height: 400px;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
+  transition: transform 1.2s ease;
 }
 
-/* Badges */
-.info-badges {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.badge {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  background-color: white;
-  padding: 15px 20px;
-  border-radius: var(--fest-radius-md);
-  box-shadow: var(--fest-shadow-sm);
-  border-left: 4px solid var(--fest-secondary);
-}
-
-.badge-icon {
-  font-size: 2rem;
-}
-
-.badge-label {
-  display: block;
-  font-weight: 700;
-  color: var(--fest-text);
-  font-size: 0.9rem;
-  text-transform: uppercase;
-}
-
-.badge-value {
-  color: var(--fest-text-light);
-  font-size: 1rem;
+.image-content:hover img {
+  transform: scale(1.05);
 }
 
 /* ================== CULTURAL CONTEXT (NEW) ================== */
@@ -245,29 +271,32 @@
 }
 
 .context-highlight-card {
-  background-color: #fdfaf2;
-  padding: 30px;
+  background-color: var(--surface);
+  padding: 40px;
   border-radius: var(--fest-radius-md);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
+  box-shadow: var(--fest-shadow-sm);
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .context-highlight-item {
   display: flex;
   align-items: flex-start;
-  gap: 15px;
+  gap: 20px;
 }
 
 .highlight-icon-box {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .highlight-red { background-color: #ffeaea; color: #e11d48; }
@@ -345,41 +374,43 @@
 
 /* ================== QUOTE BANNER (NEW) ================== */
 .festival-quote-banner {
-  background-color: #fdf5f3;
-  padding: 5rem 20px;
+  background-color: var(--surface);
+  padding: 6rem 20px;
   text-align: center;
-  border-radius: var(--fest-radius-md);
-  margin: 3rem 0 4rem;
+  border-radius: var(--fest-radius-lg);
+  margin: 4rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--fest-shadow-sm);
+  border: 1px solid rgba(0,0,0,0.02);
 }
 
 .quote-icon-top {
-  width: 45px;
-  height: 45px;
-  background-color: #fce4e4;
+  width: 60px;
+  height: 60px;
+  background-color: rgba(230, 57, 70, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
 .quote-icon-top svg {
-  color: #e63946;
-  width: 20px;
-  height: 20px;
+  color: var(--accent);
+  width: 28px;
+  height: 28px;
 }
 
 .quote-text {
-  font-family: var(--fest-heading);
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  color: #1f2937;
-  max-width: 800px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  color: var(--text-heading);
+  max-width: 900px;
   margin: 0;
-  line-height: 1.8;
+  line-height: 1.6;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
@@ -480,47 +511,50 @@
 .key-traditions-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
+  gap: 3rem;
 }
 
 .key-tradition-card {
   background: white;
-  border-radius: var(--fest-radius-md);
+  border-radius: var(--fest-radius-lg);
   overflow: hidden;
   box-shadow: var(--fest-shadow-sm);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
   display: flex;
   flex-direction: column;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .key-tradition-card:hover {
   transform: translateY(-8px);
-  box-shadow: var(--fest-shadow-md);
+  box-shadow: var(--fest-shadow-hover);
 }
 
 .key-tradition-img {
   width: 100%;
-  height: 220px;
+  aspect-ratio: 4/3;
   object-fit: cover;
+  border-radius: calc(var(--fest-radius-lg) - 12px);
 }
 
 .key-tradition-content {
-  padding: 25px;
+  padding: 30px 20px 20px;
   flex: 1;
 }
 
 .key-tradition-content h4 {
-  color: var(--fest-primary);
-  font-family: var(--fest-heading);
-  font-size: 1.25rem;
-  margin: 0 0 10px 0;
+  color: var(--fest-text);
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  margin: 0 0 12px 0;
 }
 
 .key-tradition-content p {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--fest-text-light);
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* ================== 11.5 TRADITIONAL FOODS ================== */
@@ -544,46 +578,49 @@
 
 .food-card {
   background: white;
-  border-radius: var(--fest-radius-md);
+  border-radius: var(--fest-radius-lg);
+  padding: 12px;
   overflow: hidden;
   box-shadow: var(--fest-shadow-sm);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
   display: flex;
   flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .food-card:hover {
   transform: translateY(-8px);
-  box-shadow: var(--fest-shadow-md);
+  box-shadow: var(--fest-shadow-hover);
 }
 
 .food-img-wrap {
   width: 100%;
   aspect-ratio: 4/3;
   overflow: hidden;
+  border-radius: calc(var(--fest-radius-lg) - 12px);
 }
 
 .food-img-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .food-card:hover .food-img-wrap img {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .food-content {
-  padding: 20px;
+  padding: 24px 16px 16px;
   flex: 1;
 }
 
 .food-content h4 {
-  color: var(--fest-primary);
-  margin: 0 0 10px 0;
-  font-family: var(--fest-heading);
-  font-size: 1.15rem;
+  color: var(--fest-text);
+  margin: 0 0 12px 0;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -591,9 +628,9 @@
 
 .food-content p {
   color: var(--fest-text-light);
-  font-size: 0.95rem;
+  font-size: 1rem;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

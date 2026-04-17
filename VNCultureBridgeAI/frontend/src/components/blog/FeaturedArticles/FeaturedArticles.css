@@ -76,12 +76,8 @@
 
 .featured-card__overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
-  opacity: 0.8;
+  inset: 0;
+  background: linear-gradient(to top, rgba(18, 6, 10, 0.95) 0%, rgba(18, 6, 10, 0.6) 45%, transparent 80%);
 }
 
 .featured-card__content {
@@ -101,6 +97,12 @@
   font-family: var(--font-heading);
   margin: 0 0 12px;
   line-height: 1.3;
+  color: var(--text-heading);
+  transition: color 0.3s ease;
+}
+
+.featured-card:hover .featured-card__title {
+  color: var(--accent);
 }
 
 .featured-card__date {
@@ -132,6 +134,12 @@
 .featured-card--large .featured-card__title {
   font-size: 2.2rem;
   margin-bottom: 15px;
+  color: #ffffff;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+}
+
+.featured-card--large:hover .featured-card__title {
+  color: #f8c97a;
 }
 
 .featured-card--large .featured-card__description {
