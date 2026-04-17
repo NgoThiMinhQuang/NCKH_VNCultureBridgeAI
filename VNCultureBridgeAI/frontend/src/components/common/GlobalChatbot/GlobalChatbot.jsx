@@ -37,6 +37,12 @@ export default function GlobalChatbot() {
     }
   }, [history, isOpen, loading]);
 
+  useEffect(() => {
+    const handleOpenChat = () => setIsOpen(true);
+    window.addEventListener('vnc-open-chatbot', handleOpenChat);
+    return () => window.removeEventListener('vnc-open-chatbot', handleOpenChat);
+  }, []);
+
   const handleAsk = async (e) => {
     e.preventDefault();
     if (!question.trim()) return;

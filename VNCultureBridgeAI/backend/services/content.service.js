@@ -155,6 +155,15 @@ async function getEthnicityDetail(code, lang) {
         contentRepository.getGalleryByDanTocId(ethnicity.DanTocID, 12)
     ])
 
+    // Group VanHoa by common categories if possible
+    // For now we map them as arts
+    const arts = vanHoa.map(vh => ({ 
+        id: vh.VanHoaID, 
+        title: mapText(vh, 'TenVI', 'TenEN', lang), 
+        description: mapText(vh, 'MoTaNganVI', 'MoTaNganEN', lang),
+        imageUrl: vh.ImageUrl 
+    }))
+
     return {
         id: ethnicity.DanTocID,
         code: ethnicity.MaDanToc,
@@ -171,6 +180,12 @@ async function getEthnicityDetail(code, lang) {
                 { label: lang === 'vi' ? 'Bài viết' : 'Articles', value: articles.length.toString() }
             ]
         },
+        identity: {
+            population: ethnicity.DanSo || (lang === 'vi' ? 'Đang cập nhật' : 'TBD'),
+            classification: mapText(ethnicity, 'PhanLoaiVI', 'PhanLoaiEN', lang) || (lang === 'vi' ? 'Nhóm ngôn ngữ' : 'Language Group'),
+            locationSummary: mapText(ethnicity, 'DiaBanCuTruVI', 'DiaBanCuTruEN', lang) || (lang === 'vi' ? 'Toàn quốc' : 'National'),
+            language: lang === 'vi' ? 'Tiếng mẹ đẻ' : 'Native Language'
+        },
         overview: {
             title: lang === 'vi' ? `Hành trình di sản ${ethnicity.TenVI}` : `The Heritage of ${ethnicity.TenEN}`,
             content: mapText(ethnicity, 'OverviewVI', 'OverviewEN', lang),
@@ -181,9 +196,9 @@ async function getEthnicityDetail(code, lang) {
             content: mapText(ethnicity, 'LichSuVI', 'LichSuEN', lang)
         },
         sections: {
-            cuisine: amThuc.map(at => ({ id: at.AmThucID, title: mapText(at, 'TenVI', 'TenEN', lang), imageUrl: at.ImageUrl })),
-            festivals: leHoi.map(lh => ({ id: lh.LeHoiID, title: mapText(lh, 'TenVI', 'TenEN', lang), imageUrl: lh.ImageUrl })),
-            arts: vanHoa.map(vh => ({ id: vh.VanHoaID, title: mapText(vh, 'TenVI', 'TenEN', lang), imageUrl: vh.ImageUrl }))
+            cuisine: amThuc.map(at => ({ id: at.AmThucID, title: mapText(at, 'TenVI', 'TenEN', lang), description: mapText(at, 'MoTaNganVI', 'MoTaNganEN', lang), imageUrl: at.ImageUrl })),
+            festivals: leHoi.map(lh => ({ id: lh.LeHoiID, title: mapText(lh, 'TenVI', 'TenEN', lang), description: mapText(lh, 'MoTaNganVI', 'MoTaNganEN', lang), imageUrl: lh.ImageUrl })),
+            arts: arts
         },
         gallery: dbGallery.map((g, idx) => ({ id: g.HinhAnhID, imageUrl: g.Url, imageAlt: mapText(g, 'MoTaVI', 'MoTaEN', lang) })),
         relatedArticles: articles.map(a => mapArticleCard(a, lang))
@@ -206,15 +221,54 @@ async function listRegions(lang) {
 async function getRegion(code, lang) {
     const r = await contentRepository.getVungByCode(code)
     if (!r) return null
-    const stats = await contentRepository.getGlobalStats()
+
+    // Fetch related data concurrently
+    const [provinces, articles, cuisineRows, festivalRows] = await Promise.all([
+        contentRepository.getProvincesByVung(r.VungID),
+        contentRepository.getArticles({ region: code, limit: 6 }),
+        contentRepository.getAmThucExtended({ region: code, limit: 4 }),
+        contentRepository.getFestivalsExtended({ region: code, limit: 3 })
+    ])
+
     return {
         id: r.MaVung,
         code: r.MaVung,
         name: mapText(r, 'TenVI', 'TenEN', lang),
         title: mapText(r, 'TenVI', 'TenEN', lang),
-        imageUrl: r.ImageUrl,
         description: mapText(r, 'MoTaVI', 'MoTaEN', lang),
-        articleCount: stats.articleCount
+        imageUrl: r.ImageUrl,
+        // Detailed data for sections
+        provinces: provinces.map(p => ({
+            id: p.MaTinh,
+            code: p.MaTinh,
+            name: mapText(p, 'TenVI', 'TenEN', lang),
+            description: mapText(p, 'TongQuanVI', 'TongQuanEN', lang),
+            imageUrl: p.HeroImageUrl || p.AnhDaiDienUrl,
+            tags: []
+        })),
+        articles: articles.map(a => mapArticleCard(a, lang)),
+        culturalHighlights: {
+            cuisine: cuisineRows.map(at => ({
+                id: at.AmThucID,
+                code: at.MaMonAn,
+                title: mapText(at, 'TenVI', 'TenEN', lang),
+                description: mapText(at, 'MoTaNganVI', 'MoTaNganEN', lang),
+                imageUrl: at.ImageUrl
+            })),
+            festivals: festivalRows.map(f => ({
+                id: f.LeHoiID,
+                code: f.MaLeHoi,
+                title: mapText(f, 'TenVI', 'TenEN', lang),
+                description: mapText(f, 'MoTaNganVI', 'MoTaNganEN', lang),
+                date: mapText(f, 'ThoiGianVI', 'ThoiGianEN', lang),
+                imageUrl: f.ImageUrl
+            }))
+        },
+        statistics: {
+            provinceCount: provinces.length,
+            articleCount: articles.length,
+            highlightCount: cuisineRows.length + festivalRows.length
+        }
     }
 }
 
@@ -503,7 +557,44 @@ module.exports = {
     getEthnicity: getEthnicityDetail,
     getProvince: async (code, lang) => {
         const r = await contentRepository.getProvinceByCode(code)
-        return r ? { id: r.MaTinh, name: mapText(r, 'TenVI', 'TenEN', lang), desc: mapText(r, 'TongQuanVI', 'TongQuanEN', lang), image: r.HeroImageUrl } : null
+        if (!r) return null
+
+        // Fetch related data concurrently
+        const [cuisine, festivals, articles] = await Promise.all([
+            contentRepository.getAmThucExtended({ province: r.TinhThanhID, limit: 4 }),
+            contentRepository.getFestivalsExtended({ region: r.VungID, limit: 3 }), // Use Region for festivals if no Province filter exists
+            contentRepository.getArticles({ region: r.VungID, limit: 6 }) // Regional fallback for articles
+        ])
+
+        return {
+            id: r.MaTinh,
+            code: r.MaTinh,
+            title: mapText(r, 'TenVI', 'TenEN', lang),
+            name: mapText(r, 'TenVI', 'TenEN', lang),
+            subtitle: lang === 'vi' ? 'Hành trình di sản' : 'A Heritage Journey',
+            description: mapText(r, 'TongQuanVI', 'TongQuanEN', lang),
+            heroImageUrl: r.HeroImageUrl || r.AnhDaiDienUrl,
+            region: lang === 'vi' ? 'Vùng miền' : 'Region', // Can be refined with Join
+            metrics: {
+                population: '---', // From DB if added later
+                area: '---',
+                bestTime: lang === 'vi' ? 'Quanh năm' : 'Year-round'
+            },
+            cuisine: cuisine.map(at => ({
+                id: at.AmThucID,
+                title: mapText(at, 'TenVI', 'TenEN', lang),
+                description: mapText(at, 'MoTaNganVI', 'MoTaNganEN', lang),
+                imageUrl: at.ImageUrl
+            })),
+            festivals: festivals.map(f => ({
+                id: f.LeHoiID,
+                title: mapText(f, 'TenVI', 'TenEN', lang),
+                description: mapText(f, 'MoTaNganVI', 'MoTaNganEN', lang),
+                date: mapText(f, 'ThoiGianVI', 'ThoiGianEN', lang),
+                imageUrl: f.ImageUrl
+            })),
+            articles: articles.map(a => mapArticleCard(a, lang))
+        }
     },
     getFestival: async (id, lang) => {
         const rows = await contentRepository.getFestivalsExtended()
