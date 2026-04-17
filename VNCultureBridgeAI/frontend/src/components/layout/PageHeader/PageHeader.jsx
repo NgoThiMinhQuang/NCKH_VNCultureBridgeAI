@@ -104,17 +104,23 @@ export default function PageHeader({ lang, onLangChange, breadcrumb, renderNav }
 
         {/* ── Actions ── */}
         <div className="ph__actions">
-          {/* Search */}
-          <button type="button" className="ph__icon-btn" aria-label="Tìm kiếm">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </button>
-
-          {/* Language toggle */}
-          <div className="ph__lang" aria-label="Ngôn ngữ hiện tại">
-            <button type="button" className="is-active" onClick={() => onLangChange('vi')}>VI</button>
+          {/* Language toggle: VI | EN */}
+          <div className="ph__lang" aria-label="Chọn ngôn ngữ">
+            <button 
+              type="button" 
+              className={lang === 'vi' ? 'is-active' : ''} 
+              onClick={() => onLangChange('vi')}
+            >
+              VI
+            </button>
+            <span>|</span>
+            <button 
+              type="button" 
+              className={lang === 'en' ? 'is-active' : ''} 
+              onClick={() => onLangChange('en')}
+            >
+              EN
+            </button>
           </div>
 
           {currentUser ? (
