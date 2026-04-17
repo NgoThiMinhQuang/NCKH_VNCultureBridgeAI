@@ -366,10 +366,11 @@ async function listEthnicities(lang) {
             let region = mapText(r, 'PhanLoaiVI', 'PhanLoaiEN', lang);
             const code = r.MaDanToc;
             
-            if (code === 'KINH') region = lang === 'vi' ? 'Tất cả vùng' : 'All Regions';
-            else if (['HMONG', 'TAY', 'THAI', 'DAO', 'MUONG'].includes(code)) region = lang === 'vi' ? 'Bắc Bộ' : 'Northern Vietnam';
-            else if (['CHAM', 'EDE', 'BANA'].includes(code)) region = lang === 'vi' ? 'Trung Bộ' : 'Central Vietnam';
-            else if (code === 'KHMER') region = lang === 'vi' ? 'Nam Bộ' : 'Southern Vietnam';
+            if (code === 'KINH') region = lang === 'vi' ? 'Tất cả vùng' : 'All regions';
+            else if (['HMONG', 'TAY', 'THAI', 'DAO', 'MUONG'].includes(code)) region = lang === 'vi' ? 'Miền Bắc' : 'North';
+            else if (['CHAM'].includes(code)) region = lang === 'vi' ? 'Miền Trung' : 'Central';
+            else if (['EDE', 'BANA'].includes(code)) region = lang === 'vi' ? 'Tây Nguyên' : 'Central Highlands';
+            else if (code === 'KHMER') region = lang === 'vi' ? 'Miền Nam' : 'South';
 
             return {
                 id: r.DanTocID,

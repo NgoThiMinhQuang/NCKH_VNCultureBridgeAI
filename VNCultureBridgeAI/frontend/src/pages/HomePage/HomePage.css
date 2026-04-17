@@ -107,6 +107,7 @@
   flex-direction: column !important;
   align-items: center !important;
   text-align: center !important;
+  width: 100% !important;
 }
 
 .section-title::after {
@@ -116,6 +117,7 @@
   height: 4px;
   background: linear-gradient(90deg, var(--premium-maroon), var(--premium-gold));
   margin: 20px auto 0 !important;
+  align-self: center;
   border-radius: 99px;
   box-shadow: 0 4px 12px rgba(92, 0, 1, 0.25);
 }

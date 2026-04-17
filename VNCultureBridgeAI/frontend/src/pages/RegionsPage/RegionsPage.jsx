@@ -10,6 +10,8 @@ import VietnamMap from '../../components/features/regions/VietnamMap'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
 import SectionWave from '../../components/common/SectionWave/SectionWave'
+import { RiDoubleQuotesL } from 'react-icons/ri'
+import { FiAperture } from 'react-icons/fi'
 
 // Import Region Overviews
 import imgOverviewNorth from '../../assets/images/regions/region_overview_north.png'
@@ -965,9 +967,19 @@ export default function RegionsPage() {
                 ))}
               </div>
 
-              <div className="cultural-layers__summary">
-                <p>{lang === 'vi' ? '"Mỗi vùng đất là một bản giao hưởng văn hoá"' : '"Each land is a cultural symphony"'}</p>
-                <span>{lang === 'vi' ? 'Khám phá chi tiết từng chiều kích văn hoá để hiểu sâu hơn về tinh thần và bản sắc của từng vùng miền Việt Nam.' : 'Explore each cultural dimension in detail to better understand the spirit and identity of Vietnam’s regions.'}</span>
+              <div className="cultural-layers__summary fade-up">
+                <RiDoubleQuotesL className="summary-quote-icon" />
+                <div className="summary-divider">
+                  <div className="summary-divider-line"></div>
+                  <FiAperture className="summary-divider-icon" />
+                  <div className="summary-divider-line"></div>
+                </div>
+                <h2 className="cultural-layers__summary-quote">
+                  {lang === 'vi' ? '"Mỗi vùng đất là một bản giao hưởng văn hoá"' : '"Each land is a cultural symphony"'}
+                </h2>
+                <p className="cultural-layers__summary-desc">
+                  {lang === 'vi' ? 'Khám phá chi tiết từng chiều kích văn hoá để hiểu sâu hơn về tinh thần và bản sắc của từng vùng miền Việt Nam.' : 'Explore each cultural dimension in detail to better understand the spirit and identity of Vietnam’s regions.'}
+                </p>
               </div>
             </div>
           </section>

@@ -384,6 +384,11 @@
   font-size: clamp(2rem, 4vw, 3rem);
   color: var(--text-heading);
   margin-bottom: 20px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
 }
 
 .cdp-section-subtitle {

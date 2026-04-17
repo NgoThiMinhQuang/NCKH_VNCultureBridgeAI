@@ -1860,7 +1860,7 @@
 .regions-overview-section,
 .provinces-section,
 .highlights-section {
-  padding-top: 80px;
+  padding-top: 120px;
   width: 100%;
 }
 
@@ -1890,14 +1890,15 @@
 .regions-overview__container {
   display: flex;
   flex-direction: column;
-  gap: 120px;
-  padding-bottom: 40px;
+  gap: 180px;
+  padding-bottom: 60px;
 }
 
 .regions-overview__card {
   display: flex;
-  gap: 80px;
+  gap: 120px;
   align-items: flex-start;
+  margin-bottom: 100px;
 }
 
 .regions-overview__card.is-reversed {
@@ -1972,10 +1973,10 @@
 .regions-overview__details {
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  margin-bottom: 48px;
+  gap: 36px;
+  margin-bottom: 60px;
   border-left: 2px solid rgba(231, 111, 81, 0.15);
-  padding-left: 28px;
+  padding-left: 32px;
 }
 
 .regions-overview__detail-row {
@@ -2243,6 +2244,10 @@
   line-height: 1.5;
   margin-bottom: 20px;
   flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .province-item__tags {
@@ -2751,26 +2756,70 @@
 }
 
 .cultural-layers__summary {
-  background: #fff;
-  padding: 40px;
-  border-radius: 20px;
+  background: #fffaf2; /* Cream BG */
+  padding: 60px 80px;
+  border-radius: 32px;
   text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-  box-shadow: 0 20px 60px rgba(166, 124, 101, 0.05);
+  max-width: 960px;
+  margin: 60px auto 0;
+  box-shadow: 0 40px 100px rgba(166, 124, 101, 0.12);
+  border-top: 6px solid #cd211b; /* Heritage Red */
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cultural-layers__summary p {
+.cultural-layers__summary:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 60px 120px rgba(166, 124, 101, 0.2);
+}
+
+.cultural-layers__summary-quote {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-style: italic;
+  font-size: clamp(2rem, 4vw, 2.5rem);
   color: #1a1512;
-  margin-bottom: 8px;
+  line-height: 1.3;
+  margin-bottom: 24px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
 }
 
-.cultural-layers__summary span {
-  color: #a67c65;
-  font-size: 0.9rem;
+.summary-quote-icon {
+  color: rgba(205, 33, 27, 0.1); /* Transparent Heritage Red */
+  font-size: 6rem;
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  pointer-events: none;
+}
+
+.cultural-layers__summary-desc {
+  color: #69564c;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto;
+  letter-spacing: 0.01em;
+}
+
+.summary-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.summary-divider-line {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(226, 166, 40, 0.3), transparent);
+}
+
+.summary-divider-icon {
+  color: #e2a628; /* Heritage Gold */
+  font-size: 1.5rem;
 }
 
 @media (max-width: 1200px) {

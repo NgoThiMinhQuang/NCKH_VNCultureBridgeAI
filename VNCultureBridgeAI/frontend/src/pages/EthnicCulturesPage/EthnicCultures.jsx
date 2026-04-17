@@ -12,15 +12,11 @@ import {
 import PageHeader from "../../components/layout/PageHeader/PageHeader";
 import { useLanguage } from "../../context/LanguageContext";
 import Footer from "../../components/layout/Footer/Footer";
+import { getEthnicities } from "../../services/ethnicity.service";
+import LoadingState from "../../components/common/LoadingState/LoadingState";
 import banner3 from "../../assets/banner3.jpg";
-import hmongImg from "../../assets/hmong.jpg";
-import daoImg from "../../assets/dao.jpg";
-import thaiImg from "../../assets/thai.jpg";
-import edeImg from "../../assets/ede.jpg";
-import banaImg from "../../assets/bana.jpg";
-import khmerImg from "../../assets/khmer.jpg";
-import chamImg from "../../assets/cham.jpg";
 import muongImg from "../../assets/muong.jpg";
+import kinhImg from "../../assets/kinh.png";
 import ruongBacThangImg from "../../assets/ruong-bac-thang.jpg";
 import duaBoImg from "../../assets/dua-bo.jpg";
 import xoeThaiImg from "../../assets/xoe_thai.png";
@@ -80,188 +76,6 @@ const getI18nData = (lang) => {
       : ["All ethnic groups", "Muong", "Thai", "H'Mong", "Dao", "Kinh", "Khmer"],
     gridTitle: isVi ? "Cộng Đồng 54 Dân Tộc" : "Community of 54 Ethnic Groups",
     gridDesc: isVi ? "Mỗi dân tộc là một mảnh ghép rực rỡ trong bức tranh văn hóa Việt." : "Each ethnic group is a vibrant piece in the Vietnamese cultural tapestry.",
-    ethnicCards: [
-      {
-        id: "hmong",
-        name: isVi ? "Dân tộc Mông" : "H'Mong People",
-        location: isVi ? "Hà Giang, Sơn La,..." : "Ha Giang, Son La,...",
-        imgUrl: hmongImg,
-        status: isVi ? "Nổi bật" : "Featured",
-        region: "Miền Bắc",
-        enRegion: "North",
-      },
-      {
-        id: "dao",
-        name: isVi ? "Dân tộc Dao" : "Dao People",
-        location: isVi ? "Lào Cai, Yên Bái,..." : "Lao Cai, Yen Bai,...",
-        imgUrl: daoImg,
-        status: "",
-        region: "Miền Bắc",
-        enRegion: "North",
-      },
-      {
-        id: "thai",
-        name: isVi ? "Dân tộc Thái" : "Thai People",
-        location: isVi ? "Điện Biên, Lai Châu,..." : "Dien Bien, Lai Chau,...",
-        imgUrl: thaiImg,
-        status: "",
-        region: "Miền Bắc",
-        enRegion: "North",
-      },
-      {
-        id: "ede",
-        name: isVi ? "Dân tộc Ê Đê" : "E De People",
-        location: isVi ? "Đắk Lắk, Đắk Nông,..." : "Dak Lak, Dak Nong,...",
-        imgUrl: edeImg,
-        status: isVi ? "Mới" : "New",
-        region: "Tây Nguyên",
-        enRegion: "Central Highlands",
-      },
-      {
-        id: "bana",
-        name: isVi ? "Dân tộc Ba Na" : "Ba Na People",
-        location: isVi ? "Gia Lai, Kon Tum,..." : "Gia Lai, Kon Tum,...",
-        imgUrl: banaImg,
-        status: "",
-        region: "Tây Nguyên",
-        enRegion: "Central Highlands",
-      },
-      {
-        id: "khmer",
-        name: isVi ? "Dân tộc Khmer" : "Khmer People",
-        location: isVi ? "Sóc Trăng, Trà Vinh,..." : "Soc Trang, Tra Vinh,...",
-        imgUrl: khmerImg,
-        status: "",
-        region: "Miền Nam",
-        enRegion: "South",
-      },
-      {
-        id: "cham",
-        name: isVi ? "Dân tộc Chăm" : "Cham People",
-        location: isVi ? "Ninh Thuận, Bình Thuận,..." : "Ninh Thuan, Binh Thuan,...",
-        imgUrl: chamImg,
-        status: isVi ? "Nổi bật" : "Featured",
-        region: "Miền Nam",
-        enRegion: "South",
-      },
-      {
-        id: "muong",
-        name: isVi ? "Dân tộc Mường" : "Muong People",
-        location: isVi ? "Hòa Bình, Thanh Hóa,..." : "Hoa Binh, Thanh Hoa,...",
-        imgUrl: muongImg,
-        status: "",
-        region: "Miền Bắc",
-        enRegion: "North",
-      },
-      {
-        id: "tày",
-        name: isVi ? "Dân tộc Tày" : "Tay People",
-        location: isVi ? "Cao Bằng, Lạng Sơn,..." : "Cao Bang, Lang Son,...",
-        imgUrl: thaiImg,
-        status: "",
-        region: "Miền Bắc",
-        enRegion: "North",
-      },
-      {
-        id: "nung",
-        name: isVi ? "Dân tộc Nùng" : "Nung People",
-        location: isVi ? "Lạng Sơn, Cao Bằng,..." : "Lang Son, Cao Bang,...",
-        imgUrl: daoImg,
-        status: "",
-        region: "Miền Bắc",
-        enRegion: "North",
-      },
-      {
-        id: "hà-nhì",
-        name: isVi ? "Dân tộc Hà Nhì" : "Ha Nhi People",
-        location: isVi ? "Lai Châu, Lào Cai,..." : "Lai Chau, Lao Cai,...",
-        imgUrl: hmongImg,
-        status: "",
-        region: "Miền Bắc",
-        enRegion: "North",
-      },
-      {
-        id: "ta-oi",
-        name: isVi ? "Dân tộc Tà Ôi" : "Ta Oi People",
-        location: isVi ? "Thừa Thiên Huế,..." : "Thua Thien Hue,...",
-        imgUrl: banaImg,
-        status: "",
-        region: "Miền Trung",
-        enRegion: "Central",
-      },
-      {
-        id: "churu",
-        name: isVi ? "Dân tộc Chu Ru" : "Chu Ru People",
-        location: isVi ? "Lâm Đồng, Ninh Thuận,..." : "Lam Dong, Ninh Thuan,...",
-        imgUrl: edeImg,
-        status: "",
-        region: "Tây Nguyên",
-        enRegion: "Central Highlands",
-      },
-      {
-        id: "san-diu",
-        name: isVi ? "Dân tộc Sán Dìu" : "San Diu People",
-        location: isVi ? "Vĩnh Phúc, Thái Nguyên,..." : "Vinh Phuc, Thai Nguyen,...",
-        imgUrl: chamImg,
-        status: "",
-        region: "Miền Bắc",
-        enRegion: "North",
-      },
-      {
-        id: "co-tu",
-        name: isVi ? "Dân tộc Cơ Tu" : "Co Tu People",
-        location: isVi ? "Quảng Nam, Đà Nẵng,..." : "Quang Nam, Da Nang,...",
-        imgUrl: muongImg,
-        status: "",
-        region: "Miền Trung",
-        enRegion: "Central",
-      },
-      {
-        id: "jrai",
-        name: isVi ? "Dân tộc J'rai" : "J'rai People",
-        location: isVi ? "Gia Lai, Kon Tum,..." : "Gia Lai, Kon Tum,...",
-        imgUrl: edeImg,
-        status: "",
-        region: "Tây Nguyên",
-        enRegion: "Central Highlands",
-      },
-    ],
-    featuresTitle: isVi ? "Những nét văn hóa đặc sắc nhất" : "Key Cultural Highlights",
-    featuresEyebrow: isVi ? "Di sản độc đáo" : "Unique Heritage",
-    features: [
-      { id: 1, title: isVi ? "Lễ hội đua bò Bảy Núi" : "An Giang Bull Racing", imgUrl: duaBoImg, tag: isVi ? "Nổi bật" : "Featured" },
-      { id: 2, title: isVi ? "Nghệ thuật xòe Thái" : "Thai Folk Dance", imgUrl: xoeThaiImg, tag: "" },
-      { id: 3, title: isVi ? "Không gian văn hóa Cồng Chiêng" : "Gong Culture", imgUrl: congChiengImg, tag: isVi ? "Di sản" : "Heritage" },
-    ],
-    storiesTitle: isVi ? "Chuyện kể từ bản làng xa" : "Village Tales",
-    storiesEyebrow: isVi ? "Góc nhìn cận cảnh" : "Close-up",
-    storiesMore: isVi ? "Xem tất cả bài viết" : "View all articles",
-    stories: [
-      {
-        id: 1,
-        title: isVi ? "Lễ Cấp sắc người Dao đỏ" : "Inititation of Red Dao",
-        desc: isVi 
-          ? "Lễ cấp sắc là một nghi lễ quan trọng đánh dấu sự trưởng thành của người đàn ông dân tộc Dao đỏ."
-          : "Cap Sac is an important ritual marking maturity for Red Dao men.",
-        imgUrl: leCapSacImg,
-      },
-      {
-        id: 2,
-        title: isVi ? "Dệt thổ cẩm người Lô Lô" : "Lo Lo Brocade Weaving",
-        desc: isVi
-          ? "Nghề dệt thổ cẩm truyền thống của người Lô Lô mang đậm nét văn hóa độc đáo với những họa tiết sặc sỡ."
-          : "The traditional brocade weaving of Lo Lo people carries unique artistic patterns.",
-        imgUrl: detThoCamImg,
-      },
-      {
-        id: 3,
-        title: isVi ? "Múa trống Sadam người Khmer" : "Khmer Sadam Drum Dance",
-        desc: isVi
-          ? "Trống Sadam không chỉ là nhạc cụ mà còn là linh hồn trong các lễ hội truyền thống của người Khmer."
-          : "Sadam drum is the soul of traditional Khmer festivals in Southern Vietnam.",
-        imgUrl: muaTrongImg,
-      },
-    ],
     details: {
       location: isVi ? "Vị trí" : "Location",
       status: isVi ? "Tìm hiểu" : "Learn more",
@@ -315,16 +129,50 @@ const getI18nData = (lang) => {
     featureHighlight: {
       title: isVi ? "Di sản văn hóa phi vật thể" : "Intangible Cultural Heritage",
       desc: isVi ? "UNESCO công nhận - Bảo tồn và phát huy" : "UNESCO Recognized - Preserving and Promoting"
-    }
+    },
+    features: [
+      { id: 1, title: isVi ? "Lễ hội đua bò Bảy Núi" : "An Giang Bull Racing", imgUrl: duaBoImg, tag: isVi ? "Nổi bật" : "Featured" },
+      { id: 2, title: isVi ? "Nghệ thuật xòe Thái" : "Thai Folk Dance", imgUrl: xoeThaiImg, tag: "" },
+      { id: 3, title: isVi ? "Không gian văn hóa Cồng Chiêng" : "Gong Culture", imgUrl: congChiengImg, tag: isVi ? "Di sản" : "Heritage" },
+    ],
+    storiesTitle: isVi ? "Chuyện kể từ bản làng xa" : "Village Tales",
+    storiesEyebrow: isVi ? "Góc nhìn cận cảnh" : "Close-up",
+    storiesMore: isVi ? "Xem tất cả bài viết" : "View all articles",
+    stories: [
+      {
+        id: 1,
+        title: isVi ? "Lễ Cấp sắc người Dao đỏ" : "Inititation of Red Dao",
+        desc: isVi 
+          ? "Lễ cấp sắc là một nghi lễ quan trọng đánh dấu sự trưởng thành của người đàn ông dân tộc Dao đỏ."
+          : "Cap Sac is an important ritual marking maturity for Red Dao men.",
+        imgUrl: leCapSacImg,
+      },
+      {
+        id: 2,
+        title: isVi ? "Dệt thổ cẩm người Lô Lô" : "Lo Lo Brocade Weaving",
+        desc: isVi
+          ? "Nghề dệt thổ cẩm truyền thống của người Lô Lô mang đậm nét văn hóa độc đáo với những họa tiết sặc sỡ."
+          : "The traditional brocade weaving of Lo Lo people carries unique artistic patterns.",
+        imgUrl: detThoCamImg,
+      },
+      {
+        id: 3,
+        title: isVi ? "Múa trống Sadam người Khmer" : "Khmer Sadam Drum Dance",
+        desc: isVi
+          ? "Trống Sadam không chỉ là nhạc cụ mà còn là linh hồn trong các lễ hội truyền thống của người Khmer."
+          : "Sadam drum is the soul of traditional Khmer festivals in Southern Vietnam.",
+        imgUrl: muaTrongImg,
+      },
+    ],
   };
 };
 
 // Masonry Data
 const masonryImages = [
   { size: "large", imgUrl: ruongBacThangImg },
-  { size: "small", imgUrl: chamImg },
+  { size: "small", imgUrl: muongImg },
   { size: "tall", imgUrl: xoeThaiImg },
-  { size: "small", imgUrl: edeImg },
+  { size: "small", imgUrl: kinhImg },
   { size: "wide", imgUrl: duaBoImg },
   { size: "small", imgUrl: congChiengImg },
 ];
@@ -342,6 +190,38 @@ export default function EthnicCultures() {
   const [isHeroEthnicOpen, setIsHeroEthnicOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const [ethnicities, setEthnicities] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
+
+  // Fetch Ethnicities from DB
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        setIsLoading(true);
+        const response = await getEthnicities(lang);
+        // Map backend ethnicities to the card format expected by the frontend
+        const mappedCards = (response.ethnicities || []).map(e => ({
+          id: e.code, // Use MaDanToc code for routing
+          name: e.name,
+          location: e.location,
+          imgUrl: e.cardImageUrl,
+          status: e.status,
+          region: e.region,
+          enRegion: e.region, // Backend currently returns localized region in one field, we can refine this if needed
+          sortOrder: e.sortOrder
+        }));
+        setEthnicities(mappedCards);
+      } catch (err) {
+        console.error("Error fetching ethnicities:", err);
+        setFetchError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchData();
+  }, [lang]);
+
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 8;
@@ -354,9 +234,9 @@ export default function EthnicCultures() {
     setActiveHeroEthnic(i18n.heroEthnicGroups[0]);
   }, [lang]);
 
-  const filteredCards = i18n.ethnicCards.filter((c) => {
+  const filteredCards = ethnicities.filter((c) => {
     const matchRegionFilter =
-      activeFilter === i18n.regions[0] ? true : (lang === "vi" ? c.region === activeFilter : c.enRegion === activeFilter);
+      activeFilter === i18n.regions[0] ? true : c.region === activeFilter;
     const matchHeroRegion =
       activeRegion === i18n.regions[0] ? true : (lang === "vi" ? c.region === activeRegion : c.enRegion === activeRegion);
     const matchHeroEthnic =
@@ -558,7 +438,7 @@ export default function EthnicCultures() {
             <div className="ec-hero__right fade-up">
               <div className="ec-hero__img-frame">
                 <img
-                  src={hmongImg}
+                  src={kinhImg}
                   alt={isVi ? "Dân tộc" : "Ethnic Group"}
                   className="ec-hero__img-main"
                 />
@@ -635,41 +515,53 @@ export default function EthnicCultures() {
                 )}
               </div>
             </div>
-
-            <div className="ec-grid ec-grid--4cols fade-up">
-              {currentCards.map((c) => (
-                <Link
-                  to={`/ethnic-groups/${c.id}`}
-                  className="ec-card"
-                  key={c.id}
-                >
-                  <div className="ec-card__img-wrap">
-                    {c.status && (
-                      <span className="ec-card__status">{c.status}</span>
-                    )}
-                    <img src={c.imgUrl} alt={c.name} loading="lazy" />
-                  </div>
-                  <div className="ec-card__content">
-                    <p className="ec-card__loc">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                      </svg>
-                      {c.location}
-                    </p>
-                    <h3 className="ec-card__title">{c.name}</h3>
-                    <span className="ec-card__link">{i18n.details.status}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            
+            {isLoading ? (
+              <div className="ec-loading-wrap" style={{ padding: '100px 0' }}>
+                <LoadingState message={isVi ? "Đang tải dữ liệu dân tộc..." : "Loading ethnic groups..."} />
+              </div>
+            ) : fetchError ? (
+              <div className="ec-error-wrap" style={{ padding: '60px 0', textAlign: 'center' }}>
+                 <p style={{ color: 'var(--heritage-red)', fontSize: '1.2rem' }}>
+                   {isVi ? "Có lỗi xảy ra khi tải dữ liệu." : "Error loading data."}
+                 </p>
+              </div>
+            ) : (
+              <div className="ec-grid ec-grid--4cols fade-up">
+                {currentCards.map((c) => (
+                  <Link
+                    to={`/ethnic-groups/${c.id}`}
+                    className="ec-card"
+                    key={c.id}
+                  >
+                    <div className="ec-card__img-wrap">
+                      {c.status && (
+                        <span className="ec-card__status">{c.status}</span>
+                      )}
+                      <img src={c.imgUrl} alt={c.name} loading="lazy" />
+                    </div>
+                    <div className="ec-card__content">
+                      <p className="ec-card__loc">
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        {c.location}
+                      </p>
+                      <h3 className="ec-card__title">{c.name}</h3>
+                      <span className="ec-card__link">{i18n.details.status}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
