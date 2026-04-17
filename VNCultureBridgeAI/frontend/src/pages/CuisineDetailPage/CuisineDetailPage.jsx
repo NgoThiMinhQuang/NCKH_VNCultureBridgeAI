@@ -18,8 +18,6 @@ import {
 function buildNavItems() {
   return [
     { icon: <FiClock />, label: 'Giới thiệu' },
-    { icon: <FiBookOpen />, label: 'Nguyên liệu' },
-    { icon: <FiGlobe />, label: 'Cách làm' },
     { icon: <FiCoffee />, label: 'Thưởng thức' },
     { icon: <FiHome />, label: 'Góc bếp' },
     { icon: <FiImage />, label: 'Thư viện' },
@@ -128,11 +126,11 @@ export default function CuisineDetailPage() {
     )
   }
 
-  const heroImage = getCuisineLocalImage(detail?.code, detail?.name, id)
+  const heroImage = detail?.imageUrl || getCuisineLocalImage(detail?.code, detail?.name, id)
   const galleryItems = detail.gallery?.length
     ? detail.gallery.map((item) => ({
         ...item,
-        imageUrl: getCuisineLocalImage(item.code, item.title, item.imageAlt, detail?.code, detail?.name),
+        imageUrl: item.imageUrl || getCuisineLocalImage(item.code, item.title, item.imageAlt, detail?.code, detail?.name),
       }))
     : imageSet.gallery.map((imageUrl, index) => ({
         id: `gallery-${index + 1}`,
@@ -146,15 +144,15 @@ export default function CuisineDetailPage() {
     : imageSet.ingredients
   const similarFoods = (detail.similarFoods?.slice(0, 3) || []).map((food) => ({
     ...food,
-    imageUrl: getCuisineLocalImage(food.code, food.title, food.imageAlt),
+    imageUrl: food.imageUrl || getCuisineLocalImage(food.code, food.title, food.imageAlt),
   }))
   const recipeSteps = (detail.recipeSteps || []).map((step, index) => ({
     ...step,
     imageUrl: imageSet.steps[index] || heroImage,
   }))
-  const introImage = imageSet.intro || heroImage
-  const howToEnjoyImage = imageSet.enjoy || heroImage
-  const secretTipImage = imageSet.tip || heroImage
+  const introImage = detail.intro?.imageUrl || imageSet.intro || heroImage
+  const howToEnjoyImage = detail.howToEnjoy?.imageUrl || imageSet.enjoy || heroImage
+  const secretTipImage = detail.secretTip?.imageUrl || imageSet.tip || heroImage
 
   return (
     <div className="page-shell">
@@ -246,45 +244,7 @@ export default function CuisineDetailPage() {
           </div>
         </section>
 
-        <section className="cdp-section cdp-section--cream cdp-textiles">
-          <div className="cdp-container">
-            <header className="cdp-section-header">
-              <span className="cdp-section-badge">{detail.ingredients?.badge}</span>
-              <h2 className="cdp-section-title">{detail.ingredients?.title}</h2>
-              <p className="cdp-section-subtitle">{detail.ingredients?.subtitle}</p>
-            </header>
 
-            <div className="cdp-textiles-grid">
-              {ingredientImages.map((imageUrl, index) => (
-                <img key={`${imageUrl}-${index}`} src={imageUrl} alt={`${detail.name} ${index + 1}`} className="cdp-textile-img" />
-              ))}
-            </div>
-
-            <p className="cdp-textiles-footer">{detail.ingredients?.summary}</p>
-          </div>
-        </section>
-
-        <section className="cdp-section cdp-section--light cdp-festivals">
-          <div className="cdp-container">
-            <header className="cdp-section-header">
-              <span className="cdp-section-badge">Các bước thực hiện</span>
-              <h2 className="cdp-section-title">Cách chế biến</h2>
-            </header>
-
-            <div className="cdp-festival-grid">
-              {recipeSteps.map((step, index) => (
-                <div className="cdp-fest-card" key={`${step.stepLabel}-${index}`}>
-                  <img src={step.imageUrl || heroImage} alt={step.imageAlt || step.title} className="cdp-fest-img" />
-                  <div className="cdp-fest-content">
-                    <span className="cdp-fest-tag">{step.stepLabel}</span>
-                    <h3 className="cdp-fest-title">{step.title}</h3>
-                    <p className="cdp-fest-desc">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         <section className="cdp-section cdp-section--cream cdp-music">
           <div className="cdp-container">

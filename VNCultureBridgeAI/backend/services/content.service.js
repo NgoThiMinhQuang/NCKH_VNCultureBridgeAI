@@ -132,14 +132,56 @@ async function getArticles(filters, lang) {
 async function getArticleDetail(code, lang) {
     const row = await contentRepository.getArticleByCode(code)
     if (!row) return null
-    const gallery = await contentRepository.getGalleryForArticle(row.BaiVietID)
     
+    const [gallery, related] = await Promise.all([
+        contentRepository.getGalleryForArticle(row.BaiVietID),
+        contentRepository.getArticles({ category: row.ChuyenMuc, limit: 4 })
+    ])
+    
+    // Split content into segments if possible, or provide structured fallbacks
+    const rawContent = mapText(row, 'NoiDungVI', 'NoiDungEN', lang) || ''
+    const paragraphs = rawContent.split('\n').filter(p => p.trim())
+    
+    const categoryMap = {
+        'NGHE_THUAT_DAN_GIAN': lang === 'vi' ? 'Nghệ thuật' : 'Arts',
+        'AM_THUC': lang === 'vi' ? 'Ẩm thực' : 'Cuisine',
+        'LE_HOI': lang === 'vi' ? 'Lễ hội' : 'Festivals',
+        'VAN_HOA': lang === 'vi' ? 'Văn hóa' : 'Culture'
+    }
+
     return {
-        ...mapArticleCard(row, lang),
-        content: mapText(row, 'NoiDungVI', 'NoiDungEN', lang),
-        vung: mapText(row, 'VungTenVI', 'VungTenEN', lang),
-        danToc: mapText(row, 'DanTocTenVI', 'DanTocTenEN', lang),
-        gallery: gallery.map(g => ({ url: g.Url, caption: mapText(g, 'MoTaVI', 'MoTaEN', lang) }))
+        id: row.BaiVietID,
+        code: row.MaBaiViet,
+        title: mapText(row, 'TieuDeVI', 'TieuDeEN', lang),
+        category: categoryMap[row.ChuyenMuc] || (lang === 'vi' ? 'Văn hóa' : 'Culture'),
+        publishedAt: row.NgayXuatBan ? new Date(row.NgayXuatBan).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : null,
+        readingTime: lang === 'vi' ? '8 phút đọc' : '8 min read',
+        imageUrl: row.ImageUrl,
+        intro: paragraphs[0] || '',
+        mainContent: paragraphs.slice(1, paragraphs.length - 1).join('\n\n'),
+        conclusion: paragraphs[paragraphs.length - 1] || '',
+        author: {
+            name: row.TacGia || (lang === 'vi' ? 'Mai Anh' : 'Mai Anh'),
+            role: lang === 'vi' ? 'Biên Tập Viên Văn Hóa' : 'Cultural Editor',
+            initials: (row.TacGia || 'MA').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2),
+            bio: lang === 'vi' ? 'Người yêu và nghiên cứu văn hóa Việt Nam, với đam mê chia sẻ những giá trị truyền thống đến mọi người.' : 'Vietnamese culture lover and researcher, with a passion for sharing traditional values with everyone.',
+            stats: {
+                posts: '48',
+                followers: '2.5k',
+                comments: '120'
+            },
+            email: 'editorial@vnculture.vn',
+            website: 'vnculture.ai'
+        },
+        quote: {
+            text: lang === 'vi' ? 'Văn hóa là linh hồn của dân tộc, là cầu nối giữa quá khứ và tương lai.' : 'Culture is the soul of a nation, the bridge between past and future.',
+            author: lang === 'vi' ? 'Ngạn ngữ Việt Nam' : 'Vietnamese Proverb'
+        },
+        gallery: gallery.map(g => ({
+            url: g.Url,
+            caption: mapText(g, 'MoTaVI', 'MoTaEN', lang)
+        })),
+        relatedPosts: related.filter(r => r.BaiVietID !== row.BaiVietID).slice(0, 3).map(r => mapArticleCard(r, lang))
     }
 }
 
@@ -467,6 +509,7 @@ async function listCuisines(filters, lang) {
             subtitle: lang === 'vi' 
                 ? 'Từ Bắc tinh tế, Trung đậm đà đến Nam ngọt ngào — mỗi món ăn đều mang theo một câu chuyện văn hóa, bản sắc cốt cách của con người Việt.'
                 : 'From the delicate North, the flavorful Central to the sweet South — each dish carries a cultural story, the identity and character of the Vietnamese people.',
+            imageUrl: featured.length > 0 ? featured[0].ImageUrl : null,
             stats: cuisineHeroStats
         },
         regions: [
@@ -689,7 +732,76 @@ module.exports = {
     },
     getCuisineDetail: async (code, lang) => {
         const rows = await contentRepository.getAmThucExtended()
-        const row = rows.find(r => r.MaMonAn === code)
-        return row ? { id: row.AmThucID, title: mapText(row, 'TenVI', 'TenEN', lang), content: mapText(row, 'NoiDungChiTietVI', 'NoiDungChiTietEN', lang), imageUrl: row.ImageUrl } : null
+        const row = rows.find(r => r.MaMonAn === code || r.AmThucID.toString() === code)
+        if (!row) return null
+
+        const images = await contentRepository.getImagesByAmThucId(row.AmThucID, 12)
+
+        const detail = {
+            id: row.AmThucID,
+            code: row.MaMonAn,
+            name: mapText(row, 'TenVI', 'TenEN', lang),
+            subtitle: mapText(row, 'MoTaNganVI', 'MoTaNganEN', lang),
+            imageUrl: row.ImageUrl || (images.length > 0 ? images[0].Url : null),
+            categoryLabel: mapText(row, 'LoaiMonAnVI', 'LoaiMonAnEN', lang) || (lang === 'vi' ? 'Món ăn đặc sản' : 'Specialty Dish'),
+            region: mapText(row, 'VungTenVI', 'VungTenEN', lang),
+            heroImageAlt: mapText(row, 'TenVI', 'TenEN', lang),
+            
+            stats: {
+                prepTime: lang === 'vi' ? '30-45 phút' : '30-45 mins',
+                difficulty: lang === 'vi' ? 'Trung bình' : 'Medium',
+                calories: '350-500 kcal'
+            },
+
+            intro: (() => {
+                const p = (mapText(row, 'NoiDungChiTietVI', 'NoiDungChiTietEN', lang) || '').split('\n').filter(x => x.trim())
+                return {
+                    badge: lang === 'vi' ? 'Câu chuyện món ăn' : 'Food Story',
+                    title: lang === 'vi' ? 'Hương vị di sản' : 'Heritage Taste',
+                    paragraphs: p.slice(0, 2),
+                    imageUrl: images.length > 1 ? images[1].Url : null,
+                    imageAlt: mapText(row, 'TenVI', 'TenEN', lang)
+                }
+            })(),
+
+            howToEnjoy: (() => {
+                const p = (mapText(row, 'NoiDungChiTietVI', 'NoiDungChiTietEN', lang) || '').split('\n').filter(x => x.trim())
+                return {
+                    badge: lang === 'vi' ? 'Cách thưởng thức' : 'How to Enjoy',
+                    title: lang === 'vi' ? 'Trọn vẹn hương vị' : 'Full Flavor',
+                    body: p[2] || (lang === 'vi' ? 'Nên dùng khi còn nóng kèm với các loại rau sống và nước chấm đặc trưng.' : 'Should be served hot with fresh herbs and characteristic dipping sauce.'),
+                    imageUrl: images.length > 2 ? images[2].Url : null,
+                    imageAlt: 'Thưởng thức'
+                }
+            })(),
+
+            secretTip: (() => {
+                const p = (mapText(row, 'NoiDungChiTietVI', 'NoiDungChiTietEN', lang) || '').split('\n').filter(x => x.trim())
+                return {
+                    badge: lang === 'vi' ? 'Bí quyết đầu bếp' : 'Chef Secret',
+                    title: lang === 'vi' ? 'Điểm nhấn hương vị' : 'Flavor Highlight',
+                    body: p[3] || (lang === 'vi' ? 'Một chút nước mắm cốt hoặc gia vị bản địa sẽ làm món ăn thêm đậm đà.' : 'A dash of premium fish sauce or local spices will enhance the flavor.'),
+                    imageUrl: images.length > 3 ? images[3].Url : null,
+                    imageAlt: 'Bí quyết'
+                }
+            })(),
+
+            gallery: images.map(img => ({
+                id: img.HinhAnhID,
+                imageUrl: img.Url,
+                imageAlt: img.MoTaVI || row.TenVI,
+                size: img.ThuTu % 3 === 0 ? 'large' : 'small'
+            })),
+
+            similarFoods: rows.filter(r => r.VungID === row.VungID && r.AmThucID !== row.AmThucID).slice(0, 3).map(r => ({
+                id: r.AmThucID,
+                code: r.MaMonAn,
+                imageUrl: r.ImageUrl,
+                title: mapText(r, 'TenVI', 'TenEN', lang),
+                imageAlt: mapText(r, 'TenVI', 'TenEN', lang)
+            }))
+        }
+
+        return detail
     }
 }

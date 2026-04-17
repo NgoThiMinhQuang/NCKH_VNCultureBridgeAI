@@ -135,39 +135,39 @@ export default function CuisinePage() {
     })
   }, [cards, activeFilter, activeHeroCuisine, regions, heroCuisines, searchQuery])
 
-  const heroImage = getCuisineLocalImage(hero?.code, hero?.title, hero?.heroImageAlt)
+  const heroImage = hero?.imageUrl || getCuisineLocalImage(hero?.code, hero?.title, hero?.heroImageAlt)
   const resolvedCards = useMemo(
     () => cards.map((card) => ({
       ...card,
-      imgUrl: getCuisineLocalImage(card.code, card.name, card.imageAlt),
+      imgUrl: card.imageUrl || getCuisineLocalImage(card.code, card.name, card.imageAlt),
     })),
     [cards],
   )
   const resolvedFeatures = useMemo(
     () => featuredCards.map((feature) => ({
       ...feature,
-      imgUrl: getCuisineLocalImage(feature.code, feature.title, feature.tag, feature.desc),
+      imgUrl: feature.imageUrl || getCuisineLocalImage(feature.code, feature.title, feature.tag, feature.desc),
     })),
     [featuredCards],
   )
   const resolvedStories = useMemo(
     () => storyCards.map((story) => ({
       ...story,
-      imgUrl: getCuisineLocalImage(story.code, story.title, story.desc),
+      imgUrl: story.imageUrl || getCuisineLocalImage(story.code, story.title, story.desc),
     })),
     [storyCards],
   )
   const resolvedGallery = useMemo(
     () => masonryImages.map((img) => ({
       ...img,
-      imgUrl: getCuisineLocalImage(img.code, img.title, img.imageAlt),
+      imgUrl: img.imageUrl || getCuisineLocalImage(img.code, img.title, img.imageAlt),
     })),
     [masonryImages],
   )
   const filteredResolvedCards = useMemo(
     () => filteredCards.map((card) => ({
       ...card,
-      imgUrl: getCuisineLocalImage(card.code, card.name, card.imageAlt),
+      imgUrl: card.imageUrl || getCuisineLocalImage(card.code, card.name, card.imageAlt),
     })),
     [filteredCards],
   )
@@ -429,6 +429,9 @@ export default function CuisinePage() {
                     <div className="cp-card__img-wrap">
                       {card.status && <span className="cp-card__status">{card.status}</span>}
                       <img src={card.imgUrl || heroImage || banner3} alt={card.imageAlt || card.name} loading="lazy" />
+                      <div className="cp-card__explore-overlay">
+                        <span>Khám phá ngay</span>
+                      </div>
                     </div>
                     <div className="cp-card__content">
                       <p className="cp-card__loc">
@@ -556,10 +559,13 @@ export default function CuisinePage() {
 
               <div className="cp-grid cp-grid--3cols fade-up">
                 {resolvedFeatures.map((feature) => (
-                  <div className="cp-hcard" key={feature.id || feature.title}>
+                  <div className="cp-hcard cursor-pointer" key={feature.id || feature.title} onClick={() => navigate(`/cuisine/${feature.code || feature.id}`)}>
                     <div className="cp-hcard__img">
                       {feature.tag && <span className="cp-card__status">{feature.tag}</span>}
                       <img src={feature.imgUrl || banner3} alt={feature.title} loading="lazy" />
+                      <div className="cp-card__explore-overlay">
+                        <span>Tìm hiểu ngay</span>
+                      </div>
                     </div>
                     <div className="cp-hcard__content">
                       <h3 className="cp-hcard__title">{feature.title}</h3>
