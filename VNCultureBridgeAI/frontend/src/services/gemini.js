@@ -107,31 +107,83 @@ Ví dụ:
 ## 11. Mục tiêu cuối cùng
 Mục tiêu cao nhất của bạn là trở thành một trợ lý văn hóa số đáng tin cậy, giúp người dùng trong và ngoài nước hiểu đúng, hiểu sâu và yêu hơn các giá trị văn hóa Việt Nam thông qua trải nghiệm số hiện đại, chuẩn xác và thân thiện.`;
 
+const CONFIG = {
+  generationConfig: {
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 50,
+    maxOutputTokens: 8192,
+  },
+};
+
+const DEFAULT_HISTORY = [
+  {
+    role: "user",
+    parts: [{ text: "Chào bạn." }],
+  },
+  {
+    role: "model",
+    parts: [{ text: "Kính chào quý khách. Rất hân hạnh được đón tiếp bạn trong không gian của văn hóa Việt Nam. Chúc bạn một ngày an yên. Bạn muốn tìm hiểu về phong tục, ẩm thực hay di sản nào của đất nước chúng ta hôm nay?" }],
+  }
+];
+
+const PRIMARY_MODEL = "gemini-3.1-flash-lite-preview";
+const FALLBACK_MODEL = "gemini-2.5-flash-lite";
+
 export const getGeminiChatSession = (apiKey) => {
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: "gemini-3.1-flash-lite-preview",
-    systemInstruction: SYSTEM_INSTRUCTION,
-  });
+  
+  // Track history manually to enable seamless model switching
+  let chatHistory = [...DEFAULT_HISTORY];
+  
+  const createChatSession = (modelName) => {
+    const model = genAI.getGenerativeModel({
+      model: modelName,
+      systemInstruction: SYSTEM_INSTRUCTION,
+    });
+    return model.startChat({
+      ...CONFIG,
+      history: chatHistory,
+    });
+  };
 
-  const chatSession = model.startChat({
-    generationConfig: {
-      temperature: 0.7,
-      topP: 0.9,
-      topK: 50,
-      maxOutputTokens: 8192,
-    },
-    history: [
-      {
-        role: "user",
-        parts: [{ text: "Chào bạn." }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "Kính chào quý khách. Rất hân hạnh được đón tiếp bạn trong không gian của văn hóa Việt Nam. Chúc bạn một ngày an yên. Bạn muốn tìm hiểu về phong tục, ẩm thực hay di sản nào của đất nước chúng ta hôm nay?" }],
+  let currentModel = PRIMARY_MODEL;
+  let currentSession = createChatSession(currentModel);
+
+  /**
+   * Returns a wrapper with a sendMessage method that handles fallback.
+   */
+  return {
+    sendMessage: async (prompt) => {
+      try {
+        const result = await currentSession.sendMessage(prompt);
+        // On success, update the tracked history
+        const answer = result.response.text();
+        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+        chatHistory.push({ role: "model", parts: [{ text: answer }] });
+        return result;
+      } catch (error) {
+        // If the primary model fails, try the fallback
+        if (currentModel === PRIMARY_MODEL) {
+          console.warn(`[Gemini Service] Model ${currentModel} failed or exhausted. Falling back to ${FALLBACK_MODEL}...`, error);
+          
+          try {
+            currentModel = FALLBACK_MODEL;
+            currentSession = createChatSession(currentModel);
+            
+            const result = await currentSession.sendMessage(prompt);
+            const answer = result.response.text();
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            chatHistory.push({ role: "model", parts: [{ text: answer }] });
+            return result;
+          } catch (fallbackError) {
+            console.error("[Gemini Service] Both primary and fallback models failed:", fallbackError);
+            throw fallbackError;
+          }
+        }
+        // Re-throw if it's already the fallback model or an unhandled error
+        throw error;
       }
-    ],
-  });
-
-  return chatSession;
+    }
+  };
 };
