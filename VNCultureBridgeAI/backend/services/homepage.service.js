@@ -22,15 +22,15 @@ async function getHomepage(lang = 'vi') {
 
     // Hero section (static fallback as used in previous logic or from DB if available)
     const hero = lang === 'vi' ? {
-        badge: 'Hành trình di sản',
-        title: 'Khám Phá Di Sản Văn Hóa Việt Nam',
-        subtitle: 'Kết nối 54 dân tộc anh em qua những câu chuyện, lễ hội và tinh hoa ẩm thực.',
+        badge: 'Việt Nam',
+        title: 'Chào mừng đến với VNCulture',
+        subtitle: 'Khám phá di sản văn hóa Việt Nam',
         primaryCta: 'Khám phá ngay',
         secondaryCta: 'Xem lễ hội'
     } : {
-        badge: 'Heritage Journey',
-        title: 'Discover Vietnam\'s Cultural Heritage',
-        subtitle: 'Connecting 54 ethnic groups through stories, festivals, and culinary arts.',
+        badge: 'Vietnam',
+        title: ' Welcome to VNCulture',
+        subtitle: 'Discover Vietnam\'s Cultural Heritage',
         primaryCta: 'Explore Now',
         secondaryCta: 'View Festivals'
     }

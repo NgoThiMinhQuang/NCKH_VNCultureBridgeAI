@@ -54,9 +54,9 @@ async function getHomepageData(lang) {
 
     return {
         hero: {
-            badge: lang === 'vi' ? 'Hành trình di sản' : 'Heritage Journey',
-            title: lang === 'vi' ? 'Khám Phá Di Sản Văn Hóa Việt Nam' : 'Discover Vietnam\'s Cultural Heritage',
-            subtitle: lang === 'vi' ? 'Kết nối 54 dân tộc anh em qua những câu chuyện, lễ hội và tinh hoa ẩm thực.' : 'Connecting 54 ethnic groups through stories, festivals, and culinary arts.',
+            badge: lang === 'vi' ? 'Việt Nam' : 'Vietnam',
+            title: lang === 'vi' ? 'VNCultureBridgeAI' : 'VNCultureBridgeAI',
+            subtitle: lang === 'vi' ? 'Khám phá di sản văn hóa Việt Nam' : 'Discover Vietnam\'s Cultural Heritage',
             primaryCta: lang === 'vi' ? 'Khám phá ngay' : 'Explore Now',
             secondaryCta: lang === 'vi' ? 'Xem lễ hội' : 'View Festivals'
         },

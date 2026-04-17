@@ -152,9 +152,7 @@ export default function RegionDetailPage() {
         <section className="cultural-mosaic fade-up">
           <div className="container">
             <div className="section-header">
-              <span className="section-badge">{lang === 'vi' ? 'Tinh hoa' : 'Essence'}</span>
-              <h2 className="section-title">{lang === 'vi' ? 'Bản sắc văn hóa đặc thù' : 'Cultural Highlights'}</h2>
-              <div className="section-divider"></div>
+              <h2 className="section-title">{lang === 'vi' ? 'Bản sắc văn hóa' : 'Cultural Highlights'}</h2>
             </div>
 
             <div className="mosaic-grid">
@@ -188,9 +186,7 @@ export default function RegionDetailPage() {
         <section className="province-hub fade-up" style={{ animationDelay: '0.2s' }}>
           <div className="container">
             <div className="section-header">
-              <span className="section-badge">{lang === 'vi' ? 'Hành trình' : 'Journey'}</span>
-              <h2 className="section-title">{lang === 'vi' ? 'Hành lang khám phá tỉnh thành' : 'Provincial Discovery'}</h2>
-              <div className="section-divider"></div>
+              <h2 className="section-title">{lang === 'vi' ? 'Khám phá tỉnh thành' : 'Provincial Discovery'}</h2>
             </div>
 
             <div className="hub-grid">
@@ -214,9 +210,7 @@ export default function RegionDetailPage() {
         <section className="regional-stories alternate-bg fade-up" style={{ animationDelay: '0.4s' }}>
           <div className="container">
             <div className="section-header">
-              <span className="section-badge">{lang === 'vi' ? 'Ghi chép' : 'Records'}</span>
-              <h2 className="section-title">{lang === 'vi' ? 'Câu chuyện vùng đất' : 'Regional Stories'}</h2>
-              <div className="section-divider"></div>
+              <h2 className="section-title">{lang === 'vi' ? 'Câu chuyện vùng miền' : 'Regional Stories'}</h2>
             </div>
 
             <div className="stories-row">
@@ -236,9 +230,7 @@ export default function RegionDetailPage() {
           <div className="container">
             <div className="planning-grid">
               <div className="planning-content">
-                <span className="section-badge">{lang === 'vi' ? 'Cẩm nang' : 'Guide'}</span>
-                <h2 className="section-title">{lang === 'vi' ? 'Chuẩn bị cho chuyến đi' : 'Plan Your Visit'}</h2>
-                <div className="section-divider" style={{ margin: '0 0 24px' }}></div>
+                <h2 className="section-title">{lang === 'vi' ? 'Lên kế hoạch cho chuyến đi' : 'Plan Your Visit'}</h2>
                 <p style={{ marginBottom: '32px', color: 'var(--text-muted)' }}>
                   {lang === 'vi'
                     ? 'Mỗi mùa vùng đất này lại mang một vẻ đẹp khác nhau. Hãy chọn thời điểm phù hợp để tận hưởng trọn vẹn tinh hoa văn hóa và thiên nhiên.'

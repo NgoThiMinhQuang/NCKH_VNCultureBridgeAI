@@ -696,7 +696,6 @@ export default function RegionsPage() {
           <div className="regions-hero__scroll">
             <div className="regions-mouse-icon"></div>
           </div>
-          <SectionWave position="bottom" color="#faf9f6" />
         </section>
 
         <div className="regions-page__shell">
@@ -778,7 +777,6 @@ export default function RegionsPage() {
                 </div>
               </div>
             </div>
-            <SectionWave position="bottom" color="#ffffff" />
           </section>
 
           <section className="regions-overview-section" style={{ position: 'relative', background: '#ffffff' }}>
@@ -825,8 +823,6 @@ export default function RegionsPage() {
                 )
               })}
             </div>
-
-            <SectionWave position="bottom" color="#f8f4f0" />
           </section>
 
           <section className="inspiration-section" style={{ position: 'relative', background: '#f8f4f0' }}>
@@ -853,7 +849,7 @@ export default function RegionsPage() {
                 ))}
               </div>
             </div>
-            <SectionWave position="bottom" color="#ffffff" />
+
           </section>
 
           <section className="provinces-search-section" style={{ position: 'relative', background: '#ffffff', paddingBottom: '120px' }}>
@@ -971,7 +967,7 @@ export default function RegionsPage() {
                 ))}
               </div>
             </div>
-            <SectionWave position="bottom" color="#ffffff" />
+
           </section>
 
           <section className="cultural-layers-section" style={{ position: 'relative', background: '#ffffff', paddingBottom: '120px' }}>
