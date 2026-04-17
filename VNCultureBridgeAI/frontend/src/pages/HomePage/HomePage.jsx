@@ -128,12 +128,12 @@ export default function HomePage() {
           copy={copy}
         />
 
-        {/* <ArtsSection
+        <ArtsSection
           featuredArt={(homepageData.arts || [])[0]}
           additionalArts={(homepageData.arts || []).slice(1, 7)}
           copy={copy}
           lang={lang}
-        /> */}
+        />
 
       </main>
 

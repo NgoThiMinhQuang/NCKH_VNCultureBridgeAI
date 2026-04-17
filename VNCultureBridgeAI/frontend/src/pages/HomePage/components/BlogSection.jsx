@@ -82,7 +82,7 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
               </div>
             </div>
 
-            <Link to={`/articles/${featuredPost.code}`} className="blog-card__cta">
+            <Link to={`/blog/${featuredPost.code}`} className="blog-card__cta">
               <span>{copy?.learnMore}</span>
               <span aria-hidden="true">→</span>
             </Link>
@@ -111,7 +111,7 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
                 </div>
                 <h4 className="blog-card__title">{post.title}</h4>
                 <p className="blog-card__excerpt">{post.description}</p>
-                <Link to={`/articles/${post.code}`} className="blog-card__cta">
+                <Link to={`/blog/${post.code}`} className="blog-card__cta">
                   <span>{copy?.learnMore}</span>
                   <span aria-hidden="true">→</span>
                 </Link>
