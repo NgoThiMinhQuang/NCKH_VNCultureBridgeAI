@@ -130,7 +130,7 @@ async function listCuisineGallery(req, res, next) {
   try {
     const lang = normalizeLang(req.query.lang)
     const data = await contentService.getCuisineGallery(lang)
-    return res.json({ ok: true, data })
+    res.json({ ok: true, data })
   } catch (error) {
     next(error)
   }
@@ -138,8 +138,19 @@ async function listCuisineGallery(req, res, next) {
 
 async function listEthnicities(req, res, next) {
   try {
+    console.log(`[DEBUG] listEthnicities called via ${req.originalUrl}`)
     const lang = normalizeLang(req.query.lang)
     const data = await contentService.listEthnicities(lang)
+    res.json({ ok: true, data })
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function getStatistics(req, res, next) {
+  try {
+    console.log(`[DEBUG] getStatistics called via ${req.originalUrl}`)
+    const data = await contentService.getGlobalStats()
     res.json({ ok: true, data })
   } catch (error) {
     next(error)
@@ -150,11 +161,9 @@ async function getEthnicity(req, res, next) {
   try {
     const lang = normalizeLang(req.query.lang)
     const data = await contentService.getEthnicity(req.params.code, lang)
-
     if (!data) {
       return res.status(404).json({ ok: false, message: 'Ethnic group not found' })
     }
-
     return res.json({ ok: true, data })
   } catch (error) {
     next(error)
@@ -187,6 +196,7 @@ module.exports = {
   getCuisine,
   listCuisineGallery,
   listEthnicities,
+  getStatistics,
   getEthnicity,
   askAi,
 }

@@ -119,6 +119,10 @@ async function getHomepageData(lang) {
     }
 }
 
+async function getGlobalStats() {
+    return await contentRepository.getGlobalStats()
+}
+
 // STANDARD LIST/DETAIL FUNCTIONS
 async function getArticles(filters, lang) {
     const rows = await contentRepository.getArticles(filters)
@@ -228,14 +232,75 @@ async function listProvinces(options, lang) {
 }
 
 async function listEthnicities(lang) {
-    const rows = await contentRepository.getEthnics()
+    const [stats, rows, regions, gallery, stories, vanHoa] = await Promise.all([
+        contentRepository.getGlobalStats(),
+        contentRepository.getEthnics(),
+        contentRepository.getVungVanHoa(),
+        contentRepository.getGlobalGallery(7),
+        homepageRepository.getLatestArticles(4),
+        homepageRepository.getFeaturedVanHoa(null, 4)
+    ])
+
     return {
-        ethnicities: rows.map(r => ({
-            id: r.MaDanToc,
-            name: mapText(r, 'TenVI', 'TenEN', lang),
-            image: r.ImageUrl,
-            region: mapText(r, 'PhanLoaiVI', 'PhanLoaiEN', lang)
-        }))
+        stats: {
+            ethnicGroupCount: stats.ethnicGroupCount,
+            regionCount: stats.regionCount,
+            articleCount: stats.articleCount,
+            galleryCount: stats.galleryCount
+        },
+        hero: {
+            subtitle: lang === 'vi' 
+                ? 'Từ những đỉnh núi mờ sương Tây Bắc đến những bản làng yên bình nơi đồng bằng, khám phá sự đa dạng và giàu có của văn hóa 54 dân tộc anh em.'
+                : 'From the misty peaks of the Northwest to peaceful villages in the plains, discover the diversity and richness of Vietnam\'s 54 ethnic groups.'
+        },
+        ethnicities: rows.map(r => {
+            // Smart region mapping since VungID is missing in DanToc table
+            let region = mapText(r, 'PhanLoaiVI', 'PhanLoaiEN', lang);
+            const code = r.MaDanToc;
+            
+            if (code === 'KINH') region = lang === 'vi' ? 'Tất cả vùng' : 'All Regions';
+            else if (['HMONG', 'TAY', 'THAI', 'DAO', 'MUONG'].includes(code)) region = lang === 'vi' ? 'Bắc Bộ' : 'Northern Vietnam';
+            else if (['CHAM', 'EDE', 'BANA'].includes(code)) region = lang === 'vi' ? 'Trung Bộ' : 'Central Vietnam';
+            else if (code === 'KHMER') region = lang === 'vi' ? 'Nam Bộ' : 'Southern Vietnam';
+
+            return {
+                id: r.DanTocID,
+                code: r.MaDanToc,
+                name: mapText(r, 'TenVI', 'TenEN', lang),
+                location: mapText(r, 'DiaBanCuTruVI', 'DiaBanCuTruEN', lang) || (lang === 'vi' ? 'Toàn quốc' : 'National'),
+                cardImageUrl: r.ImageUrl,
+                status: r.ThuTuHienThi <= 3 ? (lang === 'vi' ? 'Nổi bật' : 'Featured') : '',
+                region: region,
+                sortOrder: r.ThuTuHienThi
+            }
+        }),
+        filters: {
+            regions: [
+                lang === 'vi' ? 'Tất cả vùng' : 'All Regions', 
+                ...regions.map(r => mapText(r, 'TenVI', 'TenEN', lang))
+            ],
+            ethnicities: [
+                lang === 'vi' ? 'Tất cả dân tộc' : 'All Ethnicities', 
+                ...rows.slice(0, 10).map(r => mapText(r, 'TenVI', 'TenEN', lang))
+            ]
+        },
+        sections: {
+            features: vanHoa.map(vh => ({
+                id: vh.VanHoaID,
+                code: vh.Ma,
+                title: mapText(vh, 'TenVI', 'TenEN', lang),
+                description: mapText(vh, 'MoTaNganVI', 'MoTaNganEN', lang),
+                imageUrl: vh.ImageUrl,
+                tag: lang === 'vi' ? 'Văn hóa' : 'Culture'
+            })),
+            stories: stories.map(s => mapArticleCard(s, lang)),
+            gallery: gallery.map((g, idx) => ({
+                id: idx,
+                imageUrl: g.imageUrl,
+                imageAlt: mapText(g, 'altVI', 'altEN', lang),
+                size: ['large', 'small', 'small', 'tall', 'small', 'wide', 'small'][idx % 7]
+            }))
+        }
     }
 }
 

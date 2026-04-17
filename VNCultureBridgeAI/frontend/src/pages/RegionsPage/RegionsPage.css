@@ -50,8 +50,8 @@
 }
 
 .regions-hero__ornament--tl {
-  top: 140px;
-  left: 40px;
+  top: 80px;
+  left: 50px;
   width: 160px;
   height: 160px;
   border-top: 2px solid rgba(226, 166, 40, 0.35);
@@ -80,7 +80,6 @@
   grid-template-columns: 1fr 1fr;
   gap: 60px;
   align-items: center;
-  padding: 60px 0 60px;
 }
 
 .regions-hero__left {
@@ -137,21 +136,22 @@
 }
 
 .regions-hero__title-line {
-  font-size: clamp(3.2rem, 6vw, 5.8rem);
+  font-size: clamp(3rem, 5vw, 4.5rem) !important;
   color: #fdf5e6;
   letter-spacing: -0.01em;
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
   font-family: var(--font-heading) !important;
-  font-weight: 400 !important;
+  font-weight: 700 !important;
 }
 
 .regions-hero__title-accent {
-  font-size: clamp(2.8rem, 5.2vw, 4.8rem);
+  font-size: clamp(3rem, 5vw, 4.5rem) !important;
   color: #e2a628;
   /* Gold accent */
   letter-spacing: 0.02em;
   text-shadow: 0 2px 16px rgba(226, 166, 40, 0.4);
-  font-family: var(--font-heading);
+  font-family: var(--font-heading) !important;
+  font-weight: 700 !important;
 }
 
 .regions-hero__divider-row {
@@ -313,7 +313,7 @@
 .regions-fan {
   position: relative;
   width: 800px;
-  height: 640px;
+  height: 450px;
   flex-shrink: 0;
   overflow: visible;
 }
@@ -473,7 +473,7 @@
 /* Floating badge */
 .regions-fan__badge {
   position: absolute;
-  top: 14px;
+  top: -50px;
   right: -12px;
   z-index: 20;
   display: flex;
@@ -3405,10 +3405,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
   color: #fff;
   overflow: hidden;
-  padding: 100px 24px;
+  padding: 100px 0px;
   gap: 60px;
   /* Space between content and categories */
 }
@@ -3479,8 +3478,7 @@
 .regions-hero__title-accent {
   display: block;
   font-family: var(--font-heading) !important;
-  font-weight: 400 !important;
-  font-style: italic !important;
+  font-weight: 700 !important;
   color: #e2a628 !important;
   margin-top: 10px;
   background: linear-gradient(to right, #ffd700, #e2a628);

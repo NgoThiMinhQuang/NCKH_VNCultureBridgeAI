@@ -159,32 +159,44 @@ export default function EthnicCultures() {
     };
   }, [lang]);
 
-  const safePayload = payload || {
-    hero: {
-      backgroundImageUrl: banner3,
-      backgroundImageAlt: 'Ethnic cultures background',
-      foregroundImageUrl: hmongImg,
-      foregroundImageAlt: 'Ethnic cultures hero',
-      subtitle:
-        'Từ những đỉnh núi mờ sương Tây Bắc đến những bản làng yên bình nơi đồng bằng, khám phá sự đa dạng và giàu có của văn hóa 54 dân tộc anh em.',
-    },
-    stats: {
-      ethnicGroupCount: 54,
-      regionCount: 8,
-      articleCount: 5000,
-      galleryCount: 1000,
-    },
-    ethnicities: fallbackEthnicities,
-    filters: {
-      regions: fallbackRegions,
-      ethnicities: fallbackEthnicFilters,
-    },
-    sections: {
-      features: fallbackFeatures,
-      stories: fallbackStories,
-      gallery: fallbackGallery,
-    },
-  };
+  const safePayload = useMemo(() => {
+    const defaults = {
+      hero: {
+        backgroundImageUrl: banner3,
+        backgroundImageAlt: 'Ethnic cultures background',
+        foregroundImageUrl: hmongImg,
+        foregroundImageAlt: 'Ethnic cultures hero',
+        subtitle: 'Từ những đỉnh núi mờ sương Tây Bắc đến những bản làng yên bình nơi đồng bằng, khám phá sự đa dạng và giàu có của văn hóa 54 dân tộc anh em.',
+      },
+      stats: {
+        ethnicGroupCount: 54,
+        regionCount: 8,
+        articleCount: 5000,
+        galleryCount: 1000,
+      },
+      ethnicities: fallbackEthnicities,
+      filters: {
+        regions: fallbackRegions,
+        ethnicities: fallbackEthnicFilters,
+      },
+      sections: {
+        features: fallbackFeatures,
+        stories: fallbackStories,
+        gallery: fallbackGallery,
+      },
+    };
+
+    if (!payload) return defaults;
+
+    return {
+      ...defaults,
+      ...payload,
+      hero: { ...defaults.hero, ...payload.hero },
+      stats: { ...defaults.stats, ...payload.stats },
+      filters: { ...defaults.filters, ...payload.filters },
+      sections: { ...defaults.sections, ...payload.sections },
+    };
+  }, [payload]);
 
   const stats = useMemo(() => {
     if (!payload) return fallbackStats;
@@ -243,7 +255,9 @@ export default function EthnicCultures() {
 
   return (
     <div className="ec-page-shell">
-      <PageHeader lang={lang} onLangChange={setLang} />
+      <PageHeader lang={lang} onLangChange={setLang} breadcrumb={[
+        { label: lang === 'vi' ? 'Văn hóa dân tộc' : 'Ethnic Cultures' },
+      ]} />
 
       <main className="ec-main">
         <section className="ec-hero">

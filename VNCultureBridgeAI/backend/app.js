@@ -49,4 +49,5 @@ app.use((error, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`VNCultureBridge backend listening on port ${PORT}`)
+  console.log(`[DEBUG] Content Service Path: ${require.resolve('./services/content.service')}`)
 })
