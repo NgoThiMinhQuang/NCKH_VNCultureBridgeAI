@@ -599,7 +599,93 @@ module.exports = {
     getFestival: async (id, lang) => {
         const rows = await contentRepository.getFestivalsExtended()
         const row = rows.find(r => r.MaLeHoi === id || r.LeHoiID.toString() === id)
-        return row ? { id: row.LeHoiID, title: mapText(row, 'TenVI', 'TenEN', lang), content: mapText(row, 'NoiDungChiTietVI', 'NoiDungChiTietEN', lang), image: row.ImageUrl } : null
+        if (!row) return null
+
+        const images = await contentRepository.getImagesByLeHoiId(row.LeHoiID, 10)
+        
+        // Construct rich detail object for FestivalsDetailPage.jsx
+        const detail = {
+            id: row.LeHoiID,
+            code: row.MaLeHoi,
+            title: mapText(row, 'TenVI', 'TenEN', lang),
+            enTitle: row.TenEN || '',
+            tag: mapText(row, 'LoaiLeHoi', 'LoaiLeHoi', lang) || (lang === 'vi' ? 'Lễ hội truyền thống' : 'Traditional Festival'),
+            heroImage: row.ImageUrl,
+            heroDesc: mapText(row, 'MoTaNganVI', 'MoTaNganEN', lang),
+            
+            // Context mapping
+            whatIsItContext: (mapText(row, 'NoiDungChiTietVI', 'NoiDungChiTietEN', lang) || '')
+                .split('\n')
+                .filter(p => p.trim())
+                .slice(0, 3), // First 3 paragraphs for the "What is it" section
+            
+            infoImage: images[0]?.Url || row.ImageUrl,
+            
+            quickFacts: {
+                date: mapText(row, 'ThoiGianVI', 'ThoiGianEN', lang),
+                location: mapText(row, 'DiaDiemVI', 'DiaDiemEN', lang),
+                participants: lang === 'vi' ? 'Cộng đồng địa phương và du khách' : 'Local community and tourists'
+            },
+
+            // Mock/Placeholder rich sections to populate the premium UI
+            inspiringQuote: lang === 'vi' ? 'Uống nước nhớ nguồn - Ăn quả nhớ kẻ trồng cây' : 'When you drink water, remember the source',
+            
+            culturalContextMain: [
+                { 
+                    title: lang === 'vi' ? 'Giá trị tinh thần' : 'Spiritual Value', 
+                    desc: lang === 'vi' ? 'Thể hiện sự tôn kính với tổ tiên và các bậc tiền nhân.' : 'Expressing respect for ancestors and predecessors.' 
+                },
+                { 
+                    title: lang === 'vi' ? 'Sức mạnh cộng đồng' : 'Community Strength', 
+                    desc: lang === 'vi' ? 'Gắn kết mọi người qua các hoạt động lễ và hội.' : 'Binding people through ritual and festival activities.' 
+                }
+            ],
+            
+            culturalContextHighlights: [
+                { icon: '🏮', title: lang === 'vi' ? 'Biểu tượng' : 'Symbol', desc: lang === 'vi' ? 'Nét đặc trưng riêng biệt.' : 'Distinctive features.', colorClass: 'bg-red' },
+                { icon: '🥁', title: lang === 'vi' ? 'Âm nhạc' : 'Music', desc: lang === 'vi' ? 'Nhịp điệu rộn ràng.' : 'Lively rhythms.', colorClass: 'bg-gold' }
+            ],
+
+            howItIsCelebrated: [
+                {
+                    phase: lang === 'vi' ? 'Phần Lễ' : 'Ritual Part',
+                    title: lang === 'vi' ? 'Nghi thức trang trọng' : 'Solemn Ceremonies',
+                    desc: [lang === 'vi' ? 'Các nghi lễ cúng bái, dâng hương diễn ra trang nghiêm.' : 'Offering ceremonies and incense burning are held solemnly.'],
+                    image: images[1]?.Url || row.ImageUrl,
+                    align: 'left'
+                },
+                {
+                    phase: lang === 'vi' ? 'Phần Hội' : 'Festival Part',
+                    title: lang === 'vi' ? 'Hoạt động náo nhiệt' : 'Exciting Activities',
+                    desc: [lang === 'vi' ? 'Các trò chơi dân gian, hát múa và ẩm thực đường phố.' : 'Folk games, singing, dancing, and street food.'],
+                    image: images[2]?.Url || row.ImageUrl,
+                    align: 'right'
+                }
+            ],
+
+            culturalMeaningsDocs: [
+                { icon: '🤝', title: lang === 'vi' ? 'Gắn kết' : 'Cohesion', desc: lang === 'vi' ? 'Thắt chặt tình làng nghĩa xóm.' : 'Strengthening community bonds.', colorClass: 'soft-red' },
+                { icon: '✨', title: lang === 'vi' ? 'Tâm linh' : 'Spirituality', desc: lang === 'vi' ? 'Cầu mong mưa thuận gió hòa.' : 'Praying for favorable weather.', colorClass: 'soft-gold' }
+            ],
+
+            interestingFactsDocs: [
+                { icon: '💡', title: lang === 'vi' ? 'Bạn có biết?' : 'Did you know?', desc: lang === 'vi' ? 'Lễ hội này đã có lịch sử hàng trăm năm.' : 'This festival has hundreds of years of history.' }
+            ],
+
+            galleryHero: images[3]?.Url || row.ImageUrl,
+            galleryGrid: images.slice(4, 8).map(img => img.Url),
+
+            inShortText: mapText(row, 'MoTaNganVI', 'MoTaNganEN', lang),
+            
+            labels: {
+                whatIsItTitle: lang === 'vi' ? `Khám phá ${mapText(row, 'TenVI', 'TenEN', lang)}` : `Discover ${row.TenEN}`,
+                dateLabel: lang === 'vi' ? 'Thời điểm' : 'When',
+                locationLabel: lang === 'vi' ? 'Địa điểm' : 'Where',
+                participantsLabel: lang === 'vi' ? 'Chủ thể' : 'Who'
+            }
+        }
+
+        return detail
     },
     getCuisineDetail: async (code, lang) => {
         const rows = await contentRepository.getAmThucExtended()

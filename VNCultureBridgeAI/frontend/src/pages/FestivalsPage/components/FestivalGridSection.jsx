@@ -24,10 +24,13 @@ const FestivalGridSection = ({
 
           <div className="festivals-major__grid">
             {featuredFestivals.map((fest, index) => (
-              <article className="festivals-card fade-up" style={{ animationDelay: `${index * 0.1}s` }} key={fest.id}>
+              <Link to={`/festivals/${fest.code || fest.id}`} className="festivals-card fade-up" style={{ animationDelay: `${index * 0.1}s` }} key={fest.id}>
                 <div className="festivals-card__img">
                   <img src={getImageUrl(fest.image)} alt={fest.title} loading="lazy" />
                   <span className="festivals-card__tag">{fest.tag}</span>
+                  <div className="festivals-card__explore-overlay">
+                    <span>Khám phá ngay</span>
+                  </div>
                 </div>
                 <div className="festivals-card__body">
                   <div className="festivals-card__times">{fest.date}</div>
@@ -41,7 +44,7 @@ const FestivalGridSection = ({
                     </div>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>

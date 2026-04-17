@@ -141,6 +141,10 @@ async function getGalleryForArticle(baiVietId) {
     return query(`SELECT * FROM dbo.HinhAnh WHERE BaiVietID = @baiVietId ORDER BY ThuTu ASC`, { baiVietId })
 }
 
+async function getImagesByLeHoiId(leHoiId, limit = 12) {
+    return query(`SELECT * FROM dbo.HinhAnh WHERE LeHoiID = @leHoiId ORDER BY ThuTu ASC`, { leHoiId, limit })
+}
+
 async function getGalleryByDanTocId(danTocId, limit = 12) {
     return query(`SELECT TOP (${Number(limit)}) * FROM dbo.HinhAnh WHERE DanTocID = @danTocId ORDER BY ThuTu ASC`, { danTocId })
 }
@@ -192,6 +196,7 @@ module.exports = {
     getAmThucExtended,
     getFestivalsExtended,
     getGalleryForArticle,
+    getImagesByLeHoiId,
     getGalleryByDanTocId,
     getGlobalGallery,
     getGlobalStats,
