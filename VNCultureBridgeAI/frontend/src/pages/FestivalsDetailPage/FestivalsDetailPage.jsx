@@ -47,6 +47,20 @@ export default function FestivalsDetailPage() {
             <h1 className="hero-title">{festivalData.title}</h1>
             <h2 className="hero-subtitle">{festivalData.enTitle}</h2>
             <p className="hero-desc">{festivalData.heroDesc}</p>
+            <div className="hero-stats">
+              <div className="hero-stat">
+                <span className="hero-stat-val">{festivalData.quickFacts.date}</span>
+                <span className="hero-stat-lbl">{getLabel(labels, 'dateLabel', 'Thời gian')}</span>
+              </div>
+              <div className="hero-stat">
+                <span className="hero-stat-val">{festivalData.quickFacts.location}</span>
+                <span className="hero-stat-lbl">{getLabel(labels, 'locationLabel', 'Địa điểm')}</span>
+              </div>
+              <div className="hero-stat">
+                <span className="hero-stat-val">{festivalData.quickFacts.participants}</span>
+                <span className="hero-stat-lbl">{getLabel(labels, 'participantsLabel', 'Tham gia')}</span>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -58,29 +72,6 @@ export default function FestivalsDetailPage() {
                 <p key={index}>{para}</p>
               ))}
 
-              <div className="info-badges">
-                <div className="badge">
-                  <span className="badge-icon">🗓️</span>
-                  <div>
-                    <span className="badge-label">{getLabel(labels, 'dateLabel', 'Thời gian')}</span>
-                    <span className="badge-value">{festivalData.quickFacts.date}</span>
-                  </div>
-                </div>
-                <div className="badge">
-                  <span className="badge-icon">📍</span>
-                  <div>
-                    <span className="badge-label">{getLabel(labels, 'locationLabel', 'Địa điểm')}</span>
-                    <span className="badge-value">{festivalData.quickFacts.location}</span>
-                  </div>
-                </div>
-                <div className="badge">
-                  <span className="badge-icon">👥</span>
-                  <div>
-                    <span className="badge-label">{getLabel(labels, 'participantsLabel', 'Thành phần tham gia')}</span>
-                    <span className="badge-value">{festivalData.quickFacts.participants}</span>
-                  </div>
-                </div>
-              </div>
             </div>
             <div className="image-content">
               <img src={festivalData.infoImage} alt={`${festivalData.title} Celebration`} />

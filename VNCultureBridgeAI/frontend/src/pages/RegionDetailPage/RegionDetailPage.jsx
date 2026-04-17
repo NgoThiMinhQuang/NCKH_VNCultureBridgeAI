@@ -313,9 +313,16 @@ export default function RegionDetailPage() {
             <div className="stories-row">
               {articles.map((article) => (
                 <Link to={`/blog/${article.code}`} key={article.id} className="story-card">
-                  <span className="story-card__tag">{article.category}</span>
-                  <h4>{article.title}</h4>
-                  <p className="btn-text-icon">{lang === 'vi' ? 'Đọc tiếp' : 'Read more'} →</p>
+                  {article.imageUrl && (
+                    <div className="story-card__img">
+                      <img src={article.imageUrl} alt={article.title} />
+                    </div>
+                  )}
+                  <div className="story-card__content">
+                    <span className="story-card__tag">{article.category}</span>
+                    <h4>{article.title}</h4>
+                    <p className="btn-text-icon">{lang === 'vi' ? 'Đọc tiếp' : 'Read more'} →</p>
+                  </div>
                 </Link>
               ))}
             </div>
