@@ -60,7 +60,7 @@ export default function CuisinePage() {
   const [isHeroCuisineOpen, setIsHeroCuisineOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const ITEMS_PER_PAGE = 6
+  const ITEMS_PER_PAGE = 8
 
   useEffect(() => {
     let ignore = false

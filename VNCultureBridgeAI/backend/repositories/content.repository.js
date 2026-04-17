@@ -116,12 +116,15 @@ async function getProvinceByCode(code) {
 
 // 5. CUISINE (AmThuc)
 async function getAmThucExtended(filters = {}) {
-    const { limit = 50 } = filters
+    const { limit = 1000 } = filters
     const where = buildWhereClause('at', filters)
     
     return query(`
         SELECT TOP (${Number(limit)})
-            at.*,
+            at.AmThucID, at.MaMonAn, at.TenVI, at.TenEN, at.LoaiMonAnVI, at.LoaiMonAnEN,
+            at.MoTaNganVI, at.MoTaNganEN, at.NoiDungChiTietVI, at.NoiDungChiTietEN,
+            at.VungID, at.TinhThanhID, at.DanTocID, at.NgayTao,
+            COALESCE(at.ImageUrl, (SELECT TOP 1 Url FROM dbo.HinhAnh WHERE AmThucID = at.AmThucID ORDER BY ThuTu ASC)) AS ImageUrl,
             vv.TenVI AS VungTenVI, vv.TenEN AS VungTenEN,
             tt.TenVI AS TinhTenVI, tt.TenEN AS TinhTenEN,
             dt.TenVI AS DanTocTenVI, dt.TenEN AS DanTocTenEN
@@ -136,11 +139,14 @@ async function getAmThucExtended(filters = {}) {
 
 // 6. FESTIVALS (LeHoi)
 async function getFestivalsExtended(filters = {}) {
-    const { limit = 50 } = filters
+    const { limit = 1000 } = filters
     const where = buildWhereClause('lh', filters)
     return query(`
         SELECT TOP (${Number(limit)})
-            lh.*,
+            lh.LeHoiID, lh.MaLeHoi, lh.TenVI, lh.TenEN, lh.MoTaNganVI, lh.MoTaNganEN,
+            lh.NoiDungChiTietVI, lh.NoiDungChiTietEN, lh.ThoiGianVI, lh.ThoiGianEN,
+            lh.DiaDiemVI, lh.DiaDiemEN, lh.VungID, lh.TinhThanhID, lh.DanTocID, lh.NgayTao,
+            COALESCE(lh.ImageUrl, (SELECT TOP 1 Url FROM dbo.HinhAnh WHERE LeHoiID = lh.LeHoiID ORDER BY ThuTu ASC)) AS ImageUrl,
             vv.MaVung, vv.TenVI AS VungTenVI, vv.TenEN AS VungTenEN,
             dt.TenVI AS DanTocTenVI, dt.TenEN AS DanTocTenEN
         FROM dbo.LeHoi lh
