@@ -3,37 +3,37 @@ import './HeroSection.css'
 import banner3 from '../../../assets/banner3.jpg'
 import CardGrid from '../../../components/common/CardGrid/CardGrid'
 
-export default function HeroSection({ 
-  hero, 
-  stats, 
-  search, 
-  setSearch, 
-  handleSearch, 
-  searching, 
-  results, 
-  isLoading, 
-  copy, 
-  lang 
+export default function HeroSection({
+  hero,
+  stats,
+  search,
+  setSearch,
+  handleSearch,
+  searching,
+  results,
+  isLoading,
+  copy,
+  lang
 }) {
   if (!hero) return null
 
   // Split title carefully to maintain the majestic typography flow
-  const titleLines = hero.title.includes('<br/>') 
-    ? hero.title.split('<br/>') 
+  const titleLines = hero.title.includes('<br/>')
+    ? hero.title.split('<br/>')
     : [hero.title]
 
   return (
     <section className="home-hero-majestic" id="hero">
       <div className="home-hero-majestic__bg" style={{ backgroundImage: `url(${banner3})` }}></div>
       <div className="home-hero-majestic__overlay"></div>
-      
+
       {/* Ornaments for corner aesthetics */}
       <div className="home-hero-majestic__ornament home-hero-majestic__ornament--tl"></div>
       <div className="home-hero-majestic__ornament home-hero-majestic__ornament--br"></div>
 
       <div className="home-hero-majestic__inner fade-up">
         <div className="home-hero-majestic__content">
-          
+
           <div className="home-hero-majestic__badge">
             <span className="home-hero-majestic__badge-dot"></span>
             {hero.badge || copy?.heroBadge}
@@ -41,8 +41,8 @@ export default function HeroSection({
 
           <h1 className="home-hero-majestic__title">
             {titleLines.map((line, index) => (
-              <span 
-                key={`${line}-${index}`} 
+              <span
+                key={`${line}-${index}`}
                 className={index === 1 ? 'home-hero-majestic__title-accent' : 'home-hero-majestic__title-line'}
               >
                 {line}
@@ -116,14 +116,14 @@ export default function HeroSection({
             <div className="header-line" />
             <button className="results-close-btn" onClick={() => setResults([])} type="button">✕</button>
           </div>
-          <CardGrid items={results} variant="blog-grid" actionLabel={copy?.learnMore} lang={lang} basePath="/articles" />
+          <CardGrid items={results} variant="blog-grid" actionLabel={copy?.learnMore} lang={lang} basePath="/blog" />
         </div>
       )}
 
       <div className="home-hero-majestic__scroll">
         <div className="mouse-icon"></div>
       </div>
-      
+
       {isLoading && (
         <div className="hero-shimmer-overlay">
           <div className="shimmer-silk" />

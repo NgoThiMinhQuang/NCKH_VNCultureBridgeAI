@@ -1,0 +1,55 @@
+const axios = require('axios');
+
+const API_URL = 'http://localhost:3001/api';
+
+async function testAuth() {
+    const testEmail = `test_${Date.now()}@example.com`;
+    const testPassword = 'Password123';
+    const testFullName = 'Nguyen Van Test';
+
+    try {
+        console.log('--- Testing Registration ---');
+        const regRes = await axios.post(`${API_URL}/auth/register`, {
+            fullName: testFullName,
+            email: testEmail,
+            password: testPassword
+        });
+        console.log('Registration Success:', regRes.data.ok);
+        const token = regRes.data.data.token;
+        console.log('Token received:', token.substring(0, 20) + '...');
+
+        console.log('\n--- Testing Login ---');
+        const loginRes = await axios.post(`${API_URL}/auth/login`, {
+            email: testEmail,
+            password: testPassword
+        });
+        console.log('Login Success:', loginRes.data.ok);
+        console.log('User Name:', loginRes.data.data.user.fullName);
+
+        console.log('\n--- Testing Login with Wrong Password ---');
+        try {
+            await axios.post(`${API_URL}/auth/login`, {
+                email: testEmail,
+                password: 'wrong_password'
+            });
+        } catch (err) {
+            console.log('Login failed as expected:', err.response.data.message);
+        }
+
+        console.log('\n--- Testing Registration with Existing Email ---');
+        try {
+            await axios.post(`${API_URL}/auth/register`, {
+                fullName: testFullName,
+                email: testEmail,
+                password: testPassword
+            });
+        } catch (err) {
+            console.log('Registration failed as expected:', err.response.data.message);
+        }
+
+    } catch (err) {
+        console.error('Test failed:', err.response ? err.response.data : err.message);
+    }
+}
+
+testAuth();

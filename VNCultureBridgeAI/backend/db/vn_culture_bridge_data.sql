@@ -1,14 +1,21 @@
+<<<<<<< HEAD
 -- FILE DA CHUAN HOA: schema + seed data + dong bo quan he theo ma nghiep vu
+=======
+﻿-- FILE DA CHUAN HOA: schema + seed data + dong bo quan he theo ma nghiep vu
+>>>>>>> 8bd5aa804c68e4ff099328f85cdcf7830e074494
 
 -- SCHEMA CHO VN CULTURE BRIDGE AI (MSSQL) - VERSION 5.0 (CLEAN STANDARD)
 -- Dựa trên sơ đồ thực thể (ER Diagram) và yêu cầu tinh gọn, thêm module Ẩm thực
 
 -- Xóa các bảng cũ nếu tồn tại (theo thứ tự ràng buộc khóa ngoại)
+<<<<<<< HEAD
 DECLARE @Sql NVARCHAR(MAX) = '';
 SELECT @Sql += 'ALTER TABLE ' + QUOTENAME(OBJECT_SCHEMA_NAME(parent_object_id)) + '.' + QUOTENAME(OBJECT_NAME(parent_object_id)) + 
     ' DROP CONSTRAINT ' + QUOTENAME(name) + ';'
 FROM sys.foreign_keys;
 EXEC sp_executesql @Sql;
+=======
+>>>>>>> 8bd5aa804c68e4ff099328f85cdcf7830e074494
 IF OBJECT_ID('dbo.MauPrompt', 'U') IS NOT NULL DROP TABLE dbo.MauPrompt;
 IF OBJECT_ID('dbo.BinhLuan', 'U') IS NOT NULL DROP TABLE dbo.BinhLuan;
 IF OBJECT_ID('dbo.HinhAnh', 'U') IS NOT NULL DROP TABLE dbo.HinhAnh;
@@ -25,6 +32,16 @@ IF OBJECT_ID('dbo.VungVanHoa', 'U') IS NOT NULL DROP TABLE dbo.VungVanHoa;
 IF OBJECT_ID('dbo.DanhMuc', 'U') IS NOT NULL DROP TABLE dbo.DanhMuc;
 IF OBJECT_ID('dbo.NguoiDung', 'U') IS NOT NULL DROP TABLE dbo.NguoiDung;
 
+<<<<<<< HEAD
+=======
+EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL';
+EXEC sp_MSforeachtable 'DELETE FROM ?';
+EXEC sp_MSforeachtable 'ALTER TABLE ? CHECK CONSTRAINT ALL';
+
+ALTER TABLE dbo.BaiViet
+ALTER COLUMN MaBaiViet NVARCHAR(100)
+
+>>>>>>> 8bd5aa804c68e4ff099328f85cdcf7830e074494
 -- 1. Bảng Người dùng
 CREATE TABLE dbo.NguoiDung (
     NguoiDungID INT IDENTITY(1,1) PRIMARY KEY,
@@ -156,7 +173,11 @@ CREATE TABLE dbo.VanHoa (
 -- 8. Bảng Bài Viết (BaiViet)
 CREATE TABLE dbo.BaiViet (
     BaiVietID INT PRIMARY KEY IDENTITY(1,1),
+<<<<<<< HEAD
     MaBaiViet NVARCHAR(255) UNIQUE NOT NULL,
+=======
+    MaBaiViet NVARCHAR(50) UNIQUE NOT NULL,
+>>>>>>> 8bd5aa804c68e4ff099328f85cdcf7830e074494
     TieuDeVI NVARCHAR(255) NOT NULL,
     TieuDeEN NVARCHAR(255),
     MoTaNganVI NVARCHAR(MAX),
@@ -210,6 +231,10 @@ CREATE TABLE dbo.MauPrompt (
     NoiDungPrompt NVARCHAR(MAX)
 );
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8bd5aa804c68e4ff099328f85cdcf7830e074494
 INSERT INTO dbo.VungVanHoa (MaVung, TenVI, TenEN, MoTaVI, MoTaEN, ImageUrl, Icon) VALUES
 ('BAC_BO', N'Bắc Bộ', 'Northern Vietnam', 
 N'Vùng đất ngàn năm văn hiến, nơi lưu giữ tinh hoa văn hóa lúa nước và các di sản lịch sử lâu đời.', 

@@ -57,7 +57,7 @@ export default function ArtsSection({ featuredArt, additionalArts, copy, lang })
             ))}
           </div>
 
-          <Link to={`/articles/${featuredArt.code}`} className="primary-button">
+          <Link to={`/blog/${featuredArt.code}`} className="primary-button">
             <span>{copy?.learnMore}</span>
             <span aria-hidden="true" className="btn-arrow-silk">→</span>
           </Link>
@@ -69,7 +69,7 @@ export default function ArtsSection({ featuredArt, additionalArts, copy, lang })
           {(additionalArts || []).map((item, index) => (
             <Link
               key={item.code || item.id || index}
-              to={`/articles/${item.code}`}
+              to={`/blog/${item.code}`}
               className="arts-mini-card"
             >
               <div className="arts-mini-card__icon">
