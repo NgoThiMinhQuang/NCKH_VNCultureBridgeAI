@@ -6,7 +6,7 @@ import imgHeroBg from "../../../assets/images/trong-dong-bg.png";
 const FestivalHero = ({ page, fanCards, lang = "vi" }) => {
   const hero = page.hero || {};
   const stats = page.stats || [];
-  
+
   const scrollToExplore = () => {
     document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -25,7 +25,7 @@ const FestivalHero = ({ page, fanCards, lang = "vi" }) => {
 
       {/* Hero Inner Split Layout */}
       <div className="festivals-hero__inner">
-        
+
         {/* LEFT: Text & Content */}
         <div className="festivals-hero__left">
           <div className="festivals-hero__badge">
@@ -109,8 +109,7 @@ const FestivalHero = ({ page, fanCards, lang = "vi" }) => {
       <div className="festivals-hero__scroll">
         <div className="festivals-mouse-icon"></div>
       </div>
-      
-      <SectionWave position="bottom" color="#ffffff" />
+
     </section>
   );
 };

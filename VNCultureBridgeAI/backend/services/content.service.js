@@ -226,7 +226,7 @@ async function getRegion(code, lang) {
     const [provinces, articles, cuisineRows, festivalRows] = await Promise.all([
         contentRepository.getProvincesByVung(r.VungID),
         contentRepository.getArticles({ region: code, limit: 6 }),
-        contentRepository.getAmThucExtended({ region: code, limit: 4 }),
+        contentRepository.getAmThucExtended({ region: code, limit: 100 }),
         contentRepository.getFestivalsExtended({ region: code, limit: 3 })
     ])
 

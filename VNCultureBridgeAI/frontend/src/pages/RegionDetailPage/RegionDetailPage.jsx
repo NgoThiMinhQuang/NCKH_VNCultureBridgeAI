@@ -5,6 +5,7 @@ import { useDetailLoader } from '../../hooks/useDetailLoader'
 import LoadingState from '../../components/common/LoadingState/LoadingState'
 import PageHeader from '../../components/layout/PageHeader/PageHeader'
 import Footer from '../../components/layout/Footer/Footer'
+import Pagination from '../../components/common/Pagination/Pagination'
 import './RegionDetailPage.css'
 
 const REGION_THEME = {
@@ -81,6 +82,12 @@ export default function RegionDetailPage() {
 
   const { status, data, error } = useDetailLoader(getRegion, lang, normalizedCode)
 
+  const [provincePage, setProvincePage] = useState(1)
+  const [cuisinePage, setCuisinePage] = useState(1)
+  const [isProvincePaginated, setIsProvincePaginated] = useState(true)
+  const [isCuisinePaginated, setIsCuisinePaginated] = useState(true)
+  const ITEMS_PER_PAGE = 8
+
   useEffect(() => {
     window.scrollTo(0, 0)
     if (data?.name) {
@@ -98,9 +105,27 @@ export default function RegionDetailPage() {
 
   const stats = useMemo(() => [
     { value: String(data?.statistics?.provinceCount || 0), label: lang === 'vi' ? 'Tỉnh thành' : 'Provinces' },
-    { value: String(data?.statistics?.articleCount || 0), label: lang === 'vi' ? 'Bài viết' : 'Articles' },
-    { value: String(data?.statistics?.highlightCount || 0), label: lang === 'vi' ? 'Điểm nhấn' : 'Highlights' },
+    { value: String(data?.articles?.length || 0), label: lang === 'vi' ? 'Bài viết' : 'Articles' },
+    { value: String(data?.culturalHighlights?.cuisine?.length || 0), label: lang === 'vi' ? 'Món ăn' : 'Cuisine' },
   ], [data, lang])
+
+  // Pagination Logic - Provinces
+  const paginatedProvinces = useMemo(() => {
+    if (!isProvincePaginated) return provinces
+    const start = (provincePage - 1) * ITEMS_PER_PAGE
+    return provinces.slice(start, start + ITEMS_PER_PAGE)
+  }, [provinces, provincePage, isProvincePaginated])
+
+  const totalProvincePages = Math.ceil(provinces.length / ITEMS_PER_PAGE)
+
+  // Pagination Logic - Cuisine
+  const paginatedCuisine = useMemo(() => {
+    if (!isCuisinePaginated) return cuisine
+    const start = (cuisinePage - 1) * ITEMS_PER_PAGE
+    return cuisine.slice(start, start + ITEMS_PER_PAGE)
+  }, [cuisine, cuisinePage, isCuisinePaginated])
+
+  const totalCuisinePages = Math.ceil(cuisine.length / ITEMS_PER_PAGE)
 
   const handleOpenChatbot = (e) => {
     e.preventDefault();
@@ -182,15 +207,25 @@ export default function RegionDetailPage() {
           </div>
         </section>
 
-        {/* SECTION 2: PROVINCIAL HUB */}
         <section className="province-hub fade-up" style={{ animationDelay: '0.2s' }}>
           <div className="container">
             <div className="section-header">
-              <h2 className="section-title">{lang === 'vi' ? 'Khám phá tỉnh thành' : 'Provincial Discovery'}</h2>
+              <span className="section-badge">{lang === 'vi' ? 'Khám phá' : 'Explore'}</span>
+              <h2 className="section-title">{lang === 'vi' ? 'Tỉnh thành' : 'Provinces'}</h2>
+              <div className="section-actions">
+                <button 
+                  className="btn-outline-sm" 
+                  onClick={() => setIsProvincePaginated(!isProvincePaginated)}
+                >
+                  {isProvincePaginated 
+                    ? (lang === 'vi' ? 'Xem tất cả' : 'See All') 
+                    : (lang === 'vi' ? 'Phân trang' : 'Show Paginated')}
+                </button>
+              </div>
             </div>
 
             <div className="hub-grid">
-              {provinces.map((province) => (
+              {paginatedProvinces.map((province) => (
                 <Link to={`/provinces/${province.code}`} key={province.id} className="hub-card">
                   <div className="hub-card__img">
                     <img src={province.imageUrl} alt={province.name} />
@@ -203,6 +238,67 @@ export default function RegionDetailPage() {
                 </Link>
               ))}
             </div>
+
+            {isProvincePaginated && totalProvincePages > 1 && (
+              <div className="pagination-wrapper">
+                <Pagination 
+                  currentPage={provincePage} 
+                  totalPages={totalProvincePages} 
+                  onPageChange={(page) => {
+                    setProvincePage(page)
+                    document.querySelector('.province-hub').scrollIntoView({ behavior: 'smooth' })
+                  }} 
+                />
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* SECTION 2.5: CUISINE HUB */}
+        <section className="cuisine-hub fade-up alternate-bg">
+          <div className="container">
+            <div className="section-header">
+              <span className="section-badge">{lang === 'vi' ? 'Hương vị' : 'Taste'}</span>
+              <h2 className="section-title">{lang === 'vi' ? 'Tinh hoa ẩm thực' : 'Culinary Highlights'}</h2>
+              <div className="section-actions">
+                <button 
+                  className="btn-outline-sm" 
+                  onClick={() => setIsCuisinePaginated(!isCuisinePaginated)}
+                >
+                  {isCuisinePaginated 
+                    ? (lang === 'vi' ? 'Xem tất cả' : 'See All') 
+                    : (lang === 'vi' ? 'Phân trang' : 'Show Paginated')}
+                </button>
+              </div>
+            </div>
+
+            <div className="hub-grid">
+              {paginatedCuisine.map((item) => (
+                <Link to={`/cuisine/${item.code}`} key={item.id} className="hub-card hub-card--cuisine">
+                  <div className="hub-card__img">
+                    <img src={item.imageUrl} alt={item.title} />
+                  </div>
+                  <div className="hub-card__overlay"></div>
+                  <div className="hub-card__content">
+                    <h3>{item.title}</h3>
+                    <p>{item.description}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {isCuisinePaginated && totalCuisinePages > 1 && (
+              <div className="pagination-wrapper">
+                <Pagination 
+                  currentPage={cuisinePage} 
+                  totalPages={totalCuisinePages} 
+                  onPageChange={(page) => {
+                    setCuisinePage(page)
+                    document.querySelector('.cuisine-hub').scrollIntoView({ behavior: 'smooth' })
+                  }} 
+                />
+              </div>
+            )}
           </div>
         </section>
 

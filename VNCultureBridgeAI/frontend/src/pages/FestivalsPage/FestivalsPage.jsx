@@ -166,10 +166,6 @@ export default function FestivalsPage() {
           timeline={data.timeline}
         />
 
-        <FestivalGallerySection
-          page={data.page}
-          galleryImages={data.gallery}
-        />
 
         <FestivalQuoteSection page={data.page} />
 

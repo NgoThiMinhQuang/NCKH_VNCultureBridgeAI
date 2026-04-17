@@ -16,6 +16,10 @@
   font-family: var(--font-body);
 }
 
+.alternate-bg {
+  background-color: var(--surface) !important;
+}
+
 .container {
   width: min(1360px, calc(100% - 64px));
   margin: 0 auto;
@@ -153,6 +157,30 @@
 .section-header {
   text-align: center;
   margin-bottom: 80px;
+  position: relative;
+}
+
+.section-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.btn-outline-sm {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-sm:hover {
+  background: var(--accent);
+  color: #fff;
 }
 
 .section-badge {
@@ -352,6 +380,16 @@
 
 .hub-card:hover p {
   opacity: 1;
+}
+
+.pagination-wrapper {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.hub-card--cuisine .hub-card__overlay {
+  background: linear-gradient(to top, rgba(185, 28, 28, 0.95) 0%, rgba(0, 0, 0, 0.1) 60%);
 }
 
 /* --- STORIES ROW --- */
