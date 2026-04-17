@@ -49,13 +49,13 @@ export default function Footer({ lang = 'vi' }) {
                 <Link to="/">{ui[lang].nav[0]}</Link>
                 <Link to="/#ethnic-groups">{ui[lang].nav[2]}</Link>
                 <Link to="/#cuisine">{ui[lang].nav[4]}</Link>
-                <Link to="/#blog">{ui[lang].nav[6]}</Link>
+                <Link to="/#blog">{ui[lang].nav[5]}</Link>
               </div>
               <div className="vnc-links-group">
                 <Link to="/regions">{ui[lang].nav[1]}</Link>
                 <Link to="/#festivals">{ui[lang].nav[3]}</Link>
                 <Link to="/provinces">Tỉnh thành</Link>
-                <Link to="/articles">{ui[lang].nav[5]}</Link>
+                <Link to="/blog">{ui[lang].nav[5]}</Link>
               </div>
             </div>
           </div>

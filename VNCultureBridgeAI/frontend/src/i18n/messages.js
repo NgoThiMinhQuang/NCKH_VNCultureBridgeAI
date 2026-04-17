@@ -1,6 +1,6 @@
 export const ui = {
   vi: {
-    nav: ['Trang chủ', 'Khám phá vùng miền', 'Văn hoá dân tộc', 'Lễ hội', 'Ẩm thực', 'Nghệ thuật', 'Blog'],
+    nav: ['Trang chủ', 'Khám phá vùng miền', 'Văn hoá dân tộc', 'Lễ hội', 'Ẩm thực', 'Blog'],
     aiGuide: 'Hướng dẫn AI',
     login: 'Đăng nhập',
     search: 'Tìm kiếm',
@@ -293,7 +293,7 @@ export const ui = {
     }
   },
   en: {
-    nav: ['Home', 'Explore Regions', 'Ethnic Cultures', 'Festivals', 'Cuisine', 'Arts', 'Blog'],
+    nav: ['Home', 'Explore Regions', 'Ethnic Cultures', 'Festivals', 'Cuisine', 'Blog'],
     aiGuide: 'AI Guide',
     login: 'Login',
     search: 'Search',

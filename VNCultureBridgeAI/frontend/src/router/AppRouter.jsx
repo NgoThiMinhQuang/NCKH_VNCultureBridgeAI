@@ -5,7 +5,6 @@ import RegionsPage from "../pages/RegionsPage/RegionsPage";
 import RegionDetailPage from "../pages/RegionDetailPage/RegionDetailPage";
 import EthnicCulturesDetailPage from "../pages/EthnicCulturesDetailPage/EthnicCulturesDetailPage";
 import AIGuidePage from "../pages/AIGuidePage/AIGuidePage";
-import ArticlePage from "../pages/ArticlePage/ArticlePage";
 import FestivalsPage from "../pages/FestivalsPage/FestivalsPage";
 import FestivalsDetailPage from "../pages/FestivalsDetailPage/FestivalsDetailPage";
 import BlogPage from "../pages/BlogPage/BlogPage";
@@ -36,7 +35,6 @@ export default function AppRouter() {
         <Route path="/ethnic-groups" element={<EthnicCultures />} />
         <Route path="/ethnic-groups/:code" element={<EthnicCulturesDetailPage />} />
         <Route path="/ai-guide" element={<AIGuidePage />} />
-        <Route path="/articles" element={<ArticlePage />} />
         <Route path="/festivals" element={<FestivalsPage />} />
         <Route path="/festivals/:id" element={<FestivalsDetailPage />} />
         <Route path="/blog" element={<BlogPage />} />

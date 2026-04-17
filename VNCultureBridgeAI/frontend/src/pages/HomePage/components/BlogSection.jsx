@@ -122,7 +122,7 @@ export default function BlogSection({ featuredPost, secondaryPosts, copy, lang }
       </div>
 
       <div className="blog-showcase__cta-row fade-up">
-        <Link to="/articles" className="primary-button">
+        <Link to="/blog" className="primary-button">
           <span>{copy?.blogShowcasePrimaryCta}</span>
           <span aria-hidden="true" className="btn-arrow-silk">Xem thêm →</span>
         </Link>

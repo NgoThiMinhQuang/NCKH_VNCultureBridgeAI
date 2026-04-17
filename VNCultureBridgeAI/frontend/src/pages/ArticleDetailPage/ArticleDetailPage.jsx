@@ -119,18 +119,18 @@ export default function ArticleDetailPage() {
         lang={lang}
         onLangChange={setLang}
         breadcrumb={[
-          { label: lang === 'vi' ? 'Bài Viết' : 'Articles', to: '/articles' },
+          { label: lang === 'vi' ? 'Blog' : 'Blog', to: '/blog' },
           { label: article.title },
         ]}
       />
 
       <main className="article-detail-content">
         <div className="adc-container">
-          <Link to="/articles" className="adc__back">
+          <Link to="/blog" className="adc__back">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M15 18l-6-6 6-6" />
             </svg>
-            <span>{lang === 'vi' ? 'Quay lại Bài Viết' : 'Back to Articles'}</span>
+            <span>{lang === 'vi' ? 'Quay lại Blog' : 'Back to Blog'}</span>
           </Link>
 
           <header className="adc__header fade-up">

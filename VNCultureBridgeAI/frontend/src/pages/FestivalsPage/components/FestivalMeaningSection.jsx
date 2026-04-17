@@ -33,7 +33,7 @@ const FestivalMeaningSection = ({ page, galleryImages, filteredFestivals }) => {
               <p key={index}>{paragraph}</p>
             ))}
           </div>
-          <Link to={meaning.buttonHref || "/articles"} className="festivals-btn festivals-btn--primary festivals-meaning__btn">
+          <Link to={meaning.buttonHref || "/blog"} className="festivals-btn festivals-btn--primary festivals-meaning__btn">
             {meaning.button || "Tìm hiểu thêm về văn hóa Việt"}
           </Link>
         </div>

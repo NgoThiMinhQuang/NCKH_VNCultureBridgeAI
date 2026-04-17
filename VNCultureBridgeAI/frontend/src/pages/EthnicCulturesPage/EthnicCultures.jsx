@@ -631,12 +631,12 @@ export default function EthnicCultures() {
                   <span className="ec-section-eyebrow">Góc nhìn cận cảnh</span>
                   <h2 className="ec-section-title">Chuyện kể từ<br />bản làng xa</h2>
                 </div>
-                <Link to="/articles" className="ec-link-more">Xem tất cả bài viết &rsaquo;</Link>
+                <Link to="/blog" className="ec-link-more">Xem tất cả bài viết &rsaquo;</Link>
               </div>
 
               <div className="ec-grid ec-grid--3cols fade-up">
                 {stories.map((story, index) => (
-                  <Link to={story.code ? `/articles/${story.code}` : '/articles'} className="ec-scard" key={story.id || story.code || index}>
+                  <Link to={story.code ? `/articles/${story.code}` : '/blog'} className="ec-scard" key={story.id || story.code || index}>
                     <div className="ec-scard__img">
                       {story.imageUrl ? <img src={story.imageUrl} alt={story.imageAlt || story.title} loading="lazy" /> : null}
                     </div>

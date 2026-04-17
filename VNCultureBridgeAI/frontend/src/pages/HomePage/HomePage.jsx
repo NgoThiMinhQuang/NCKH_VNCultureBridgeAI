@@ -13,7 +13,6 @@ import EthnicGroupSection from './components/EthnicGroupSection'
 import FestivalSection from './components/FestivalSection'
 import CuisineSection from './components/CuisineSection'
 import ArtsSection from './components/ArtsSection'
-import BlogSection from './components/BlogSection'
 
 export default function HomePage() {
   const [lang, setLang] = useState('vi')
@@ -25,30 +24,39 @@ export default function HomePage() {
   const [searching, setSearching] = useState(false)
 
   const copy = useMemo(() => ui[lang], [lang])
+  const homepageData = homepage || {}
+  const pageTitle = copy?.pageTitle || 'VietCultura'
 
   useEffect(() => {
     let ignore = false
+
     async function loadHomepage() {
       try {
-        if (!homepage) setStatus('loading')
+        if (!homepageData.hero) setStatus('loading')
         setError('')
+
         const data = await getHomepage(lang)
         if (!ignore) {
           setHomepage(data)
           setStatus('success')
-          document.documentElement.lang = lang
-          document.title = copy.pageTitle
         }
       } catch (err) {
         if (!ignore) {
-          setError(err.message)
+          setError(err?.message || 'Không thể tải trang chủ')
           setStatus('error')
         }
       }
     }
+
     loadHomepage()
+
     return () => { ignore = true }
-  }, [lang])
+  }, [lang, homepageData.hero])
+
+  useEffect(() => {
+    document.documentElement.lang = lang
+    document.title = pageTitle
+  }, [lang, pageTitle])
 
   async function handleSearch(event) {
     if (event) event.preventDefault()
@@ -83,16 +91,14 @@ export default function HomePage() {
     )
   }
 
-  const h = homepage || {}
-
   return (
     <div className="homepage-root">
-      <PageHeader lang={lang} setLang={setLang} />
+      <PageHeader lang={lang} onLangChange={setLang} />
 
-      <main className="">
+      <main>
         <HeroSection
-          hero={h.hero}
-          stats={h.stats || []}
+          hero={homepageData.hero}
+          stats={homepageData.stats || []}
           search={search}
           setSearch={setSearch}
           handleSearch={handleSearch}
@@ -102,39 +108,33 @@ export default function HomePage() {
         />
 
         <RegionSection
-          regions={h.regions || []}
+          regions={homepageData.regions || []}
           copy={copy}
         />
 
         <EthnicGroupSection
-          ethnicGroups={h.ethnicGroups || []}
+          ethnicGroups={homepageData.ethnicGroups || []}
           stats={copy.ethnicShowcaseStats || []}
           copy={copy}
         />
 
         <FestivalSection
-          festivals={h.festivals || []}
+          festivals={homepageData.festivals || []}
           copy={copy}
         />
 
         <CuisineSection
-          cuisine={h.cuisine || []}
+          cuisine={homepageData.cuisine || []}
           copy={copy}
         />
 
         <ArtsSection
-          featuredArt={(h.arts || [])[0]}
-          additionalArts={(h.arts || []).slice(1, 7)}
+          featuredArt={(homepageData.arts || [])[0]}
+          additionalArts={(homepageData.arts || []).slice(1, 7)}
           copy={copy}
           lang={lang}
         />
 
-        <BlogSection
-          featuredPost={(h.blogPosts || [])[0]}
-          secondaryPosts={(h.blogPosts || []).slice(1, 4)}
-          copy={copy}
-          lang={lang}
-        />
       </main>
 
       <Footer lang={lang} />

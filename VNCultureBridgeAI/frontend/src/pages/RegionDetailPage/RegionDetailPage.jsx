@@ -377,7 +377,7 @@ export default function RegionDetailPage() {
                 {(data?.overviewDetails || []).map((detail, index) => (
                   <p key={`${detail.label}-${index}`}><strong>{detail.label}:</strong> {detail.value}</p>
                 ))}
-                <Link to="/articles" className="btn-text-icon">Đọc thêm câu chuyện <span aria-hidden="true">→</span></Link>
+                <Link to="/blog" className="btn-text-icon">Đọc thêm câu chuyện <span aria-hidden="true">→</span></Link>
               </div>
             </div>
           </div>

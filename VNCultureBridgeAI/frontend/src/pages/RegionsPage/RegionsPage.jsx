@@ -117,27 +117,9 @@ function getProvincePreviewImage(province) {
   return FALLBACK_IMAGE_BY_CODE[province?.code] || FALLBACK_IMAGE_BY_REGION[province?.region] || imgHeroBg
 }
 
-function getProvincePreviewTags(tags) {
-  return Array.isArray(tags) ? tags : []
-}
-
 function getProvincePreviewDescription(province, lang) {
   if (province?.description) return province.description
   return lang === 'vi' ? `Khám phá nét nổi bật tại ${province?.name || 'địa phương này'}.` : `Explore the highlights of ${province?.name || 'this destination'}.`
-}
-
-function toProvincePreviewItem(province, lang) {
-  return {
-    ...province,
-    imageUrl: province.imageUrl || getProvincePreviewImage(province),
-    imageAlt: province.imageAlt || province.name,
-    description: getProvincePreviewDescription(province, lang),
-    tags: getProvincePreviewTags(province.tags),
-  }
-}
-
-function toProvincePreviewList(provinces, lang) {
-  return provinces.map((province) => toProvincePreviewItem(province, lang))
 }
 
 function handleProvinceImageError(event, province) {
@@ -159,534 +141,19 @@ function getProvinceTagList(province) {
   return hasProvinceTags(province.tags) ? province.tags : [province.region].filter(Boolean)
 }
 
-function withProvinceCardDefaults(province, lang) {
-  return {
-    ...toProvincePreviewItem(province, lang),
-    tags: getProvinceTagList(province).map(normalizeProvinceTag).filter(Boolean),
-  }
-}
-
-function buildProvinceCardList(provinces, lang) {
-  return provinces.map((province) => withProvinceCardDefaults(province, lang))
-}
-
-function ensureProvinceCardImage(province) {
-  return province.imageUrl || getProvincePreviewImage(province)
-}
-
-function ensureProvinceCardAlt(province) {
-  return province.imageAlt || province.name
-}
-
-function ensureProvinceCardDescription(province, lang) {
-  return province.description || getProvincePreviewDescription(province, lang)
-}
-
 function toProvinceCard(province, lang) {
+  const tags = getProvinceTagList(province).map(normalizeProvinceTag).filter(Boolean)
   return {
     ...province,
-    imageUrl: ensureProvinceCardImage(province),
-    imageAlt: ensureProvinceCardAlt(province),
-    description: ensureProvinceCardDescription(province, lang),
-    tags: getProvinceTagList(province),
+    imageUrl: province.imageUrl || getProvincePreviewImage(province),
+    imageAlt: province.imageAlt || province.name,
+    description: province.description || getProvincePreviewDescription(province, lang),
+    tags,
   }
-}
-
-function toProvinceCards(provinces, lang) {
-  return provinces.map((province) => toProvinceCard(province, lang))
-}
-
-function getProvinceCardList(provinces, lang) {
-  return toProvinceCards(provinces, lang)
-}
-
-function createProvincePreviewList(provinces, lang) {
-  return getProvinceCardList(provinces, lang)
-}
-
-function mapProvincePreviewList(provinces, lang) {
-  return createProvincePreviewList(provinces, lang)
-}
-
-function decorateProvincePreviewList(provinces, lang) {
-  return mapProvincePreviewList(provinces, lang)
-}
-
-function getDecoratedProvincePreviewList(provinces, lang) {
-  return decorateProvincePreviewList(provinces, lang)
-}
-
-function getSafeProvincePreviewList(provinces, lang) {
-  return getDecoratedProvincePreviewList(provinces, lang)
-}
-
-function formatProvincePreviewList(provinces, lang) {
-  return getSafeProvincePreviewList(provinces, lang)
-}
-
-function resolveProvincePreviewList(provinces, lang) {
-  return formatProvincePreviewList(provinces, lang)
-}
-
-function buildSafeProvincePreviewList(provinces, lang) {
-  return resolveProvincePreviewList(provinces, lang)
-}
-
-function getFinalProvincePreviewList(provinces, lang) {
-  return buildSafeProvincePreviewList(provinces, lang)
-}
-
-function getProvinceCardImage(province) {
-  return ensureProvinceCardImage(province)
-}
-
-function getProvinceCardAlt(province) {
-  return ensureProvinceCardAlt(province)
-}
-
-function getProvinceCardDescription(province, lang) {
-  return ensureProvinceCardDescription(province, lang)
-}
-
-function getProvinceCardTags(province) {
-  return getProvinceTagList(province)
-}
-
-function getProvinceCardsWithMedia(provinces, lang) {
-  return getFinalProvincePreviewList(provinces, lang)
-}
-
-function normalizeProvincePreviewData(provinces, lang) {
-  return getProvinceCardsWithMedia(provinces, lang)
-}
-
-function prepareProvincePreviewData(provinces, lang) {
-  return normalizeProvincePreviewData(provinces, lang)
-}
-
-function resolveProvincePreviewData(provinces, lang) {
-  return prepareProvincePreviewData(provinces, lang)
-}
-
-function buildProvincePreviewData(provinces, lang) {
-  return resolveProvincePreviewData(provinces, lang)
-}
-
-function getProvincePreviewData(provinces, lang) {
-  return buildProvincePreviewData(provinces, lang)
-}
-
-function getProvinceImageProps(province, lang) {
-  const item = toProvinceCard(province, lang)
-  return {
-    src: item.imageUrl,
-    alt: item.imageAlt,
-    description: item.description,
-    tags: item.tags,
-  }
-}
-
-function mergeProvincePreviewData(province, lang) {
-  const media = getProvinceImageProps(province, lang)
-  return {
-    ...province,
-    imageUrl: media.src,
-    imageAlt: media.alt,
-    description: media.description,
-    tags: media.tags,
-  }
-}
-
-function getMergedProvincePreviewList(provinces, lang) {
-  return provinces.map((province) => mergeProvincePreviewData(province, lang))
-}
-
-function getProvincePreviewCollection(provinces, lang) {
-  return getMergedProvincePreviewList(provinces, lang)
-}
-
-function getSafeProvinceCards(provinces, lang) {
-  return getProvincePreviewCollection(provinces, lang)
-}
-
-function getProvinceCards(provinces, lang) {
-  return getSafeProvinceCards(provinces, lang)
-}
-
-function makeProvinceCards(provinces, lang) {
-  return getProvinceCards(provinces, lang)
-}
-
-function createSafeProvinceCards(provinces, lang) {
-  return makeProvinceCards(provinces, lang)
-}
-
-function resolveSafeProvinceCards(provinces, lang) {
-  return createSafeProvinceCards(provinces, lang)
-}
-
-function finalProvinceCards(provinces, lang) {
-  return resolveSafeProvinceCards(provinces, lang)
-}
-
-function withProvinceImages(provinces, lang) {
-  return finalProvinceCards(provinces, lang)
-}
-
-function decorateProvinceCards(provinces, lang) {
-  return withProvinceImages(provinces, lang)
-}
-
-function getDecoratedProvinceCards(provinces, lang) {
-  return decorateProvinceCards(provinces, lang)
-}
-
-function getProvinceCardsWithFallbacks(provinces, lang) {
-  return getDecoratedProvinceCards(provinces, lang)
-}
-
-function resolveProvinceCardsWithFallbacks(provinces, lang) {
-  return getProvinceCardsWithFallbacks(provinces, lang)
-}
-
-function buildProvinceCardsWithFallbacks(provinces, lang) {
-  return resolveProvinceCardsWithFallbacks(provinces, lang)
-}
-
-function prepareProvinceCards(provinces, lang) {
-  return buildProvinceCardsWithFallbacks(provinces, lang)
-}
-
-function getProvinceCardsPrepared(provinces, lang) {
-  return prepareProvinceCards(provinces, lang)
-}
-
-function createProvinceCards(provinces, lang) {
-  return getProvinceCardsPrepared(provinces, lang)
-}
-
-function getProvincePreviewCards(provinces, lang) {
-  return createProvinceCards(provinces, lang)
-}
-
-function getProvinceListForDisplay(provinces, lang) {
-  return getProvincePreviewCards(provinces, lang)
-}
-
-function normalizeProvinceListForDisplay(provinces, lang) {
-  return getProvinceListForDisplay(provinces, lang)
-}
-
-function getDisplayProvinceList(provinces, lang) {
-  return normalizeProvinceListForDisplay(provinces, lang)
-}
-
-function mapDisplayProvinceList(provinces, lang) {
-  return getDisplayProvinceList(provinces, lang)
-}
-
-function createDisplayProvinceList(provinces, lang) {
-  return mapDisplayProvinceList(provinces, lang)
-}
-
-function getProvinceItems(provinces, lang) {
-  return createDisplayProvinceList(provinces, lang)
-}
-
-function getProvincePreviewItems(provinces, lang) {
-  return getProvinceItems(provinces, lang)
-}
-
-function safeProvincePreviewItems(provinces, lang) {
-  return getProvincePreviewItems(provinces, lang)
-}
-
-function getReadyProvincePreviewItems(provinces, lang) {
-  return safeProvincePreviewItems(provinces, lang)
-}
-
-function finalReadyProvincePreviewItems(provinces, lang) {
-  return getReadyProvincePreviewItems(provinces, lang)
-}
-
-function getProvinceCardData(provinces, lang) {
-  return finalReadyProvincePreviewItems(provinces, lang)
-}
-
-function createProvinceCardData(provinces, lang) {
-  return getProvinceCardData(provinces, lang)
-}
-
-function buildProvinceCardData(provinces, lang) {
-  return createProvinceCardData(provinces, lang)
-}
-
-function resolveProvinceCardData(provinces, lang) {
-  return buildProvinceCardData(provinces, lang)
-}
-
-function getResolvedProvinceCardData(provinces, lang) {
-  return resolveProvinceCardData(provinces, lang)
-}
-
-function getProvincePreviewState(provinces, lang) {
-  return getResolvedProvinceCardData(provinces, lang)
-}
-
-function getProvincePreviewCardsState(provinces, lang) {
-  return getProvincePreviewState(provinces, lang)
-}
-
-function getProvincePreviewRenderList(provinces, lang) {
-  return getProvincePreviewCardsState(provinces, lang)
-}
-
-function getProvincePreviewDisplayList(provinces, lang) {
-  return getProvincePreviewRenderList(provinces, lang)
-}
-
-function finalizeProvincePreviewList(provinces, lang) {
-  return getProvincePreviewDisplayList(provinces, lang)
-}
-
-function getFinalizedProvincePreviewList(provinces, lang) {
-  return finalizeProvincePreviewList(provinces, lang)
-}
-
-function resolveProvinceCards(provinces, lang) {
-  return getFinalizedProvincePreviewList(provinces, lang)
-}
-
-function getResolvedProvinceCards(provinces, lang) {
-  return resolveProvinceCards(provinces, lang)
-}
-
-function makeResolvedProvinceCards(provinces, lang) {
-  return getResolvedProvinceCards(provinces, lang)
-}
-
-function getProvinceCardsResolved(provinces, lang) {
-  return makeResolvedProvinceCards(provinces, lang)
-}
-
-function buildProvincePreviewCards(provinces, lang) {
-  return getProvinceCardsResolved(provinces, lang)
-}
-
-function getBuiltProvincePreviewCards(provinces, lang) {
-  return buildProvincePreviewCards(provinces, lang)
-}
-
-function resolveBuiltProvincePreviewCards(provinces, lang) {
-  return getBuiltProvincePreviewCards(provinces, lang)
-}
-
-function getProvinceCardsForRegionPage(provinces, lang) {
-  return resolveBuiltProvincePreviewCards(provinces, lang)
-}
-
-function prepareRegionProvinceCards(provinces, lang) {
-  return getProvinceCardsForRegionPage(provinces, lang)
-}
-
-function getPreparedRegionProvinceCards(provinces, lang) {
-  return prepareRegionProvinceCards(provinces, lang)
-}
-
-function resolveRegionProvinceCards(provinces, lang) {
-  return getPreparedRegionProvinceCards(provinces, lang)
-}
-
-function getResolvedRegionProvinceCards(provinces, lang) {
-  return resolveRegionProvinceCards(provinces, lang)
-}
-
-function buildResolvedRegionProvinceCards(provinces, lang) {
-  return getResolvedRegionProvinceCards(provinces, lang)
-}
-
-function getBuiltResolvedRegionProvinceCards(provinces, lang) {
-  return buildResolvedRegionProvinceCards(provinces, lang)
-}
-
-function getProvincePreviewCardsForRender(provinces, lang) {
-  return getBuiltResolvedRegionProvinceCards(provinces, lang)
-}
-
-function createProvincePreviewCardsForRender(provinces, lang) {
-  return getProvincePreviewCardsForRender(provinces, lang)
-}
-
-function resolveProvincePreviewCardsForRender(provinces, lang) {
-  return createProvincePreviewCardsForRender(provinces, lang)
-}
-
-function finalProvincePreviewCardsForRender(provinces, lang) {
-  return resolveProvincePreviewCardsForRender(provinces, lang)
-}
-
-function getRegionProvinceCards(provinces, lang) {
-  return finalProvincePreviewCardsForRender(provinces, lang)
-}
-
-function getProvinceRenderList(provinces, lang) {
-  return getRegionProvinceCards(provinces, lang)
-}
-
-function getProvincePreviewRenderData(provinces, lang) {
-  return getProvinceRenderList(provinces, lang)
-}
-
-function buildProvincePreviewRenderData(provinces, lang) {
-  return getProvincePreviewRenderData(provinces, lang)
-}
-
-function resolveProvincePreviewRenderData(provinces, lang) {
-  return buildProvincePreviewRenderData(provinces, lang)
-}
-
-function getProvinceCardsData(provinces, lang) {
-  return resolveProvincePreviewRenderData(provinces, lang)
-}
-
-function createProvinceCardsData(provinces, lang) {
-  return getProvinceCardsData(provinces, lang)
-}
-
-function getProvinceListData(provinces, lang) {
-  return createProvinceCardsData(provinces, lang)
-}
-
-function buildProvinceListData(provinces, lang) {
-  return getProvinceListData(provinces, lang)
-}
-
-function getProvinceDisplayData(provinces, lang) {
-  return buildProvinceListData(provinces, lang)
-}
-
-function getRegionProvinceDisplayData(provinces, lang) {
-  return getProvinceDisplayData(provinces, lang)
-}
-
-function getProvinceSectionCards(provinces, lang) {
-  return getRegionProvinceDisplayData(provinces, lang)
-}
-
-function getProvinceSectionData(provinces, lang) {
-  return getProvinceSectionCards(provinces, lang)
-}
-
-function getRegionProvinceSectionData(provinces, lang) {
-  return getProvinceSectionData(provinces, lang)
-}
-
-function getProvincePreviewSectionCards(provinces, lang) {
-  return getRegionProvinceSectionData(provinces, lang)
-}
-
-function getPreviewCards(provinces, lang) {
-  return getProvincePreviewSectionCards(provinces, lang)
-}
-
-function buildPreviewCards(provinces, lang) {
-  return getPreviewCards(provinces, lang)
-}
-
-function getBuiltPreviewCards(provinces, lang) {
-  return buildPreviewCards(provinces, lang)
-}
-
-function resolvePreviewCards(provinces, lang) {
-  return getBuiltPreviewCards(provinces, lang)
-}
-
-function getResolvedPreviewCards(provinces, lang) {
-  return resolvePreviewCards(provinces, lang)
-}
-
-function makePreviewCards(provinces, lang) {
-  return getResolvedPreviewCards(provinces, lang)
-}
-
-function getDisplayCards(provinces, lang) {
-  return makePreviewCards(provinces, lang)
-}
-
-function buildDisplayCards(provinces, lang) {
-  return getDisplayCards(provinces, lang)
-}
-
-function getProvinceSectionDisplayCards(provinces, lang) {
-  return buildDisplayCards(provinces, lang)
-}
-
-function resolveProvinceSectionDisplayCards(provinces, lang) {
-  return getProvinceSectionDisplayCards(provinces, lang)
-}
-
-function getCardsForProvinceSection(provinces, lang) {
-  return resolveProvinceSectionDisplayCards(provinces, lang)
-}
-
-function buildCardsForProvinceSection(provinces, lang) {
-  return getCardsForProvinceSection(provinces, lang)
-}
-
-function getFinalProvinceSectionCards(provinces, lang) {
-  return buildCardsForProvinceSection(provinces, lang)
-}
-
-function getProvinceSectionRenderCards(provinces, lang) {
-  return getFinalProvinceSectionCards(provinces, lang)
-}
-
-function getProvinceGridItems(provinces, lang) {
-  return getProvinceSectionRenderCards(provinces, lang)
-}
-
-function getProvinceItemsForRender(provinces, lang) {
-  return getProvinceGridItems(provinces, lang)
-}
-
-function getReadyProvinceItemsForRender(provinces, lang) {
-  return getProvinceItemsForRender(provinces, lang)
-}
-
-function getFinalProvinceItemsForRender(provinces, lang) {
-  return getReadyProvinceItemsForRender(provinces, lang)
-}
-
-function normalizeProvinceItemsForRender(provinces, lang) {
-  return getFinalProvinceItemsForRender(provinces, lang)
-}
-
-function getNormalizedProvinceItemsForRender(provinces, lang) {
-  return normalizeProvinceItemsForRender(provinces, lang)
-}
-
-function createNormalizedProvinceItemsForRender(provinces, lang) {
-  return getNormalizedProvinceItemsForRender(provinces, lang)
-}
-
-function getProvincePreviewRenderItems(provinces, lang) {
-  return createNormalizedProvinceItemsForRender(provinces, lang)
-}
-
-function buildProvincePreviewRenderItems(provinces, lang) {
-  return getProvincePreviewRenderItems(provinces, lang)
-}
-
-function getProvinceCardRenderItems(provinces, lang) {
-  return buildProvincePreviewRenderItems(provinces, lang)
-}
-
-function getFinalProvinceCardRenderItems(provinces, lang) {
-  return getProvinceCardRenderItems(provinces, lang)
 }
 
 function getProvinceCardsToRender(provinces, lang) {
-  return getFinalProvinceCardRenderItems(provinces, lang)
+  return provinces.map((province) => toProvinceCard(province, lang))
 }
 
 const regionMeta = {
@@ -839,15 +306,6 @@ const inspirationCards = [
   { title: 'Làng nghề và thủ công', desc: 'Khám phá các làng nghề truyền thống: gốm sứ, lụa tơ tằm, tranh dân gian và tay nghề thủ công tinh xảo.', image: imgHlNamBo }
 ]
 
-const provincesData = [
-  { id: 1, name: 'Hà Nội', code: 'ha-noi', desc: 'Thủ đô nghìn năm văn bản cùng phố cổ, hồ Hoàn Kiếm và nền văn hóa truyền thống đậm đà', tags: ['Phố cổ', 'Di sản', 'Ẩm thực'], region: 'Miền Bắc', image: imgHlHanoi },
-  { id: 2, name: 'Huế', code: 'hue', desc: 'Cố đô với hoàng cung, lăng tẩm và ẩm thực cung đình tinh tế', tags: ['Hoàng cung', 'Di sản UNESCO', 'Văn hóa'], region: 'Miền Trung', image: imgHlHue },
-  { id: 3, name: 'Hội An', code: 'hoi-an', desc: 'Phố cổ đèn lồng với kiến trúc giao thoa văn hóa Việt - Nhật - Hoa', tags: ['Phố cổ', 'Đèn lồng', 'Kiến trúc'], region: 'Miền Trung', image: imgHlHoiAn },
-  { id: 4, name: 'Sapa', code: 'sapa', desc: 'Cao nguyên mờ sương với ruộng bậc thang và văn hóa dân tộc đa dạng', tags: ['Núi rừng', 'Ruộng bậc thang', 'Dân tộc'], region: 'Miền Bắc', image: imgHlSapa },
-  { id: 5, name: 'Cần Thơ', code: 'can-tho', desc: 'Thủ phụ miền Tây với chợ nổi Cái Răng và vườn trái cây miệt vườn', tags: ['Chợ nổi', 'Sông nước', 'Ẩm thực'], region: 'Miền Nam', image: imgHlCanTho },
-  { id: 6, name: 'Phú Quốc', code: 'phu-quoc', desc: 'Đảo ngọc với bãi biển hoang sơ, rừng nguyên sinh và hải sản tươi ngon', tags: ['Biển đảo', 'Thiên nhiên', 'Nghỉ dưỡng'], region: 'Miền Nam', image: imgHlNamBo }
-]
-
 const seasonsData = [
   {
     id: 'spring',
@@ -966,6 +424,7 @@ export default function RegionsPage() {
   const [activeKey, setActiveKey] = useState('BAC_BO')
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState('all')
+  const [explorerRegion, setExplorerRegion] = useState('all') // New independent state
   const [provinceState, setProvinceState] = useState({ status: 'loading', data: [], error: '' })
   const copy = useMemo(() => ui[lang], [lang])
 
@@ -1027,6 +486,13 @@ export default function RegionsPage() {
       { id: 'craft', label: 'Craft Villages' }
     ]
     : filterOptions
+
+  const explorerRegionOptions = [
+    { id: 'all', label: lang === 'vi' ? 'Tất cả vùng' : 'All Regions' },
+    { id: 'BAC_BO', label: lang === 'vi' ? 'Miền Bắc' : 'North' },
+    { id: 'TRUNG_BO', label: lang === 'vi' ? 'Miền Trung' : 'Central' },
+    { id: 'NAM_BO', label: lang === 'vi' ? 'Miền Nam' : 'South' },
+  ]
   const visibleProvinces = (provinceState.data || [])
     .map(normalizeProvinceCard)
     .filter((province) => !searchQuery.trim() || province.name.toLowerCase().includes(searchQuery.trim().toLowerCase()))
@@ -1038,39 +504,30 @@ export default function RegionsPage() {
     NAM_BO: lang === 'vi' ? 'Nam Bộ' : 'Southern Vietnam',
   }
 
-  const previewSource = !searchQuery.trim() && activeFilter === 'all'
-    ? visibleProvinces.filter((province) => {
-      const targetLabel = (regionLabelByKey[activeKey] || activeRegion.badge || '').toLowerCase()
-      const provinceRegion = (province.region || '').toLowerCase()
-      return provinceRegion.includes(targetLabel) || targetLabel.includes(provinceRegion)
-    })
-    : visibleProvinces
+  const previewSource = visibleProvinces.filter((province) => {
+    if (explorerRegion === 'all') return true
+    const targetLabel = (regionLabelByKey[explorerRegion] || '').toLowerCase()
+    const provinceRegion = (province.region || '').toLowerCase()
+    return provinceRegion.includes(targetLabel) || targetLabel.includes(provinceRegion)
+  })
 
   const previewProvinces = previewSource.slice(0, 6)
   const previewTotalCount = previewSource.length
   const previewRegionLabel = regionLabelByKey[activeKey] || activeRegion.badge
   const hasMoreProvinces = previewTotalCount > previewProvinces.length
-  const provincesHintText = lang === 'vi'
-    ? `Trang này đang hiển thị ${previewProvinces.length} tỉnh tiêu biểu của ${previewRegionLabel}. Nhấn nút bên dưới để xem đầy đủ ${provinceCount} tỉnh thành.`
-    : `This page is showing ${previewProvinces.length} featured provinces from ${activeRegion.badge}. Use the button below to view all ${provinceCount} provinces.`
   const provincesCtaText = lang === 'vi'
     ? `Xem tất cả ${provinceCount} tỉnh thành`
     : `View all ${provinceCount} provinces`
   const displayedProvinces = previewProvinces
   const isProvinceSearchEmpty = visibleProvinces.length === 0
-  const shouldShowProvincesHint = !searchQuery.trim() && activeFilter === 'all' && previewProvinces.length > 0
   const shouldShowViewAllButton = displayedProvinces.length > 0 || hasMoreProvinces
   const provincesEmptyText = lang === 'vi'
     ? 'Không tìm thấy tỉnh thành phù hợp.'
     : 'No matching provinces found.'
   const provincesPreviewList = getProvinceCardsToRender(displayedProvinces, lang)
   const provincesButtonText = provincesCtaText
-  const provincesSupportTextFinal = provincesHintText
-  const showProvincesHintCopy = shouldShowProvincesHint
   const showProvincesLinkCopy = shouldShowViewAllButton
   const showProvincesEmptyCopy = isProvinceSearchEmpty
-
-  const previewProvincesLegacy = visibleProvinces.slice(0, 6)
 
   useEffect(() => {
     if (mappedRegions.length && !mappedRegions.some((item) => item.key === activeKey)) {
@@ -1089,10 +546,6 @@ export default function RegionsPage() {
   function scrollToSelector(selector) {
     document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' })
   }
-
-  const heroCategories = lang === 'vi'
-    ? ['Di sản đặc sắc', 'Ẩm thực bản địa', 'Lễ hội bốn mùa', 'Bản sắc cộng đồng']
-    : ['Unique Heritage', 'Local Cuisine', 'Four Seasons Festivals', 'Community Identity']
 
   return (
     <div className="page-shell">
@@ -1347,7 +800,7 @@ export default function RegionsPage() {
                 return (
                   <div key={region.id} className={`regions-overview__card ${isReversed ? 'is-reversed' : ''}`}>
 
-                    "                    <div className="regions-overview__image-col">
+                    <div className="regions-overview__image-col">
                       <div className="regions-overview__image">
                         {regionImage ? <img src={regionImage} alt={region.overviewTitle || region.title} /> : <div className="placeholder-image">Ảnh {region.badge}</div>}
                       </div>
@@ -1422,7 +875,20 @@ export default function RegionsPage() {
                 </div>
 
                 <div className="filter-chips">
-                  <span className="filter-label">{lang === 'vi' ? '📍 Lọc theo:' : '📍 Filter by:'}</span>
+                  <span className="filter-label">{lang === 'vi' ? '🗺️ Vùng miền:' : '🗺️ Regions:'}</span>
+                  {explorerRegionOptions.map((reg) => (
+                    <button
+                      key={reg.id}
+                      className={`filter-chip ${explorerRegion === reg.id ? 'is-active' : ''}`}
+                      onClick={() => setExplorerRegion(reg.id)}
+                    >
+                      {reg.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="filter-chips">
+                  <span className="filter-label">{lang === 'vi' ? '📍 Chủ đề:' : '📍 Themes:'}</span>
                   {localizedFilterOptions.map((filter) => (
                     <button
                       key={filter.id}

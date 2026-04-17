@@ -473,7 +473,7 @@ export default function EthnicCulturesDetailPage() {
               </header>
               <div className="ec-grid ec-grid--3cols fade-up">
                 {related.slice(0, 3).map((article, index) => (
-                  <Link to={article.code ? `/articles/${article.code}` : '/articles'} className="ec-scard" key={article.id || article.code || index}>
+                  <Link to={article.code ? `/articles/${article.code}` : '/blog'} className="ec-scard" key={article.id || article.code || index}>
                     <div className="ec-scard__img">
                       {article.imageUrl ? <img src={article.imageUrl} alt={article.imageAlt || article.title || 'Hình minh họa bài viết liên quan'} loading="lazy" onError={(event) => handleImageError(event, fallbacks.gallery)} /> : null}
                     </div>

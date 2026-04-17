@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = [] }) {
   const [hoveredKey, setHoveredKey] = useState(null);
+  const navigate = useNavigate();
 
   const KEY_MAP = {
     BAC_BO: 'north',
@@ -10,7 +12,7 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
   };
 
   const internalActiveKey = KEY_MAP[activeKey] || activeKey;
-  const visibleKey = hoveredKey ?? internalActiveKey;
+  const visibleKey = hoveredKey;
 
   const labels = useMemo(() => {
     const defaults = {
@@ -29,6 +31,11 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
 
     return defaults
   }, [regions])
+
+  const handleRegionClick = (regionId) => {
+    onSelectRegion(regionId);
+    navigate(`/regions/${regionId}`);
+  };
 
   return (
     <div className="regions-map-container">
@@ -68,7 +75,7 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
             onSelectRegion('BAC_BO');
           }}
           onMouseLeave={() => setHoveredKey(null)}
-          onClick={() => onSelectRegion('BAC_BO')}
+          onClick={() => handleRegionClick('BAC_BO')}
           aria-label="Chọn Miền Bắc"
         />
         <button
@@ -79,7 +86,7 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
             onSelectRegion('TRUNG_BO');
           }}
           onMouseLeave={() => setHoveredKey(null)}
-          onClick={() => onSelectRegion('TRUNG_BO')}
+          onClick={() => handleRegionClick('TRUNG_BO')}
           aria-label="Chọn Miền Trung"
         />
         <button
@@ -90,7 +97,7 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
             onSelectRegion('NAM_BO');
           }}
           onMouseLeave={() => setHoveredKey(null)}
-          onClick={() => onSelectRegion('NAM_BO')}
+          onClick={() => handleRegionClick('NAM_BO')}
           aria-label="Chọn Miền Nam"
         />
 
@@ -98,3 +105,4 @@ export default function VietnamMap({ activeKey, onSelectRegion, lang, regions = 
     </div>
   )
 }
+

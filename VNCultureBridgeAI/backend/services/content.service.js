@@ -220,6 +220,17 @@ async function getRegion(code, lang) {
 
 async function listProvinces(options, lang) {
     const rows = await contentRepository.getAllProvinces()
+    
+    // Add thematic tags to improve filtering logic
+    const provinceTags = {
+        'HA_NOI': ['food', 'heritage', 'oldtown', 'capital'],
+        'HA_GIANG': ['nature', 'mountains', 'adventure'],
+        'HUE': ['heritage', 'food', 'oldtown', 'history'],
+        'DA_NANG': ['sea', 'nature', 'modern'],
+        'TPHCM': ['food', 'modern', 'history'],
+        'CAN_THO': ['food', 'nature', 'river']
+    }
+
     return rows.map(r => ({
         id: r.MaTinh,
         code: r.MaTinh,
@@ -227,7 +238,8 @@ async function listProvinces(options, lang) {
         description: mapText(r, 'TongQuanVI', 'TongQuanEN', lang),
         imageUrl: r.HeroImageUrl || r.AnhDaiDienUrl,
         regionCode: r.MaVung,
-        region: lang === 'vi' ? r.VungTenVI : r.VungTenEN
+        region: lang === 'vi' ? r.VungTenVI : r.VungTenEN,
+        tags: provinceTags[r.MaTinh] || []
     }))
 }
 

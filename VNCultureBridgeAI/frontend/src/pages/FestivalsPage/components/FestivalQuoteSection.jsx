@@ -19,7 +19,7 @@ const FestivalQuoteSection = ({ page }) => {
         <p className="festivals-quote__subtitle">{section.subtitle || "Nhớ về cội nguồn để gìn giữ giá trị văn hóa"}</p>
         <div className="festivals-quote__divider"></div>
         <p className="festivals-quote__desc">{section.desc || "Tinh thần biết ơn cội nguồn chính là nền tảng để các lễ hội Việt Nam tiếp tục sống động trong đời sống hôm nay."}</p>
-        <Link to="/articles" className="festivals-btn festivals-btn--primary festivals-quote__btn">
+        <Link to="/blog" className="festivals-btn festivals-btn--primary festivals-quote__btn">
           {section.button || "Khám phá văn hóa"}
         </Link>
       </div>
