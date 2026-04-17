@@ -1358,95 +1358,98 @@
 
 /* --- Festival Timeline Section --- */
 .festivals-timeline {
-    padding: 100px 0 100px 20px;
+    padding: 120px 0 120px 20px;
     background-color: #0d0e11;
     color: white;
     overflow: hidden;
+    position: relative;
+    background-image: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+    background-size: 40px 40px;
 }
 
 .festivals-timeline__header {
     text-align: center;
-    margin-bottom: 64px;
+    margin-bottom: 80px;
     padding-right: 20px;
 }
 
 .festivals-timeline__tag {
     display: inline-flex;
     align-items: center;
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    color: #ffd700;
-    padding: 6px 16px;
+    border: 1px solid rgba(206, 17, 45, 0.4);
+    color: #f8c97a;
+    padding: 6px 18px;
     border-radius: 99px;
     font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     margin-bottom: 24px;
-    background: rgba(255, 215, 0, 0.05);
+    background: rgba(206, 17, 45, 0.1);
 }
 
 .festivals-timeline__title {
     font-family: var(--font-heading);
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    background: linear-gradient(180deg, #fff2c8 0%, #e8b951 100%);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    background: linear-gradient(180deg, #fdf5e6 0%, #f8c97a 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 0 0 16px;
+    margin: 0 0 20px;
     font-weight: 800;
+    line-height: 1.1;
 }
 
 .festivals-timeline__subtitle {
-    color: #a1a1aa;
-    font-size: 1.1rem;
-    margin: 0;
+    color: rgba(253, 235, 210, 0.7);
+    font-size: 1.15rem;
+    margin: 0 auto 24px;
+    max-width: 600px;
 }
 
 .festivals-timeline__scroll-hint {
     text-align: right;
-    color: #71717a;
+    color: rgba(253, 235, 210, 0.4);
     font-size: 0.85rem;
-    margin-bottom: 16px;
-    padding-right: 40px;
+    padding-right: 50px;
+    letter-spacing: 0.05em;
 }
 
 .festivals-timeline__track-container {
     overflow-x: auto;
-    padding-bottom: 40px;
+    padding: 40px 0 60px;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+    scrollbar-color: rgba(206, 17, 45, 0.3) transparent;
+    scroll-snap-type: x proximity;
 }
 
 .festivals-timeline__track-container::-webkit-scrollbar {
-    height: 8px;
+    height: 6px;
 }
 
 .festivals-timeline__track-container::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(206, 17, 45, 0.3);
     border-radius: 10px;
 }
 
 .festivals-timeline__track {
     display: flex;
-    gap: 40px;
-    padding: 20px 40px 20px 0;
+    gap: 60px;
+    padding: 20px 60px 20px 0;
     position: relative;
     width: max-content;
 }
 
-/* Connecting Line */
 .festivals-timeline__line {
     position: absolute;
-    top: 95px;
-    /* Centers with the circle */
+    top: 105px;
     left: 0;
     right: 0;
     height: 2px;
     background: linear-gradient(90deg,
-            rgba(225, 29, 72, 0.2) 0%,
-            rgba(234, 179, 8, 0.2) 20%,
-            rgba(6, 182, 212, 0.2) 50%,
-            rgba(217, 70, 239, 0.2) 80%,
-            rgba(99, 102, 241, 0.2) 100%);
+            rgba(206, 17, 45, 0.3) 0%,
+            rgba(218, 165, 32, 0.3) 50%,
+            rgba(206, 17, 45, 0.3) 100%);
     z-index: 1;
 }
 
@@ -1456,98 +1459,177 @@
     align-items: center;
     position: relative;
     z-index: 2;
-    min-width: 260px;
-    max-width: 260px;
+    width: 320px;
+    scroll-snap-align: center;
 }
 
 .timeline-item__top-dot {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    margin-bottom: 24px;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.timeline-item__top-dot::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0.5;
+    animation: timelinePulse 2s infinite ease-out;
+}
+
+@keyframes timelinePulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2.5); opacity: 0; }
 }
 
 .timeline-item__circle {
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-bottom: 32px;
-    color: white;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.4));
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Base fallback */
+    margin-bottom: 40px;
+    color: #fdf5e6;
+    font-weight: 800;
+    font-size: 1.8rem;
+    font-family: var(--font-heading);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(5px);
+    z-index: 5;
+    position: relative;
 }
 
-/* Mix blend mode to allow the glow to feel luminous */
-.timeline-item__circle:hover {
-    transform: translateY(-8px);
+.timeline-item__circle::before {
+    content: 'Tháng';
+    position: absolute;
+    top: 30px;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+}
+
+.timeline-item:hover .timeline-item__circle {
+    transform: translateY(-10px) scale(1.1);
 }
 
 .timeline-card {
-    background: #18191c;
-    border-radius: 16px;
-    padding: 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 0;
     width: 100%;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    transition: all 0.4s ease;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease;
 }
 
 .timeline-card:hover {
-    transform: translateY(-4px);
-    background: #1f2025;
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(253, 235, 210, 0.2);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
 }
 
-.timeline-card__title {
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
-    color: white;
-    text-align: center;
-    margin: 0;
-    line-height: 1.3;
+.timeline-card__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
 }
 
 .timeline-card__image {
     width: 100%;
-    height: 120px;
+    height: 100%;
     object-fit: cover;
-    border-radius: 10px;
-    margin: 8px 0;
+    transition: transform 0.6s ease;
 }
 
-.timeline-card__season {
+.timeline-card:hover .timeline-card__image {
+    transform: scale(1.1);
+}
+
+.timeline-card__season-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 15px;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.timeline-card__content {
+    padding: 24px;
+    flex: 1;
     display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: #a1a1aa;
+    flex-direction: column;
 }
 
-.timeline-card__season-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+.timeline-card__title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: #fdf5e6;
+    margin: 0 0 16px;
+    line-height: 1.2;
+}
+
+.timeline-card__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.timeline-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.info-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(253, 235, 210, 0.4);
+    font-weight: 600;
+}
+
+.info-value {
+    font-size: 0.85rem;
+    color: rgba(253, 235, 210, 0.85);
+    font-weight: 500;
+}
+
+.timeline-card__desc {
+    font-size: 0.88rem;
+    color: rgba(253, 235, 210, 0.6);
+    line-height: 1.6;
+    margin: 4px 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .timeline-card__bottom-line {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    height: 3px;
+    width: 100%;
+    opacity: 0.8;
+}
     width: 40%;
     height: 2px;
     border-radius: 2px;

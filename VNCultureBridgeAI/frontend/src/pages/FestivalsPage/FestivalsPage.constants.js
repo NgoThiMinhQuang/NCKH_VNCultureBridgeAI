@@ -107,12 +107,94 @@ export const buildFestivalData = (apiData, lang) => {
     festivals,
     gallery: gallery.length > 0 ? gallery : festivals.slice(0, 10).map(f => ({ imageUrl: f.image, alt: f.title })),
     timeline: [
-      { id: 1, month: "01", title: lang === "vi" ? "Lễ hội Xuân" : "Spring Festival", season: lang === "vi" ? "Mùa Xuân" : "Spring", color: "#e63946", image: "https://images.unsplash.com/photo-1579624538806-259837f4876b?auto=format&fit=crop&w=400&q=80" },
-      { id: 2, month: "03", title: lang === "vi" ? "Lễ hội Phú Thọ" : "Phu Tho Festival", season: lang === "vi" ? "Mùa Xuân" : "Spring", color: "#f1faee", image: "https://images.unsplash.com/photo-1542332213-31f87348057f?auto=format&fit=crop&w=400&q=80" },
-      { id: 3, month: "05", title: lang === "vi" ? "Lễ hội Biển" : "Sea Festival", season: lang === "vi" ? "Mùa Hạ" : "Summer", color: "#a8dadc", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80" },
-      { id: 4, month: "08", title: lang === "vi" ? "Lễ hội Trăng Rằm" : "Full Moon Festival", season: lang === "vi" ? "Mùa Thu" : "Autumn", color: "#457b9d", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" },
-      { id: 5, month: "10", title: lang === "vi" ? "Lễ hội Khmer" : "Khmer Festival", season: lang === "vi" ? "Mùa Thu" : "Autumn", color: "#1d3557", image: "https://images.unsplash.com/photo-1585223126786-9316d5ba4b17?auto=format&fit=crop&w=400&q=80" },
-      { id: 6, month: "12", title: lang === "vi" ? "Lễ hội Cuối Năm" : "Year End Festival", season: lang === "vi" ? "Mùa Đông" : "Winter", color: "#2b2d42", image: "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=400&q=80" },
+      {
+        id: 1,
+        month: "01",
+        title: lang === "vi" ? "Tết Nguyên Đán" : "Lunar New Year",
+        date: lang === "vi" ? "Mùng 1/1 Âm lịch" : "1st Day of 1st Lunar Month",
+        location: lang === "vi" ? "Toàn quốc" : "Nationwide",
+        season: lang === "vi" ? "Mùa Xuân" : "Spring",
+        color: "#ce112d",
+        image: "https://images.unsplash.com/photo-1533227268408-a77469319204?auto=format&fit=crop&w=600&q=80",
+        desc: lang === "vi" ? "Lễ hội lớn nhất và quan trọng nhất, khởi đầu năm mới với niềm vui và may mắn." : "The largest and most important festival, starting the new year with joy and luck."
+      },
+      {
+        id: 2,
+        month: "02",
+        title: lang === "vi" ? "Lễ hội Chùa Hương" : "Huong Pagoda Festival",
+        date: lang === "vi" ? "Tháng 1 - Tháng 3 Âm lịch" : "1st to 3rd Lunar Month",
+        location: lang === "vi" ? "Hà Nội" : "Hanoi",
+        season: lang === "vi" ? "Mùa Xuân" : "Spring",
+        color: "#f8c97a",
+        image: "https://images.unsplash.com/photo-1579624538806-259837f4876b?auto=format&fit=crop&w=600&q=80",
+        desc: lang === "vi" ? "Hành trình tâm linh về miền đất Phật, chiêm ngưỡng vẻ đẹp sơn thủy hữu tình." : "A spiritual journey to the Buddhist land, admiring the romantic landscape."
+      },
+      {
+        id: 3,
+        month: "03",
+        title: lang === "vi" ? "Lễ hội Đền Hùng" : "Hung Kings Temple Festival",
+        date: lang === "vi" ? "Mùng 10/3 Âm lịch" : "10th Day of 3rd Lunar Month",
+        location: lang === "vi" ? "Phú Thọ" : "Phu Tho",
+        season: lang === "vi" ? "Mùa Xuân" : "Spring",
+        color: "#ffcc00",
+        image: "https://images.unsplash.com/photo-1522031754407-28d88e07246b?auto=format&fit=crop&w=600&q=80",
+        desc: lang === "vi" ? "Ngày quốc giỗ thiêng liêng tưởng nhớ công lao của các Vua Hùng dựng nước." : "The sacred national anniversary commemorating the contributions of the Hung Kings."
+      },
+      {
+        id: 4,
+        month: "04",
+        title: lang === "vi" ? "Lễ hội Tháp Bà" : "Po Nagar Tower Festival",
+        date: lang === "vi" ? "20 - 23/3 Âm lịch" : "20th to 23rd of 3rd Lunar Month",
+        location: lang === "vi" ? "Nha Trang" : "Nha Trang",
+        season: lang === "vi" ? "Mùa Hạ" : "Summer",
+        color: "#ff6b35",
+        image: "https://images.unsplash.com/photo-1596422846543-75c6fc183f27?auto=format&fit=crop&w=600&q=80",
+        desc: lang === "vi" ? "Lễ hội lớn nhất miền Trung tôn vinh Mẹ Xứ Sở (Thiên Y Thánh Mẫu)." : "The largest festival in Central Vietnam honoring the Mother of the Realm."
+      },
+      {
+        id: 5,
+        month: "06",
+        title: lang === "vi" ? "Festival Huế" : "Hue Festival",
+        date: lang === "vi" ? "Tháng 6 Dương lịch" : "June (Biennial)",
+        location: lang === "vi" ? "Huế" : "Hue",
+        season: lang === "vi" ? "Mùa Hạ" : "Summer",
+        color: "#9b5de5",
+        image: "https://images.unsplash.com/photo-1559592413-7ece759ca441?auto=format&fit=crop&w=600&q=80",
+        desc: lang === "vi" ? "Lễ hội văn hóa nghệ thuật quy mô quốc tế tại Cố đô Huế xinh đẹp." : "A grand international cultural and artistic festival in the beautiful Imperial City."
+      },
+      {
+        id: 6,
+        month: "08",
+        title: lang === "vi" ? "Tết Trung Thu" : "Mid-Autumn Festival",
+        date: lang === "vi" ? "15/8 Âm lịch" : "15th Day of 8th Lunar Month",
+        location: lang === "vi" ? "Toàn quốc" : "Nationwide",
+        season: lang === "vi" ? "Mùa Thu" : "Autumn",
+        color: "#fb5607",
+        image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=600&q=80",
+        desc: lang === "vi" ? "Lễ hội trăng rằm rực rỡ lồng đèn và tiếng trống lân rộn rã." : "A vibrant full-moon festival with lanterns and joyous lion dances."
+      },
+      {
+        id: 7,
+        month: "10",
+        title: lang === "vi" ? "Lễ hội Ok Om Bok" : "Ok Om Bok Festival",
+        date: lang === "vi" ? "Tháng 10 Âm lịch" : "10th Lunar Month",
+        location: lang === "vi" ? "Trà Vinh, Sóc Trăng" : "Tra Vinh, Soc Trang",
+        season: lang === "vi" ? "Mùa Thu" : "Autumn",
+        color: "#6a4c93",
+        image: "https://images.unsplash.com/photo-1585223126786-9316d5ba4b17?auto=format&fit=crop&w=600&q=80",
+        desc: lang === "vi" ? "Lễ cúng trăng truyền thống của người Khmer Nam Bộ với đua ghe Ngo." : "Traditional moon worship of the Khmer people with dragon boat racing."
+      },
+      {
+        id: 8,
+        month: "12",
+        title: lang === "vi" ? "Lễ hội Hoa" : "Flower Festival",
+        date: lang === "vi" ? "Cuối năm Dương lịch" : "Late December",
+        location: lang === "vi" ? "Đà Lạt" : "Da Lat",
+        season: lang === "vi" ? "Mùa Đông" : "Winter",
+        color: "#00b4d8",
+        image: "https://images.unsplash.com/photo-1520114056694-91897e93da27?auto=format&fit=crop&w=600&q=80",
+        desc: lang === "vi" ? "Tôn vinh vẻ đẹp ngàn hoa và khí hậu đặc trưng của thành phố ngàn thông." : "Honoring the beauty of thousands of flowers and the characteristic climate of Da Lat."
+      },
     ],
   };
 };
