@@ -530,6 +530,13 @@
   border: 1px solid rgba(245, 158, 11, 0.22);
 }
 
+.ec-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
 .ec-dropdown-wrap {
   position: relative;
 }

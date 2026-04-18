@@ -488,9 +488,9 @@ export default function EthnicCultures() {
             </div>
 
             <div className="ec-filters">
-              <div className="ec-custom-dropdown">
+              <div className="ec-dropdown-wrap">
                 <div
-                  className={`ec-dropdown-header ${isDropdownOpen ? "open" : ""}`}
+                  className={`ec-dropdown-trigger ${isDropdownOpen ? "open" : ""}`}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   {activeFilter}
