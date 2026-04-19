@@ -76,7 +76,7 @@ export default function FestivalSection({ festivals, copy }) {
 
                 {item.code && (
                   <div className="festival-card__footer">
-                    <Link to={`/articles/${item.code}`} className="festival-card__cta">
+                    <Link to={`/festivals/${item.code}`} className="festival-card__cta">
                       <span>{copy?.learnMore}</span>
                       <span aria-hidden="true">→</span>
                     </Link>

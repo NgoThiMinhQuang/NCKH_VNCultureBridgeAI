@@ -65,7 +65,7 @@ export default function CuisineSection({ cuisine, copy }) {
                 )}
 
                 <div className="cuisine-card__footer">
-                  <Link to={`/articles/${item.code}`} className="cuisine-card__cta">
+                  <Link to={`/cuisine/${item.code}`} className="cuisine-card__cta">
                     <span>{copy?.learnMore}</span>
                     <span aria-hidden="true">→</span>
                   </Link>
